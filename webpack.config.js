@@ -2,6 +2,7 @@ let path = require('path');
 const webpack = require('webpack');
 let nodeExternals = require('webpack-node-externals');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 let config = {
 
@@ -61,6 +62,8 @@ let config = {
 
         plugins: [
             // new BundleAnalyzerPlugin({analyzerMode: "static"})
+            new CopyWebpackPlugin([{from: path.resolve(__dirname, 'src/javascript/register.js'), to: path.resolve(__dirname, 'src/main/resources/javascript/apps/')}]),
+            new CopyWebpackPlugin([{from: path.resolve(__dirname, 'jahia.json'), to: path.resolve(__dirname, 'src/main/resources/javascript/apps/')}])
         ],
 
         devtool: 'source-map',
