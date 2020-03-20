@@ -6,6 +6,8 @@
         icon: null,
         label: 'site-settings-seo:label.title',
         isSelectable: true,
-        iframeUrl: window.contextJsParameters.contextPath + '/cms/editframe/default/en/sites/$site-key.vanity-url-dashboard.html'
+        requiredPermission: 'siteAdminUrlmapping',
+        requireModuleInstalledOnSite: 'site-settings-seo',
+        iframeUrl: window.contextJsParameters.contextPath + '/cms/editframe/default/$lang/sites/$site-key.vanity-url-dashboard.html'
     });
 })();
