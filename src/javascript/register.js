@@ -3,7 +3,7 @@
 
     window.jahia.uiExtender.registry.add('adminRoute', 'site-settings-seo', {
         targets: ['jcontent:60'],
-        icon: null,
+        icon: window.jahia.moonstone.toIconComponent('Follow'),
         label: 'site-settings-seo:label.title',
         isSelectable: true,
         requiredPermission: 'siteAdminUrlmapping',
