@@ -69,7 +69,7 @@
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <webpack.arguments>-p</webpack.arguments>
-        <jahia-module-signature>MCwCFG0qV+qnsUiPq3Hl1406R2jfVzbqAhQAusZrdYZtlx/XRiegYrgcNZX9pQ==</jahia-module-signature>
+        <jahia-module-signature>MC0CFQCQZh2toi57s5VeH6uV3qHso6NNBwIUVBCcruoO/uTM8vGQ3KwhJtKX3O8=</jahia-module-signature>
     </properties>
     <repositories>
         <repository>
