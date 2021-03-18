@@ -14,9 +14,9 @@ import {
     TableRow,
     withStyles
 } from '@material-ui/core';
-import {compose} from "react-apollo/index";
-import {translate} from "react-i18next";
-import {withVanityMutationContext} from "./VanityMutationsProvider";
+import {flowRight as compose} from 'lodash';
+import {withTranslation} from 'react-i18next';
+import {withVanityMutationContext} from './VanityMutationsProvider';
 import {withNotifications} from '@jahia/react-material';
 
 const styles = theme => ({
@@ -32,7 +32,7 @@ const styles = theme => ({
         verticalAlign: 'middle',
         position: 'absolute',
         right: '20px',
-        paddingTop: '7px',
+        paddingTop: '7px'
     },
     dialogUrlTable: {
         border: '1px solid #d5d5d5',
@@ -59,58 +59,64 @@ const styles = theme => ({
 });
 
 class PublishDeletion extends React.Component {
-
     constructor(props) {
         super(props);
-        let { vanityMutationsContext, notificationContext, t } = this.props;
+        let {vanityMutationsContext, notificationContext, t} = this.props;
 
         this.state = {
-            deleteButtonState: true,
+            deleteButtonState: true
         };
 
-        this.publish = function() {
+        this.publish = function () {
             if (this.props.urlPairs.length > 0) {
                 vanityMutationsContext.publish(this.props.urlPairs[0].live.parent.uuid, true);
                 notificationContext.notify(t('label.notifications.publicationDeletionConfirmed'));
             }
+
             props.onClose();
         };
     }
 
     handleDeleteDisabled = () => {
-        this.setState((previous) => ({deleteButtonState: !previous.deleteButtonState}));
+        this.setState(previous => ({deleteButtonState: !previous.deleteButtonState}));
     };
 
     handleClose = () => {
         this.setState({
-            deleteButtonState: true,
+            deleteButtonState: true
         });
-        this.props.onClose()
+        this.props.onClose();
     };
 
     render() {
-        const { open, classes, onClose, t, urlPairs } = this.props;
+        const {open, classes, onClose, t, urlPairs} = this.props;
         let mappingCount = urlPairs.length;
 
         return (
             <div>
-                <Dialog open={open} fullWidth={true} onClose={onClose} aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description" data-vud-role="dialog">
+                <Dialog fullWidth
+                        open={open}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                        data-vud-role="dialog"
+                        onClose={onClose}
+                >
                     <DialogTitle id="alert-dialog-title">{t('label.dialogs.publishdeletion.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-headline">
-                            {t('label.dialogs.publishdeletion.headline', {count: mappingCount})}{"\n"}
+                            {t('label.dialogs.publishdeletion.headline', {count: mappingCount})}{'\n'}
                         </DialogContentText><br/>
 
                     </DialogContent>
                     <DialogContent>
                         <Table className={classes.dialogUrlTable}>
                             <TableBody>
-                                {urlPairs.map((url, i) =>
+                                {urlPairs.map((url, i) => (
                                     <TableRow key={i} className={classes.dialogUrlRow}>
                                         <TableCell className={this.props.classes.deleteClass + ' ' + classes.vanityUrlTableCellUrl}>{url.live.url}</TableCell>
                                         <TableCell className={classes.vanityUrlTableCellLanguage}>{url.live.language}</TableCell>
                                     </TableRow>
+                                  )
                                 )}
                             </TableBody>
                         </Table>
@@ -119,23 +125,28 @@ class PublishDeletion extends React.Component {
                                 <DialogContentText className={classes.dialogNote} id="alert-dialog-content">
                                     {t('label.dialogs.publishdeletion.content')}
                                 </DialogContentText>
-                            ) : ("")
+                            ) : ('')
                         }
                     </DialogContent>
                     <DialogActions>
                         <FormControlLabel
-                            control={
-                                <Checkbox data-vud-role="checkbox-hint" />
-                            }
+                            control={<Checkbox data-vud-role="checkbox-hint"/>}
                             label={t('label.dialogs.delete.terms')}
-                            onChange={this.handleDeleteDisabled}
                             checked={!this.state.deleteButtonState}
+                            onChange={this.handleDeleteDisabled}
                         />
                         <div className={classes.dialogActionsButtonContainer}>
-                            <Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">
+                            <Button color="default" data-vud-role="button-cancel" onClick={this.handleClose}>
                                 {t('label.cancel')}
                             </Button>
-                            <Button onClick={() => {this.publish()}} color="secondary" disabled={this.state.deleteButtonState} autoFocus data-vud-role="button-primary">
+                            <Button autoFocus
+                                    color="secondary"
+                                    disabled={this.state.deleteButtonState}
+                                    data-vud-role="button-primary"
+                                    onClick={() => {
+this.publish();
+}}
+                            >
                                 {t('label.actions.delete')}
                             </Button>
                         </div>
@@ -149,7 +160,7 @@ class PublishDeletion extends React.Component {
 PublishDeletion = compose(
     withVanityMutationContext(),
     withNotifications(),
-    (translate()),
+    (withTranslation()),
     withStyles(styles)
 )(PublishDeletion);
 

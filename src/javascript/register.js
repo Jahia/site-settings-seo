@@ -1,4 +1,4 @@
-(function() {
+(function () {
     window.jahia.i18n.loadNamespaces('site-settings-seo');
 
     window.jahia.uiExtender.registry.add('adminRoute', 'site-settings-seo', {

@@ -53,7 +53,7 @@
         <relativePath />
     </parent>
     <artifactId>site-settings-seo</artifactId>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Site Settings - SEO</name>
     <description>This is the custom module (Site Settings - SEO) for running on a Digital Experience Manager server.
@@ -68,8 +68,8 @@
         <jahia-depends>default,siteSettings,graphql-dxm-provider</jahia-depends>
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
-        <webpack.arguments>-p</webpack.arguments>
-        <jahia-module-signature>MC0CFQCQZh2toi57s5VeH6uV3qHso6NNBwIUVBCcruoO/uTM8vGQ3KwhJtKX3O8=</jahia-module-signature>
+        <yarn.arguments>build:simple</yarn.arguments>
+        <jahia-module-signature>MCwCFGgMkmwEQsHsVG4Se23Bb7qRI/2DAhQjI0mpjJDEOT1r58FxSh+O16yMWA==</jahia-module-signature>
     </properties>
     <repositories>
         <repository>
@@ -101,14 +101,14 @@
                 <version>1.6</version>
                 <executions>
                     <execution>
-                        <id>npm install node and npm</id>
+                        <id>npm install node and yarn</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>install-node-and-yarn</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v8.2.1</nodeVersion>
-                            <yarnVersion>v1.6.0</yarnVersion>
+                            <nodeVersion>v12.16.0</nodeVersion>
+                            <yarnVersion>v1.19.1</yarnVersion>
                         </configuration>
                     </execution>
                     <execution>
@@ -119,13 +119,13 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>webpack</id>
-                        <phase>prepare-package</phase>
+                        <id>yarn post-install</id>
+                        <phase>generate-resources</phase>
                         <goals>
-                            <goal>webpack</goal>
+                            <goal>yarn</goal>
                         </goals>
                         <configuration>
-                            <arguments>${webpack.arguments}</arguments>
+                            <arguments>${yarn.arguments}</arguments>
                         </configuration>
                     </execution>
                 </executions>

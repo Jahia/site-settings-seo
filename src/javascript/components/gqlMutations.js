@@ -1,5 +1,5 @@
-import gql from "graphql-tag";
-import {DefaultVanityUrlFields, DefaultVanityUrls} from "./gqlFragments";
+import gql from 'graphql-tag';
+import {DefaultVanityUrlFields, DefaultVanityUrls} from './gqlFragments';
 
 const UpdateVanityMutation = gql`
     mutation updateVanity($ids: [String!]!, $defaultMapping: Boolean, $active: Boolean, $url: String, $language: String, $lang: String!) {

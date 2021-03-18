@@ -1,6 +1,6 @@
-import {DefaultVanityUrls, LiveVanityUrls} from "./gqlFragments";
-import {PredefinedFragments} from "@jahia/apollo-dx";
-import gql from "graphql-tag";
+import {DefaultVanityUrls, LiveVanityUrls} from './gqlFragments';
+import {PredefinedFragments} from '@jahia/apollo-dx';
+import gql from 'graphql-tag';
 
 const TableQuery = gql`
     query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput, $languages: [String!]) {
@@ -38,15 +38,15 @@ const LanguagesQuery = gql`
     }
 `;
 
-const TableQueryVariables = (props) => ({
+const TableQueryVariables = props => ({
     lang: props.lang,
     languages: props.selectedLanguageCodes,
     offset: (props.currentPage * props.pageSize),
     limit: props.pageSize,
-    query: "select * from [jmix:vanityUrlMapped] as content where isDescendantNode('" + props.path + "') order by [j:fullpath]",
+    query: 'select * from [jmix:vanityUrlMapped] as content where isDescendantNode(\'' + props.path + '\') order by [j:fullpath]',
     filterText: props.filterText,
-    doFilter: !!props.filterText,
-    queryFilter: {multi: "ANY", filters: [{fieldName: "vanityUrls", evaluation: "NOT_EMPTY"}, {fieldName: "liveNode.vanityUrls", evaluation: "NOT_EMPTY"}]}
+    doFilter: Boolean(props.filterText),
+    queryFilter: {multi: 'ANY', filters: [{fieldName: 'vanityUrls', evaluation: 'NOT_EMPTY'}, {fieldName: 'liveNode.vanityUrls', evaluation: 'NOT_EMPTY'}]}
 });
 
 const VanityUrlsByPath = gql`
@@ -68,7 +68,7 @@ const VanityUrlsByPathVariables = (paths, props) => ({
     lang: props.lang,
     languages: props.selectedLanguageCodes,
     filterText: props.filterText,
-    doFilter: !!props.filterText,
+    doFilter: Boolean(props.filterText),
     paths: paths
 });
 
@@ -83,6 +83,5 @@ const GetNodeQuery = gql`
     }
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
-
 
 export {TableQuery, LanguagesQuery, GetNodeQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables};
