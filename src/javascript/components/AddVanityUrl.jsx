@@ -401,8 +401,8 @@ class AddVanityUrl extends React.Component {
 AddVanityUrl = compose(
     withVanityMutationContext(),
     withNotifications(),
-    withStyles(styles),
-    withTranslation()
+    withStyles(() => {}), // todo figure out why there is an error here
+    withTranslation('site-settings-seo')
 )(AddVanityUrl);
 
 export default AddVanityUrl;

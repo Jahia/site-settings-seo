@@ -1,6 +1,7 @@
 import React from 'react';
 import {Toolbar, Typography, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
-import {SearchBar, SettingsLayout, withNotifications, NotificationProvider, theme} from '@jahia/react-material';
+import {SettingsLayout, withNotifications, NotificationProvider, theme} from '@jahia/react-material';
+import SearchBar from './SearchBar';
 import {client} from '@jahia/apollo-dx';
 import {getI18n} from '@jahia/i18next';
 import {LanguageSelector} from './LanguageSelector';
@@ -20,6 +21,7 @@ import {VanityMutationsProvider, withVanityMutationContext} from './VanityMutati
 import {VanityUrlLanguageData} from './VanityUrlLanguageData';
 import {VanityUrlTableData} from './VanityUrlTableData';
 
+// Todo Theme undefined
 const styles = theme => ({
 
     title: {
@@ -397,14 +399,14 @@ class SiteSettingsSeoApp extends React.Component {
                     onSelectionChange={this.onSelectedLanguagesChanged}
                 />
 
-                                    <SearchBar placeholderLabel={t('label.filterPlaceholder')}
-                                               onChangeFilter={this.onChangeFilter}
-                                               onFocus={this.onSearchFocus}
-                                               onBlur={this.onSearchBlur}/>
+                                <SearchBar placeholderLabel={t('label.filterPlaceholder')}
+                                           onChangeFilter={this.onChangeFilter}
+                                           onFocus={this.onSearchFocus}
+                                           onBlur={this.onSearchBlur}/>
                                 </Toolbar>
         }
             >
-
+                <>
                 <Selection selection={this.state.selection}
                            actions={this.actions}
                            onChangeSelection={this.onChangeSelection}/>
@@ -468,39 +470,30 @@ class SiteSettingsSeoApp extends React.Component {
                 lang={dxContext.lang}
                 onClose={this.closeAdd}
             />}
+            </>
 
             </SettingsLayout>
         );
     }
 }
 
-SiteSettingsSeoApp = _.flowRight(
+const SiteSettingsSeoComponent = _.flowRight(
     withNotifications(),
     withTheme(),
     withStyles(styles),
     withVanityMutationContext(),
-    withTranslation()
+    withTranslation('site-settings-seo')
 )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
-    let namespaceResolvers = {
-        'site-settings-seo': lang => require('../../main/resources/javascript/locales/' + lang + '.json')
-    };
-
     return (
-        <MuiThemeProvider theme={theme}>
-            <NotificationProvider>
-                <ApolloProvider client={client({contextPath: props.dxContext.contextPath})}>
-                    <I18nextProvider i18n={getI18n({lng: props.dxContext.uilang, contextPath: props.dxContext.contextPath, ns: ['site-settings-seo', 'react-material'], defaultNS: 'site-settings-seo', namespaceResolvers: namespaceResolvers})}>
-                        <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                            <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                                {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
-                            </VanityUrlLanguageData>
-                        </VanityMutationsProvider>
-                    </I18nextProvider>
-                </ApolloProvider>
-            </NotificationProvider>
-        </MuiThemeProvider>
+        <NotificationProvider notificationContext={{}}>
+            <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
+                <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
+                    {languages => <SiteSettingsSeoComponent languages={languages} {...props}/>}
+                </VanityUrlLanguageData>
+            </VanityMutationsProvider>
+        </NotificationProvider>
     );
 };
 

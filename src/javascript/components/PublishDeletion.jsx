@@ -160,7 +160,7 @@ this.publish();
 PublishDeletion = compose(
     withVanityMutationContext(),
     withNotifications(),
-    (withTranslation()),
+    (withTranslation('site-settings-seo')),
     withStyles(styles)
 )(PublishDeletion);
 

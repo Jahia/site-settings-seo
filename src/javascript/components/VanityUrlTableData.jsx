@@ -31,7 +31,7 @@ class VanityUrlTableData extends React.Component {
                 let totalCount = 0;
                 let numberOfPages = 0;
                 let rows = [];
-                if (data.jcr && data.jcr.nodesByQuery) {
+                if (data && data.jcr && data.jcr.nodesByQuery) {
                     totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
                     numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / pageSize);
 
@@ -67,7 +67,7 @@ class VanityUrlTableData extends React.Component {
 
 VanityUrlTableData = _.flowRight(
     withNotifications(),
-    withTranslation()
+    withTranslation('site-settings-seo')
 )(VanityUrlTableData);
 
 export {VanityUrlTableData};

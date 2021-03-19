@@ -1,6 +1,8 @@
 {
   "label": {
     "seo": "SEO",
+    "languages": "Language",
+    "searchPlaceholder": "Search",
     "actions": {
       "delete": "Delete",
       "move": "Move",

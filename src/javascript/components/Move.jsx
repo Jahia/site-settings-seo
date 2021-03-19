@@ -226,7 +226,7 @@ Move = _.flowRight(
     withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
-    (withTranslation())
+    (withTranslation('site-settings-seo'))
 )(Move);
 
 export default Move;

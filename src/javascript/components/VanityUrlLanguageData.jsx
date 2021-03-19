@@ -13,7 +13,7 @@ class VanityUrlLanguageData extends React.Component {
             <Query fetchPolicy="network-only" query={LanguagesQuery} variables={{path: this.props.path}}>
                 { ({loading, error, data}) => {
                 let languages = [];
-                if (data.jcr && data.jcr.nodeByPath) {
+                if (data && data.jcr && data.jcr.nodeByPath) {
                     languages = _.sortBy(_.filter(data.jcr.nodeByPath.site.languages, language => language.activeInEdit), 'code');
                 }
 

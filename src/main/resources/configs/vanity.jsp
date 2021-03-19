@@ -6,8 +6,6 @@
 <%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
 
 console.log("vanity");
-contextJsParameters['mainResourceId'] = '${renderContext.mainResource.node.identifier}';
-contextJsParameters['mainResourcePath'] = '${renderContext.mainResource.node.path}';
-contextJsParameters['siteKey'] = '${renderContext.mainResource.node.resolveSite.name}';
-contextJsParameters['siteTitle'] = '${functions:escapeJavaScript(renderContext.site.title)}';
-contextJsParameters['currentNodeId'] = '${currentNode.identifier}';
+contextJsParameters['mainResourceId'] = contextJsParameters['siteUuid'];
+contextJsParameters['mainResourcePath'] = '/sites/' + contextJsParameters['siteKey'];
+contextJsParameters['siteTitle'] = contextJsParameters['site'];

@@ -9,15 +9,13 @@ export default function () {
     registry.add('callback', COMP_NAME, {
         targets: ['jahiaApp-init:23'],
         callback: async () => {
-            await i18next.loadNamespaces(COMP_NAME);
+            await i18next.loadNamespaces('site-settings-seo');
 
             registry.add('adminRoute', COMP_NAME, {
                 targets: ['jcontent:60'],
                 icon: window.jahia.moonstone.toIconComponent('Search'),
                 label: 'site-settings-seo:label.seo',
-                isSelectable: false,
-                requiredPermission: 'siteAdminUrlmapping',
-                // requireModuleInstalledOnSite: COMP_NAME,
+                isSelectable: false
             });
 
             registry.add('adminRoute', `${COMP_NAME}/VanityUrls`, {
@@ -26,9 +24,7 @@ export default function () {
                 label: 'site-settings-seo:label.title',
                 isSelectable: true,
                 requiredPermission: 'siteAdminUrlmapping',
-                // requireModuleInstalledOnSite: COMP_NAME,
-                // iframeUrl: window.contextJsParameters.contextPath + '/cms/editframe/default/$lang/sites/$site-key.vanity-url-dashboard.html'
-                render: () => React.createElement(SiteSettingsSeo, {dxContext: window.contextJsParameters, id: window.contextJsParameters['currentNodeId']})
+                render: () => React.createElement(SiteSettingsSeo, {dxContext: window.contextJsParameters})
             });
 
             console.log('%c Site Settings SEO registered routes', 'color: #3c8cba');

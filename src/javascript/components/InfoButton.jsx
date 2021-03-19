@@ -50,7 +50,7 @@ class InfoButton extends React.Component {
 
 InfoButton = compose(
     withStyles(styles),
-    (withTranslation())
+    (withTranslation('site-settings-seo'))
 )(InfoButton);
 
 export default InfoButton;

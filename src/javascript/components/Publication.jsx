@@ -73,7 +73,7 @@ Publication = _.flowRight(
     withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
-    withTranslation()
+    withTranslation('site-settings-seo')
 )(Publication);
 
 export default Publication;

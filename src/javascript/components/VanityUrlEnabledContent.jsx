@@ -137,6 +137,6 @@ class VanityUrlEnabledContent extends React.Component {
     }
 }
 
-VanityUrlEnabledContent = withStyles(styles)(withTranslation()(VanityUrlEnabledContent));
+VanityUrlEnabledContent = withStyles(styles)(withTranslation('site-settings-seo')(VanityUrlEnabledContent));
 
 export {VanityUrlEnabledContent};

@@ -118,6 +118,6 @@ class LanguageSelector extends React.Component {
     }
 }
 
-LanguageSelector = withTranslation()(LanguageSelector);
+LanguageSelector = withTranslation('site-settings-seo')(LanguageSelector);
 
 export {LanguageSelector};

@@ -140,7 +140,7 @@ Deletion = compose(
     withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
-    withTranslation()
+    withTranslation('site-settings-seo')
 )(Deletion);
 
 export default Deletion;

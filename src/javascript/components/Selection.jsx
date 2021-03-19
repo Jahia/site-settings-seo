@@ -147,6 +147,6 @@ class Selection extends React.Component {
     }
 }
 
-Selection = withStyles(styles)(withTranslation()(Selection));
+Selection = withStyles(styles)(withTranslation('site-settings-seo')(Selection));
 
 export {Selection};
