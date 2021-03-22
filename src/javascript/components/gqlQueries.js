@@ -26,6 +26,7 @@ const LanguagesQuery = gql`
     query LanguagesQuery($path: String!) {
         jcr {
             nodeByPath(path: $path) {
+                id: uuid
                 site {
                     languages {
                         code: language

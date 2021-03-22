@@ -1,14 +1,11 @@
 import React from 'react';
-import {Toolbar, Typography, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
-import {SettingsLayout, withNotifications, NotificationProvider, theme} from '@jahia/react-material';
+import {Toolbar, Typography, withStyles, withTheme} from '@material-ui/core';
+import {SettingsLayout, withNotifications, NotificationProvider} from '@jahia/react-material';
 import SearchBar from './SearchBar';
-import {client} from '@jahia/apollo-dx';
-import {getI18n} from '@jahia/i18next';
 import {LanguageSelector} from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
-import {withTranslation, I18nextProvider} from 'react-i18next';
+import {withTranslation} from 'react-i18next';
 import {Selection} from './Selection';
-import {ApolloProvider} from 'react-apollo';
 import {Add, Delete, Info, Publish, SwapHoriz} from '@material-ui/icons';
 import * as _ from 'lodash';
 import InfoButton from './InfoButton';

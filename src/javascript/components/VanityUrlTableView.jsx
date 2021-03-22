@@ -11,7 +11,6 @@ class VanityUrlTableView extends React.Component {
 
     render() {
         let {rows, selection, onChangeSelection, filterText, actions, languages} = this.props;
-        console.log(this.props);
         return (
             <div>
                 <List>

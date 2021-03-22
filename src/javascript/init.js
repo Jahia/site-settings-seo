@@ -24,7 +24,12 @@ export default function () {
                 label: 'site-settings-seo:label.title',
                 isSelectable: true,
                 requiredPermission: 'siteAdminUrlmapping',
-                render: () => React.createElement(SiteSettingsSeo, {dxContext: window.contextJsParameters})
+                render: () => React.createElement(SiteSettingsSeo, {dxContext: {
+                        ...window.contextJsParameters,
+                        mainResourceId: window.contextJsParameters['siteUuid'],
+                        mainResourcePath: '/sites/' + window.contextJsParameters['siteKey'],
+                        siteTitle: window.contextJsParameters['site']
+                    }})
             });
 
             console.log('%c Site Settings SEO registered routes', 'color: #3c8cba');
