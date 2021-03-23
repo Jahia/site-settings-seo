@@ -163,7 +163,7 @@ jobs:
       - *attach-workspace
       - add_ssh_keys:
           fingerprints:
-            - "45:79:2f:91:3c:82:62:3f:ea:7f:bf:77:f8:ec:c1:62"
+            - "71:4f:fc:0c:0a:01:a7:3b:df:50:e2:6c:12:14:9f:d7"
       - run:
           name: Setting up github configuration
           command: |
@@ -194,7 +194,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "45:79:2f:91:3c:82:62:3f:ea:7f:bf:77:f8:ec:c1:62"
+            - "71:4f:fc:0c:0a:01:a7:3b:df:50:e2:6c:12:14:9f:d7"
       - run:
           name: Getting latest changes from the remote branch
           command: |
@@ -268,7 +268,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "45:79:2f:91:3c:82:62:3f:ea:7f:bf:77:f8:ec:c1:62"
+            - "71:4f:fc:0c:0a:01:a7:3b:df:50:e2:6c:12:14:9f:d7"
       - run:
           name: Setting up github configuration
           command: |
