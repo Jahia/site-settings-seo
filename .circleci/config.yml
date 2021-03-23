@@ -8,6 +8,21 @@ orbs:
 # Instead, declare those as pipeline parameters (At the top of the config file).
 # This eases portability of the config file across different modules
 parameters:
+  AUDITCI_LEVEL:
+    type: string
+    default: "moderate"
+  TESTS_PATH:
+    type: string
+    default: "tests/"
+  TESTS_IMAGE:
+    type: string
+    default: "jahia/site-settings-seo"
+  MODULE_ID:
+    type: string
+    default: "sitemap"
+  TESTRAIL_PROJECTNAME:
+    type: string
+    default: "Site Settings SEO Module"
   GITHUB_SLUG:
     type: string
     default: "jahia/site-settings-seo"
@@ -24,6 +39,9 @@ parameters:
     type: string
     default: ""
   IS_RELEASE:
+    type: boolean
+    default: false
+  UPDATE_SIGNATURE:
     type: boolean
     default: false
 
