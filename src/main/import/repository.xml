@@ -7,7 +7,7 @@
                    j:title="Site Settings - SEO"
                    jcr:mixinTypes="jmix:hasExternalProviderExtension"
                    jcr:primaryType="jnt:module">
-                
+
                 <portlets jcr:primaryType="jnt:portletFolder"/>
                 <files jcr:primaryType="jnt:folder"/>
                 <contents jcr:primaryType="jnt:contentFolder"/>
@@ -31,21 +31,7 @@
                         </urlmapping.png>
                     </files>
                     <contents jcr:primaryType="jnt:contentFolder"/>
-                    <site-settings-base j:view="siteSettings" jcr:primaryType="jnt:template" jcr:mixinTypes="jmix:useUILocale">
-                        <vanity-url-dashboard j:applyOn="jnt:virtualsite"
-                                   j:view="plain"
-                                   jcr:primaryType="jnt:contentTemplate"
-                                   j:icon="/modules/site-settings-seo/templates/files/urlmapping.png"
-                                   j:requiredPermissionNames="siteAdminUrlmapping"
-                                   jcr:mixinTypes="jmix:rbTitle"
-                                   j:titleKey="siteSettingsSeo.title">
-                            <pagecontent jcr:primaryType="jnt:contentList">
-                                <seo jcr:primaryType="jnt:siteSettingsSeo"/>
-                            </pagecontent>
-                        </vanity-url-dashboard>
-                    </site-settings-base>
                 </templates>
-                
         </site-settings-seo>
     </modules>
 </content>
