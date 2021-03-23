@@ -1,6 +1,6 @@
 import React from 'react';
-import {Toolbar, Typography, withStyles, withTheme} from '@material-ui/core';
-import {SettingsLayout, withNotifications, NotificationProvider} from '@jahia/react-material';
+import {Toolbar, Typography, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
+import {SettingsLayout, withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import {LanguageSelector} from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
@@ -484,13 +484,15 @@ const SiteSettingsSeoComponent = _.flowRight(
 
 let SiteSettingsSeo = function (props) {
     return (
-        <NotificationProvider notificationContext={{}}>
-            <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                    {languages => <SiteSettingsSeoComponent languages={languages} {...props}/>}
-                </VanityUrlLanguageData>
-            </VanityMutationsProvider>
-        </NotificationProvider>
+        <MuiThemeProvider theme={legacyTheme}>
+            <NotificationProvider notificationContext={{}}>
+                <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
+                    <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
+                        {languages => <SiteSettingsSeoComponent languages={languages} {...props}/>}
+                    </VanityUrlLanguageData>
+                </VanityMutationsProvider>
+            </NotificationProvider>
+        </MuiThemeProvider>
     );
 };
 
