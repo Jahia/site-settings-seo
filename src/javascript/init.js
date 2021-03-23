@@ -20,7 +20,6 @@ export default function () {
 
             registry.add('adminRoute', `${COMP_NAME}/VanityUrls`, {
                 targets: [`jcontent-${COMP_NAME}:60`],
-                icon: window.jahia.moonstone.toIconComponent('Follow'),
                 label: 'site-settings-seo:label.title',
                 isSelectable: true,
                 requiredPermission: 'siteAdminUrlmapping',
