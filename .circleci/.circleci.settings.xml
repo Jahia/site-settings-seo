@@ -53,6 +53,6 @@
         </server>
     </servers>
     <pluginGroups>
-	    <pluginGroup>org.owasp</pluginGroup>
+        <pluginGroup>org.owasp</pluginGroup>
     </pluginGroups>   
 </settings>
