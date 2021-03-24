@@ -1,5 +1,5 @@
-import gql from "graphql-tag";
-import {PredefinedFragments} from "@jahia/apollo-dx";
+import gql from 'graphql-tag';
+import {PredefinedFragments} from '@jahia/apollo-dx';
 
 const DefaultVanityUrlFields = gql`fragment DefaultVanityUrlFields on VanityUrl {
         ...NodeCacheRequiredFields
@@ -47,7 +47,7 @@ const LiveVanityUrlFields = gql`fragment LiveVanityUrlFields on VanityUrl {
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-const SearchFilter = `fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText`;
+const SearchFilter = 'fieldName: "url", evaluation: CONTAINS_IGNORE_CASE, value: $filterText';
 
 const DefaultLanguageFilter = `fieldFilter: {multi: ANY, filters: [
     {fieldName: "language", evaluation: AMONG, values: $languages},

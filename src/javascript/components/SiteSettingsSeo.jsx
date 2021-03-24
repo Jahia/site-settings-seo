@@ -1,27 +1,25 @@
 import React from 'react';
 import {Toolbar, Typography, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
-import {SearchBar, SettingsLayout, withNotifications, NotificationProvider, theme} from '@jahia/react-material';
-import {client} from '@jahia/apollo-dx';
-import {getI18n} from '@jahia/i18next';
-// import {DxContextProvider} from '@jahia/context-provider';
-import {LanguageSelector} from "./LanguageSelector";
-import {VanityUrlTableView} from "./VanityUrlTableView";
-import {translate, I18nextProvider} from 'react-i18next';
-import {Selection} from "./Selection";
-import {compose, ApolloProvider} from 'react-apollo';
-import {Add, Delete, Info, Publish, SwapHoriz} from "@material-ui/icons";
+import {SettingsLayout, withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
+import SearchBar from './SearchBar';
+import {LanguageSelector} from './LanguageSelector';
+import {VanityUrlTableView} from './VanityUrlTableView';
+import {withTranslation} from 'react-i18next';
+import {Selection} from './Selection';
+import {Add, Delete, Info, Publish, SwapHoriz} from '@material-ui/icons';
 import * as _ from 'lodash';
-import InfoButton from "./InfoButton";
-import Publication from "./Publication";
-import Deletion from "./Deletion";
-import PublishDeletion from "./PublishDeletion";
-import Move from "./Move";
-import AddVanityUrl from "./AddVanityUrl";
-import {VanityMutationsProvider, withVanityMutationContext} from "./VanityMutationsProvider";
-import {VanityUrlLanguageData} from "./VanityUrlLanguageData";
-import {VanityUrlTableData} from "./VanityUrlTableData";
+import InfoButton from './InfoButton';
+import Publication from './Publication';
+import Deletion from './Deletion';
+import PublishDeletion from './PublishDeletion';
+import Move from './Move';
+import AddVanityUrl from './AddVanityUrl';
+import {VanityMutationsProvider, withVanityMutationContext} from './VanityMutationsProvider';
+import {VanityUrlLanguageData} from './VanityUrlLanguageData';
+import {VanityUrlTableData} from './VanityUrlTableData';
 
-const styles = (theme) => ({
+// Todo Theme undefined
+const styles = theme => ({
 
     title: {
         width: '100%'
@@ -29,7 +27,6 @@ const styles = (theme) => ({
 
     languageSelector: {
         marginRight: theme.spacing.unit,
-        color: 'inherit',
         boxShadow: 'none',
         background: 'none',
         color: 'white',
@@ -50,13 +47,12 @@ const styles = (theme) => ({
 });
 
 const SiteSettingsSeoConstants = {
-    MAPPING_REG_EXP: new RegExp("^/?(?!.*/{2,})[a-zA-Z_0-9\\-\\./]+$"),
+    MAPPING_REG_EXP: new RegExp('^/?(?!.*/{2,})[a-zA-Z_0-9\\-\\./]+$'),
     NB_NEW_MAPPING_ROWS: 5,
     TABLE_POLLING_INTERVAL: 2000
 };
 
 class SiteSettingsSeoApp extends React.Component {
-
     constructor(props) {
         super(props);
         let {t} = this.props;
@@ -84,7 +80,7 @@ class SiteSettingsSeoApp extends React.Component {
             },
             infoButton: {
                 open: false,
-                message: ""
+                message: ''
             },
             publishDeletion: {
                 open: false,
@@ -124,38 +120,38 @@ class SiteSettingsSeoApp extends React.Component {
         this.actions = {
             deleteAction: {
                 priority: 1,
-                buttonLabel: t("label.actions.delete"),
+                buttonLabel: t('label.actions.delete'),
                 buttonIcon: <Delete/>,
-                className: "delete",
+                className: 'delete',
                 call: this.openDeletion
             },
             publishAction: {
                 priority: 3,
-                buttonLabel: t("label.actions.publish"),
+                buttonLabel: t('label.actions.publish'),
                 buttonIcon: <Publish/>,
-                className: "publish",
+                className: 'publish',
                 call: this.openPublication
             },
             publishDeleteAction: {
                 buttonIcon: <Delete/>,
-                className: "publishDeletion",
+                className: 'publishDeletion',
                 call: this.openPublishDeletion
             },
             moveAction: {
                 priority: 2,
-                buttonLabel:  t("label.actions.move"),
+                buttonLabel: t('label.actions.move'),
                 buttonIcon: <SwapHoriz/>,
-                className: "move",
+                className: 'move',
                 call: this.openMove
             },
             infoButton: {
                 buttonIcon: <Info/>,
-                className: "move",
+                className: 'move',
                 call: this.openInfoButton
             },
             addAction: {
                 buttonIcon: <Add/>,
-                className: "add",
+                className: 'add',
                 call: this.openAdd
             },
             updateVanity: {
@@ -167,36 +163,39 @@ class SiteSettingsSeoApp extends React.Component {
                             data.language,
                             data.url)
                             .then(onSuccess)
-                            .catch(ex => { this.handleServerError(ex, onError) });
+                            .catch(ex => {
+                                this.handleServerError(ex, onError);
+                            });
                     } catch (ex) {
                         this.handleServerError(ex, onError);
                     }
                 }
             }
-        }
+        };
     }
 
     handleServerError(ex, onError) {
         let {t} = this.props;
-        let err, mess;
+        let err; let mess;
         if (ex.graphQLErrors && ex.graphQLErrors.length > 0) {
             let graphQLError = ex.graphQLErrors[0];
-            err = t(["label.errors." + graphQLError.errorType, "label.errors.Error"]);
-            mess = t(["label.errors." + graphQLError.errorType + "_message", graphQLError.message], graphQLError.extensions);
+            err = t(['label.errors.' + graphQLError.errorType, 'label.errors.Error']);
+            mess = t(['label.errors.' + graphQLError.errorType + '_message', graphQLError.message], graphQLError.extensions);
         } else {
-            err = t(["label.errors." + ex.name, "label.errors.Error"]);
-            mess = t(["label.errors." + ex.name + "_message", ex.message]);
+            err = t(['label.errors.' + ex.name, 'label.errors.Error']);
+            mess = t(['label.errors.' + ex.name + '_message', ex.message]);
         }
+
         onError(err, mess);
     }
 
-    openInfoButton = (message) => {
+    openInfoButton = message => {
         this.setState({
             infoButton: {
                 open: true,
                 message: message
             }
-        })
+        });
     };
 
     closeInfoButton() {
@@ -205,16 +204,16 @@ class SiteSettingsSeoApp extends React.Component {
                 open: false,
                 message: ''
             }
-        })
-    };
+        });
+    }
 
-    openMove = (urlPairs) => {
+    openMove = urlPairs => {
         this.setState({
             move: {
                 open: true,
                 urlPairs: urlPairs
             }
-        })
+        });
     };
 
     closeMove() {
@@ -224,16 +223,16 @@ class SiteSettingsSeoApp extends React.Component {
                 urlPairs: []
             },
             selection: []
-        })
-    };
+        });
+    }
 
-    openPublication = (urlPairs) => {
+    openPublication = urlPairs => {
         this.setState({
             publication: {
                 open: true,
                 urlPairs: urlPairs
             }
-        })
+        });
     };
 
     closePublication() {
@@ -243,16 +242,16 @@ class SiteSettingsSeoApp extends React.Component {
                 urlPairs: []
             },
             selection: []
-        })
-    };
+        });
+    }
 
-    openDeletion = (urlPairs) => {
+    openDeletion = urlPairs => {
         this.setState({
             deletion: {
                 open: true,
                 urlPairs: urlPairs
             }
-        })
+        });
     };
 
     closeDeletion() {
@@ -262,25 +261,25 @@ class SiteSettingsSeoApp extends React.Component {
                 urlPairs: []
             },
             selection: []
-        })
-    };
+        });
+    }
 
-    openPublishDeletion = (urlPairs) => {
+    openPublishDeletion = urlPairs => {
         this.setState({
             publishDeletion: {
                 open: true,
                 urlPairs: urlPairs
             }
-        })
+        });
     };
 
-    closePublishDeletion = (urlPairs) => {
+    closePublishDeletion = urlPairs => {
         this.setState({
             publishDeletion: {
                 open: false,
                 urlPairs: []
             }
-        })
+        });
     };
 
     openAdd = (path, languages) => {
@@ -290,7 +289,7 @@ class SiteSettingsSeoApp extends React.Component {
                 path: path,
                 availableLanguages: languages
             }
-        })
+        });
     };
 
     closeAdd() {
@@ -299,41 +298,41 @@ class SiteSettingsSeoApp extends React.Component {
                 open: false,
                 availableLanguages: []
             }
-        })
-    };
+        });
+    }
 
     onChangeSelection(add, urlPairs) {
         if (!urlPairs) {
             // Clear selection
             this.setState({
                 selection: []
-            })
+            });
         } else {
-            this.setState((previous) => ({
-                selection: add ? _.unionBy(previous.selection, urlPairs, "uuid") : _.pullAllBy(previous.selection, urlPairs, "uuid")
+            this.setState(previous => ({
+                selection: add ? _.unionBy(previous.selection, urlPairs, 'uuid') : _.pullAllBy(previous.selection, urlPairs, 'uuid')
             }));
         }
     }
 
-    onChangeFilter = (filterText) => {
-        this.setState((state) => ({
+    onChangeFilter = filterText => {
+        this.setState(state => ({
             loadParams: _.assign({}, state.loadParams, {
                 filterText: filterText,
-                currentPage: 0,
+                currentPage: 0
             })
         }));
     };
 
     onChangePage(newPage) {
-        this.setState((state) => ({
+        this.setState(state => ({
             loadParams: _.assign({}, state.loadParams, {
-                currentPage: newPage,
+                currentPage: newPage
             })
         }));
     }
 
     onChangeRowsPerPage(newRowsPerPage) {
-        this.setState((state) => ({
+        this.setState(state => ({
             loadParams: _.assign({}, state.loadParams, {
                 pageSize: newRowsPerPage
             })
@@ -345,20 +344,20 @@ class SiteSettingsSeoApp extends React.Component {
             appBarStyle: {
                 backgroundColor: this.props.theme.palette.primary.dark
             }
-        })
+        });
     }
 
     onSearchBlur() {
         this.setState({
             appBarStyle: {}
-        })
+        });
     }
 
     onSelectedLanguagesChanged(selectedLanguageCodes) {
-        this.setState((state) => ({
+        this.setState(state => ({
             loadParams: _.assign({}, state.loadParams, {
                 selectedLanguageCodes: selectedLanguageCodes,
-                currentPage: 0,
+                currentPage: 0
             })
         }));
     }
@@ -367,10 +366,11 @@ class SiteSettingsSeoApp extends React.Component {
         if (prevState.loadParams.selectedLanguageCodes.length === 0 && nextProps.languages && nextProps.languages.length > 0) {
             return {
                 loadParams: _.assign({}, prevState.loadParams, {
-                    selectedLanguageCodes: nextProps.languages.map(language => language.code),
+                    selectedLanguageCodes: nextProps.languages.map(language => language.code)
                 })
-            }
+            };
         }
+
         return null;
     }
 
@@ -379,13 +379,16 @@ class SiteSettingsSeoApp extends React.Component {
 
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open || this.state.add.open);
 
-        return <SettingsLayout appBarStyle={this.state.appBarStyle} footer={t('label.copyright')} appBar={
-            <Toolbar>
-                <Typography variant="title" color="inherit" className={classes.title}>
-                    {t('label.title')} - {dxContext.siteTitle}
-                </Typography>
+        return (
+            <SettingsLayout appBarStyle={this.state.appBarStyle}
+                            footer={t('label.copyright')}
+                            appBar={
+                                <Toolbar>
+                                    <Typography variant="title" color="inherit" className={classes.title}>
+                                        {t('label.title')} - {dxContext.siteTitle}
+                                    </Typography>
 
-                <LanguageSelector
+                                    <LanguageSelector
                     languages={this.props.languages}
                     selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
                     className={classes.languageSelector}
@@ -393,22 +396,26 @@ class SiteSettingsSeoApp extends React.Component {
                     onSelectionChange={this.onSelectedLanguagesChanged}
                 />
 
-                <SearchBar placeholderLabel={t('label.filterPlaceholder')} onChangeFilter={this.onChangeFilter}
-                           onFocus={this.onSearchFocus} onBlur={this.onSearchBlur}/>
-            </Toolbar>
-        }>
+                                <SearchBar placeholderLabel={t('label.filterPlaceholder')}
+                                           onChangeFilter={this.onChangeFilter}
+                                           onFocus={this.onSearchFocus}
+                                           onBlur={this.onSearchBlur}/>
+                                </Toolbar>
+        }
+            >
+                <>
+                <Selection selection={this.state.selection}
+                           actions={this.actions}
+                           onChangeSelection={this.onChangeSelection}/>
 
-            <Selection selection={this.state.selection} onChangeSelection={this.onChangeSelection}
-                       actions={this.actions}/>
-
-            <VanityUrlTableData
+                <VanityUrlTableData
                 {...this.state.loadParams}
                 path={dxContext.mainResourcePath}
                 lang={dxContext.lang}
                 poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
-            >
-                {(rows, totalCount, numberOfPages) =>
-                    <VanityUrlTableView
+                >
+                    {(rows, totalCount, numberOfPages) => (
+                        <VanityUrlTableView
                         {...this.state.loadParams}
                         languages={this.props.languages}
                         rows={rows}
@@ -420,10 +427,10 @@ class SiteSettingsSeoApp extends React.Component {
                         onChangePage={this.onChangePage}
                         onChangeRowsPerPage={this.onChangeRowsPerPage}
                     />
-                }
-            </VanityUrlTableData>
+                  )}
+                </VanityUrlTableData>
 
-            {this.state.move.open && <Move
+                {this.state.move.open && <Move
                 {...this.state.move}
                 {...this.state.loadParams}
                 path={dxContext.mainResourcePath}
@@ -431,17 +438,17 @@ class SiteSettingsSeoApp extends React.Component {
                 onClose={this.closeMove}
             />}
 
-            {this.state.infoButton.open && <InfoButton
+                {this.state.infoButton.open && <InfoButton
                 {...this.state.infoButton}
                 onClose={this.closeInfoButton}
             />}
 
-            {this.state.publication.open && <Publication
+                {this.state.publication.open && <Publication
                 {...this.state.publication}
                 onClose={this.closePublication}
             />}
 
-            {this.state.deletion.open && <Deletion
+                {this.state.deletion.open && <Deletion
                 {...this.state.deletion}
                 {...this.state.loadParams}
                 path={dxContext.mainResourcePath}
@@ -449,47 +456,41 @@ class SiteSettingsSeoApp extends React.Component {
                 onClose={this.closeDeletion}
             />}
 
-            {this.state.publishDeletion.open && <PublishDeletion
+                {this.state.publishDeletion.open && <PublishDeletion
                 {...this.state.publishDeletion}
                 onClose={this.closePublishDeletion}
             />}
 
-            {this.state.add.open && <AddVanityUrl
+                {this.state.add.open && <AddVanityUrl
                 {...this.state.add}
                 {...this.state.loadParams}
                 lang={dxContext.lang}
                 onClose={this.closeAdd}
             />}
+            </>
 
-        </SettingsLayout>
+            </SettingsLayout>
+        );
     }
 }
 
-SiteSettingsSeoApp = compose(
+const SiteSettingsSeoComponent = _.flowRight(
     withNotifications(),
     withTheme(),
     withStyles(styles),
     withVanityMutationContext(),
-    translate()
+    withTranslation('site-settings-seo')
 )(SiteSettingsSeoApp);
 
 let SiteSettingsSeo = function (props) {
-    let namespaceResolvers = {
-        'site-settings-seo': (lang) => require('../../main/resources/javascript/locales/' + lang + '.json')
-    };
-
     return (
-        <MuiThemeProvider theme={theme}>
-            <NotificationProvider>
-                <ApolloProvider client={client({contextPath:props.dxContext.contextPath})}>
-                    <I18nextProvider i18n={getI18n({lng:props.dxContext.uilang, contextPath:props.dxContext.contextPath, ns: ['site-settings-seo', 'react-material'], defaultNS: 'site-settings-seo', namespaceResolvers:namespaceResolvers})}>
-                    <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                        <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                            {languages => <SiteSettingsSeoApp languages={languages} {...props}/>}
-                        </VanityUrlLanguageData>
-                    </VanityMutationsProvider>
-                    </I18nextProvider>
-                </ApolloProvider>
+        <MuiThemeProvider theme={legacyTheme}>
+            <NotificationProvider notificationContext={{}}>
+                <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
+                    <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
+                        {languages => <SiteSettingsSeoComponent languages={languages} {...props}/>}
+                    </VanityUrlLanguageData>
+                </VanityMutationsProvider>
             </NotificationProvider>
         </MuiThemeProvider>
     );

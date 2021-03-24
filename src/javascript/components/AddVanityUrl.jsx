@@ -21,17 +21,17 @@ import {
     withStyles
 } from '@material-ui/core';
 import {Cancel, Star, StarBorder} from '@material-ui/icons';
-import {LanguageMenu} from "./LanguageMenu";
-import {compose} from "react-apollo/index";
-import {translate} from "react-i18next";
-import {withVanityMutationContext} from "./VanityMutationsProvider";
+import {LanguageMenu} from './LanguageMenu';
+import {withTranslation} from 'react-i18next';
+import {withVanityMutationContext} from './VanityMutationsProvider';
 import {withNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
-import {SiteSettingsSeoConstants} from "./SiteSettingsSeo";
+import {SiteSettingsSeoConstants} from './SiteSettingsSeo';
+import {flowRight as compose} from 'lodash';
 
 const styles = theme => ({
     pickerRoot: {
-        overflowY: "scroll",
+        overflowY: 'scroll',
         boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
         borderRadius: '0px',
         border: '1px solid #d5d5d5',
@@ -43,7 +43,7 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 200,
+        width: 200
     },
     inactive: {
         color: theme.palette.text.disabled
@@ -52,8 +52,8 @@ const styles = theme => ({
         color: theme.palette.error.main
     },
     leftControl: {
-        marginRight: "auto",
-        paddingLeft: "16px"
+        marginRight: 'auto',
+        paddingLeft: '16px'
     },
     rowDisabled: {
         backgroundColor: '#f5f5f5',
@@ -67,25 +67,25 @@ const styles = theme => ({
         backgroundColor: '#FFF!important',
         background: 'red',
         '&:hover': {
-            backgroundColor: '#FFF!important',
+            backgroundColor: '#FFF!important'
         }
     },
     root: {
-        width: "100%",
-        "& error": {},
-        "& message": {
-            display: "none"
+        width: '100%',
+        '& error': {},
+        '& message': {
+            display: 'none'
         },
-        "& label": {}
+        '& label': {}
     },
     button: {
         height: 18,
         width: 18,
-        position: "absolute",
+        position: 'absolute',
         top: 4,
-        transform: "scale(0.75)",
-        "&:hover": {
-            backgroundColor: "inherit"
+        transform: 'scale(0.75)',
+        '&:hover': {
+            backgroundColor: 'inherit'
         }
     },
     cancel: {
@@ -102,7 +102,7 @@ const styles = theme => ({
         verticalAlign: 'middle',
         position: 'absolute',
         right: '20px',
-        paddingTop: '7px',
+        paddingTop: '7px'
     },
     vanitySwitchContainer: {
         width: '60px'
@@ -121,10 +121,9 @@ const styles = theme => ({
 });
 
 class AddVanityUrl extends React.Component {
-
     constructor(props) {
         super(props);
-        // get default language for the language selector
+        // Get default language for the language selector
         this.defaultLanguage = this.props.lang;
 
         this.state = {
@@ -144,74 +143,74 @@ class AddVanityUrl extends React.Component {
     _resetMap = () => {
         let mapping = [];
         for (let i = SiteSettingsSeoConstants.NB_NEW_MAPPING_ROWS; i >= 0; i--) {
-            mapping.push({language: this.defaultLanguage, defaultMapping: false, active: true, focus: false})
+            mapping.push({language: this.defaultLanguage, defaultMapping: false, active: true, focus: false});
         }
+
         return mapping;
     };
 
-    handleSave = (event) => {
+    handleSave = event => {
         let {vanityMutationsContext, notificationContext, path, t} = this.props;
 
-        // exit if there is no mapping to save
+        // Exit if there is no mapping to save
         if (this.state.mappings.length === 0) {
             this.handleClose(event);
             return;
         }
 
-        let mappings = _.map(_.filter(this.state.mappings, (entry) => entry.url), (entry) => {
+        let mappings = _.map(_.filter(this.state.mappings, entry => entry.url), entry => {
             delete entry.focus;
             return entry;
         });
 
         try {
-            vanityMutationsContext.add(path, mappings, this.props).then((result) => {
+            vanityMutationsContext.add(path, mappings, this.props).then(result => {
                 if (this.state.doPublish) {
-                    vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then((result) => {
+                    vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then(result => {
                         this.handleClose(event);
                         notificationContext.notify(t('label.notifications.newMappingCreatedAndPublished'));
-                    }, (error) => {
+                    }, error => {
                         notificationContext.notify(t('label.errors.Error'));
-                        console.log(error)
-                    })
+                        console.log(error);
+                    });
                 } else {
                     this.handleClose(event);
                     notificationContext.notify(t('label.notifications.newMappingCreated'));
                 }
-            }, (error) => {
+            }, error => {
                 if (error.graphQLErrors && error.graphQLErrors[0].extensions) {
                     this.setState({
-                        errors: _.map(error.graphQLErrors[0].extensions, (value) => {
+                        errors: _.map(error.graphQLErrors[0].extensions, value => {
                             return {
                                 url: value.urlMapping,
-                                message: t("label.errors.GqlConstraintViolationException_message", {existingNodePath: value.existingNodePath}),
-                                label: t("label.errors.GqlConstraintViolationException")
-                            }
+                                message: t('label.errors.GqlConstraintViolationException_message', {existingNodePath: value.existingNodePath}),
+                                label: t('label.errors.GqlConstraintViolationException')
+                            };
                         })
                     });
                 } else {
                     notificationContext.notify(t('label.errors.Error'));
-                    console.log(error)
+                    console.log(error);
                 }
-            })
+            });
         } catch (e) {
             if (e.errors) {
                 this.setState({
-                    errors: _.map(e.errors, (error) => {
+                    errors: _.map(e.errors, error => {
                         return {
                             url: error.mapping,
-                            message: t("label.errors." + error.name + "_message"),
-                            label: t("label.errors." + error.name)
-                        }
+                            message: t('label.errors.' + error.name + '_message'),
+                            label: t('label.errors.' + error.name)
+                        };
                     })
                 });
             } else {
-                notificationContext.notify(t("label.errors." + (e.name ? e.name : "Error")));
+                notificationContext.notify(t('label.errors.' + (e.name ? e.name : 'Error')));
             }
         }
-
     };
 
-    handleClose = (event) => {
+    handleClose = event => {
         this.setState({
             mappings: this._resetMap(),
             errors: [],
@@ -222,17 +221,16 @@ class AddVanityUrl extends React.Component {
 
     handleFieldChange = (field, index, value) => {
         this.setState(function (previous) {
-
-            if ((field === "url")) {
-                previous.errors = _.pullAllBy(previous.errors, [{'url': previous.mappings[index].url}], "url");
+            if ((field === 'url')) {
+                previous.errors = _.pullAllBy(previous.errors, [{url: previous.mappings[index].url}], 'url');
             }
 
             let mappingToDisableDefaultFlag;
-            if ((field === "defaultMapping" && value === true)) {
+            if ((field === 'defaultMapping' && value === true)) {
                 mappingToDisableDefaultFlag = _.find(previous.mappings, mapping => (mapping.defaultMapping && mapping.language === previous.mappings[index].language));
             }
 
-            if ((field === "language" && previous.mappings[index].defaultMapping)) {
+            if ((field === 'language' && previous.mappings[index].defaultMapping)) {
                 mappingToDisableDefaultFlag = _.find(previous.mappings, mapping => (mapping.defaultMapping && mapping.language === value)) ? previous.mappings[index] : undefined;
             }
 
@@ -241,7 +239,7 @@ class AddVanityUrl extends React.Component {
             }
 
             previous.mappings[index][field] = value;
-            if (field === "url" && _.filter(previous.mappings, entry => entry.url).length === previous.mappings.length) {
+            if (field === 'url' && _.filter(previous.mappings, entry => entry.url).length === previous.mappings.length) {
                 previous.mappings.push({
                     language: this.defaultLanguage,
                     defaultMapping: false,
@@ -249,26 +247,26 @@ class AddVanityUrl extends React.Component {
                     focus: false
                 });
             }
-            return {mappings: previous.mappings, errors: previous.errors};
 
+            return {mappings: previous.mappings, errors: previous.errors};
         });
     };
 
-    handlePublishCheckboxChange = (checked) => {
+    handlePublishCheckboxChange = checked => {
         this.setState({
             doPublish: checked
-        })
+        });
     };
 
     handleDialogEntered = () => {
-        this.firstMappingInputRef.focus()
+        this.firstMappingInputRef.focus();
     };
 
     inputTab = [];
 
-    resetInput = (input) => {
-        console.log("reset input");
-        input.value = "";
+    resetInput = input => {
+        console.log('reset input');
+        input.value = '';
         input.focus();
     }
 
@@ -278,8 +276,12 @@ class AddVanityUrl extends React.Component {
 
         return (
             <div>
-                <Dialog open={open} onClose={onClose} maxWidth={'md'} fullWidth={true}
-                        onEntered={this.handleDialogEntered}>
+                <Dialog fullWidth
+                        open={open}
+                        maxWidth="md"
+                        onClose={onClose}
+                        onEntered={this.handleDialogEntered}
+                >
                     <DialogTitle id="alert-dialog-title">{t('label.dialogs.add.title')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
@@ -292,36 +294,40 @@ class AddVanityUrl extends React.Component {
                                 <TableBody>
                                     {mappings.map((entry, index) => {
                                         let errorForRow = _.find(errors, error => error.url === entry.url || error.url === ('/' + entry.url));
-                                        let lineEnabled = !!entry.url || entry.focus;
+                                        let lineEnabled = Boolean(entry.url) || entry.focus;
                                         return (
-                                            <TableRow key={index} classes={{
+                                            <TableRow key={index}
+                                                      classes={{
                                                 root: (lineEnabled ? classes.rowEnabled : classes.rowDisabled)
-                                            }}>
-                                                <TableCell padding={'none'} className={classes.vanitySwitchContainer}>
+                                            }}
+                                            >
+                                                <TableCell padding="none" className={classes.vanitySwitchContainer}>
                                                     <Switch
                                                         checked={entry.active}
-                                                        onChange={(event, checked) => this.handleFieldChange("active", index, checked)}
-                                                        data-vud-role="active"/>
+                                                        data-vud-role="active"
+                                                        onChange={(event, checked) => this.handleFieldChange('active', index, checked)}/>
                                                 </TableCell>
-                                                <TableCell padding={'none'}>
+                                                <TableCell padding="none">
 
-                                                    <FormControl className={classes.root} classes={{
+                                                    <FormControl className={classes.root}
+                                                                 classes={{
                                                         root: (lineEnabled ? '' : classes.editDisabled)
-                                                    }}>
+                                                    }}
+                                                    >
                                                         <Input
                                                             ref={index}
-                                                            inputRef={(input) => {
+                                                            inputRef={input => {
                                                                 this.inputTab[index] = input;
                                                                 if (index === 0) {
-                                                                    this.firstMappingInputRef = input
+                                                                    this.firstMappingInputRef = input;
                                                                 }
                                                             }}
-                                                            error={!!errorForRow}
-                                                            placeholder={t("label.dialogs.add.text")}
-                                                            onFocus={() => this.handleFieldChange("focus", index, true)}
-                                                            onBlur={() => this.handleFieldChange("focus", index, false)}
-                                                            onChange={(event) => this.handleFieldChange("url", index, event.target.value)}
+                                                            error={Boolean(errorForRow)}
+                                                            placeholder={t('label.dialogs.add.text')}
                                                             data-vud-role="url"
+                                                            onFocus={() => this.handleFieldChange('focus', index, true)}
+                                                            onBlur={() => this.handleFieldChange('focus', index, false)}
+                                                            onChange={event => this.handleFieldChange('url', index, event.target.value)}
                                                         />
                                                         {errorForRow && <FormHelperText>
                                                             <error><label>{errorForRow.label}</label>
@@ -329,32 +335,36 @@ class AddVanityUrl extends React.Component {
                                                             </error>
                                                         </FormHelperText>}
                                                         {entry.url &&
-                                                        <IconButton className={classes.button + " " + classes.cancel}
-                                                                    component="span" disableRipple onClick={() => {
+                                                        <IconButton disableRipple
+                                                                    className={classes.button + ' ' + classes.cancel}
+                                                                    component="span"
+                                                                    onClick={() => {
                                                             delete entry.url;
-                                                            this.resetInput(this.inputTab[index])
-                                                        }}>
+                                                            this.resetInput(this.inputTab[index]);
+                                                        }}
+                                                        >
                                                             <Cancel/>
-                                                        </IconButton>
-                                                        }
+                                                        </IconButton>}
                                                     </FormControl>
 
                                                 </TableCell>
-                                                <TableCell padding={'none'} className={classes.defaultContainer}>
+                                                <TableCell padding="none" className={classes.defaultContainer}>
                                                     <Checkbox checked={entry.defaultMapping}
                                                               icon={<StarBorder/>}
                                                               checkedIcon={<Star/>}
-                                                              onChange={(event, checked) => this.handleFieldChange("defaultMapping", index, checked)}
-                                                              data-vud-role="default"/>
+                                                              data-vud-role="default"
+                                                              onChange={(event, checked) => this.handleFieldChange('defaultMapping', index, checked)}/>
                                                 </TableCell>
-                                                <TableCell padding={'none'} data-vud-role="language"
-                                                           className={classes.languageContainer}>
+                                                <TableCell padding="none"
+                                                           data-vud-role="language"
+                                                           className={classes.languageContainer}
+                                                >
                                                     <LanguageMenu languages={availableLanguages}
                                                                   languageCode={entry.language}
-                                                                  onLanguageSelected={(languageCode) => this.handleFieldChange("language", index, languageCode)}/>
+                                                                  onLanguageSelected={languageCode => this.handleFieldChange('language', index, languageCode)}/>
                                                 </TableCell>
                                             </TableRow>
-                                        )
+                                        );
                                     })}
                                 </TableBody>
                             </Table>
@@ -364,32 +374,35 @@ class AddVanityUrl extends React.Component {
                         <FormControlLabel classes={{root: classes.leftControl}}
                                           control={
                                               <Checkbox
-                                                  onChange={(event, checked) => this.handlePublishCheckboxChange(checked)}
-                                                  data-vud-role="checkbox-hint"/>
+                                                  data-vud-role="checkbox-hint"
+                                                  onChange={(event, checked) => this.handlePublishCheckboxChange(checked)}/>
                                           }
                                           label={t('label.dialogs.add.check')}
                         />
                         <div className={classes.dialogActionsButtonContainer}>
-                            <Button onClick={this.handleClose} color="default" data-vud-role="button-cancel">
+                            <Button color="default" data-vud-role="button-cancel" onClick={this.handleClose}>
                                 {t('label.cancel')}
                             </Button>
-                            <Button onClick={this.handleSave} color="secondary" autoFocus
-                                    data-vud-role="button-primary">
+                            <Button autoFocus
+                                    color="secondary"
+                                    data-vud-role="button-primary"
+                                    onClick={this.handleSave}
+                            >
                                 {t('label.dialogs.add.save')}
                             </Button>
                         </div>
                     </DialogActions>
                 </Dialog>
             </div>
-        )
+        );
     }
 }
 
 AddVanityUrl = compose(
     withVanityMutationContext(),
     withNotifications(),
-    withStyles(styles),
-    translate()
+    withStyles(() => {}), // todo figure out why there is an error here
+    withTranslation('site-settings-seo')
 )(AddVanityUrl);
 
 export default AddVanityUrl;

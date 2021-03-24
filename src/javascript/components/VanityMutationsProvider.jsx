@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Component, Children } from "react";
-import {compose, graphql} from "react-apollo/index";
-import * as gqlMutations from "./gqlMutations";
-import * as _ from "lodash";
-import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from "./gqlQueries";
-import {SiteSettingsSeoConstants} from "./SiteSettingsSeo";
-import {InvalidMappingError, MoveSiteError, DuplicateMappingError, AddMappingsError} from "./Errors";
+import {Component, Children} from 'react';
+import {graphql} from 'react-apollo/lib/index';
+import {flowRight as compose} from 'lodash';
+import * as gqlMutations from './gqlMutations';
+import * as _ from 'lodash';
+import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
+import {SiteSettingsSeoConstants} from './SiteSettingsSeo';
+import {InvalidMappingError, MoveSiteError, DuplicateMappingError, AddMappingsError} from './Errors';
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -25,9 +26,8 @@ class VanityMutationsProvider extends Component {
         });
 
         vanityMutationsContext.move = (pathsOrIds, target, props) => {
-
             if (!_.startsWith(target, props.path)) {
-                throw new MoveSiteError("Moving vanity mapping in an other site is not allowed")
+                throw new MoveSiteError('Moving vanity mapping in an other site is not allowed');
             }
 
             return moveMutation({
@@ -38,20 +38,19 @@ class VanityMutationsProvider extends Component {
                     query: TableQuery,
                     variables: TableQueryVariables(props)
                 }]
-            })
+            });
         };
 
         vanityMutationsContext.publish = (pathsOrIds, nodeOnly) => publishMutation({
             variables: {
                 pathsOrIds: pathsOrIds,
-                publishSubNodes: !nodeOnly,
+                publishSubNodes: !nodeOnly
             }
         });
 
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
-
             if (url && !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(url)) {
-                throw new InvalidMappingError(url)
+                throw new InvalidMappingError(url);
             }
 
             return updateMutation({
@@ -63,24 +62,23 @@ class VanityMutationsProvider extends Component {
                     url: url,
                     lang: props.lang
                 }
-            })
+            });
         };
 
         vanityMutationsContext.add = (path, vanityUrls, props) => {
-
-            let invalidMappings = _.filter(vanityUrls, (mapping) => !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(mapping.url));
+            let invalidMappings = _.filter(vanityUrls, mapping => !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(mapping.url));
             let duplicateUrls = vanityUrls;
-            duplicateUrls = _.pullAllBy(duplicateUrls,invalidMappings, "url");
-            duplicateUrls = _.groupBy(duplicateUrls, "url")
-            duplicateUrls = _.pickBy(duplicateUrls, x => x.length > 1)
+            duplicateUrls = _.pullAllBy(duplicateUrls, invalidMappings, 'url');
+            duplicateUrls = _.groupBy(duplicateUrls, 'url');
+            duplicateUrls = _.pickBy(duplicateUrls, x => x.length > 1);
             duplicateUrls = _.keys(duplicateUrls);
 
             let errors = [];
-            _.each(invalidMappings, (invalidMapping) => errors.push(new InvalidMappingError(invalidMapping.url)));
-            _.each(duplicateUrls, (duplicateUrl) =>  errors.push(new DuplicateMappingError(duplicateUrl)));
+            _.each(invalidMappings, invalidMapping => errors.push(new InvalidMappingError(invalidMapping.url)));
+            _.each(duplicateUrls, duplicateUrl => errors.push(new DuplicateMappingError(duplicateUrl)));
 
             if (errors.length > 0) {
-                throw new AddMappingsError(errors)
+                throw new AddMappingsError(errors);
             }
 
             return addMutation({
@@ -92,7 +90,7 @@ class VanityMutationsProvider extends Component {
                     query: VanityUrlsByPath,
                     variables: VanityUrlsByPathVariables(path, props)
                 }]
-            })
+            });
         };
     }
 
@@ -108,10 +106,10 @@ class VanityMutationsProvider extends Component {
 }
 
 function withVanityMutationContext() {
-    return (WrappedComponent) => {
+    return WrappedComponent => {
         let Component = class extends React.Component {
             render() {
-                return (<WrappedComponent vanityMutationsContext={this.context.vanityMutationsContext} {...this.props} />)
+                return (<WrappedComponent vanityMutationsContext={this.context.vanityMutationsContext} {...this.props}/>);
             }
         };
 
@@ -119,8 +117,8 @@ function withVanityMutationContext() {
             vanityMutationsContext: PropTypes.object
         };
 
-        return Component
-    }
+        return Component;
+    };
 }
 
 VanityMutationsProvider.propTypes = {
@@ -136,7 +134,7 @@ VanityMutationsProvider = compose(
     graphql(gqlMutations.MoveMutation, {name: 'moveMutation'}),
     graphql(gqlMutations.PublishMutation, {name: 'publishMutation'}),
     graphql(gqlMutations.UpdateVanityMutation, {name: 'updateMutation'}),
-    graphql(gqlMutations.AddVanityMutation, {name: 'addMutation'}),
+    graphql(gqlMutations.AddVanityMutation, {name: 'addMutation'})
 )(VanityMutationsProvider);
 
 export {VanityMutationsProvider, withVanityMutationContext};
