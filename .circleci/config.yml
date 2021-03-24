@@ -17,9 +17,6 @@ parameters:
   TESTS_IMAGE:
     type: string
     default: "jahia/site-settings-seo"
-  MODULE_ID:
-    type: string
-    default: "sitemap"
   TESTRAIL_PROJECTNAME:
     type: string
     default: "Site Settings SEO Module"
