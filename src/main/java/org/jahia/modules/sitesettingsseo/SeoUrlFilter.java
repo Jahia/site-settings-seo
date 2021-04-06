@@ -25,6 +25,12 @@ import java.util.stream.Collectors;
 public class SeoUrlFilter extends AbstractFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(SeoUrlFilter.class);
+    private static final String VANITY_URL_MAPPED = "jmix:vanityUrlMapped";
+    private static final String VANITY_URLS = "jnt:vanityUrls";
+    private static final String VANITY_URL = "jnt:vanityUrl";
+    private static final String J_ACTIVE = "j:active";
+    private static final String LANGUAGE = "jcr:language";
+    private static final String URL = "j:url";
 
     @Activate
     public void activate() {
@@ -56,16 +62,16 @@ public class SeoUrlFilter extends AbstractFilter {
     }
 
     private String getPageLink(JCRNodeWrapper node) throws RepositoryException {
-        String canonicalLink = String.format("<link rel=\"canonical\" href=\"%s\" />%n", node.getUrl());
+        String canonicalLink = canonicalLink(node.getUrl());
 
         // Vanity url if default available
-        if (node.isNodeType("jmix:vanityUrlMapped")) {
-            List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, "jnt:vanityUrls");
-            List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), "jnt:vanityUrl");
+        if (node.isNodeType(VANITY_URL_MAPPED)) {
+            List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
+            List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
 
             for (JCRNodeWrapper url : urls) {
-                if (url.getProperty("j:active").getBoolean() && node.getLanguage().equals(url.getPropertyAsString("jcr:language")) && url.getProperty("j:default").getBoolean()) {
-                    canonicalLink = String.format("<link rel=\"canonical\" href=\"%s\" />%n", url.getPropertyAsString("j:url"));
+                if (url.getProperty(J_ACTIVE).getBoolean() && node.getLanguage().equals(url.getPropertyAsString(LANGUAGE)) && url.getProperty("j:default").getBoolean()) {
+                    canonicalLink = canonicalLink(url.getPropertyAsString(URL));
                 }
             }
         }
@@ -77,22 +83,22 @@ public class SeoUrlFilter extends AbstractFilter {
         StringBuilder altLinks = new StringBuilder();
         Set<String> vanityLangs = new HashSet<>();
 
-        if (node.isNodeType("jmix:vanityUrlMapped")) {
-            List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, "jnt:vanityUrls");
-            List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), "jnt:vanityUrl");
+        if (node.isNodeType(VANITY_URL_MAPPED)) {
+            List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
+            List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
 
             for (JCRNodeWrapper url : urls) {
-                String vanityLanguage = url.getPropertyAsString("jcr:language");
-                if (url.getProperty("j:active").getBoolean() && !node.getLanguage().equals(vanityLanguage)) {
+                String vanityLanguage = url.getPropertyAsString(LANGUAGE);
+                if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage)) {
                     vanityLangs.add(vanityLanguage);
-                    altLinks.append(String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", vanityLanguage, url.getPropertyAsString("j:url")));
+                    altLinks.append(altLink(vanityLanguage, url.getPropertyAsString(URL)));
                 }
             }
         }
 
         langs.forEach(lang -> {
             if (!node.getLanguage().equals(lang) && !vanityLangs.contains(lang)) {
-                altLinks.append(String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", lang, node.getUrl().replace(String.format("/%s/", node.getLanguage()), String.format("/%s/", lang))));
+                altLinks.append(altLink(lang, node.getUrl().replace(String.format("/%s/", node.getLanguage()), String.format("/%s/", lang))));
             }
         });
 
@@ -119,5 +125,13 @@ public class SeoUrlFilter extends AbstractFilter {
             StartTag et = headList.get(0).getStartTag();
             od.replace(et.getEnd(), et.getEnd(), content);
         }
+    }
+
+    private String altLink(String lang, String href) {
+        return String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", lang, href);
+    }
+
+    private String canonicalLink(String href) {
+        return String.format("<link rel=\"canonical\" href=\"%s\" />%n", href);
     }
 }
