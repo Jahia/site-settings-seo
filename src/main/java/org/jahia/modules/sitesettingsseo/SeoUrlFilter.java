@@ -1,6 +1,7 @@
 package org.jahia.modules.sitesettingsseo;
 
 import net.htmlparser.jericho.*;
+import org.apache.commons.lang.StringUtils;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.decorator.JCRSiteNode;
@@ -9,12 +10,15 @@ import org.jahia.services.render.Resource;
 import org.jahia.services.render.filter.AbstractFilter;
 import org.jahia.services.render.filter.RenderChain;
 import org.jahia.services.render.filter.RenderFilter;
+import org.jahia.utils.Url;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
+import javax.servlet.http.HttpServletRequest;
+import java.net.MalformedURLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -46,23 +50,15 @@ public class SeoUrlFilter extends AbstractFilter {
         Source source = new Source(previousOut);
         OutputDocument od = new OutputDocument(source);
         JCRNodeWrapper node = resource.getNode();
-        String links = getPageLink(node);
-        links += getAlternativeLinks(node, getActiveLanguagesForMode(renderContext, node));
-
-        // Language urls
-        logger.info(node.getPath());
-        logger.info(node.getUrl());
-        logger.info(renderContext.getRequest().getServletPath());
-        logger.info(renderContext.getRequest().getHeader("host"));
-        logger.info(renderContext.getRequest().getContextPath());
-
-        addContentToHead(source, od, links);
-
+        StringBuilder links = new StringBuilder();
+        links.append(getPageLink(node, renderContext));
+        links.append(getAlternativeLinks(node, renderContext, getActiveLanguagesForMode(renderContext, node)));
+        addContentToHead(source, od, links.toString());
         return od.toString();
     }
 
-    private String getPageLink(JCRNodeWrapper node) throws RepositoryException {
-        String canonicalLink = canonicalLink(node.getUrl());
+    private String getPageLink(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException, MalformedURLException {
+        String canonicalLink = canonicalLink(buildHref(node, renderContext.getRequest(), getPathInfoForMode(node, renderContext)));
 
         // Vanity url if default available
         if (node.isNodeType(VANITY_URL_MAPPED)) {
@@ -71,7 +67,7 @@ public class SeoUrlFilter extends AbstractFilter {
 
             for (JCRNodeWrapper url : urls) {
                 if (url.getProperty(J_ACTIVE).getBoolean() && node.getLanguage().equals(url.getPropertyAsString(LANGUAGE)) && url.getProperty("j:default").getBoolean()) {
-                    canonicalLink = canonicalLink(url.getPropertyAsString(URL));
+                    canonicalLink = canonicalLink(buildHref(node, renderContext.getRequest(), url.getPropertyAsString(URL)));
                 }
             }
         }
@@ -79,7 +75,7 @@ public class SeoUrlFilter extends AbstractFilter {
         return canonicalLink;
     }
 
-    private String getAlternativeLinks(JCRNodeWrapper node, Set<String> langs) throws RepositoryException {
+    private String getAlternativeLinks(JCRNodeWrapper node, RenderContext renderContext, Set<String> langs) throws RepositoryException, MalformedURLException {
         StringBuilder altLinks = new StringBuilder();
         Set<String> vanityLangs = new HashSet<>();
 
@@ -91,16 +87,25 @@ public class SeoUrlFilter extends AbstractFilter {
                 String vanityLanguage = url.getPropertyAsString(LANGUAGE);
                 if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage)) {
                     vanityLangs.add(vanityLanguage);
-                    altLinks.append(altLink(vanityLanguage, url.getPropertyAsString(URL)));
+                    altLinks.append(altLink(vanityLanguage, buildHref(node, renderContext.getRequest(), url.getPropertyAsString(URL))));
                 }
             }
         }
 
-        langs.forEach(lang -> {
+        for (String lang : langs) {
             if (!node.getLanguage().equals(lang) && !vanityLangs.contains(lang)) {
-                altLinks.append(altLink(lang, node.getUrl().replace(String.format("/%s/", node.getLanguage()), String.format("/%s/", lang))));
+                String path = getPathInfoForMode(node, renderContext);
+
+                if (renderContext.isPreviewMode()) {
+                    path = path.replace(String.format("/%s/", node.getLanguage()), String.format("/%s/", lang));
+                } else {
+                    path = path.replace(String.format("/%s/", node.getLanguage()), "/");
+                    path = String.format("/%s%s", lang, path);
+                }
+
+                altLinks.append(altLink(lang,  buildHref(node, renderContext.getRequest(), path)));
             }
-        });
+        }
 
         return altLinks.toString();
     }
@@ -125,6 +130,37 @@ public class SeoUrlFilter extends AbstractFilter {
             StartTag et = headList.get(0).getStartTag();
             od.replace(et.getEnd(), et.getEnd(), content);
         }
+    }
+
+    private String getPathInfoForMode(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException {
+        String path = "";
+        JCRSiteNode site = node.getResolveSite();
+
+        if (renderContext.isLiveMode()) {
+            path = node.getPath();
+
+            if (!renderContext.getRequest().getServerName().contains("localhost")) {
+                path = StringUtils.substringAfterLast(node.getPath(), String.format("/%s/", site.getSiteKey()));
+
+                if (!path.startsWith("/")) {
+                    path = String.format("/%s", path);
+                }
+            }
+
+            if (!site.getDefaultLanguage().equals(node.getLanguage())) {
+                path = String.format("/%s%s", node.getLanguage(), path);
+            }
+
+            path = String.format("%s.html", path);
+        } else {
+            path = node.getUrl();
+        }
+
+        return path;
+    }
+
+    private String buildHref(JCRNodeWrapper node, HttpServletRequest request, String path) throws MalformedURLException, RepositoryException {
+        return Url.appendServerNameIfNeeded(node, path, request);
     }
 
     private String altLink(String lang, String href) {
