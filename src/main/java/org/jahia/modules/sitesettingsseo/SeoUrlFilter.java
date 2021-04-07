@@ -58,17 +58,20 @@ public class SeoUrlFilter extends AbstractFilter {
     }
 
     private String getPageLink(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException, MalformedURLException {
+        // Default url if no vanity
         String canonicalLink = canonicalLink(buildHref(node, renderContext.getRequest(), getPathInfoForMode(node, renderContext)));
 
-        // Vanity url if default available
-        if (node.isNodeType(VANITY_URL_MAPPED)) {
-            List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
-            List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
+        if (!node.isNodeType(VANITY_URL_MAPPED)) {
+            return canonicalLink;
+        }
 
-            for (JCRNodeWrapper url : urls) {
-                if (url.getProperty(J_ACTIVE).getBoolean() && node.getLanguage().equals(url.getPropertyAsString(LANGUAGE)) && url.getProperty("j:default").getBoolean()) {
-                    canonicalLink = canonicalLink(buildHref(node, renderContext.getRequest(), url.getPropertyAsString(URL)));
-                }
+        // Vanity url if default available
+        List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
+        List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
+
+        for (JCRNodeWrapper url : urls) {
+            if (url.getProperty(J_ACTIVE).getBoolean() && node.getLanguage().equals(url.getPropertyAsString(LANGUAGE)) && url.getProperty("j:default").getBoolean()) {
+                canonicalLink = canonicalLink(buildHref(node, renderContext.getRequest(), url.getPropertyAsString(URL)));
             }
         }
 
@@ -79,6 +82,7 @@ public class SeoUrlFilter extends AbstractFilter {
         StringBuilder altLinks = new StringBuilder();
         Set<String> vanityLangs = new HashSet<>();
 
+        // Get vanity urls for active languages, keep memo of languages used
         if (node.isNodeType(VANITY_URL_MAPPED)) {
             List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
             List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
@@ -92,6 +96,7 @@ public class SeoUrlFilter extends AbstractFilter {
             }
         }
 
+        // Get urls for every language not covered by vanity urls
         for (String lang : langs) {
             if (!node.getLanguage().equals(lang) && !vanityLangs.contains(lang)) {
                 String path = getPathInfoForMode(node, renderContext);
@@ -141,10 +146,10 @@ public class SeoUrlFilter extends AbstractFilter {
 
             if (!renderContext.getRequest().getServerName().contains("localhost")) {
                 path = StringUtils.substringAfterLast(node.getPath(), String.format("/%s/", site.getSiteKey()));
+            }
 
-                if (!path.startsWith("/")) {
-                    path = String.format("/%s", path);
-                }
+            if (!path.startsWith("/")) {
+                path = String.format("/%s", path);
             }
 
             if (!site.getDefaultLanguage().equals(node.getLanguage())) {
