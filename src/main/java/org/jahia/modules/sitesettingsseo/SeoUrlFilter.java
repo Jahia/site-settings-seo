@@ -122,8 +122,8 @@ public class SeoUrlFilter extends AbstractFilter {
         if (renderContext.isLiveMode()) {
             langs = site.getActiveLiveLanguages();
         } else if (renderContext.isPreviewMode()) {
-            List<Locale> inactive = site.getInactiveLanguagesAsLocales();
-            langs = site.getLanguagesAsLocales().stream().filter(locale -> !inactive.contains(locale)).map(Locale::getLanguage).collect(Collectors.toSet());
+            Set<String> inactive = site.getInactiveLanguages();
+            langs = site.getLanguages().stream().filter(lang -> !inactive.contains(lang)).collect(Collectors.toSet());
         }
 
         return langs;
