@@ -42,7 +42,7 @@ public class SeoUrlFilter extends AbstractFilter {
         setApplyOnNodeTypes("jnt:page");
         setApplyOnModes("live,preview");
         setDescription("Generates canonical and alternative urls");
-        logger.info("Activated SeoUrlFilter");
+        logger.debug("Activated SeoUrlFilter");
     }
 
     @Override
