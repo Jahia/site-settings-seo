@@ -92,7 +92,13 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <instructions />
+                    <instructions>
+                        <Import-Package>
+                            ${jahia.plugin.projectPackageImport},
+                            *
+                        </Import-Package>
+                        <_dsannotations>*</_dsannotations>
+                    </instructions>
                 </configuration>
             </plugin>
             <plugin>
