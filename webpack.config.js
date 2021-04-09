@@ -64,6 +64,7 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.css$/,
+                    sideEffects: true,
                     use: ['style-loader', 'css-loader']
                 },
                 {

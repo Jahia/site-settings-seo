@@ -4,7 +4,7 @@ import {withTranslation} from 'react-i18next';
 import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
 import {AddVanityUrl} from './AddVanityUrl';
 
-import {Button, IconButton, Collapse, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography, withStyles} from '@material-ui/core';
+import {Button, IconButton, Collapse, Grid, ListItem, ListItemText, Paper, Typography, withStyles} from '@material-ui/core';
 
 import {KeyboardArrowDown, KeyboardArrowRight} from '@material-ui/icons';
 
@@ -104,7 +104,7 @@ class VanityUrlEnabledContent extends React.Component {
                 <Paper elevation={1}>
                     <ListItem className={classes.vanityUrlListHeader} onClick={() => this.handleExpandCollapseClick()}>
 
-                        {this.state.expanded ? <KeyboardArrowDown color="secondary"/> : <KeyboardArrowRight color="secondary"/>}
+                        {this.state.expanded ? <KeyboardArrowDown/> : <KeyboardArrowRight/>}
 
                         <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText} data-vud-role="content-title"/>
                         {filterMatchInfo}

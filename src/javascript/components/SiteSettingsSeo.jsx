@@ -1,5 +1,5 @@
 import React from 'react';
-import {Toolbar, Typography, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
+import {Toolbar, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
 import {SettingsLayout, withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import {LanguageSelector} from './LanguageSelector';
@@ -17,12 +17,13 @@ import AddVanityUrl from './AddVanityUrl';
 import {VanityMutationsProvider, withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlLanguageData} from './VanityUrlLanguageData';
 import {VanityUrlTableData} from './VanityUrlTableData';
+import {Typography} from '@jahia/moonstone';
 
 // Todo Theme undefined
 const styles = theme => ({
-
     title: {
-        width: '100%'
+        width: '100%',
+        color: 'black'
     },
 
     languageSelector: {
@@ -64,7 +65,10 @@ class SiteSettingsSeoApp extends React.Component {
                 currentPage: 0,
                 pageSize: 5
             },
-            appBarStyle: {},
+            appBarStyle: {
+                backgroundColor: 'white',
+                position: 'relative'
+            },
             selection: [],
             publication: {
                 open: false,
@@ -384,7 +388,7 @@ class SiteSettingsSeoApp extends React.Component {
                             footer={t('label.copyright')}
                             appBar={
                                 <Toolbar>
-                                    <Typography variant="title" color="inherit" className={classes.title}>
+                                    <Typography variant="heading" className={classes.title}>
                                         {t('label.title')} - {dxContext.siteTitle}
                                     </Typography>
 

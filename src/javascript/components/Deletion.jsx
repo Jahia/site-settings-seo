@@ -31,7 +31,6 @@ let styles = theme => ({
         padding: '0 15px'
     },
     vanityUrlTableCellUrl: {
-        color: '#00A0E3',
         fontSize: '0.875rem',
         fontWeight: '400',
         padding: '0 15px',

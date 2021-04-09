@@ -168,7 +168,6 @@ const styles = theme => ({
         color: '#212121'
     },
     highlightTextContainer: {
-        color: '#00A0E3',
 	    padding: '3px 6px 1px',
 	    overflow: 'hidden',
 	    position: 'relative',
@@ -237,7 +236,6 @@ const styles = theme => ({
         border: '10px solid red'
     },
     vanityURLText: {
-        color: '#00A0E3',
         lineHeight: '21px',
         maxHeight: '42px',
         overflow: 'hidden',
