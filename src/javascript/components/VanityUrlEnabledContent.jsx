@@ -1,12 +1,11 @@
 import React from 'react';
 import {withTranslation} from 'react-i18next';
-
 import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
 import {AddVanityUrl} from './AddVanityUrl';
-
-import {Button, IconButton, Collapse, Grid, ListItem, ListItemText, Paper, Typography, withStyles} from '@material-ui/core';
-
+import {Button, IconButton, Collapse, Grid, ListItem, ListItemText, Paper, withStyles} from '@material-ui/core';
 import {KeyboardArrowDown, KeyboardArrowRight} from '@material-ui/icons';
+import {Typography} from '@jahia/moonstone';
+
 
 const styles = theme => ({
     root: {

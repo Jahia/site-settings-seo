@@ -18,19 +18,19 @@ import {VanityMutationsProvider, withVanityMutationContext} from './VanityMutati
 import {VanityUrlLanguageData} from './VanityUrlLanguageData';
 import {VanityUrlTableData} from './VanityUrlTableData';
 import {Typography} from '@jahia/moonstone';
+import {withSite} from './SiteConnector';
+import {ProgressOverlay} from "@jahia/react-material";
 
-// Todo Theme undefined
 const styles = theme => ({
     title: {
         width: '100%',
-        color: 'black'
+        color: 'rgb(37, 43, 47)'
     },
-
     languageSelector: {
         marginRight: theme.spacing.unit,
         boxShadow: 'none',
         background: 'none',
-        color: 'white',
+        color: 'black',
 
         // Disable any underlining.
         '&:before': {
@@ -40,11 +40,21 @@ const styles = theme => ({
             background: 'transparent'
         }
     },
-
     languageSelectorIcon: {
         color: 'inherit'
+    },
+    langSelectMenu: {
+        color: 'grey'
+    },
+    selectionMain: {
+        height: '100%',
+        overflowY: 'scroll'
+    },
+    appBar: {
+        backgroundColor: 'white',
+        position: 'static',
+        right: 'auto'
     }
-
 });
 
 const SiteSettingsSeoConstants = {
@@ -63,11 +73,8 @@ class SiteSettingsSeoApp extends React.Component {
                 filterText: '',
                 selectedLanguageCodes: this.props.languages.map(language => language.code),
                 currentPage: 0,
-                pageSize: 5
-            },
-            appBarStyle: {
-                backgroundColor: 'white',
-                position: 'relative'
+                pageSize: 5,
+                labels: {labelRowsPerPage: props.t('label.pagination.rowsPerPage'), of: props.t('label.pagination.of')}
             },
             selection: [],
             publication: {
@@ -337,25 +344,16 @@ class SiteSettingsSeoApp extends React.Component {
 
     onChangeRowsPerPage(newRowsPerPage) {
         this.setState(state => ({
-            loadParams: _.assign({}, state.loadParams, {
+            loadParams: {
+                ...state.loadParams,
                 pageSize: newRowsPerPage
-            })
+            }
         }));
     }
 
-    onSearchFocus() {
-        this.setState({
-            appBarStyle: {
-                backgroundColor: this.props.theme.palette.primary.dark
-            }
-        });
-    }
+    onSearchFocus() {}
 
-    onSearchBlur() {
-        this.setState({
-            appBarStyle: {}
-        });
-    }
+    onSearchBlur() {}
 
     onSelectedLanguagesChanged(selectedLanguageCodes) {
         this.setState(state => ({
@@ -380,11 +378,10 @@ class SiteSettingsSeoApp extends React.Component {
 
     render() {
         let {dxContext, t, classes} = this.props;
-
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open || this.state.add.open);
 
         return (
-            <SettingsLayout appBarStyle={this.state.appBarStyle}
+            <SettingsLayout classes={{main: classes.selectionMain, appBar: classes.appBar}}
                             footer={t('label.copyright')}
                             appBar={
                                 <Toolbar>
@@ -396,7 +393,7 @@ class SiteSettingsSeoApp extends React.Component {
                     languages={this.props.languages}
                     selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
                     className={classes.languageSelector}
-                    classes={{icon: classes.languageSelectorIcon}}
+                    classes={{icon: classes.languageSelectorIcon, selectMenu: classes.langSelectMenu}}
                     onSelectionChange={this.onSelectedLanguagesChanged}
                 />
 
@@ -486,7 +483,13 @@ const SiteSettingsSeoComponent = _.flowRight(
     withTranslation('site-settings-seo')
 )(SiteSettingsSeoApp);
 
-let SiteSettingsSeo = function (props) {
+const SiteSettingsSeo = _.flowRight(
+    withSite()
+)(function (props) {
+    if (!props.dxContext.mainResourcePath) {
+        return <ProgressOverlay/>;
+    }
+
     return (
         <MuiThemeProvider theme={legacyTheme}>
             <NotificationProvider notificationContext={{}}>
@@ -498,6 +501,6 @@ let SiteSettingsSeo = function (props) {
             </NotificationProvider>
         </MuiThemeProvider>
     );
-};
+});
 
 export {SiteSettingsSeo, SiteSettingsSeoConstants};

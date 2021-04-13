@@ -9,7 +9,6 @@ import {
     TableBody,
     TableCell,
     TableRow,
-    Typography,
     withStyles,
 } from '@material-ui/core';
 import {Done, Star, StarBorder} from '@material-ui/icons';
@@ -19,6 +18,8 @@ import {Editable} from './Editable';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {flowRight as compose} from 'lodash';
 import {withNotifications} from '@jahia/react-material';
+import {Typography} from '@jahia/moonstone';
+
 
 const styles = theme => ({
     boxTitle: {
@@ -34,6 +35,9 @@ const styles = theme => ({
         }
     },
     vanityUrlLive: {
+        '& td': {
+            padding: '7px 0'
+        }
     },
     hidden: {
         opacity: 0
@@ -63,6 +67,9 @@ const styles = theme => ({
             background: '#f7f7f7'
         }
     },
+    tableRowLive: {
+        height: '66px'
+    },
     tableCellActionsContainer: {
         width: '76px',
         position: 'absolute',
@@ -80,13 +87,7 @@ const styles = theme => ({
         paddingRight: '10px'
     },
     liveVanityUrl: {
-        paddingLeft: '14px!important',
-        '&:hover $vanityURLText:before': {
-            background: '#f7f7f7'
-        },
-        '&:hover $vanityURLText:after': {
-            background: '#f7f7f7'
-        }
+        paddingLeft: '14px!important'
     },
     liveDefaultValue: {
         width: '30px'
@@ -141,12 +142,12 @@ const styles = theme => ({
             '&:after': {
                 background: '#f66'
             },
-            '&:hover:after': {
-                background: '#ff6565!important'
-            },
-            '&:hover:before': {
-                background: '#ff6565!important'
-            }
+            // '&:hover:after': {
+            //     background: '#ff6565!important'
+            // },
+            // '&:hover:before': {
+            //     background: '#ff6565!important'
+            // }
         },
         '& $liveLanguage': {
             color: 'whitesmoke'
@@ -157,11 +158,11 @@ const styles = theme => ({
     },
     toBePublished: {
         boxShadow: 'inset 7px 0px 0 0 ' + '#FB9926',
-        color: theme.palette.getContrastText(theme.palette.publish.main)
+        color: 'rgb(228, 174, 28)'
     },
     isPublished: {
         boxShadow: 'inset 7px 0px 0 0 #08D000',
-        color: theme.palette.getContrastText(theme.palette.publish.main)
+        color: 'rgb(60, 149, 66)'
     },
     highlightText: {
         backgroundColor: 'yellow',
@@ -230,7 +231,8 @@ const styles = theme => ({
         }
     },
     tableTitle: {
-        paddingBottom: '3px'
+        paddingBottom: '3px',
+        fontSize: 18
     },
     inactiveRow: {
         border: '10px solid red'
@@ -243,30 +245,17 @@ const styles = theme => ({
         wordBreak: 'break-all',
         padding: '3px 6px 1px',
         fontSize: '0.8rem',
-        '&:before': {
-            content: '"..."',
-            position: 'absolute',
-            right: '1px',
-            bottom: '1px',
-            padding: '0 10px 0 4px',
-            background: 'white',
-            lineHeight: '19px'
-        },
-        '&:hover:before': {
-            background: 'white'
-        },
-        '&:after': {
-            content: '""',
-            width: '24px',
-            height: '19px',
-            background: 'white',
-            position: 'absolute',
-            right: '1px',
-            marginTop: '1px'
-        },
-        '&:hover:after': {
-            background: 'white'
-        }
+        color: '#212121'
+    },
+    vanityURLTextLive: {
+        lineHeight: '21px',
+        maxHeight: '42px',
+        overflow: 'hidden',
+        position: 'relative',
+        wordBreak: 'break-all',
+        padding: '3px 6px 1px',
+        fontSize: '0.8rem',
+        color: '#B2B2B2'
     },
     editableText: {
         '&:hover': {
@@ -345,7 +334,7 @@ class VanityUrlListDefault extends React.Component {
                                   onChange={(event, checked) => onChangeSelection(checked && !allCheckboxIndeterminate, urlPairs)}
                         />
                     ) : ''}
-                    <Typography variant="caption" classes={{caption: classes.tableTitle}}>
+                    <Typography variant="subheading" classes={{caption: classes.tableTitle}} weight="bold">
                         {t('label.mappings.default')}
                     </Typography>
                 </div>
@@ -476,7 +465,7 @@ class VanityUrlListLive extends React.Component {
         return (
             <div>
                 <div>
-                    <Typography variant="caption" classes={{caption: classes.tableTitle}}>
+                    <Typography variant="subheading" classes={{caption: classes.tableTitle}} weight="bold">
                         {t('label.mappings.live')}
                     </Typography>
                 </div>
@@ -488,9 +477,11 @@ class VanityUrlListLive extends React.Component {
                                 if (url) {
                                     let classInactive = (url.active ? '' : classes.inactive);
                                     return (
-                                        <TableRow key={urlPair.uuid} className={classes.tableRow + ' ' + classInactive + ' ' + classes.vanityUrl + ' ' + classes.vanityUrlLive + ' ' + ((urlPair.default && !_.includes(defaultNotPublished, url)) ? '' : classes.missingDefaultCounterpart)}>
-                                            <TableCell padding="none" className={classInactive + ' ' + classes.liveVanityUrl}>
-                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.vanityURLText}>{url.url}</Typography>}
+                                        <TableRow key={urlPair.uuid}
+                                                  hover={false}
+                                                  className={classes.tableRowLive + ' '  + classes.vanityUrlLive + ' ' + ((urlPair.default && !_.includes(defaultNotPublished, url)) ? '' : classes.missingDefaultCounterpart)}>
+                                            <TableCell className={classInactive + ' ' + classes.liveVanityUrl}>
+                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : <Typography variant="body" className={classes.vanityURLTextLive}>{url.url}</Typography>}
                                             </TableCell>
                                             <TableCell padding="none" className={classInactive + ' ' + classes.liveDefaultValue}>
                                                 {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}

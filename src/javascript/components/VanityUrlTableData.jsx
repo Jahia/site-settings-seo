@@ -19,7 +19,7 @@ class VanityUrlTableData extends React.Component {
     }
 
     render() {
-        let {t, classes, filterText, totalCount, pageSize, poll, notificationContext} = this.props;
+        let {t, filterText, totalCount, pageSize, poll, notificationContext} = this.props;
         return (
             <Query fetchPolicy="network-only" query={TableQuery} variables={TableQueryVariables(this.props)} pollInterval={poll}>
                 { ({loading, error, data}) => {
@@ -28,7 +28,6 @@ class VanityUrlTableData extends React.Component {
                     notificationContext.notify(t('label.errors.loadingVanityUrl'), ['closeButton', 'noAutomaticClose']);
                 }
 
-                let totalCount = 0;
                 let numberOfPages = 0;
                 let rows = [];
                 if (data && data.jcr && data.jcr.nodesByQuery) {
@@ -54,10 +53,10 @@ class VanityUrlTableData extends React.Component {
                 }
 
                 return (
-                    <div>
+                    <>
                         {loading && <ProgressOverlay/>}
                         {this.props.children(rows, totalCount, numberOfPages)}
-                    </div>
+                    </>
 );
             }}
             </Query>

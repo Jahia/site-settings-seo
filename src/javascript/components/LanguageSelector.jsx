@@ -37,11 +37,11 @@ class LanguageSelector extends React.Component {
     getSelectedLanguagesValue(selected) {
         let selectedLanguageCodes = _.sortBy(getSelectedLanguageCodes(selected));
 
-        if (selectedLanguageCodes.length == 0) {
+        if (selectedLanguageCodes.length === 0) {
             return this.props.t('label.languageSelector.noLanguages');
         }
 
-        if (selectedLanguageCodes.length == this.props.languages.length) {
+        if (selectedLanguageCodes.length === this.props.languages.length) {
             return this.props.t('label.languageSelector.allLanguages');
         }
 
