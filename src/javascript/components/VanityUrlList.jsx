@@ -141,13 +141,7 @@ const styles = theme => ({
             },
             '&:after': {
                 background: '#f66'
-            },
-            // '&:hover:after': {
-            //     background: '#ff6565!important'
-            // },
-            // '&:hover:before': {
-            //     background: '#ff6565!important'
-            // }
+            }
         },
         '& $liveLanguage': {
             color: 'whitesmoke'

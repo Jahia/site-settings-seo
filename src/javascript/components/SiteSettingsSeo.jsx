@@ -49,8 +49,7 @@ const styles = theme => ({
         color: 'grey'
     },
     selectionMain: {
-        height: '100%',
-        overflowY: 'scroll'
+        height: '100%'
     },
     appBar: {
         backgroundColor: 'white',
