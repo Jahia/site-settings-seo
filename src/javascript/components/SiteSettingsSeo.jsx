@@ -1,5 +1,5 @@
 import React from 'react';
-import {Toolbar, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
+import {Toolbar, withStyles, MuiThemeProvider} from '@material-ui/core';
 import {SettingsLayout, withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import {LanguageSelector} from './LanguageSelector';
@@ -20,6 +20,8 @@ import {VanityUrlTableData} from './VanityUrlTableData';
 import {Typography} from '@jahia/moonstone';
 import {withSite} from './SiteConnector';
 import {ProgressOverlay} from "@jahia/react-material";
+
+legacyTheme.overrides.MuiSelect.selectMenu.color = 'rgb(37, 43, 47)';
 
 const styles = theme => ({
     title: {
@@ -59,7 +61,7 @@ const styles = theme => ({
 
 const SiteSettingsSeoConstants = {
     MAPPING_REG_EXP: new RegExp('^/?(?!.*/{2,})[a-zA-Z_0-9\\-\\./]+$'),
-    NB_NEW_MAPPING_ROWS: 5,
+    NB_NEW_MAPPING_ROWS: 1,
     TABLE_POLLING_INTERVAL: 2000
 };
 
@@ -73,7 +75,7 @@ class SiteSettingsSeoApp extends React.Component {
                 filterText: '',
                 selectedLanguageCodes: this.props.languages.map(language => language.code),
                 currentPage: 0,
-                pageSize: 5,
+                pageSize: 10,
                 labels: {labelRowsPerPage: props.t('label.pagination.rowsPerPage'), of: props.t('label.pagination.of')}
             },
             selection: [],
@@ -477,7 +479,6 @@ class SiteSettingsSeoApp extends React.Component {
 
 const SiteSettingsSeoComponent = _.flowRight(
     withNotifications(),
-    withTheme(),
     withStyles(styles),
     withVanityMutationContext(),
     withTranslation('site-settings-seo')

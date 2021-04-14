@@ -30,7 +30,6 @@ const sharedDeps = [
 
     // DEPRECATED JAHIA PACKAGES
     '@jahia/design-system-kit',
-    '@jahia/react-material',
     '@jahia/icons'
 ];
 
