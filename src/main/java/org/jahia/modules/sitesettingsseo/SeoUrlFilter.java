@@ -10,7 +10,7 @@ import org.jahia.services.render.Resource;
 import org.jahia.services.render.filter.AbstractFilter;
 import org.jahia.services.render.filter.RenderChain;
 import org.jahia.services.render.filter.RenderFilter;
-import org.jahia.utils.Url;
+import org.jahia.settings.SettingsBean;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,7 @@ public class SeoUrlFilter extends AbstractFilter {
 
     private String getPageLink(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException, MalformedURLException {
         // Default url if no vanity
-        String canonicalLink = canonicalLink(buildHref(node, renderContext.getRequest(), getPathInfoForMode(node, renderContext)));
+        String canonicalLink = canonicalLink(buildHref(node, renderContext, getPathInfoForMode(node, renderContext)));
 
         if (!node.isNodeType(VANITY_URL_MAPPED)) {
             return canonicalLink;
@@ -71,7 +72,7 @@ public class SeoUrlFilter extends AbstractFilter {
 
         for (JCRNodeWrapper url : urls) {
             if (url.getProperty(J_ACTIVE).getBoolean() && node.getLanguage().equals(url.getPropertyAsString(LANGUAGE)) && url.getProperty("j:default").getBoolean()) {
-                canonicalLink = canonicalLink(buildHref(node, renderContext.getRequest(), url.getPropertyAsString(URL)));
+                canonicalLink = canonicalLink(buildHref(node, renderContext, url.getPropertyAsString(URL)));
             }
         }
 
@@ -91,7 +92,7 @@ public class SeoUrlFilter extends AbstractFilter {
                 String vanityLanguage = url.getPropertyAsString(LANGUAGE);
                 if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage)) {
                     vanityLangs.add(vanityLanguage);
-                    altLinks.append(altLink(vanityLanguage, buildHref(node, renderContext.getRequest(), url.getPropertyAsString(URL))));
+                    altLinks.append(altLink(vanityLanguage, buildHref(node, renderContext, url.getPropertyAsString(URL))));
                 }
             }
         }
@@ -108,7 +109,7 @@ public class SeoUrlFilter extends AbstractFilter {
                     path = String.format("/%s%s", lang, path);
                 }
 
-                altLinks.append(altLink(lang,  buildHref(node, renderContext.getRequest(), path)));
+                altLinks.append(altLink(lang,  buildHref(node, renderContext, path)));
             }
         }
 
@@ -164,8 +165,8 @@ public class SeoUrlFilter extends AbstractFilter {
         return path;
     }
 
-    private String buildHref(JCRNodeWrapper node, HttpServletRequest request, String path) throws MalformedURLException, RepositoryException {
-        return Url.appendServerNameIfNeeded(node, path, request);
+    private String buildHref(JCRNodeWrapper node, RenderContext renderContext, String path) throws MalformedURLException, RepositoryException {
+        return prependServerName(node, renderContext, path);
     }
 
     private String altLink(String lang, String href) {
@@ -174,5 +175,26 @@ public class SeoUrlFilter extends AbstractFilter {
 
     private String canonicalLink(String href) {
         return String.format("<link rel=\"canonical\" href=\"%s\" />%n", href);
+    }
+
+    private String prependServerName(JCRNodeWrapper node, RenderContext renderContext, String nodeURL) throws RepositoryException, MalformedURLException {
+        HttpServletRequest request = renderContext.getRequest();
+        String requestServerName = request.getServerName();
+
+        String serverName = node.getResolveSite().getServerName();
+        if (!StringUtils.isEmpty(serverName) && requestServerName.equals(serverName)) {
+            int serverPort = SettingsBean.getInstance().getSiteURLPortOverride();
+            if (serverPort == 0) {
+                serverPort = request.getServerPort();
+            }
+
+            if (serverPort == 80 && "http".equals(request.getScheme()) || serverPort == 443 && "https".equals(request.getScheme())) {
+                serverPort = -1;
+            }
+
+            nodeURL = (new URL(request.getScheme(), serverName, serverPort, renderContext.getURLGenerator().getContext() + nodeURL)).toString();
+        }
+
+        return nodeURL;
     }
 }
