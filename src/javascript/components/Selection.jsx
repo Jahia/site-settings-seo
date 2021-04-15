@@ -8,9 +8,9 @@ import classNames from 'classnames';
 
 let styles = theme => ({
     root: {
-        position: 'fixed',
+        position: 'absolute',
         transition: 'top 0.3s ease-in 0s',
-        top: '-130px',
+        top: '-140px',
         padding: '13px 8px 13px 6px',
         margin: '0',
         zIndex: '9999',
@@ -18,10 +18,10 @@ let styles = theme => ({
         left: '0',
         width: '100%',
         boxSizing: 'border-box',
-        background: '#3c3b3b'
+        background: 'rgb(41, 49, 54)'
     },
     rootExpanded: {
-        top: '0'
+        top: '-70px'
     },
     selected: {
         margin: '14px 0 0 0',

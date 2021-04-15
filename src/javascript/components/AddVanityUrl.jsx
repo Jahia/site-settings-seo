@@ -142,7 +142,7 @@ class AddVanityUrl extends React.Component {
 
     _resetMap = () => {
         let mapping = [];
-        for (let i = SiteSettingsSeoConstants.NB_NEW_MAPPING_ROWS; i >= 0; i--) {
+        for (let i = SiteSettingsSeoConstants.NB_NEW_MAPPING_ROWS; i > 0; i--) {
             mapping.push({language: this.defaultLanguage, defaultMapping: false, active: true, focus: false});
         }
 

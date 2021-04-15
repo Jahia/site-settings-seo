@@ -1,5 +1,5 @@
 import React from 'react';
-import {Toolbar, Typography, withStyles, withTheme, MuiThemeProvider} from '@material-ui/core';
+import {Toolbar, withStyles, MuiThemeProvider} from '@material-ui/core';
 import {SettingsLayout, withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import {LanguageSelector} from './LanguageSelector';
@@ -17,19 +17,22 @@ import AddVanityUrl from './AddVanityUrl';
 import {VanityMutationsProvider, withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlLanguageData} from './VanityUrlLanguageData';
 import {VanityUrlTableData} from './VanityUrlTableData';
+import {Typography} from '@jahia/moonstone';
+import {withSite} from './SiteConnector';
+import {ProgressOverlay} from "@jahia/react-material";
 
-// Todo Theme undefined
+legacyTheme.overrides.MuiSelect.selectMenu.color = 'rgb(37, 43, 47)';
+
 const styles = theme => ({
-
     title: {
-        width: '100%'
+        width: '100%',
+        color: 'rgb(37, 43, 47)'
     },
-
     languageSelector: {
         marginRight: theme.spacing.unit,
         boxShadow: 'none',
         background: 'none',
-        color: 'white',
+        color: 'black',
 
         // Disable any underlining.
         '&:before': {
@@ -39,16 +42,25 @@ const styles = theme => ({
             background: 'transparent'
         }
     },
-
     languageSelectorIcon: {
         color: 'inherit'
+    },
+    langSelectMenu: {
+        color: 'grey'
+    },
+    selectionMain: {
+        height: '100%'
+    },
+    appBar: {
+        backgroundColor: 'white',
+        position: 'static',
+        right: 'auto'
     }
-
 });
 
 const SiteSettingsSeoConstants = {
     MAPPING_REG_EXP: new RegExp('^/?(?!.*/{2,})[a-zA-Z_0-9\\-\\./]+$'),
-    NB_NEW_MAPPING_ROWS: 5,
+    NB_NEW_MAPPING_ROWS: 1,
     TABLE_POLLING_INTERVAL: 2000
 };
 
@@ -62,9 +74,9 @@ class SiteSettingsSeoApp extends React.Component {
                 filterText: '',
                 selectedLanguageCodes: this.props.languages.map(language => language.code),
                 currentPage: 0,
-                pageSize: 5
+                pageSize: 10,
+                labels: {labelRowsPerPage: props.t('label.pagination.rowsPerPage'), of: props.t('label.pagination.of')}
             },
-            appBarStyle: {},
             selection: [],
             publication: {
                 open: false,
@@ -333,25 +345,16 @@ class SiteSettingsSeoApp extends React.Component {
 
     onChangeRowsPerPage(newRowsPerPage) {
         this.setState(state => ({
-            loadParams: _.assign({}, state.loadParams, {
+            loadParams: {
+                ...state.loadParams,
                 pageSize: newRowsPerPage
-            })
+            }
         }));
     }
 
-    onSearchFocus() {
-        this.setState({
-            appBarStyle: {
-                backgroundColor: this.props.theme.palette.primary.dark
-            }
-        });
-    }
+    onSearchFocus() {}
 
-    onSearchBlur() {
-        this.setState({
-            appBarStyle: {}
-        });
-    }
+    onSearchBlur() {}
 
     onSelectedLanguagesChanged(selectedLanguageCodes) {
         this.setState(state => ({
@@ -376,15 +379,14 @@ class SiteSettingsSeoApp extends React.Component {
 
     render() {
         let {dxContext, t, classes} = this.props;
-
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open || this.state.add.open);
 
         return (
-            <SettingsLayout appBarStyle={this.state.appBarStyle}
+            <SettingsLayout classes={{main: classes.selectionMain, appBar: classes.appBar}}
                             footer={t('label.copyright')}
                             appBar={
                                 <Toolbar>
-                                    <Typography variant="title" color="inherit" className={classes.title}>
+                                    <Typography variant="heading" className={classes.title}>
                                         {t('label.title')} - {dxContext.siteTitle}
                                     </Typography>
 
@@ -392,7 +394,7 @@ class SiteSettingsSeoApp extends React.Component {
                     languages={this.props.languages}
                     selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
                     className={classes.languageSelector}
-                    classes={{icon: classes.languageSelectorIcon}}
+                    classes={{icon: classes.languageSelectorIcon, selectMenu: classes.langSelectMenu}}
                     onSelectionChange={this.onSelectedLanguagesChanged}
                 />
 
@@ -476,13 +478,18 @@ class SiteSettingsSeoApp extends React.Component {
 
 const SiteSettingsSeoComponent = _.flowRight(
     withNotifications(),
-    withTheme(),
     withStyles(styles),
     withVanityMutationContext(),
     withTranslation('site-settings-seo')
 )(SiteSettingsSeoApp);
 
-let SiteSettingsSeo = function (props) {
+const SiteSettingsSeo = _.flowRight(
+    withSite()
+)(function (props) {
+    if (!props.dxContext.mainResourcePath) {
+        return <ProgressOverlay/>;
+    }
+
     return (
         <MuiThemeProvider theme={legacyTheme}>
             <NotificationProvider notificationContext={{}}>
@@ -494,6 +501,6 @@ let SiteSettingsSeo = function (props) {
             </NotificationProvider>
         </MuiThemeProvider>
     );
-};
+});
 
 export {SiteSettingsSeo, SiteSettingsSeoConstants};

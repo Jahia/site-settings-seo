@@ -85,4 +85,18 @@ const GetNodeQuery = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-export {TableQuery, LanguagesQuery, GetNodeQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables};
+const SiteNodeQuery = gql`
+    query GetNodeQuery($sitePath:String!) {
+        jcr {
+            nodeByPath(path:$sitePath) {
+                ...NodeCacheRequiredFields
+                displayName,
+                uuid,
+                path
+            }
+        }
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+`;
+
+export {TableQuery, LanguagesQuery, GetNodeQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables, SiteNodeQuery};
