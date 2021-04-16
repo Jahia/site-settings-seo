@@ -73,7 +73,7 @@ class LanguageSelector extends React.Component {
 
     render() {
         let selectedLanguageCodes = this.props.selectedLanguageCodes;
-        let allLanguagesChecked = (selectedLanguageCodes.length == this.props.languages.length);
+        let allLanguagesChecked = (selectedLanguageCodes.length === this.props.languages.length);
         let allLanguagesIndeterminate = (selectedLanguageCodes.length > 0) && (selectedLanguageCodes.length < this.props.languages.length);
 
         return (

@@ -1,6 +1,6 @@
 import React from 'react';
-import {Toolbar, withStyles, MuiThemeProvider} from '@material-ui/core';
-import {SettingsLayout, withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
+import {withStyles, MuiThemeProvider} from '@material-ui/core';
+import {withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import {LanguageSelector} from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
@@ -17,7 +17,7 @@ import AddVanityUrl from './AddVanityUrl';
 import {VanityMutationsProvider, withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlLanguageData} from './VanityUrlLanguageData';
 import {VanityUrlTableData} from './VanityUrlTableData';
-import {Typography} from '@jahia/moonstone';
+import {Header} from '@jahia/moonstone';
 import {withSite} from './SiteConnector';
 import {ProgressOverlay} from "@jahia/react-material";
 
@@ -51,10 +51,8 @@ const styles = theme => ({
     selectionMain: {
         height: '100%'
     },
-    appBar: {
-        backgroundColor: 'white',
-        position: 'static',
-        right: 'auto'
+    layout: {
+        overflowY: 'scroll'
     }
 });
 
@@ -382,30 +380,23 @@ class SiteSettingsSeoApp extends React.Component {
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open || this.state.add.open);
 
         return (
-            <SettingsLayout classes={{main: classes.selectionMain, appBar: classes.appBar}}
-                            footer={t('label.copyright')}
-                            appBar={
-                                <Toolbar>
-                                    <Typography variant="heading" className={classes.title}>
-                                        {t('label.title')} - {dxContext.siteTitle}
-                                    </Typography>
+            <div className={classes.layout}>
+                <Header title={`${t('label.title')} - ${dxContext.siteTitle}`} mainActions={<>
+                        <LanguageSelector
+                            languages={this.props.languages}
+                            selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
+                            className={classes.languageSelector}
+                            classes={{icon: classes.languageSelectorIcon, selectMenu: classes.langSelectMenu}}
+                            onSelectionChange={this.onSelectedLanguagesChanged}
+                        />
 
-                                    <LanguageSelector
-                    languages={this.props.languages}
-                    selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
-                    className={classes.languageSelector}
-                    classes={{icon: classes.languageSelectorIcon, selectMenu: classes.langSelectMenu}}
-                    onSelectionChange={this.onSelectedLanguagesChanged}
+                        <SearchBar placeholderLabel={t('label.filterPlaceholder')}
+                                   onChangeFilter={this.onChangeFilter}
+                                   onFocus={this.onSearchFocus}
+                                   onBlur={this.onSearchBlur}/>
+                    </>}
                 />
 
-                                <SearchBar placeholderLabel={t('label.filterPlaceholder')}
-                                           onChangeFilter={this.onChangeFilter}
-                                           onFocus={this.onSearchFocus}
-                                           onBlur={this.onSearchBlur}/>
-                                </Toolbar>
-        }
-            >
-                <>
                 <Selection selection={this.state.selection}
                            actions={this.actions}
                            onChangeSelection={this.onChangeSelection}/>
@@ -469,9 +460,7 @@ class SiteSettingsSeoApp extends React.Component {
                 lang={dxContext.lang}
                 onClose={this.closeAdd}
             />}
-            </>
-
-            </SettingsLayout>
+            </div>
         );
     }
 }
