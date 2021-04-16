@@ -8,14 +8,16 @@ import classNames from 'classnames';
 
 let styles = theme => ({
     root: {
-        position: 'absolute',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'relative',
         transition: 'top 0.3s ease-in 0s',
         top: '-140px',
         padding: '13px 8px 13px 6px',
         margin: '0',
         zIndex: '9999',
         borderRadius: '0',
-        left: '0',
         width: '100%',
         boxSizing: 'border-box',
         background: 'rgb(41, 49, 54)'
@@ -23,10 +25,13 @@ let styles = theme => ({
     rootExpanded: {
         top: '-70px'
     },
+    closeButtonContainer: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
     selected: {
         margin: '14px 0 0 0',
-        position: 'relative',
-        float: 'left'
+        position: 'relative'
     },
     selectedText: {
         color: 'whitesmoke',
@@ -41,22 +46,18 @@ let styles = theme => ({
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
         position: 'relative',
-        float: 'left',
         margin: '7px 0 0 7px'
     },
     clearIcon: {
         marginLeft: '-2px',
-        fontSize: '1rem',
-        float: 'left'
+        fontSize: '1rem'
     },
     clearText: {
         marginLeft: theme.spacing.unit,
         float: 'left'
     },
     buttonsBar: {
-        margin: '4',
-        position: 'relative',
-        float: 'right'
+        margin: '4'
     },
     buttonAction: {
         marginLeft: theme.spacing.unit
@@ -100,7 +101,6 @@ let styles = theme => ({
             backgroundColor: '#21282f',
             cursor: 'pointer'
         },
-        float: 'left',
         marginTop: '8px',
         marginRight: '4px',
 	    marginLeft: '10px',
@@ -120,12 +120,14 @@ class Selection extends React.Component {
         return (
             <Paper elevation={1} classes={{root: (selection.length === 0 ? '' : classes.rootExpanded)}} className={classes.root}>
 
-                <Clear classes={{root: classes.clearButton}}
-                       tooltip={t('label.selection.clear')}
-                       onClick={() => onChangeSelection()}/>
+                <div className={classes.closeButtonContainer}>
+                    <Clear classes={{root: classes.clearButton}}
+                           tooltip={t('label.selection.clear')}
+                           onClick={() => onChangeSelection()}/>
 
-                <div className={classes.selected}>
-                    <Typography className={classes.selectedText}>{t('label.selection.count', {count: selection.length})}</Typography>
+                    <div className={classes.selected}>
+                        <Typography className={classes.selectedText}>{t('label.selection.count', {count: selection.length})}</Typography>
+                    </div>
                 </div>
 
                 <div className={classes.buttonsBar}>
