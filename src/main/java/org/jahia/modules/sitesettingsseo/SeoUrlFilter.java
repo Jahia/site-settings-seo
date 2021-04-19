@@ -34,6 +34,7 @@ public class SeoUrlFilter extends AbstractFilter {
     private static final String VANITY_URLS = "jnt:vanityUrls";
     private static final String VANITY_URL = "jnt:vanityUrl";
     private static final String J_ACTIVE = "j:active";
+    private static final String J_DEFAULT = "j:default";
     private static final String LANGUAGE = "jcr:language";
     private static final String URL = "j:url";
 
@@ -90,7 +91,7 @@ public class SeoUrlFilter extends AbstractFilter {
 
             for (JCRNodeWrapper url : urls) {
                 String vanityLanguage = url.getPropertyAsString(LANGUAGE);
-                if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage)) {
+                if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage) && url.getProperty(J_DEFAULT).getBoolean()) {
                     vanityLangs.add(vanityLanguage);
                     altLinks.append(altLink(vanityLanguage, buildHref(node, renderContext, url.getPropertyAsString(URL))));
                 }
