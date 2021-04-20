@@ -54,6 +54,9 @@ const styles = theme => ({
     layout: {
         height: 'calc(100vh - 150px)',
         overflowY: 'scroll'
+    },
+    actions: {
+        display: 'flex'
     }
 });
 
@@ -382,7 +385,7 @@ class SiteSettingsSeoApp extends React.Component {
 
         return (
             <div>
-                <Header title={`${t('label.title')} - ${dxContext.siteTitle}`} mainActions={<>
+                <Header title={`${t('label.title')} - ${dxContext.siteTitle}`} mainActions={<div className={classes.actions}>
                         <LanguageSelector
                             languages={this.props.languages}
                             selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
@@ -395,7 +398,7 @@ class SiteSettingsSeoApp extends React.Component {
                                    onChangeFilter={this.onChangeFilter}
                                    onFocus={this.onSearchFocus}
                                    onBlur={this.onSearchBlur}/>
-                    </>}
+                    </div>}
                 />
 
                 <Selection selection={this.state.selection}
