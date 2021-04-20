@@ -39,7 +39,8 @@ const styles = theme => ({
     closeIcon: {
         marginTop: 'auto',
         marginBottom: 'auto',
-        opacity: 0.87
+        opacity: 0.87,
+        zIndex: 10000
     }
 });
 
@@ -67,9 +68,10 @@ class SearchBarCmp extends React.Component {
         }.bind(this), 1000);
     }
 
-    onClear() {
+    onClear(e) {
         this.inputSearchBar.value = '';
         this.props.onChangeFilter('');
+        this.onBlur();
     }
 
     onFocus() {
@@ -107,15 +109,14 @@ class SearchBarCmp extends React.Component {
                 }
                 endAdornment={
                     this.state.focus ?
-                        <InputAdornment position="end" classes={{root: classes.closeIcon}}>
-                            <IconButton onClick={this.onClear}>
+                        <InputAdornment position="end" classes={{root: classes.closeIcon}} onClick={this.onClear}>
+                            <IconButton>
                                 <Icon><Close/></Icon>
                             </IconButton>
                         </InputAdornment> : null
                 }
                 style={this.props.style}
                 onChange={this.handleChange}
-                onBlur={this.onBlur}
                 onFocus={this.onFocus}
             />
         );

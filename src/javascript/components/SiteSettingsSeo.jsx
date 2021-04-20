@@ -1,6 +1,6 @@
 import React from 'react';
-import {Toolbar, withStyles, MuiThemeProvider} from '@material-ui/core';
-import {SettingsLayout, withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
+import {withStyles, MuiThemeProvider} from '@material-ui/core';
+import {withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import {LanguageSelector} from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
@@ -17,7 +17,7 @@ import AddVanityUrl from './AddVanityUrl';
 import {VanityMutationsProvider, withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlLanguageData} from './VanityUrlLanguageData';
 import {VanityUrlTableData} from './VanityUrlTableData';
-import {Typography} from '@jahia/moonstone';
+import {Header} from '@jahia/moonstone';
 import {withSite} from './SiteConnector';
 import {ProgressOverlay} from "@jahia/react-material";
 
@@ -51,10 +51,12 @@ const styles = theme => ({
     selectionMain: {
         height: '100%'
     },
-    appBar: {
-        backgroundColor: 'white',
-        position: 'static',
-        right: 'auto'
+    layout: {
+        height: 'calc(100vh - 150px)',
+        overflowY: 'scroll'
+    },
+    actions: {
+        display: 'flex'
     }
 });
 
@@ -382,96 +384,89 @@ class SiteSettingsSeoApp extends React.Component {
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open || this.state.add.open);
 
         return (
-            <SettingsLayout classes={{main: classes.selectionMain, appBar: classes.appBar}}
-                            footer={t('label.copyright')}
-                            appBar={
-                                <Toolbar>
-                                    <Typography variant="heading" className={classes.title}>
-                                        {t('label.title')} - {dxContext.siteTitle}
-                                    </Typography>
+            <div>
+                <Header title={`${t('label.title')} - ${dxContext.siteTitle}`} mainActions={<div className={classes.actions}>
+                        <LanguageSelector
+                            languages={this.props.languages}
+                            selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
+                            className={classes.languageSelector}
+                            classes={{icon: classes.languageSelectorIcon, selectMenu: classes.langSelectMenu}}
+                            onSelectionChange={this.onSelectedLanguagesChanged}
+                        />
 
-                                    <LanguageSelector
-                    languages={this.props.languages}
-                    selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
-                    className={classes.languageSelector}
-                    classes={{icon: classes.languageSelectorIcon, selectMenu: classes.langSelectMenu}}
-                    onSelectionChange={this.onSelectedLanguagesChanged}
+                        <SearchBar placeholderLabel={t('label.filterPlaceholder')}
+                                   onChangeFilter={this.onChangeFilter}
+                                   onFocus={this.onSearchFocus}
+                                   onBlur={this.onSearchBlur}/>
+                    </div>}
                 />
 
-                                <SearchBar placeholderLabel={t('label.filterPlaceholder')}
-                                           onChangeFilter={this.onChangeFilter}
-                                           onFocus={this.onSearchFocus}
-                                           onBlur={this.onSearchBlur}/>
-                                </Toolbar>
-        }
-            >
-                <>
                 <Selection selection={this.state.selection}
                            actions={this.actions}
                            onChangeSelection={this.onChangeSelection}/>
 
-                <VanityUrlTableData
-                {...this.state.loadParams}
-                path={dxContext.mainResourcePath}
-                lang={dxContext.lang}
-                poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
-                >
-                    {(rows, totalCount, numberOfPages) => (
-                        <VanityUrlTableView
-                        {...this.state.loadParams}
-                        languages={this.props.languages}
-                        rows={rows}
-                        totalCount={totalCount}
-                        numberOfPages={numberOfPages}
-                        selection={this.state.selection}
-                        actions={this.actions}
-                        onChangeSelection={this.onChangeSelection}
-                        onChangePage={this.onChangePage}
-                        onChangeRowsPerPage={this.onChangeRowsPerPage}
-                    />
-                  )}
-                </VanityUrlTableData>
+                <div className={classes.layout}>
+                    <VanityUrlTableData
+                    {...this.state.loadParams}
+                    path={dxContext.mainResourcePath}
+                    lang={dxContext.lang}
+                    poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
+                    >
+                        {(rows, totalCount, numberOfPages) => (
+                            <VanityUrlTableView
+                            {...this.state.loadParams}
+                            languages={this.props.languages}
+                            rows={rows}
+                            totalCount={totalCount}
+                            numberOfPages={numberOfPages}
+                            selection={this.state.selection}
+                            actions={this.actions}
+                            onChangeSelection={this.onChangeSelection}
+                            onChangePage={this.onChangePage}
+                            onChangeRowsPerPage={this.onChangeRowsPerPage}
+                        />
+                      )}
+                    </VanityUrlTableData>
 
-                {this.state.move.open && <Move
-                {...this.state.move}
-                {...this.state.loadParams}
-                path={dxContext.mainResourcePath}
-                lang={dxContext.lang}
-                onClose={this.closeMove}
-            />}
+                    {this.state.move.open && <Move
+                    {...this.state.move}
+                    {...this.state.loadParams}
+                    path={dxContext.mainResourcePath}
+                    lang={dxContext.lang}
+                    onClose={this.closeMove}
+                />}
 
-                {this.state.infoButton.open && <InfoButton
-                {...this.state.infoButton}
-                onClose={this.closeInfoButton}
-            />}
+                    {this.state.infoButton.open && <InfoButton
+                    {...this.state.infoButton}
+                    onClose={this.closeInfoButton}
+                />}
 
-                {this.state.publication.open && <Publication
-                {...this.state.publication}
-                onClose={this.closePublication}
-            />}
+                    {this.state.publication.open && <Publication
+                    {...this.state.publication}
+                    onClose={this.closePublication}
+                />}
 
-                {this.state.deletion.open && <Deletion
-                {...this.state.deletion}
-                {...this.state.loadParams}
-                path={dxContext.mainResourcePath}
-                lang={dxContext.lang}
-                onClose={this.closeDeletion}
-            />}
+                    {this.state.deletion.open && <Deletion
+                    {...this.state.deletion}
+                    {...this.state.loadParams}
+                    path={dxContext.mainResourcePath}
+                    lang={dxContext.lang}
+                    onClose={this.closeDeletion}
+                />}
 
-                {this.state.publishDeletion.open && <PublishDeletion
-                {...this.state.publishDeletion}
-                onClose={this.closePublishDeletion}
-            />}
+                    {this.state.publishDeletion.open && <PublishDeletion
+                    {...this.state.publishDeletion}
+                    onClose={this.closePublishDeletion}
+                />}
 
-                {this.state.add.open && <AddVanityUrl
-                {...this.state.add}
-                {...this.state.loadParams}
-                lang={dxContext.lang}
-                onClose={this.closeAdd}
-            />}
-            </>
-
-            </SettingsLayout>
+                    {this.state.add.open && <AddVanityUrl
+                    {...this.state.add}
+                    {...this.state.loadParams}
+                    lang={dxContext.lang}
+                    onClose={this.closeAdd}
+                />}
+                </div>
+            </div>
         );
     }
 }
