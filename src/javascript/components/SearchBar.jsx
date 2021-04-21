@@ -8,7 +8,7 @@ const styles = theme => ({
     root: {
         backgroundColor: theme.palette.primary.light,
         minWidth: '350px',
-        height: '44px',
+        height: '32px',
         lineHeight: '40px',
         borderRadius: '3px',
         boxShadow: 'inset 1px 1px 1px 0 rgba(38, 38, 38, 0.3)',
@@ -18,7 +18,7 @@ const styles = theme => ({
     },
     rootFocus: {
         minWidth: '350px',
-        height: '44px',
+        height: '32px',
         lineHeight: '40px',
         borderRadius: '3px',
         backgroundColor: '#fff',

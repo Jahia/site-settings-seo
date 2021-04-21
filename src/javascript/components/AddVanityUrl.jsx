@@ -239,14 +239,6 @@ class AddVanityUrl extends React.Component {
             }
 
             previous.mappings[index][field] = value;
-            if (field === 'url' && _.filter(previous.mappings, entry => entry.url).length === previous.mappings.length) {
-                previous.mappings.push({
-                    language: this.defaultLanguage,
-                    defaultMapping: false,
-                    active: true,
-                    focus: false
-                });
-            }
 
             return {mappings: previous.mappings, errors: previous.errors};
         });
@@ -325,6 +317,17 @@ class AddVanityUrl extends React.Component {
                                                             error={Boolean(errorForRow)}
                                                             placeholder={t('label.dialogs.add.text')}
                                                             data-vud-role="url"
+                                                            endAdornment={entry.url ?
+                                                            <IconButton disableRipple
+                                                                        className={classes.button + ' ' + classes.cancel}
+                                                                        component="span"
+                                                                        onClick={() => {
+                                                                            delete entry.url;
+                                                                            this.resetInput(this.inputTab[index]);
+                                                                        }}
+                                                            >
+                                                                <Cancel/>
+                                                            </IconButton> : null}
                                                             onFocus={() => this.handleFieldChange('focus', index, true)}
                                                             onBlur={() => this.handleFieldChange('focus', index, false)}
                                                             onChange={event => this.handleFieldChange('url', index, event.target.value)}
@@ -334,17 +337,6 @@ class AddVanityUrl extends React.Component {
                                                                 <message>{errorForRow.message}</message>
                                                             </error>
                                                         </FormHelperText>}
-                                                        {entry.url &&
-                                                        <IconButton disableRipple
-                                                                    className={classes.button + ' ' + classes.cancel}
-                                                                    component="span"
-                                                                    onClick={() => {
-                                                            delete entry.url;
-                                                            this.resetInput(this.inputTab[index]);
-                                                        }}
-                                                        >
-                                                            <Cancel/>
-                                                        </IconButton>}
                                                     </FormControl>
 
                                                 </TableCell>

@@ -1,10 +1,11 @@
 import React from 'react';
-import {Button, Paper, Typography, withStyles} from '@material-ui/core';
+import {Button, Paper, withStyles} from '@material-ui/core';
 import {withTranslation} from 'react-i18next';
 import * as _ from 'lodash';
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import {Clear} from '@material-ui/icons';
 import classNames from 'classnames';
+import {Typography} from '@jahia/moonstone'
 
 let styles = theme => ({
     root: {

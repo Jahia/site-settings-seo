@@ -1,7 +1,16 @@
 import React from 'react';
 import * as _ from 'lodash';
 import {withTranslation} from 'react-i18next';
-import {Checkbox, FormControl, FormControlLabel, Input, ListItem, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
+import {Checkbox, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
+
+const styles = theme => ({
+    selected: {
+        backgroundColor: 'inherit !important',
+        '&:hover': {
+            backgroundColor: 'rgba(0, 0, 0, .14) !important',
+        }
+    }
+});
 
 const MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED = 2;
 
@@ -19,7 +28,7 @@ class LanguageSelector extends React.Component {
     }
 
     onAllLanguagesChange(event, checked) {
-        if (checked && this.props.selectedLanguageCodes.length == 0) {
+        if (checked && this.props.selectedLanguageCodes.length === 0) {
             // Was checked while no languages were selected: select all.
             let selectedLanguageCodes = this.props.languages.map(language => language.code);
             this.props.onSelectionChange(selectedLanguageCodes);
@@ -72,6 +81,7 @@ class LanguageSelector extends React.Component {
     }
 
     render() {
+        let classes = this.props.classes;
         let selectedLanguageCodes = this.props.selectedLanguageCodes;
         let allLanguagesChecked = (selectedLanguageCodes.length === this.props.languages.length);
         let allLanguagesIndeterminate = (selectedLanguageCodes.length > 0) && (selectedLanguageCodes.length < this.props.languages.length);
@@ -107,7 +117,7 @@ class LanguageSelector extends React.Component {
                     let checked = (selectedLanguageCodes.indexOf(language.code) >= 0);
 
                     return (
-                        <MenuItem key={language.code} value={language.code} data-vud-role="language-selector-item">
+                        <MenuItem key={language.code} value={language.code} data-vud-role="language-selector-item" classes={{selected: classes.selected}}>
                             <Checkbox checked={checked}/>
                             <ListItemText primary={language.name + ' (' + language.code + ')'} data-vud-role="language-selector-item-label"/>
                         </MenuItem>
@@ -118,6 +128,6 @@ class LanguageSelector extends React.Component {
     }
 }
 
-LanguageSelector = withTranslation('site-settings-seo')(LanguageSelector);
+LanguageSelector = withStyles(styles)(withTranslation('site-settings-seo')(LanguageSelector));
 
 export {LanguageSelector};
