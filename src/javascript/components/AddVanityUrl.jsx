@@ -27,7 +27,6 @@ import {Add, Button} from '@jahia/moonstone';
 const styles = theme => ({
     pickerRoot: {
         overflowY: 'scroll',
-        boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
         borderRadius: '0px',
         border: '1px solid #d5d5d5',
         borderBottom: 'none',
@@ -272,7 +271,7 @@ class AddVanityUrl extends React.Component {
         }
 
         return (
-            <Paper elevation={2} classes={{root: classes.pickerRoot}}>
+            <Paper elevation={1} classes={{root: classes.pickerRoot}}>
                 <Table>
                     <TableBody>
                         {mappings.map((entry, index) => {
