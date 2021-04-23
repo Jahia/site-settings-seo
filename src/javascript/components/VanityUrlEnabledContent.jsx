@@ -1,11 +1,11 @@
 import React from 'react';
 import {withTranslation} from 'react-i18next';
 import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
-import {AddVanityUrl} from './AddVanityUrl';
-import {Button, IconButton, Collapse, Grid, ListItem, ListItemText, Paper, withStyles} from '@material-ui/core';
+import {Collapse, Grid, ListItem, ListItemText, Paper, withStyles} from '@material-ui/core';
 import {KeyboardArrowDown, KeyboardArrowRight} from '@material-ui/icons';
 import {Typography} from '@jahia/moonstone';
-
+import {flowRight as compose} from 'lodash';
+import AddVanityUrl from './AddVanityUrl';
 
 const styles = theme => ({
     root: {
@@ -37,13 +37,6 @@ const styles = theme => ({
         '&:hover': {
             backgroundColor: '#595858'
         }
-    },
-    addVanityButton: {
-        color: '#575757',
-        '&:hover': {
-            backgroundColor: 'transparent',
-            color: '#4A4343'
-        }
     }
 });
 
@@ -71,7 +64,7 @@ class VanityUrlEnabledContent extends React.Component {
     }
 
     render() {
-        const {content, filterText, classes, t, onChangeSelection, selection, actions, languages} = this.props;
+        const {content, filterText, classes, t, onChangeSelection, selection, actions, languages, lang} = this.props;
 
         let filterMatchInfo = null;
         let localFilterSwitch = null;
@@ -91,9 +84,7 @@ class VanityUrlEnabledContent extends React.Component {
             }
 
             localFilterSwitch = (
-                <Button className={classes.showToggle} data-vud-role="button-filter-switch" onClick={e => this.handleFilterSwitchClick(e)}>
-                    {filterSwitchButtonLabel}
-                </Button>
+                <Button className={classes.showToggle} data-vud-role="button-filter-switch" label={filterSwitchButtonLabel} onClick={e => this.handleFilterSwitchClick(e)}/>
             );
         }
 
@@ -108,17 +99,6 @@ class VanityUrlEnabledContent extends React.Component {
                         <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText} data-vud-role="content-title"/>
                         {filterMatchInfo}
                         {localFilterSwitch}
-                        {this.state.expanded ? <IconButton className={classes.addVanityButton}
-                                                           aria-label={actions.addAction.className}
-                                                           onClick={event => {
-                            event.stopPropagation();
-                            actions.addAction.call(content.path, languages);
-                        }}
-                                               >
-                            {actions.addAction.body}
-                            {actions.addAction.buttonIcon}
-                        </IconButton> : ''}
-
                     </ListItem>
                     <Collapse unmountOnExit in={this.state.expanded} timeout="auto">
                         <Grid container spacing={16} className={classes.vanityUrlLists}>
@@ -128,6 +108,9 @@ class VanityUrlEnabledContent extends React.Component {
                             <Grid item xs={6}>
                                 <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} contentUuid={content.uuid}/>
                             </Grid>
+                            <Grid item xs={12}>
+                                <AddVanityUrl path={content.path} lang={lang} availableLanguages={languages}/>
+                            </Grid>
                         </Grid>
                     </Collapse>
                 </Paper>
@@ -136,6 +119,9 @@ class VanityUrlEnabledContent extends React.Component {
     }
 }
 
-VanityUrlEnabledContent = withStyles(styles)(withTranslation('site-settings-seo')(VanityUrlEnabledContent));
+VanityUrlEnabledContent = compose(
+    withStyles(styles),
+    withTranslation('site-settings-seo'))
+(VanityUrlEnabledContent);
 
 export {VanityUrlEnabledContent};
