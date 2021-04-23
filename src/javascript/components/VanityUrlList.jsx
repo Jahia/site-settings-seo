@@ -68,13 +68,10 @@ const styles = theme => ({
         }
     },
     tableRowLive: {
-        height: '66px'
-    },
-    tableCellActionsContainer: {
-        width: '76px',
-        position: 'absolute',
-        marginLeft: '-76px',
-        border: 'none'
+        height: '66px',
+        '&:hover': {
+            backgroundColor: 'inherit'
+        }
     },
     checkboxLeft: {
         marginLeft: '-32px',
@@ -282,6 +279,12 @@ const styles = theme => ({
             background: 'white!important'
             // BoxShadow: 'inset 1px 1px 1px 0 rgba(38, 38, 38, 0.3)'
         }
+    },
+    switchBase: {
+        width: 'unset'
+    },
+    switchChecked: {
+        width: 'inherit'
     }
 });
 
@@ -369,7 +372,8 @@ event.stopPropagation();
 console.log(url);
 }}
                                             >
-                                                <Switch checked={url.active}
+                                                <Switch classes={{switchBase: classes.switchBase, checked: classes.switchChecked}}
+                                                        checked={url.active}
                                                         data-vud-role="action-active"
                                                         onClick={event => {
 event.stopPropagation();
@@ -378,17 +382,15 @@ event.stopPropagation();
                                             </TableCell>
                                             <TableCell padding="none" className={classInactive + ' ' + classes.tableCellTextInput}>
                                                 <Editable value={url.url}
-                                                          render={props => (this.props.filterText ? <HighlightText text={props.value} highlight={this.props.filterText} classes={classes}/> : <Typography className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>)}
+                                                          render={props => <Typography className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>}
                                                           onEdit={this.handleEdit.bind(this, urlPair.uuid)}
                                                           onChange={this.onMappingChanged.bind(this, urlPair, actions)}/>
                                             </TableCell>
-                                            <TableCell padding="none" className={classes.hiddenOnHover + ' ' + classInactive + ' ' + classes.tableCellActionsContainer}>
-                                                {selection.length === 0 ? (
-                                                    <span>
-                                                        <ActionButton role="action-delete" className={classes.deleteAction} action={actions.deleteAction} data={[urlPair]}/>
-                                                        <ActionButton role="action-move" className={classes.moveAction} action={actions.moveAction} data={[urlPair]}/>
-                                                    </span>
-                                                ) : ''}
+                                            <TableCell padding="none" className={classes.hiddenOnHover + ' ' + classInactive}>
+                                                {selection.length === 0 ? <ActionButton role="action-delete" className={classes.deleteAction} action={actions.deleteAction} data={[urlPair]}/> : ''}
+                                            </TableCell>
+                                            <TableCell padding="none" className={classes.hiddenOnHover + ' ' + classInactive}>
+                                                {selection.length === 0 ? <ActionButton role="action-move" className={classes.moveAction} action={actions.moveAction} data={[urlPair]}/> : ''}
                                             </TableCell>
                                             <TableCell padding="none" className={classInactive}>
                                                 <Checkbox className={url.default ? '' : classes.hiddenOnHover}

@@ -22,6 +22,16 @@ import {withSite} from './SiteConnector';
 import {ProgressOverlay} from "@jahia/react-material";
 
 legacyTheme.overrides.MuiSelect.selectMenu.color = 'rgb(37, 43, 47)';
+modifyFontFamily();
+
+function modifyFontFamily() {
+    Object.getOwnPropertyNames(legacyTheme.typography).forEach(name => {
+        if (legacyTheme.typography[name].fontFamily) {
+            legacyTheme.typography[name].fontFamily = '"Nunito", \'Nunito Sans\'';
+        }
+    })
+}
+
 
 const styles = theme => ({
     title: {
@@ -52,7 +62,8 @@ const styles = theme => ({
         height: '100%'
     },
     layout: {
-        height: 'calc(100vh - 150px)',
+        marginTop: '-60px',
+        height: 'calc(100vh - 70px)',
         overflowY: 'scroll'
     },
     actions: {
