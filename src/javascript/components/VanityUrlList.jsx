@@ -19,7 +19,7 @@ import {Editable} from './Editable';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {flowRight as compose} from 'lodash';
 import {withNotifications} from '@jahia/react-material';
-import {Typography, Button, MoreVert, Chip} from '@jahia/moonstone';
+import {Typography, Button, MoreVert, Chip, SwapHoriz, Delete, Publish, Star} from '@jahia/moonstone';
 
 
 const styles = theme => ({
@@ -87,9 +87,6 @@ const styles = theme => ({
     },
     liveVanityUrl: {
         paddingLeft: '14px!important'
-    },
-    liveDefaultValue: {
-        width: '30px'
     },
     liveLanguage: {
         color: '#676767',
@@ -174,10 +171,6 @@ const styles = theme => ({
             marginRight: '78px'
         }
     },
-    publishedCheck: {
-        color: 'white',
-        display: 'none'
-    },
     moveAction: {
         color: '#212121',
         opacity: '0.6',
@@ -187,12 +180,7 @@ const styles = theme => ({
         }
     },
     deleteAction: {
-        color: '#212121',
-        opacity: '0.6',
-        '&:hover': {
-            background: 'transparent',
-            opacity: '1'
-        }
+        color: '##E0182D',
     },
     actionButton: {
         width: '38px',
@@ -287,10 +275,15 @@ const styles = theme => ({
     },
     switchChecked: {
         width: 'inherit'
+    },
+    menuAction: {
+        '&:hover': {
+            background: 'transparent !important'
+        }
     }
 });
 
-const LiveRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, expanded, actions, languages, selection}) => {
+const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, expanded, actions, languages, selection, t}) => {
     const [anchor, setAnchor] = useState(null);
     const [editLine, setEditLine] = useState(null);
 
@@ -359,23 +352,31 @@ const LiveRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, expa
                 <TableCell className={classInactive + ' ' + classes.languageContainer} width="10%">
                     <LanguageMenu languageCode={urlPair.default.language} languages={languages} onLanguageSelected={languageCode => actions.updateVanity.call({urlPair: urlPair, language: languageCode})}/>
                 </TableCell>
-                <TableCell width="5%">
-                    <Button variant="ghost" icon={<MoreVert/>} onClick={openMenu}/>
-                    <Menu
-                        anchorEl={anchor}
-                        keepMounted
-                        open={Boolean(anchor)}
-                        onClose={closeMenu}
-                    >
-                        <MenuItem onClick={e => {closeMenu(); actions.deleteAction.call([urlPair], e);}}>Delete</MenuItem>
-                        <MenuItem onClick={e => {closeMenu(); actions.moveAction.call([urlPair], e);}}>Move</MenuItem>
-                        <MenuItem onClick={e => {closeMenu(); actions.updateVanity.call({urlPair: urlPair, defaultMapping: !url.default}, e)}}>
-                            {!url.default ? 'Set as canonical' : 'Unset canonical'}
-                        </MenuItem>
-                        <MenuItem onClick={e => {closeMenu(); actions.publishAction.call([urlPair], e);}}>
-                            {isPublished ? 'Unpublish' : 'Publish'}
-                        </MenuItem>
-                    </Menu>
+                <TableCell width="7%" align="center" padding="none">
+                    <span>
+                        <Button variant="ghost" icon={<MoreVert/>} onClick={openMenu}/>
+                        <Menu
+                            anchorEl={anchor}
+                            keepMounted
+                            open={Boolean(anchor)}
+                            onClose={closeMenu}
+                        >
+                            <MenuItem onClick={e => {closeMenu(); actions.updateVanity.call({urlPair: urlPair, defaultMapping: !url.default}, e)}}>
+                                {!url.default ? <Button className={classes.menuAction} variant="ghost" label={t('label.actions.canonical.set')} icon={<Star/>} size="small" onClick={()=>{}}/> :
+                                    <Button className={classes.menuAction} variant="ghost" label={t('label.actions.canonical.unset')} icon={<Star/>} size="small" onClick={()=>{}}/>}
+                            </MenuItem>
+                            <MenuItem onClick={e => {closeMenu(); actions.moveAction.call([urlPair], e);}}>
+                                <Button className={classes.menuAction} variant="ghost" label={t('label.actions.move')} icon={<Publish/>} size="small" onClick={()=>{}}/>
+                            </MenuItem>
+                            { !isPublished && <MenuItem onClick={e => {closeMenu(); actions.publishAction.call([urlPair], e);}}>
+                                    <Button className={classes.menuAction} variant="ghost" label={t('label.actions.publish')} icon={<Publish/>} size="small" onClick={()=>{}}/>
+                                </MenuItem>
+                            }
+                            <MenuItem onClick={e => {closeMenu(); actions.deleteAction.call([urlPair], e);}}>
+                                <Button className={classes.menuAction} variant="ghost" color="danger" label={t('label.actions.delete')} icon={<Delete/>} size="small" onClick={()=>{}}/>
+                            </MenuItem>
+                        </Menu>
+                    </span>
                 </TableCell>
             </TableRow>
         )
@@ -429,10 +430,11 @@ class VanityUrlListDefault extends React.Component {
                 <Paper elevation={2} className={classes.vanityGroupPaper}>
                     <Table className={classes.table}>
                         <TableBody data-vud-table-body-default={contentUuid}>
-                            {vanityUrls.map(urlPair => <LiveRow classes={classes}
+                            {vanityUrls.map(urlPair => <DefaultRow classes={classes}
                                                                 urlPair={urlPair}
                                                                 checkboxesDisplayed={checkboxesDisplayed}
                                                                 onChangeSelection={onChangeSelection}
+                                                                t={t}
                                                                 expanded={expanded}
                                                                 actions={actions}
                                                                 languages={languages}
@@ -511,7 +513,7 @@ class VanityUrlListLive extends React.Component {
                                 }
 
                                     return (
-                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRow}>
+                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRowLive}>
                                             <TableCell colSpan={4} padding="none">
                                                 {/* Not published yet */}
                                             </TableCell>

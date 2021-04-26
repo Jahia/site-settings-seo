@@ -26,43 +26,14 @@ import {Add, Button} from '@jahia/moonstone';
 
 const styles = theme => ({
     pickerRoot: {
-        overflowY: 'scroll',
-        borderRadius: '0px',
-        border: '1px solid #d5d5d5',
-        borderBottom: 'none',
+        borderRadius: '4px',
+        border: '1px solid #00A0E3',
         '& $PickerViewMaterial': {
             color: 'pink'
         }
     },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: 200
-    },
-    inactive: {
-        color: theme.palette.text.disabled
-    },
     error: {
         color: theme.palette.error.main
-    },
-    leftControl: {
-        marginRight: 'auto',
-        paddingLeft: '16px'
-    },
-    rowDisabled: {
-        backgroundColor: '#f5f5f5',
-        color: theme.palette.getContrastText(theme.palette.background.global),
-
-        '& $editDisabled > div': {
-            boxShadow: 'none'
-        }
-    },
-    rowEnabled: {
-        backgroundColor: '#FFF!important',
-        background: 'red',
-        '&:hover': {
-            backgroundColor: '#FFF!important'
-        }
     },
     root: {
         width: '100%',
@@ -87,17 +58,6 @@ const styles = theme => ({
         right: '10px',
         top: '7px'
     },
-    dialogNote: {
-        fontSize: '0.875rem',
-        marginTop: '10px'
-    },
-    dialogActionsButtonContainer: {
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        position: 'absolute',
-        right: '20px',
-        paddingTop: '7px'
-    },
     editDisabled: {
         background: 'red',
 
@@ -108,6 +68,11 @@ const styles = theme => ({
         '&:hover': {
             backgroundColor: 'transparent',
             color: '#4A4343'
+        }
+    },
+    row: {
+        '&:hover': {
+            backgroundColor: 'inherit'
         }
     }
 });
@@ -253,7 +218,7 @@ class AddVanityUrl extends React.Component {
         console.log('reset input');
         input.value = '';
         input.focus();
-    }
+    };
 
     render() {
         const {t, availableLanguages, classes} = this.props;
@@ -262,7 +227,7 @@ class AddVanityUrl extends React.Component {
         if (!this.state.showInputField) {
             return <Button className={classes.addVanityButton}
                            aria-label="add"
-                           label="ADD VANITY URL"
+                           label={t('label.buttons.addVanity')}
                            icon={<Add/>}
                            onClick={event => {
                                event.stopPropagation();
@@ -271,18 +236,14 @@ class AddVanityUrl extends React.Component {
         }
 
         return (
-            <Paper elevation={1} classes={{root: classes.pickerRoot}}>
+            <Paper elevation={0} classes={{root: classes.pickerRoot}}>
                 <Table>
                     <TableBody>
                         {mappings.map((entry, index) => {
                             let errorForRow = _.find(errors, error => error.url === entry.url || error.url === ('/' + entry.url));
                             let lineEnabled = Boolean(entry.url) || entry.focus;
                             return (
-                                <TableRow key={index}
-                                          classes={{
-                                    root: (lineEnabled ? classes.rowEnabled : classes.rowDisabled)
-                                }}
-                                >
+                                <TableRow key={index} hove={false} className={classes.row}>
                                     <TableCell width="5%">
                                         <Switch
                                             checked={entry.active}
@@ -363,7 +324,7 @@ class AddVanityUrl extends React.Component {
 AddVanityUrl = compose(
     withVanityMutationContext(),
     withNotifications(),
-    withStyles(() => {}), // todo figure out why there is an error here
+    withStyles(styles),
     withTranslation('site-settings-seo')
 )(AddVanityUrl);
 
