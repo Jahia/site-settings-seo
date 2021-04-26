@@ -366,7 +366,7 @@ const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, e
                                     <Button className={classes.menuAction} variant="ghost" label={t('label.actions.canonical.unset')} icon={<Star/>} size="small" onClick={()=>{}}/>}
                             </MenuItem>
                             <MenuItem onClick={e => {closeMenu(); actions.moveAction.call([urlPair], e);}}>
-                                <Button className={classes.menuAction} variant="ghost" label={t('label.actions.move')} icon={<Publish/>} size="small" onClick={()=>{}}/>
+                                <Button className={classes.menuAction} variant="ghost" label={t('label.actions.move')} icon={<SwapHoriz/>} size="small" onClick={()=>{}}/>
                             </MenuItem>
                             { !isPublished && <MenuItem onClick={e => {closeMenu(); actions.publishAction.call([urlPair], e);}}>
                                     <Button className={classes.menuAction} variant="ghost" label={t('label.actions.publish')} icon={<Publish/>} size="small" onClick={()=>{}}/>
