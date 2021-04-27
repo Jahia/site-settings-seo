@@ -12,8 +12,11 @@ import {InvalidMappingError, MoveSiteError, DuplicateMappingError, AddMappingsEr
 class VanityMutationsProvider extends Component {
     constructor(props) {
         super(props);
+        this.addMutations();
+    }
 
-        let {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
+    addMutations() {
+        const {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
 
         vanityMutationsContext.delete = (pathsOrIds, props) => deleteMutation({
             variables: {
@@ -92,6 +95,10 @@ class VanityMutationsProvider extends Component {
                 }]
             });
         };
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.addMutations();
     }
 
     getChildContext() {
