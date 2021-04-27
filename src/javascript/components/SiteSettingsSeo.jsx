@@ -439,13 +439,6 @@ class SiteSettingsSeoApp extends React.Component {
                     {...this.state.publishDeletion}
                     onClose={this.closePublishDeletion}
                 />}
-
-                {/*    {this.state.add.open && <AddVanityUrl*/}
-                {/*    {...this.state.add}*/}
-                {/*    {...this.state.loadParams}*/}
-                {/*    lang={dxContext.lang}*/}
-                {/*    onClose={this.closeAdd}*/}
-                {/*/>}*/}
                 </div>
             </div>
         );
