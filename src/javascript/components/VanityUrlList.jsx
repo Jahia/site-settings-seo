@@ -280,6 +280,9 @@ const styles = theme => ({
         '&:hover': {
             background: 'transparent !important'
         }
+    },
+    colorWhite: {
+        color: 'white'
     }
 });
 
@@ -469,6 +472,7 @@ class VanityUrlListLive extends React.Component {
         }));
         // Filter found languages
         defaultNotPublished = _.filter(defaultNotPublished, vanity => _.includes(multipleDefaultLang, vanity.language));
+
         return (
             <div>
                 <div>
@@ -480,15 +484,16 @@ class VanityUrlListLive extends React.Component {
                     <Table className={classes.table}>
                         <TableBody data-vud-table-body-live={contentUuid}>
                             {vanityUrls.map(urlPair => {
-                                let url = urlPair.live;
+                                const url = urlPair.live;
                                 if (url) {
-                                    let classInactive = (url.active ? '' : classes.inactive);
+                                    const classInactive = (url.active ? '' : classes.inactive);
+                                    const defaultWithMissingCounterpart = urlPair.default && !_.includes(defaultNotPublished, url);
                                     return (
                                         <TableRow key={urlPair.uuid}
                                                   hover={false}
-                                                  className={classes.tableRowLive + ' '  + classes.vanityUrlLive + ' ' + ((urlPair.default && !_.includes(defaultNotPublished, url)) ? '' : classes.missingDefaultCounterpart)}>
+                                                  className={classes.tableRowLive + ' '  + classes.vanityUrlLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.missingDefaultCounterpart)}>
                                             <TableCell className={classInactive + ' ' + classes.liveVanityUrl} width="80%">
-                                                <Typography variant="body" className={classes.vanityURLTextLive}>{url.url}</Typography>
+                                                <Typography variant="body" className={classes.vanityURLTextLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.colorWhite)}>{url.url}</Typography>
                                             </TableCell>
                                             <TableCell width="10%">
                                                 {url.default ? <Chip color="accent" label="Canonical"/> : null}
