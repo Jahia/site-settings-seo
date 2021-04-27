@@ -488,15 +488,15 @@ class VanityUrlListLive extends React.Component {
                                                   hover={false}
                                                   className={classes.tableRowLive + ' '  + classes.vanityUrlLive + ' ' + ((urlPair.default && !_.includes(defaultNotPublished, url)) ? '' : classes.missingDefaultCounterpart)}>
                                             <TableCell className={classInactive + ' ' + classes.liveVanityUrl} width="80%">
-                                                {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : <Typography variant="body" className={classes.vanityURLTextLive}>{url.url}</Typography>}
+                                                <Typography variant="body" className={classes.vanityURLTextLive}>{url.url}</Typography>
                                             </TableCell>
                                             <TableCell width="10%">
                                                 {url.default ? <Chip color="accent" label="Canonical"/> : null}
                                             </TableCell>
-                                            <TableCell className={classInactive} className={classes.liveLanguage} width="5%">
+                                            <TableCell className={classes.liveLanguage} width="5%" align="center">
                                                 {url.language}
                                             </TableCell>
-                                            <TableCell className={classInactive + ' ' + classes.actionButton} style={{textAlign: 'center'}} width="5%">
+                                            <TableCell className={classInactive + ' ' + classes.actionButton} width="5%" align="center">
                                                 {url.editNode ?
                                                     (url.editNode.path !== url.path ?
                                                         <ActionButton action={actions.infoButton}
