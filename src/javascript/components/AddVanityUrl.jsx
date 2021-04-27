@@ -1,12 +1,6 @@
 import React from 'react';
 import {
-    Button,
     Checkbox,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
     FormControl,
     FormControlLabel,
     FormHelperText,
@@ -20,7 +14,7 @@ import {
     TableRow,
     withStyles
 } from '@material-ui/core';
-import {Cancel, Star, StarBorder} from '@material-ui/icons';
+import {Cancel} from '@material-ui/icons';
 import {LanguageMenu} from './LanguageMenu';
 import {withTranslation} from 'react-i18next';
 import {withVanityMutationContext} from './VanityMutationsProvider';
@@ -28,47 +22,18 @@ import {withNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {SiteSettingsSeoConstants} from './SiteSettingsSeo';
 import {flowRight as compose} from 'lodash';
+import {Add, Button} from '@jahia/moonstone';
 
 const styles = theme => ({
     pickerRoot: {
-        overflowY: 'scroll',
-        boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
-        borderRadius: '0px',
-        border: '1px solid #d5d5d5',
-        borderBottom: 'none',
+        borderRadius: '4px',
+        border: '1px solid #00A0E3',
         '& $PickerViewMaterial': {
             color: 'pink'
         }
     },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: 200
-    },
-    inactive: {
-        color: theme.palette.text.disabled
-    },
     error: {
         color: theme.palette.error.main
-    },
-    leftControl: {
-        marginRight: 'auto',
-        paddingLeft: '16px'
-    },
-    rowDisabled: {
-        backgroundColor: '#f5f5f5',
-        color: theme.palette.getContrastText(theme.palette.background.global),
-
-        '& $editDisabled > div': {
-            boxShadow: 'none'
-        }
-    },
-    rowEnabled: {
-        backgroundColor: '#FFF!important',
-        background: 'red',
-        '&:hover': {
-            backgroundColor: '#FFF!important'
-        }
     },
     root: {
         width: '100%',
@@ -93,30 +58,22 @@ const styles = theme => ({
         right: '10px',
         top: '7px'
     },
-    dialogNote: {
-        fontSize: '0.875rem',
-        marginTop: '10px'
-    },
-    dialogActionsButtonContainer: {
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        position: 'absolute',
-        right: '20px',
-        paddingTop: '7px'
-    },
-    vanitySwitchContainer: {
-        width: '60px'
-    },
-    languageContainer: {
-        width: '70px'
-    },
-    defaultContainer: {
-        width: '50px'
-    },
     editDisabled: {
         background: 'red',
 
         '& input': {}
+    },
+    addVanityButton: {
+        color: '#575757',
+        '&:hover': {
+            backgroundColor: 'transparent',
+            color: '#4A4343'
+        }
+    },
+    row: {
+        '&:hover': {
+            backgroundColor: 'inherit'
+        }
     }
 });
 
@@ -129,7 +86,8 @@ class AddVanityUrl extends React.Component {
         this.state = {
             mappings: this._resetMap(),
             errors: [],
-            doPublish: false
+            doPublish: false,
+            showInputField: false
         };
 
         this.handleSave = this.handleSave.bind(this);
@@ -214,9 +172,9 @@ class AddVanityUrl extends React.Component {
         this.setState({
             mappings: this._resetMap(),
             errors: [],
-            doPublish: false
+            doPublish: false,
+            showInputField: false
         });
-        this.props.onClose(event);
     };
 
     handleFieldChange = (field, index, value) => {
@@ -260,132 +218,105 @@ class AddVanityUrl extends React.Component {
         console.log('reset input');
         input.value = '';
         input.focus();
-    }
+    };
 
     render() {
-        let {t, open, path, onClose, availableLanguages, classes} = this.props;
+        const {t, availableLanguages, classes} = this.props;
         const {errors, mappings} = this.state;
 
+        if (!this.state.showInputField) {
+            return <Button className={classes.addVanityButton}
+                           aria-label="add"
+                           label={t('label.buttons.addVanity')}
+                           icon={<Add/>}
+                           onClick={event => {
+                               event.stopPropagation();
+                               this.setState({showInputField: true});
+                           }}/>
+        }
+
         return (
-            <div>
-                <Dialog fullWidth
-                        open={open}
-                        maxWidth="md"
-                        onClose={onClose}
-                        onEntered={this.handleDialogEntered}
-                >
-                    <DialogTitle id="alert-dialog-title">{t('label.dialogs.add.title')}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            {path}
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogContent>
-                        <Paper elevation={2} classes={{root: classes.pickerRoot}}>
-                            <Table>
-                                <TableBody>
-                                    {mappings.map((entry, index) => {
-                                        let errorForRow = _.find(errors, error => error.url === entry.url || error.url === ('/' + entry.url));
-                                        let lineEnabled = Boolean(entry.url) || entry.focus;
-                                        return (
-                                            <TableRow key={index}
-                                                      classes={{
-                                                root: (lineEnabled ? classes.rowEnabled : classes.rowDisabled)
-                                            }}
-                                            >
-                                                <TableCell padding="none" className={classes.vanitySwitchContainer}>
-                                                    <Switch
-                                                        checked={entry.active}
-                                                        data-vud-role="active"
-                                                        onChange={(event, checked) => this.handleFieldChange('active', index, checked)}/>
-                                                </TableCell>
-                                                <TableCell padding="none">
+            <Paper elevation={0} classes={{root: classes.pickerRoot}}>
+                <Table>
+                    <TableBody>
+                        {mappings.map((entry, index) => {
+                            let errorForRow = _.find(errors, error => error.url === entry.url || error.url === ('/' + entry.url));
+                            let lineEnabled = Boolean(entry.url) || entry.focus;
+                            return (
+                                <TableRow key={index} hove={false} className={classes.row}>
+                                    <TableCell width="5%">
+                                        <Switch
+                                            checked={entry.active}
+                                            data-vud-role="active"
+                                            onChange={(event, checked) => this.handleFieldChange('active', index, checked)}/>
+                                    </TableCell>
+                                    <TableCell width="70%">
 
-                                                    <FormControl className={classes.root}
-                                                                 classes={{
-                                                        root: (lineEnabled ? '' : classes.editDisabled)
-                                                    }}
-                                                    >
-                                                        <Input
-                                                            ref={index}
-                                                            inputRef={input => {
-                                                                this.inputTab[index] = input;
-                                                                if (index === 0) {
-                                                                    this.firstMappingInputRef = input;
-                                                                }
+                                        <FormControl className={classes.root}
+                                                     classes={{
+                                            root: (lineEnabled ? '' : classes.editDisabled)
+                                        }}
+                                        >
+                                            <Input
+                                                ref={index}
+                                                inputRef={input => {
+                                                    this.inputTab[index] = input;
+                                                    if (index === 0) {
+                                                        this.firstMappingInputRef = input;
+                                                    }
+                                                }}
+                                                error={Boolean(errorForRow)}
+                                                placeholder={t('label.dialogs.add.text')}
+                                                data-vud-role="url"
+                                                endAdornment={entry.url ?
+                                                <IconButton disableRipple
+                                                            className={classes.button + ' ' + classes.cancel}
+                                                            component="span"
+                                                            onClick={() => {
+                                                                delete entry.url;
+                                                                this.resetInput(this.inputTab[index]);
                                                             }}
-                                                            error={Boolean(errorForRow)}
-                                                            placeholder={t('label.dialogs.add.text')}
-                                                            data-vud-role="url"
-                                                            endAdornment={entry.url ?
-                                                            <IconButton disableRipple
-                                                                        className={classes.button + ' ' + classes.cancel}
-                                                                        component="span"
-                                                                        onClick={() => {
-                                                                            delete entry.url;
-                                                                            this.resetInput(this.inputTab[index]);
-                                                                        }}
-                                                            >
-                                                                <Cancel/>
-                                                            </IconButton> : null}
-                                                            onFocus={() => this.handleFieldChange('focus', index, true)}
-                                                            onBlur={() => this.handleFieldChange('focus', index, false)}
-                                                            onChange={event => this.handleFieldChange('url', index, event.target.value)}
-                                                        />
-                                                        {errorForRow && <FormHelperText>
-                                                            <error><label>{errorForRow.label}</label>
-                                                                <message>{errorForRow.message}</message>
-                                                            </error>
-                                                        </FormHelperText>}
-                                                    </FormControl>
-
-                                                </TableCell>
-                                                <TableCell padding="none" className={classes.defaultContainer}>
-                                                    <Checkbox checked={entry.defaultMapping}
-                                                              icon={<StarBorder/>}
-                                                              checkedIcon={<Star/>}
-                                                              data-vud-role="default"
-                                                              onChange={(event, checked) => this.handleFieldChange('defaultMapping', index, checked)}/>
-                                                </TableCell>
-                                                <TableCell padding="none"
-                                                           data-vud-role="language"
-                                                           className={classes.languageContainer}
                                                 >
-                                                    <LanguageMenu languages={availableLanguages}
-                                                                  languageCode={entry.language}
-                                                                  onLanguageSelected={languageCode => this.handleFieldChange('language', index, languageCode)}/>
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </Paper>
-                    </DialogContent>
-                    <DialogActions>
-                        <FormControlLabel classes={{root: classes.leftControl}}
-                                          control={
-                                              <Checkbox
-                                                  data-vud-role="checkbox-hint"
-                                                  onChange={(event, checked) => this.handlePublishCheckboxChange(checked)}/>
-                                          }
-                                          label={t('label.dialogs.add.check')}
-                        />
-                        <div className={classes.dialogActionsButtonContainer}>
-                            <Button color="default" data-vud-role="button-cancel" onClick={this.handleClose}>
-                                {t('label.cancel')}
-                            </Button>
-                            <Button autoFocus
-                                    color="secondary"
-                                    data-vud-role="button-primary"
-                                    onClick={this.handleSave}
-                            >
-                                {t('label.dialogs.add.save')}
-                            </Button>
-                        </div>
-                    </DialogActions>
-                </Dialog>
-            </div>
+                                                    <Cancel/>
+                                                </IconButton> : null}
+                                                onFocus={() => this.handleFieldChange('focus', index, true)}
+                                                onBlur={() => this.handleFieldChange('focus', index, false)}
+                                                onChange={event => this.handleFieldChange('url', index, event.target.value)}
+                                            />
+                                            {errorForRow && <FormHelperText>
+                                                <error><label>{errorForRow.label}</label>
+                                                    <message>{errorForRow.message}</message>
+                                                </error>
+                                            </FormHelperText>}
+                                        </FormControl>
+
+                                    </TableCell>
+                                    <TableCell data-vud-role="language" width="9%">
+                                        <LanguageMenu languages={availableLanguages}
+                                                      languageCode={entry.language}
+                                                      onLanguageSelected={languageCode => this.handleFieldChange('language', index, languageCode)}/>
+                                    </TableCell>
+                                    <TableCell width="10%">
+                                        <FormControlLabel control={<Checkbox checked={entry.defaultMapping}
+                                                                             data-vud-role="default"
+                                                                             onChange={(event, checked) => this.handleFieldChange('defaultMapping', index, checked)}/>}
+                                                          label="Set as canonical" />
+                                    </TableCell>
+                                    <TableCell width="3%">
+                                        <Button color="default" variant="ghost" data-vud-role="button-cancel" label={t('label.cancel')} onClick={this.handleClose}/>
+                                    </TableCell>
+                                    <TableCell width="3%">
+                                        <Button color="accent"
+                                                data-vud-role="button-primary"
+                                                label={t('label.dialogs.add.save')}
+                                                onClick={this.handleSave}/>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </Paper>
         );
     }
 }
@@ -393,7 +324,7 @@ class AddVanityUrl extends React.Component {
 AddVanityUrl = compose(
     withVanityMutationContext(),
     withNotifications(),
-    withStyles(() => {}), // todo figure out why there is an error here
+    withStyles(styles),
     withTranslation('site-settings-seo')
 )(AddVanityUrl);
 

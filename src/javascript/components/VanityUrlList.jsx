@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {withTranslation} from 'react-i18next';
 import {
     Checkbox,
@@ -10,15 +10,16 @@ import {
     TableCell,
     TableRow,
     withStyles,
+    Menu,
+    MenuItem
 } from '@material-ui/core';
-import {Done, Star, StarBorder} from '@material-ui/icons';
 import {LanguageMenu} from './LanguageMenu';
 import * as _ from 'lodash';
 import {Editable} from './Editable';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {flowRight as compose} from 'lodash';
 import {withNotifications} from '@jahia/react-material';
-import {Typography} from '@jahia/moonstone';
+import {Typography, Button, MoreVert, Chip, SwapHoriz, Delete, Publish, Star} from '@jahia/moonstone';
 
 
 const styles = theme => ({
@@ -47,7 +48,8 @@ const styles = theme => ({
         transition: ['opacity', '0.25s']
     },
     table: {
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
+        tableLayout: 'fixed'
     },
     tableCellTextInput: {
         background: 'transparent',
@@ -85,9 +87,6 @@ const styles = theme => ({
     },
     liveVanityUrl: {
         paddingLeft: '14px!important'
-    },
-    liveDefaultValue: {
-        width: '30px'
     },
     liveLanguage: {
         color: '#676767',
@@ -172,10 +171,6 @@ const styles = theme => ({
             marginRight: '78px'
         }
     },
-    publishedCheck: {
-        color: 'white',
-        display: 'none'
-    },
     moveAction: {
         color: '#212121',
         opacity: '0.6',
@@ -185,12 +180,7 @@ const styles = theme => ({
         }
     },
     deleteAction: {
-        color: '#212121',
-        opacity: '0.6',
-        '&:hover': {
-            background: 'transparent',
-            opacity: '1'
-        }
+        color: '##E0182D',
     },
     actionButton: {
         width: '38px',
@@ -285,26 +275,128 @@ const styles = theme => ({
     },
     switchChecked: {
         width: 'inherit'
+    },
+    menuAction: {
+        '&:hover': {
+            background: 'transparent !important'
+        }
     }
 });
+
+const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, expanded, actions, languages, selection, t}) => {
+    const [anchor, setAnchor] = useState(null);
+    const [editLine, setEditLine] = useState(null);
+
+    const openMenu = (event) => {
+        setAnchor(event.currentTarget);
+    };
+
+    const closeMenu = () => {
+        setAnchor(null)
+    };
+
+    const onMappingChanged = (value, onSuccess, onError) => {
+        actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
+    };
+
+    const url = urlPair.default;
+    const selected = Boolean(_.find(selection, p => p.uuid === urlPair.uuid));
+
+    if (url) {
+        const classInactive = (url.active ? '' : classes.inactive);
+        const isPublished = url.publicationInfo.publicationStatus === 'PUBLISHED';
+
+        return (
+            <TableRow key={urlPair.uuid}
+                      hover
+                      className={
+                          classes.tableRow + ' ' +
+                          classInactive + ' ' +
+                          (editLine === urlPair.uuid ? classes.editLine : '')
+                      }
+                      classes={{
+                          root: classes.vanityUrl,
+                          hover: (isPublished ? classes.isPublished : classes.toBePublished)
+                      }}
+                      data-vud-url={url.url}
+            >
+                <TableCell className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft} width="3%">
+                    <Checkbox checked={selected}
+                              onClick={event => {
+                                  event.stopPropagation();
+                              }}
+                              onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
+                </TableCell>
+                <TableCell width="10%"
+                           onClick={event => {
+                               console.log(url);
+                           }}
+                >
+                    <Switch classes={{switchBase: classes.switchBase, checked: classes.switchChecked}}
+                            checked={url.active}
+                            data-vud-role="action-active"
+                            onClick={event => {
+                                event.stopPropagation();
+                            }}
+                            onChange={event => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)}/>
+                </TableCell>
+                <TableCell className={classInactive + ' ' + classes.tableCellTextInput} width="50%">
+                    <Editable value={url.url}
+                              render={props => <Typography className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>}
+                              onEdit={() => setEditLine(urlPair.uuid)}
+                              onChange={(value, onSuccess, onError) => onMappingChanged(value, onSuccess, onError)}/>
+                </TableCell>
+                <TableCell width="20%">
+                    {url.default ? <Chip color="accent" label="Canonical"/> : null}
+                </TableCell>
+                <TableCell className={classInactive + ' ' + classes.languageContainer} width="10%">
+                    <LanguageMenu languageCode={urlPair.default.language} languages={languages} onLanguageSelected={languageCode => actions.updateVanity.call({urlPair: urlPair, language: languageCode})}/>
+                </TableCell>
+                <TableCell width="7%" align="center" padding="none">
+                    <span>
+                        <Button variant="ghost" icon={<MoreVert/>} onClick={openMenu}/>
+                        <Menu
+                            anchorEl={anchor}
+                            keepMounted
+                            open={Boolean(anchor)}
+                            onClose={closeMenu}
+                        >
+                            <MenuItem onClick={e => {closeMenu(); actions.updateVanity.call({urlPair: urlPair, defaultMapping: !url.default}, e)}}>
+                                {!url.default ? <Button className={classes.menuAction} variant="ghost" label={t('label.actions.canonical.set')} icon={<Star/>} size="small" onClick={()=>{}}/> :
+                                    <Button className={classes.menuAction} variant="ghost" label={t('label.actions.canonical.unset')} icon={<Star/>} size="small" onClick={()=>{}}/>}
+                            </MenuItem>
+                            <MenuItem onClick={e => {closeMenu(); actions.moveAction.call([urlPair], e);}}>
+                                <Button className={classes.menuAction} variant="ghost" label={t('label.actions.move')} icon={<SwapHoriz/>} size="small" onClick={()=>{}}/>
+                            </MenuItem>
+                            { !isPublished && <MenuItem onClick={e => {closeMenu(); actions.publishAction.call([urlPair], e);}}>
+                                    <Button className={classes.menuAction} variant="ghost" label={t('label.actions.publish')} icon={<Publish/>} size="small" onClick={()=>{}}/>
+                                </MenuItem>
+                            }
+                            <MenuItem onClick={e => {closeMenu(); actions.deleteAction.call([urlPair], e);}}>
+                                <Button className={classes.menuAction} variant="ghost" color="danger" label={t('label.actions.delete')} icon={<Delete/>} size="small" onClick={()=>{}}/>
+                            </MenuItem>
+                        </Menu>
+                    </span>
+                </TableCell>
+            </TableRow>
+        )
+    }
+
+    return (
+        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRow}>
+            <TableCell colSpan={7} className={classes.missingDefault}>
+                {urlPair.live && urlPair.live.editNode ? (
+                        t('label.mappings.movedDefault', {page: urlPair.live.editNode.targetNode.displayName})
+                    ) :
+                    t('label.mappings.missingDefault', {vanityUrl: urlPair.live.url})}
+            </TableCell>
+        </TableRow>
+    );
+};
 
 class VanityUrlListDefault extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {editLine: ''};
-        this.handleEdit = this.handleEdit.bind(this);
-    }
-
-    onMappingChanged(urlPair, actions, value, onSuccess, onError) {
-        actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
-    }
-
-    handleEdit = (uuid, set) => {
-    	if (set) {
-            this.setState({editLine: uuid});
-        } else {
-            this.setState({editLine: ''});
-        }
     }
 
     render() {
@@ -337,97 +429,16 @@ class VanityUrlListDefault extends React.Component {
                 </div>
                 <Paper elevation={2} className={classes.vanityGroupPaper}>
                     <Table className={classes.table}>
-
                         <TableBody data-vud-table-body-default={contentUuid}>
-                            {vanityUrls.map(urlPair => {
-                                let url = urlPair.default;
-                                let selected = Boolean(_.find(selection, p => p.uuid === urlPair.uuid));
-                                if (url) {
-                                    let classInactive = (url.active ? '' : classes.inactive);
-                                    let isPublished = url.publicationInfo.publicationStatus === 'PUBLISHED';
-
-                                    return (
-                                        <TableRow key={urlPair.uuid}
-                                                  hover
-                                                  className={
-                                        	classes.tableRow + ' ' +
-											classInactive + ' ' +
-											(this.state.editLine === urlPair.uuid ? classes.editLine : '')
-}
-                                                  classes={{
-                                            root: classes.vanityUrl,
-                                            hover: (isPublished ? classes.isPublished : classes.toBePublished)
-                                        }}
-                                                  data-vud-url={url.url}
-                                        >
-                                            <TableCell padding="none" className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}>
-                                                <Checkbox checked={selected}
-                                                          onClick={event => {
-event.stopPropagation();
-}}
-                                                          onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
-                                            </TableCell>
-                                            <TableCell padding="none"
-                                                       onClick={event => {
-console.log(url);
-}}
-                                            >
-                                                <Switch classes={{switchBase: classes.switchBase, checked: classes.switchChecked}}
-                                                        checked={url.active}
-                                                        data-vud-role="action-active"
-                                                        onClick={event => {
-event.stopPropagation();
-}}
-                                                        onChange={event => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)}/>
-                                            </TableCell>
-                                            <TableCell padding="none" className={classInactive + ' ' + classes.tableCellTextInput}>
-                                                <Editable value={url.url}
-                                                          render={props => <Typography className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>}
-                                                          onEdit={this.handleEdit.bind(this, urlPair.uuid)}
-                                                          onChange={this.onMappingChanged.bind(this, urlPair, actions)}/>
-                                            </TableCell>
-                                            <TableCell padding="none" className={classes.hiddenOnHover + ' ' + classInactive}>
-                                                {selection.length === 0 ? <ActionButton role="action-delete" className={classes.deleteAction} action={actions.deleteAction} data={[urlPair]}/> : ''}
-                                            </TableCell>
-                                            <TableCell padding="none" className={classes.hiddenOnHover + ' ' + classInactive}>
-                                                {selection.length === 0 ? <ActionButton role="action-move" className={classes.moveAction} action={actions.moveAction} data={[urlPair]}/> : ''}
-                                            </TableCell>
-                                            <TableCell padding="none" className={classInactive}>
-                                                <Checkbox className={url.default ? '' : classes.hiddenOnHover}
-                                                          checked={url.default}
-                                                          icon={<StarBorder/>}
-                                                          checkedIcon={<Star/>}
-                                                          data-vud-role="action-default"
-                                                          onClick={event => {
-event.stopPropagation();
-}}
-                                                          onChange={event => actions.updateVanity.call({urlPair: urlPair, defaultMapping: event.target.checked}, event)}/>
-                                            </TableCell>
-                                            <TableCell padding="none" className={classInactive + ' ' + classes.languageContainer}>
-                                                <LanguageMenu languageCode={urlPair.default.language} languages={languages} onLanguageSelected={languageCode => actions.updateVanity.call({urlPair: urlPair, language: languageCode})}/>
-                                            </TableCell>
-                                            <TableCell padding="none" style={{textAlign: 'center'}} className={classes.publishArea}>
-                                                {isPublished ? (
-                                                    <Done classes={{root: classes.publishedCheck}}/>
-                                                ) : (
-                                                    <ActionButton role="action-publish" className={classes.publish} action={actions.publishAction} data={[urlPair]}/>
-                                                )}
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                }
-
-                                    return (
-                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRow}>
-                                            <TableCell colSpan={7} className={classes.missingDefault}>
-                                                {urlPair.live && urlPair.live.editNode ? (
-                                                        t('label.mappings.movedDefault', {page: urlPair.live.editNode.targetNode.displayName})
-                                                    ) :
-                                                    t('label.mappings.missingDefault', {vanityUrl: urlPair.live.url})}
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                            })}
+                            {vanityUrls.map(urlPair => <DefaultRow classes={classes}
+                                                                urlPair={urlPair}
+                                                                checkboxesDisplayed={checkboxesDisplayed}
+                                                                onChangeSelection={onChangeSelection}
+                                                                t={t}
+                                                                expanded={expanded}
+                                                                actions={actions}
+                                                                languages={languages}
+                                                                selection={selection}/>)}
                         </TableBody>
                     </Table>
                 </Paper>
@@ -476,16 +487,16 @@ class VanityUrlListLive extends React.Component {
                                         <TableRow key={urlPair.uuid}
                                                   hover={false}
                                                   className={classes.tableRowLive + ' '  + classes.vanityUrlLive + ' ' + ((urlPair.default && !_.includes(defaultNotPublished, url)) ? '' : classes.missingDefaultCounterpart)}>
-                                            <TableCell className={classInactive + ' ' + classes.liveVanityUrl}>
+                                            <TableCell className={classInactive + ' ' + classes.liveVanityUrl} width="80%">
                                                 {this.props.filterText ? <HighlightText text={url.url} highlight={this.props.filterText} classes={classes}/> : <Typography variant="body" className={classes.vanityURLTextLive}>{url.url}</Typography>}
                                             </TableCell>
-                                            <TableCell padding="none" className={classInactive + ' ' + classes.liveDefaultValue}>
-                                                {url.default ? <Star color={url.active ? 'secondary' : 'disabled'}/> : ''}
+                                            <TableCell width="10%">
+                                                {url.default ? <Chip color="accent" label="Canonical"/> : null}
                                             </TableCell>
-                                            <TableCell padding="none" className={classInactive} className={classes.liveLanguage}>
+                                            <TableCell className={classInactive} className={classes.liveLanguage} width="5%">
                                                 {url.language}
                                             </TableCell>
-                                            <TableCell padding="none" className={classInactive + ' ' + classes.actionButton} style={{textAlign: 'center'}}>
+                                            <TableCell className={classInactive + ' ' + classes.actionButton} style={{textAlign: 'center'}} width="5%">
                                                 {url.editNode ?
                                                     (url.editNode.path !== url.path ?
                                                         <ActionButton action={actions.infoButton}
@@ -502,7 +513,7 @@ class VanityUrlListLive extends React.Component {
                                 }
 
                                     return (
-                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRow}>
+                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRowLive}>
                                             <TableCell colSpan={4} padding="none">
                                                 {/* Not published yet */}
                                             </TableCell>
@@ -513,28 +524,6 @@ class VanityUrlListLive extends React.Component {
                     </Table>
                 </Paper>
             </div>
-        );
-    }
-}
-
-class HighlightText extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let highlight = this.props.highlight;
-        let highlightEscaped = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-        let parts = this.props.text.split(new RegExp(`(${highlightEscaped})`, 'gi'));
-        return (
-            <span className={this.props.classes.highlightTextContainer}>
-                {parts.map((part, i) => (
-                    <span key={i} className={part.toLowerCase() === highlight.toLowerCase() ? this.props.classes.highlightText : ''}>
-                        {part}
-                    </span>
-                  )
-                )}
-            </span>
         );
     }
 }

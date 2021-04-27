@@ -5,8 +5,15 @@
     "searchPlaceholder": "Search",
     "actions": {
       "delete": "Delete",
-      "move": "Move",
-      "publish": "Publish"
+      "move": "Move to another page",
+      "publish": "Publish",
+      "canonical": {
+        "set": "Set as canonical",
+        "unset": "Unset as canonical"
+      }
+    },
+    "buttons": {
+      "addVanity": "ADD VANITY URL"
     },
     "cancel": "Cancel",
     "copyright": "© Copyright 2002-2020 - Jahia Solutions Group SA",

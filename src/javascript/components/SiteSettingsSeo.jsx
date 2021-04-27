@@ -110,10 +110,6 @@ class SiteSettingsSeoApp extends React.Component {
             publishDeletion: {
                 open: false,
                 urlPairs: []
-            },
-            add: {
-                open: false,
-                availableLanguages: []
             }
 
         };
@@ -138,9 +134,6 @@ class SiteSettingsSeoApp extends React.Component {
         this.closeDeletion = this.closeDeletion.bind(this);
         this.openPublishDeletion = this.openPublishDeletion.bind(this);
         this.closePublishDeletion = this.closePublishDeletion.bind(this);
-
-        this.openAdd = this.openAdd.bind(this);
-        this.closeAdd = this.closeAdd.bind(this);
 
         this.actions = {
             deleteAction: {
@@ -173,11 +166,6 @@ class SiteSettingsSeoApp extends React.Component {
                 buttonIcon: <Info/>,
                 className: 'move',
                 call: this.openInfoButton
-            },
-            addAction: {
-                buttonIcon: <Add/>,
-                className: 'add',
-                call: this.openAdd
             },
             updateVanity: {
                 call: (data, onSuccess, onError) => {
@@ -307,25 +295,6 @@ class SiteSettingsSeoApp extends React.Component {
         });
     };
 
-    openAdd = (path, languages) => {
-        this.setState({
-            add: {
-                open: true,
-                path: path,
-                availableLanguages: languages
-            }
-        });
-    };
-
-    closeAdd() {
-        this.setState({
-            add: {
-                open: false,
-                availableLanguages: []
-            }
-        });
-    }
-
     onChangeSelection(add, urlPairs) {
         if (!urlPairs) {
             // Clear selection
@@ -392,7 +361,7 @@ class SiteSettingsSeoApp extends React.Component {
 
     render() {
         let {dxContext, t, classes} = this.props;
-        let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open || this.state.add.open);
+        let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
 
         return (
             <div>
@@ -426,6 +395,7 @@ class SiteSettingsSeoApp extends React.Component {
                         {(rows, totalCount, numberOfPages) => (
                             <VanityUrlTableView
                             {...this.state.loadParams}
+                            lang={dxContext.lang}
                             languages={this.props.languages}
                             rows={rows}
                             totalCount={totalCount}
@@ -468,13 +438,6 @@ class SiteSettingsSeoApp extends React.Component {
                     {this.state.publishDeletion.open && <PublishDeletion
                     {...this.state.publishDeletion}
                     onClose={this.closePublishDeletion}
-                />}
-
-                    {this.state.add.open && <AddVanityUrl
-                    {...this.state.add}
-                    {...this.state.loadParams}
-                    lang={dxContext.lang}
-                    onClose={this.closeAdd}
                 />}
                 </div>
             </div>
