@@ -27,10 +27,7 @@ import {Add, Button} from '@jahia/moonstone';
 const styles = theme => ({
     pickerRoot: {
         borderRadius: '4px',
-        border: '1px solid #00A0E3',
-        '& $PickerViewMaterial': {
-            color: 'pink'
-        }
+        border: '1px solid #00A0E3'
     },
     error: {
         color: theme.palette.error.main
@@ -243,7 +240,7 @@ class AddVanityUrl extends React.Component {
                             let errorForRow = _.find(errors, error => error.url === entry.url || error.url === ('/' + entry.url));
                             let lineEnabled = Boolean(entry.url) || entry.focus;
                             return (
-                                <TableRow key={index} hove={false} className={classes.row}>
+                                <TableRow key={index} hover={false} className={classes.row}>
                                     <TableCell width="5%">
                                         <Switch
                                             checked={entry.active}
