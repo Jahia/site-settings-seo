@@ -63,7 +63,7 @@ class VanityMutationsProvider extends Component {
                     active: active,
                     language: language,
                     url: url,
-                    lang: props.lang
+                    lang: this.props.lang
                 }
             });
         };

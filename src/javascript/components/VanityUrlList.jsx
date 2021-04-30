@@ -433,7 +433,8 @@ class VanityUrlListDefault extends React.Component {
                 <Paper elevation={2} className={classes.vanityGroupPaper}>
                     <Table className={classes.table}>
                         <TableBody data-vud-table-body-default={contentUuid}>
-                            {vanityUrls.map(urlPair => <DefaultRow classes={classes}
+                            {vanityUrls.map(urlPair => <DefaultRow key={urlPair.uuid}
+                                                                classes={classes}
                                                                 urlPair={urlPair}
                                                                 checkboxesDisplayed={checkboxesDisplayed}
                                                                 onChangeSelection={onChangeSelection}
