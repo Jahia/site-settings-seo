@@ -5,6 +5,9 @@
       "move": "Réaffecter",
       "publish": "Publier"
     },
+    "buttons": {
+      "addVanity": "Ajouter une URL personnalisée"
+    },
     "cancel": "Annuler",
     "copyright": "© Copyright 2002-2020 - Jahia Solutions Group SA",
     "dialogs": {
