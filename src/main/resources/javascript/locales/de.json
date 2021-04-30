@@ -1,9 +1,19 @@
 {
   "label": {
+    "seo": "SEO",
+    "languages": "Sprache",
+    "searchPlaceholder": "Suche",
     "actions": {
       "delete": "Löschen",
       "move": "Verschieben",
       "publish": "Veröffentlichen"
+      "canonical": {
+        "set": "Als carnonical setzen",
+        "unset": "Nicht carnonical setzen"
+      }
+    },
+    "buttons": {
+      "addVanity": "Vanity URL hinzufügen"
     },
     "cancel": "Abbrechen",
     "copyright": "© Copyright 2002-2020 - Jahia Solutions Group SA",
