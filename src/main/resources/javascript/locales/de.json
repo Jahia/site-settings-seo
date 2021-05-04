@@ -6,7 +6,7 @@
     "actions": {
       "delete": "Löschen",
       "move": "Verschieben",
-      "publish": "Veröffentlichen"
+      "publish": "Veröffentlichen",
       "canonical": {
         "set": "Als carnonical setzen",
         "unset": "Nicht carnonical setzen"
