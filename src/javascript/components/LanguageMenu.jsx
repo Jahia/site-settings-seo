@@ -19,7 +19,7 @@ class LanguageMenu extends React.Component {
                 label={languageCode}
                 value={languageCode}
                 size="small"
-                data={languages.map(lang => ({label: lang.name, value: lang.code}))}
+                data={languages.map(lang => ({label: `${lang.name} (${lang.code})`, value: lang.code}))}
                 onChange={(e, item) => this.handleSelect(item.value)}
             />
         )
