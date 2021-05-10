@@ -3,7 +3,7 @@ import {withTranslation} from 'react-i18next';
 import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
 import {Collapse, Grid, ListItem, ListItemText, Paper, withStyles} from '@material-ui/core';
 import {KeyboardArrowDown, KeyboardArrowRight} from '@material-ui/icons';
-import {Typography} from '@jahia/moonstone';
+import {Typography, Button} from '@jahia/moonstone';
 import {flowRight as compose} from 'lodash';
 import AddVanityUrl from './AddVanityUrl';
 
@@ -84,7 +84,7 @@ class VanityUrlEnabledContent extends React.Component {
             }
 
             localFilterSwitch = (
-                <Button className={classes.showToggle} data-vud-role="button-filter-switch" label={filterSwitchButtonLabel} onClick={e => this.handleFilterSwitchClick(e)}/>
+                <Button className={classes.showToggle} data-vud-role="button-filter-switch" variant="ghost" label={filterSwitchButtonLabel} onClick={e => this.handleFilterSwitchClick(e)}/>
             );
         }
 
