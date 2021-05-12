@@ -1,6 +1,6 @@
 import React from 'react';
-import {withStyles, MuiThemeProvider} from '@material-ui/core';
-import {withNotifications, NotificationProvider, legacyTheme} from '@jahia/react-material';
+import {withStyles} from '@material-ui/core';
+import {withNotifications, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import {LanguageSelector} from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
@@ -13,12 +13,9 @@ import Publication from './Publication';
 import Deletion from './Deletion';
 import PublishDeletion from './PublishDeletion';
 import Move from './Move';
-import {VanityMutationsProvider, withVanityMutationContext} from './VanityMutationsProvider';
-import {VanityUrlLanguageData} from './VanityUrlLanguageData';
+import {withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlTableData} from './VanityUrlTableData';
 import {Header} from '@jahia/moonstone';
-import {withSite} from './SiteConnector';
-import {ProgressOverlay} from "@jahia/react-material";
 
 legacyTheme.overrides.MuiSelect.selectMenu.color = 'rgb(37, 43, 47)';
 modifyFontFamily();
@@ -444,31 +441,16 @@ class SiteSettingsSeoApp extends React.Component {
     }
 }
 
-const SiteSettingsSeoComponent = _.flowRight(
-    withNotifications(),
-    withStyles(styles),
-    withVanityMutationContext(),
-    withTranslation('site-settings-seo')
-)(SiteSettingsSeoApp);
+const assembleWithHoc = function(component) {
+    return _.flowRight(
+        withNotifications(),
+        withStyles(styles),
+        withVanityMutationContext(),
+        withTranslation('site-settings-seo')
+    )(component);
+};
 
-const SiteSettingsSeo = _.flowRight(
-    withSite()
-)(function (props) {
-    if (!props.dxContext.mainResourcePath) {
-        return <ProgressOverlay/>;
-    }
+const SiteSettingsSeoComponent = assembleWithHoc(SiteSettingsSeoApp);
 
-    return (
-        <MuiThemeProvider theme={legacyTheme}>
-            <NotificationProvider notificationContext={{}}>
-                <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                    <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                        {languages => <SiteSettingsSeoComponent languages={languages} {...props}/>}
-                    </VanityUrlLanguageData>
-                </VanityMutationsProvider>
-            </NotificationProvider>
-        </MuiThemeProvider>
-    );
-});
 
-export {SiteSettingsSeo, SiteSettingsSeoConstants};
+export {SiteSettingsSeoComponent, SiteSettingsSeoConstants, SiteSettingsSeoApp, assembleWithHoc};
