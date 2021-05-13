@@ -89,6 +89,7 @@ class VanityUrlEnabledContent extends React.Component {
         }
 
         let vanityUrls = this.state.localFilteringEnabled || !content.allUrls ? content.urls : content.allUrls;
+        console.log(content, vanityUrls)
         return (
             <div className={this.props.classes.root} data-vud-content-uuid={content.uuid}>
                 <Paper elevation={1}>

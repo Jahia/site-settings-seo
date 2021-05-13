@@ -3,6 +3,7 @@ import {registry} from '@jahia/ui-extender';
 import i18next from 'i18next';
 import {SiteSettingsSeoEntry} from './components/SiteSettingsSeoEntry';
 import SiteSettingsSeoCardEntry from './components/contentEditor/SiteSettingsSeoEntry';
+import VanityAction from './components/contentEditor/VanityAction';
 
 const COMP_NAME = 'siteSettingsSeo';
 
@@ -27,8 +28,11 @@ export default function () {
                 render: () => React.createElement(SiteSettingsSeoEntry, {dxContext: {...window.contextJsParameters}})
             });
 
-            registry.add('contentEditor', 'vanityUrls', {
-                render: () => React.createElement(SiteSettingsSeoCardEntry, {dxContext: {...window.contextJsParameters}})
+            // Content editor action registration
+            registry.add('action', 'vanityUrls', VanityAction, {
+                targets: ['content-editor/header/3dots:3'],
+                requiredPermission: 'siteAdminUrlmapping',
+                dataSelRole: 'vanityUrls'
             });
 
             console.log('%c Site Settings SEO registered routes', 'color: #3c8cba');

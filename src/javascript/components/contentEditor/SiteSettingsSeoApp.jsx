@@ -5,7 +5,7 @@ import Publication from '../Publication';
 import Deletion from '../Deletion';
 import PublishDeletion from '../PublishDeletion';
 import Move from '../Move';
-import {VanityUrlTableData} from '../VanityUrlTableData';
+import {VanityUrlTableData} from './VanityUrlTableData';
 import {SiteSettingsSeoApp, SiteSettingsSeoConstants, assembleWithHoc} from '../SiteSettingsSeoApp';
 import {VanityUrlEnabledContent} from '../VanityUrlEnabledContent';
 
@@ -17,7 +17,7 @@ class SiteSettingsSeoCard extends SiteSettingsSeoApp {
 
     // Override
     render() {
-        let {dxContext, classes} = this.props;
+        let {dxContext, classes, path} = this.props;
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
 
         return (
@@ -27,14 +27,18 @@ class SiteSettingsSeoCard extends SiteSettingsSeoApp {
                            onChangeSelection={this.onChangeSelection}/>
 
                 <div className={classes.layout}>
-                    // Make sure provides only one row in this case
                     <VanityUrlTableData
                     {...this.state.loadParams}
-                    path={dxContext.mainResourcePath}
+                    path={path}
                     lang={dxContext.lang}
                     poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
                     >
-                        {rows => (
+                        {rows => {
+                            if (!rows[0]) {
+                                return null;
+                            }
+
+                            return (
                             <VanityUrlEnabledContent
                             {...this.state.loadParams}
                             lang={dxContext.lang}
@@ -44,7 +48,7 @@ class SiteSettingsSeoCard extends SiteSettingsSeoApp {
                             actions={this.actions}
                             onChangeSelection={this.onChangeSelection}
                         />
-                      )}
+                      )}}
                     </VanityUrlTableData>
 
                     {this.state.move.open && <Move
