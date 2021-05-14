@@ -2,7 +2,6 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import i18next from 'i18next';
 import {SiteSettingsSeoEntry} from './components/SiteSettingsSeoEntry';
-import SiteSettingsSeoCardEntry from './components/contentEditor/SiteSettingsSeoEntry';
 import VanityAction from './components/contentEditor/VanityAction';
 
 const COMP_NAME = 'siteSettingsSeo';
@@ -32,6 +31,8 @@ export default function () {
             registry.add('action', 'vanityUrls', VanityAction, {
                 targets: ['content-editor/header/3dots:3'],
                 requiredPermission: 'siteAdminUrlmapping',
+                showOnNodeTypes: ['jmix:vanityUrlMapped'],
+                label:'site-settings-seo:label.title',
                 dataSelRole: 'vanityUrls'
             });
 

@@ -16,6 +16,9 @@ import {withVanityMutationContext} from './VanityMutationsProvider';
 let styles = theme => ({
     dialogActionsContainer: {
         justifyContent: 'flex-end'
+    },
+    dialogRoot: {
+        zIndex: 2010
     }
 });
 
@@ -37,6 +40,7 @@ class Publication extends React.Component {
             <div>
                 <Dialog fullWidth
                         open={open}
+                        classes={{root: classes.dialogRoot}}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                         data-vud-role="dialog"

@@ -1,9 +1,18 @@
 import React, {useContext} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
+import {useNodeChecks} from '@jahia/data-helper';
 import EditVanityUrlsDialog from './EditVanityUrlsDialog'
 
-const Action = ({siteInfo, nodeData, formik, language, render: Render, ...otherProps}) => {
+const Action = ({siteInfo, nodeData, render: Render, label, requiredPermission, loading: Loading, language, showOnNodeTypes, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
+    const res = useNodeChecks(
+        {path: nodeData.path, language: language},
+        {requiredPermission: requiredPermission, showOnNodeTypes: showOnNodeTypes}
+    );
+
+    if (res.loading) {
+        return (Loading && <Loading {...otherProps}/>) || <></>;
+    }
 
     const closeDialog = () => {
         componentRenderer.destroy('VanityUrlsDialog');
@@ -15,13 +24,8 @@ const Action = ({siteInfo, nodeData, formik, language, render: Render, ...otherP
             EditVanityUrlsDialog,
             {
                 nodeData: nodeData,
-                currentLanguage: language,
                 isOpen: true,
-                languages: siteInfo.languages,
-                onCloseDialog: closeDialog,
-                onApply: newWipInfo => {
-                    closeDialog();
-                }
+                onCloseDialog: closeDialog
             });
     };
 
@@ -29,8 +33,8 @@ const Action = ({siteInfo, nodeData, formik, language, render: Render, ...otherP
         <>
             <Render
                 {...otherProps}
-                buttonLabel={'Vanity URLs'}
-                // enabled={nodeData.hasWritePermission && !Constants.wip.notAvailableFor.includes(nodeData.primaryNodeType.name)}
+                buttonLabel={label}
+                isVisible={res.checksResult}
                 onClick={openModal}/>
         </>
     )

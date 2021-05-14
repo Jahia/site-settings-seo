@@ -283,10 +283,13 @@ const styles = theme => ({
     },
     colorWhite: {
         color: 'white'
+    },
+    popoverRoot: {
+        zIndex: 2000
     }
 });
 
-const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, expanded, actions, languages, selection, t}) => {
+const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, expanded, actions, languages, selection, t, openCardMode}) => {
     const [anchor, setAnchor] = useState(null);
     const [editLine, setEditLine] = useState(null);
 
@@ -324,11 +327,12 @@ const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, e
                       data-vud-url={url.url}
             >
                 <TableCell className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft} width="3%">
-                    <Checkbox checked={selected}
-                              onClick={event => {
-                                  event.stopPropagation();
-                              }}
-                              onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
+                    {!openCardMode && <Checkbox checked={selected}
+                                                onClick={event => {
+                                                    event.stopPropagation();
+                                                }}
+                                                onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
+                    }
                 </TableCell>
                 <TableCell width="10%"
                            onClick={event => {
@@ -359,6 +363,7 @@ const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, e
                     <span>
                         <Button variant="ghost" icon={<MoreVert/>} onClick={openMenu}/>
                         <Menu
+                            ModalClasses={{root: classes.popoverRoot}}
                             anchorEl={anchor}
                             keepMounted
                             open={Boolean(anchor)}
@@ -403,7 +408,7 @@ class VanityUrlListDefault extends React.Component {
     }
 
     render() {
-        let {vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, languages, contentUuid} = this.props;
+        let {vanityUrls, classes, t, selection, onChangeSelection, expanded, actions, languages, contentUuid, openCardMode} = this.props;
         let urlPairs = _.filter(vanityUrls, urlPair => urlPair.default);
 
         let allCheckboxChecked = false;
@@ -418,7 +423,7 @@ class VanityUrlListDefault extends React.Component {
         return (
             <div>
                 <div>
-                    {urlPairs.length > 0 ? (
+                    {!openCardMode && urlPairs.length > 0 ? (
                         <Checkbox className={(checkboxesDisplayed ? (expanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.allCheckbox}
                                   checked={allCheckboxChecked}
                                   indeterminate={allCheckboxIndeterminate}
@@ -436,6 +441,7 @@ class VanityUrlListDefault extends React.Component {
                             {vanityUrls.map(urlPair => <DefaultRow key={urlPair.uuid}
                                                                 classes={classes}
                                                                 urlPair={urlPair}
+                                                                openCardMode={openCardMode}
                                                                 checkboxesDisplayed={checkboxesDisplayed}
                                                                 onChangeSelection={onChangeSelection}
                                                                 t={t}
