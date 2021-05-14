@@ -1,5 +1,4 @@
 import React from 'react';
-import {Selection} from '../Selection';
 import InfoButton from '../InfoButton';
 import Publication from '../Publication';
 import Deletion from '../Deletion';
@@ -22,10 +21,6 @@ class SiteSettingsSeoCard extends SiteSettingsSeoApp {
 
         return (
             <div>
-                <Selection selection={this.state.selection}
-                           actions={this.actions}
-                           onChangeSelection={this.onChangeSelection}/>
-
                 <div className={classes.layout}>
                     <VanityUrlTableData
                     {...this.state.loadParams}
@@ -41,12 +36,13 @@ class SiteSettingsSeoCard extends SiteSettingsSeoApp {
                             return (
                             <VanityUrlEnabledContent
                             {...this.state.loadParams}
+                            openCardMode
                             lang={dxContext.lang}
                             languages={this.props.languages}
                             content={rows[0]}
                             selection={this.state.selection}
                             actions={this.actions}
-                            onChangeSelection={this.onChangeSelection}
+                            onChangeSelection={() => {}}
                         />
                       )}}
                     </VanityUrlTableData>

@@ -35,6 +35,9 @@ let styles = theme => ({
         fontWeight: '400',
         padding: '0 15px',
         wordBreak: 'break-all'
+    },
+    dialogRoot: {
+        zIndex: 2010
     }
 });
 
@@ -73,6 +76,7 @@ class Deletion extends React.Component {
         return (
             <div>
                 <Dialog fullWidth
+                        classes={{root: classes.dialogRoot}}
                         open={open}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
