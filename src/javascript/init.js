@@ -32,7 +32,7 @@ export default function () {
                 targets: ['content-editor/header/3dots:3'],
                 requiredPermission: 'siteAdminUrlmapping',
                 showOnNodeTypes: ['jmix:vanityUrlMapped'],
-                label:'site-settings-seo:label.title',
+                label:'site-settings-seo:label.manage',
                 dataSelRole: 'vanityUrls'
             });
 
