@@ -1,12 +1,12 @@
 import React from 'react';
-import InfoButton from '../InfoButton';
-import Publication from '../Publication';
-import Deletion from '../Deletion';
-import PublishDeletion from '../PublishDeletion';
-import Move from '../Move';
-import {VanityUrlTableData} from './VanityUrlTableData';
-import {SiteSettingsSeoApp, SiteSettingsSeoConstants, assembleWithHoc} from '../SiteSettingsSeoApp';
-import {VanityUrlEnabledContent} from '../VanityUrlEnabledContent';
+import InfoButton from '../../InfoButton';
+import Publication from '../../Publication';
+import Deletion from '../../Deletion';
+import PublishDeletion from '../../PublishDeletion';
+import Move from '../../Move';
+import {VanityUrlTableData} from '../VanityUrlTableData/VanityUrlTableData';
+import {SiteSettingsSeoApp, SiteSettingsSeoConstants, assembleWithHoc} from '../../SiteSettingsSeoApp';
+import {VanityUrlEnabledContent} from '../../VanityUrlEnabledContent';
 
 // Probably wont work as not a class?
 class SiteSettingsSeoCard extends SiteSettingsSeoApp {

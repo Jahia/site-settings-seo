@@ -4,7 +4,7 @@ import {Button, Typography} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import classes from './EditVanityUrlsDialog.scss';
-import SiteSettingsSeoCardEntry from './SiteSettingsSeoEntry';
+import SiteSettingsSeoCardEntry from '../SiteSettingsSeo/SiteSettingsSeoEntry';
 
 export const EditVanityUrlsDialog = ({
                                          nodeData,

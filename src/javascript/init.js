@@ -2,7 +2,7 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import i18next from 'i18next';
 import {SiteSettingsSeoEntry} from './components/SiteSettingsSeoEntry';
-import VanityAction from './components/contentEditor/VanityAction';
+import {VanityAction} from './components/contentEditor/actions';
 
 const COMP_NAME = 'siteSettingsSeo';
 

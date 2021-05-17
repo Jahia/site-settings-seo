@@ -1,4 +1,4 @@
-import {DefaultVanityUrls, LiveVanityUrls} from '../gqlFragments';
+import {DefaultVanityUrls, LiveVanityUrls} from '../../gqlFragments';
 import gql from 'graphql-tag';
 
 const TableQuery = gql`

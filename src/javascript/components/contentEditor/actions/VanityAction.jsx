@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useNodeChecks} from '@jahia/data-helper';
-import EditVanityUrlsDialog from './EditVanityUrlsDialog'
+import EditVanityUrlsDialog from '../EditvanityUrlsDialog'
 
 const Action = ({siteInfo, nodeData, render: Render, label, requiredPermission, loading: Loading, language, showOnNodeTypes, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
