@@ -11,6 +11,7 @@ import org.jahia.services.render.filter.AbstractFilter;
 import org.jahia.services.render.filter.RenderChain;
 import org.jahia.services.render.filter.RenderFilter;
 import org.jahia.settings.SettingsBean;
+import org.jahia.utils.LanguageCodeConverters;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
@@ -93,7 +94,8 @@ public class SeoUrlFilter extends AbstractFilter {
                 String vanityLanguage = url.getPropertyAsString(LANGUAGE);
                 if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage) && url.getProperty(J_DEFAULT).getBoolean()) {
                     vanityLangs.add(vanityLanguage);
-                    altLinks.append(altLink(vanityLanguage, buildHref(node, renderContext, url.getPropertyAsString(URL))));
+                    altLinks.append(altLink(getDashFormatLanguage(vanityLanguage), buildHref(node, renderContext,
+                            url.getPropertyAsString(URL))));
                 }
             }
         }
@@ -110,11 +112,17 @@ public class SeoUrlFilter extends AbstractFilter {
                     path = String.format("/%s%s", lang, path);
                 }
 
-                altLinks.append(altLink(lang,  buildHref(node, renderContext, path)));
+                altLinks.append(altLink(getDashFormatLanguage(lang),  buildHref(node, renderContext, path)));
             }
         }
 
         return altLinks.toString();
+    }
+
+    private String getDashFormatLanguage(String language) {
+        Locale locale = LanguageCodeConverters.languageCodeToLocale(language);
+        if (locale == null) return language; // Return default language if cannot convert to locale
+        return locale.toLanguageTag();
     }
 
     private Set<String> getActiveLanguagesForMode(RenderContext renderContext, JCRNodeWrapper node) throws RepositoryException {
