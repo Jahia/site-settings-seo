@@ -79,8 +79,8 @@
       "switchOn": "Afficher les URLs filtrées"
     },
     "mappings": {
-      "default": "URLs en version de travail",
-      "live": "URLs en ligne",
+      "default": "Vanity URLs d'édition",
+      "live": "Vanity URLs en ligne",
       "missingDefault": "{{vanityUrl}} supprimée",
       "movedDefault": "Déplacée vers {{page}}"
     },
