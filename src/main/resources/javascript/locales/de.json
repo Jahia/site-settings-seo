@@ -86,8 +86,8 @@
       "switchOn": "Nur Treffer anzeigen"
     },
     "mappings": {
-      "default": "Default mappings",
-      "live": "Live mappings",
+      "default": "Staging Vanity URLs",
+      "live": "Live Vanity URLs",
       "missingDefault": "{{vanityUrl}} gelöscht",
       "movedDefault": "Verschoben zu {{page}}"
     },
