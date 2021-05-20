@@ -37,7 +37,8 @@ export const EditVanityUrlsDialog = ({
             </DialogContent>
             <DialogActions className={classes.actions}>
                 <Button
-                    label={t('label.okGotIt')}
+                    size="big"
+                    label={t('label.close')}
                     onClick={handleCancel}/>
             </DialogActions>
         </Dialog>

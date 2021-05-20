@@ -110,6 +110,7 @@
         "of": "von"
     },
     "title": "Vanity URLs",
-    "manage": "Vanity URLs verwalten"
+    "manage": "Vanity URLs verwalten",
+    "close": "Schließen"
   }
 }
