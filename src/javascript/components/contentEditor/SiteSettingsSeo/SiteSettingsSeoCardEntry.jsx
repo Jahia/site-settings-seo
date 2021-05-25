@@ -1,5 +1,5 @@
 import React from 'react';
-import SiteSettingsSeoCard from './SiteSettingsSeoApp';
+import SiteSettingsSeoCard from './SiteSettingsSeoCardApp';
 import SiteSettingsSeoWrapper from '../../SiteSettingsSeoWrapper';
 
 const SiteSettingsSeoCardEntry = props => <SiteSettingsSeoWrapper component={SiteSettingsSeoCard} {...props}/>;

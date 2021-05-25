@@ -5,11 +5,11 @@ import Deletion from '../../Deletion';
 import PublishDeletion from '../../PublishDeletion';
 import Move from '../../Move';
 import {VanityUrlTableData} from '../VanityUrlTableData/VanityUrlTableData';
-import {SiteSettingsSeoApp, SiteSettingsSeoConstants, assembleWithHoc} from '../../SiteSettingsSeoApp';
+import {SiteSettingsSeoApp, assembleWithHoc} from '../../SiteSettingsSeoApp';
 import {VanityUrlEnabledContent} from '../../VanityUrlEnabledContent';
+import SiteSettingsSeoConstants from '../../SiteSettingsSeoApp.constants';
 
-// Probably wont work as not a class?
-class SiteSettingsSeoCard extends SiteSettingsSeoApp {
+class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
     constructor(props) {
         super(props);
     }
@@ -84,4 +84,4 @@ class SiteSettingsSeoCard extends SiteSettingsSeoApp {
 }
 
 
-export default assembleWithHoc(SiteSettingsSeoCard);
+export default assembleWithHoc(SiteSettingsSeoCardApp);

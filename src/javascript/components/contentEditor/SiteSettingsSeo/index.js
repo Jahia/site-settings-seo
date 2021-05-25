@@ -1,3 +1,3 @@
-import SiteSettingsSeoEntry from './SiteSettingsSeoEntry';
+import SiteSettingsSeoCardEntry from './SiteSettingsSeoCardEntry';
 
-export default SiteSettingsSeoEntry;
+export default SiteSettingsSeoCardEntry;

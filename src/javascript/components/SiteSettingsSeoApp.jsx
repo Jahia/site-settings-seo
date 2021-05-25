@@ -16,6 +16,7 @@ import Move from './Move';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlTableData} from './VanityUrlTableData';
 import {Header} from '@jahia/moonstone';
+import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 
 legacyTheme.overrides.MuiSelect.selectMenu.color = 'rgb(37, 43, 47)';
 modifyFontFamily();
@@ -66,12 +67,6 @@ const styles = theme => ({
         display: 'flex'
     }
 });
-
-const SiteSettingsSeoConstants = {
-    MAPPING_REG_EXP: new RegExp('^/?(?!.*/{2,})[a-zA-Z_0-9\\-\\./]+$'),
-    NB_NEW_MAPPING_ROWS: 1,
-    TABLE_POLLING_INTERVAL: 2000
-};
 
 class SiteSettingsSeoApp extends React.Component {
     constructor(props) {
@@ -453,4 +448,4 @@ const assembleWithHoc = function(component) {
 const SiteSettingsSeoComponent = assembleWithHoc(SiteSettingsSeoApp);
 
 
-export {SiteSettingsSeoComponent, SiteSettingsSeoConstants, SiteSettingsSeoApp, assembleWithHoc};
+export {SiteSettingsSeoComponent, SiteSettingsSeoApp, assembleWithHoc};

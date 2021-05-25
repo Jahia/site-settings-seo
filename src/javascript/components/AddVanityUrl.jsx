@@ -20,7 +20,7 @@ import {withTranslation} from 'react-i18next';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {withNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
-import {SiteSettingsSeoConstants} from './SiteSettingsSeoEntry';
+import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {flowRight as compose} from 'lodash';
 import {Add, Button} from '@jahia/moonstone';
 

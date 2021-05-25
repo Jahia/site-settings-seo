@@ -4,14 +4,7 @@ import {withNotifications, ProgressOverlay} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {TableQuery, TableQueryVariables} from './gqlQueries';
 import {withTranslation} from 'react-i18next';
-
-function gqlContentNodeToVanityUrlPairs(gqlContentNode, vanityUrlsFieldName) {
-    let defaultUrls = _.keyBy(_.map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
-    let liveUrls = gqlContentNode.liveNode ? _.keyBy(_.map(gqlContentNode.liveNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, live: vanityUrlNode})), 'uuid') : {};
-    let urlPairs = _.merge(defaultUrls, liveUrls);
-    urlPairs = _.sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
-    return _.values(urlPairs);
-}
+import {gqlContentNodeToVanityUrlPairs} from '../../utils';
 
 class VanityUrlTableData extends React.Component {
     constructor(props) {
