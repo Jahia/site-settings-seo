@@ -64,7 +64,7 @@ class VanityUrlEnabledContent extends React.Component {
     }
 
     render() {
-        const {content, filterText, classes, t, onChangeSelection, selection, actions, languages, lang} = this.props;
+        const {content, filterText, classes, t, onChangeSelection, selection, actions, languages, lang, openCardMode} = this.props;
 
         let filterMatchInfo = null;
         let localFilterSwitch = null;
@@ -92,18 +92,20 @@ class VanityUrlEnabledContent extends React.Component {
         return (
             <div className={this.props.classes.root} data-vud-content-uuid={content.uuid}>
                 <Paper elevation={1}>
-                    <ListItem className={classes.vanityUrlListHeader} onClick={() => this.handleExpandCollapseClick()}>
+                    {
+                        !openCardMode && <ListItem className={classes.vanityUrlListHeader} onClick={() => this.handleExpandCollapseClick()}>
 
-                        {this.state.expanded ? <KeyboardArrowDown/> : <KeyboardArrowRight/>}
+                            {this.state.expanded ? <KeyboardArrowDown/> : <KeyboardArrowRight/>}
 
-                        <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText} data-vud-role="content-title"/>
-                        {filterMatchInfo}
-                        {localFilterSwitch}
-                    </ListItem>
-                    <Collapse unmountOnExit in={this.state.expanded} timeout="auto">
+                            <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText} data-vud-role="content-title"/>
+                            {filterMatchInfo}
+                            {localFilterSwitch}
+                        </ListItem>
+                    }
+                    <Collapse unmountOnExit in={this.state.expanded || openCardMode} timeout="auto">
                         <Grid container spacing={16} className={classes.vanityUrlLists}>
                             <Grid item xs={6}>
-                                <VanityUrlListDefault selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} languages={languages} contentUuid={content.uuid} onChangeSelection={onChangeSelection}/>
+                                <VanityUrlListDefault selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} languages={languages} contentUuid={content.uuid} onChangeSelection={onChangeSelection} openCardMode={openCardMode}/>
                             </Grid>
                             <Grid item xs={6}>
                                 <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} contentUuid={content.uuid}/>

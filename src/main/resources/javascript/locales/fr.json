@@ -102,6 +102,8 @@
         "rowsPerPage": "Lignes par page",
         "of": "sur"
     },
-    "title": "URL personnalisées"
+    "title": "URL personnalisées",
+    "manage": "gérer les URL personnalisées",
+    "close": "Fermer"
   }
 }

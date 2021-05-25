@@ -6,7 +6,7 @@ import {flowRight as compose} from 'lodash';
 import * as gqlMutations from './gqlMutations';
 import * as _ from 'lodash';
 import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
-import {SiteSettingsSeoConstants} from './SiteSettingsSeo';
+import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {InvalidMappingError, MoveSiteError, DuplicateMappingError, AddMappingsError} from './Errors';
 
 class VanityMutationsProvider extends Component {

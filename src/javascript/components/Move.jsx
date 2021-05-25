@@ -61,6 +61,9 @@ let styles = theme => ({
     },
     helperErrorMessage: {
         top: '10px!important'
+    },
+    dialogRoot: {
+        zIndex: 2010
     }
 });
 
@@ -136,6 +139,7 @@ class Move extends React.Component {
                         return (
                             <Dialog
                             open={this.props.open}
+                            classes={{root: classes.dialogRoot}}
                             aria-labelledby="form-dialog-title"
                             data-vud-role="dialog"
                             onClose={this.handleClose}

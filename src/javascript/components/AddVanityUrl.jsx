@@ -20,7 +20,7 @@ import {withTranslation} from 'react-i18next';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {withNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
-import {SiteSettingsSeoConstants} from './SiteSettingsSeo';
+import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {flowRight as compose} from 'lodash';
 import {Add, Button} from '@jahia/moonstone';
 
@@ -293,16 +293,16 @@ class AddVanityUrl extends React.Component {
                                                       languageCode={entry.language}
                                                       onLanguageSelected={languageCode => this.handleFieldChange('language', index, languageCode)}/>
                                     </TableCell>
-                                    <TableCell width="10%">
+                                    <TableCell width="14%">
                                         <FormControlLabel control={<Checkbox checked={entry.defaultMapping}
                                                                              data-vud-role="default"
                                                                              onChange={(event, checked) => this.handleFieldChange('defaultMapping', index, checked)}/>}
-                                                          label="Set as canonical" />
+                                                          label={t('label.actions.canonical.set')} />
                                     </TableCell>
-                                    <TableCell width="3%">
+                                    <TableCell width="1%">
                                         <Button color="default" variant="ghost" data-vud-role="button-cancel" label={t('label.cancel')} onClick={this.handleClose}/>
                                     </TableCell>
-                                    <TableCell width="3%">
+                                    <TableCell width="1%">
                                         <Button color="accent"
                                                 data-vud-role="button-primary"
                                                 label={t('label.dialogs.add.save')}

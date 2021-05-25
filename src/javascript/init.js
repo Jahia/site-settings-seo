@@ -1,7 +1,8 @@
 import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import i18next from 'i18next';
-import {SiteSettingsSeo} from './components/SiteSettingsSeo';
+import {SiteSettingsSeoEntry} from './components/SiteSettingsSeoEntry';
+import {VanityAction} from './components/contentEditor/actions';
 
 const COMP_NAME = 'siteSettingsSeo';
 
@@ -23,7 +24,16 @@ export default function () {
                 label: 'site-settings-seo:label.title',
                 isSelectable: true,
                 requiredPermission: 'siteAdminUrlmapping',
-                render: () => React.createElement(SiteSettingsSeo, {dxContext: {...window.contextJsParameters}})
+                render: () => React.createElement(SiteSettingsSeoEntry, {dxContext: {...window.contextJsParameters}})
+            });
+
+            // Content editor action registration
+            registry.add('action', 'vanityUrls', VanityAction, {
+                targets: ['content-editor/header/3dots:3'],
+                requiredPermission: 'siteAdminUrlmapping',
+                showOnNodeTypes: ['jmix:vanityUrlMapped'],
+                label:'site-settings-seo:label.manage',
+                dataSelRole: 'vanityUrls'
             });
 
             console.log('%c Site Settings SEO registered routes', 'color: #3c8cba');

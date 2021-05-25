@@ -109,6 +109,8 @@
         "rowsPerPage": "Rows per page",
         "of": "of"
     },
-    "title": "Vanity URLs"
+    "title": "Vanity URLs",
+    "manage": "Manage Vanity URLs",
+    "close": "Close"
   }
 }

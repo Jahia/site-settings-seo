@@ -109,6 +109,8 @@
         "rowsPerPage": "Zeilen pro Seite",
         "of": "von"
     },
-    "title": "Vanity URLs"
+    "title": "Vanity URLs",
+    "manage": "Vanity URLs verwalten",
+    "close": "Schließen"
   }
 }
