@@ -3,7 +3,9 @@ import { sandboxPage } from '../page-object/sandbox.page'
 
 describe('Successfully navigates to sandbox app', () => {
     it('successfully navigate to the app', () => {
-        cy.visit('/', { failOnStatusCode: false })
+        cy.visit('/', {
+            failOnStatusCode: false
+        })
         home.login('root', Cypress.env('SUPER_USER_PASSWORD'), true)
 
         sandboxPage.goTo()

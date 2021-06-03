@@ -19,6 +19,8 @@ class HomePage extends BasePage {
     }
 
     login(username: string, password: string, rememberMe: boolean) {
+        /* eslint-disable cypress/no-unnecessary-waiting */
+        cy.wait(3000);
         cy.get(this.elements.loginBtn).click()
         cy.get(this.elements.loginFormUsername).type(username)
         cy.get(this.elements.loginFormPassword).type(password)
