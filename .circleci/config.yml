@@ -93,10 +93,6 @@ workflows:
           pre-steps:
             - jahia-modules-orb/update-signature-prestep
           ssh_key_fingerprints: << pipeline.parameters.SSH_KEY_FINGERPRINT >>
-      - jahia-modules-orb/static-analysis:
-          requires:
-            - jahia-modules-orb/initialize
-          auditci_level: high
       - jahia-modules-orb/build:
           context: QA_ENVIRONMENT
           requires:
