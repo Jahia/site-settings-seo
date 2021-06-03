@@ -102,29 +102,29 @@ workflows:
           requires:
             - jahia-modules-orb/initialize
           module_id: << pipeline.parameters.MODULE_ID >>
-       - jahia-modules-orb/sonar-analysis:
-           context: QA_ENVIRONMENT
-           requires:
-             - jahia-modules-orb/build
-           primary_release_branch: << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
-           github_slug: << pipeline.parameters.GITHUB_SLUG >>
-       - jahia-modules-orb/integration-tests:
-           context: QA_ENVIRONMENT
-           requires:
-             - jahia-modules-orb/build
-           jahia_image: << pipeline.parameters.JAHIA_IMAGE >>
-           tests_manifest: provisioning-manifest-build.yml
-           module_id: << pipeline.parameters.MODULE_ID >>
-           testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >>
-           testrail_milestone: << pipeline.parameters.TESTRAIL_MILESTONE >>
-       - jahia-modules-orb/publish:
-           context: QA_ENVIRONMENT
-           requires:
-             - jahia-modules-orb/build
-           filters:
-             branches:
-               only:
-                 - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
+      - jahia-modules-orb/sonar-analysis:
+          context: QA_ENVIRONMENT
+          requires:
+            - jahia-modules-orb/build
+          primary_release_branch: << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
+          github_slug: << pipeline.parameters.GITHUB_SLUG >>
+      - jahia-modules-orb/integration-tests:
+          context: QA_ENVIRONMENT
+          requires:
+            - jahia-modules-orb/build
+          jahia_image: << pipeline.parameters.JAHIA_IMAGE >>
+          tests_manifest: provisioning-manifest-build.yml
+          module_id: << pipeline.parameters.MODULE_ID >>
+          testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >>
+          testrail_milestone: << pipeline.parameters.TESTRAIL_MILESTONE >>
+      - jahia-modules-orb/publish:
+          context: QA_ENVIRONMENT
+          requires:
+            - jahia-modules-orb/build
+          filters:
+            branches:
+              only:
+                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
 
   # The on-release workflow was created to handle the full release lifecycle after creating a release using GitHub
   # https://github.com/Jahia/sandbox/releases
