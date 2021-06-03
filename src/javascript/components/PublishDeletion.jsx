@@ -54,6 +54,9 @@ const styles = theme => ({
         fontWeight: '400',
         padding: '0 15px',
         wordBreak: 'break-all'
+    },
+    dialogRoot: {
+        zIndex: 2010
     }
 });
 
@@ -95,6 +98,7 @@ class PublishDeletion extends React.Component {
             <div>
                 <Dialog fullWidth
                         open={open}
+                        classes={{root: classes.dialogRoot}}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                         data-vud-role="dialog"

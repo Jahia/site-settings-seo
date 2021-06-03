@@ -226,7 +226,8 @@ const styles = theme => ({
         wordBreak: 'break-all',
         padding: '3px 6px 1px',
         fontSize: '0.8rem',
-        color: '#212121'
+        color: '#212121',
+        fontFamily: 'Nunito, "Nunito Sans"'
     },
     vanityURLTextLive: {
         lineHeight: '21px',
@@ -236,7 +237,8 @@ const styles = theme => ({
         wordBreak: 'break-all',
         padding: '3px 6px 1px',
         fontSize: '0.8rem',
-        color: '#B2B2B2'
+        color: '#B2B2B2',
+        fontFamily: 'Nunito, "Nunito Sans"'
     },
     editableText: {
         '&:hover': {

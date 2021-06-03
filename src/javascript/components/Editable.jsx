@@ -32,7 +32,8 @@ let styles = theme => ({
         color: 'inherit',
         fontSize: 'inherit',
         width: '100%',
-        paddingRight: '60px'
+        paddingRight: '60px',
+        fontFamily: 'Nunito, "Nunito Sans"'
     }
 });
 
