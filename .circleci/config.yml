@@ -87,12 +87,12 @@ workflows:
     jobs:
       - jahia-modules-orb/initialize
       - jahia-modules-orb/update-signature:
-        context: QA_ENVIRONMENT
-        requires:
-          - jahia-modules-orb/initialize
-        pre-steps:
-          - jahia-modules-orb/update-signature-prestep
-        ssh_key_fingerprints: << pipeline.parameters.SSH_KEY_FINGERPRINT >>
+          context: QA_ENVIRONMENT
+          requires:
+            - jahia-modules-orb/initialize
+          pre-steps:
+            - jahia-modules-orb/update-signature-prestep
+          ssh_key_fingerprints: << pipeline.parameters.SSH_KEY_FINGERPRINT >>
       - jahia-modules-orb/static-analysis:
           requires:
             - jahia-modules-orb/initialize
@@ -103,11 +103,11 @@ workflows:
             - jahia-modules-orb/initialize
           module_id: << pipeline.parameters.MODULE_ID >>
        - jahia-modules-orb/sonar-analysis:
-         context: QA_ENVIRONMENT
-         requires:
-           - jahia-modules-orb/build
-         primary_release_branch: << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
-         github_slug: << pipeline.parameters.GITHUB_SLUG >>
+           context: QA_ENVIRONMENT
+           requires:
+             - jahia-modules-orb/build
+           primary_release_branch: << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
+           github_slug: << pipeline.parameters.GITHUB_SLUG >>
        - jahia-modules-orb/integration-tests:
            context: QA_ENVIRONMENT
            requires:
