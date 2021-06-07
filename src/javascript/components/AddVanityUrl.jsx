@@ -71,6 +71,9 @@ const styles = theme => ({
         '&:hover': {
             backgroundColor: 'inherit'
         }
+    },
+    cell: {
+        padding: "4px 5px 4px 24px!important"
     }
 });
 
@@ -241,13 +244,13 @@ class AddVanityUrl extends React.Component {
                             let lineEnabled = Boolean(entry.url) || entry.focus;
                             return (
                                 <TableRow key={index} hover={false} className={classes.row}>
-                                    <TableCell width="5%">
+                                    <TableCell className={classes.cell} width="5%">
                                         <Switch
                                             checked={entry.active}
                                             data-vud-role="active"
                                             onChange={(event, checked) => this.handleFieldChange('active', index, checked)}/>
                                     </TableCell>
-                                    <TableCell width="70%">
+                                    <TableCell className={classes.cell} width="70%">
 
                                         <FormControl className={classes.root}
                                                      classes={{
@@ -288,21 +291,21 @@ class AddVanityUrl extends React.Component {
                                         </FormControl>
 
                                     </TableCell>
-                                    <TableCell data-vud-role="language" width="9%">
+                                    <TableCell className={classes.cell} data-vud-role="language" width="9%">
                                         <LanguageMenu languages={availableLanguages}
                                                       languageCode={entry.language}
                                                       onLanguageSelected={languageCode => this.handleFieldChange('language', index, languageCode)}/>
                                     </TableCell>
-                                    <TableCell width="14%">
+                                    <TableCell className={classes.cell} width="14%">
                                         <FormControlLabel control={<Checkbox checked={entry.defaultMapping}
                                                                              data-vud-role="default"
                                                                              onChange={(event, checked) => this.handleFieldChange('defaultMapping', index, checked)}/>}
                                                           label={t('label.actions.canonical.set')} />
                                     </TableCell>
-                                    <TableCell width="1%">
+                                    <TableCell className={classes.cell} width="1%">
                                         <Button color="default" variant="ghost" data-vud-role="button-cancel" label={t('label.cancel')} onClick={this.handleClose}/>
                                     </TableCell>
-                                    <TableCell width="1%">
+                                    <TableCell className={classes.cell} width="1%">
                                         <Button color="accent"
                                                 data-vud-role="button-primary"
                                                 label={t('label.dialogs.add.save')}

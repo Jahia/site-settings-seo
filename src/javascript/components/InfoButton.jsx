@@ -14,6 +14,9 @@ import {withTranslation} from 'react-i18next';
 let styles = theme => ({
     dialogActionsContainer: {
         justifyContent: 'flex-end'
+    },
+    dialogRoot: {
+        zIndex: 2010
     }
 });
 
@@ -27,6 +30,7 @@ class InfoButton extends React.Component {
         return (
             <Dialog
                 open={open}
+                classes={{root: classes.dialogRoot}}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 onClose={onClose}
