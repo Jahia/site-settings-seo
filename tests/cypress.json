@@ -1,0 +1,20 @@
+{
+    "baseUrl": "http://jahia:8080",
+    "chromeWebSecurity": false,
+    "failOnStatusCode": false,
+    "defaultCommandTimeout": 30000,
+    "videoUploadOnPasses": false,
+    "reporter": "cypress-multi-reporters",
+    "reporterOptions": {
+        "configFile": "reporter-config.json"
+    },
+    "env": {
+        "JAHIA_USERNAME": "root",
+        "JAHIA_PASSWORD": "root1234"
+    },
+    "screenshotsFolder": "./results/screenshots",
+    "videosFolder": "./results/videos",
+    "ignoreTestFiles": "*.example.ts",
+    "viewportWidth": 1366,
+    "viewportHeight": 768
+}
