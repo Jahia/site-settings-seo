@@ -2,11 +2,14 @@ package org.jahia.modules.sitesettingsseo;
 
 import net.htmlparser.jericho.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.taglibs.standard.resources.Resources;
+import org.apache.taglibs.standard.tag.common.core.ImportSupport;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
+import org.jahia.services.render.URLGenerator;
 import org.jahia.services.render.filter.AbstractFilter;
 import org.jahia.services.render.filter.RenderChain;
 import org.jahia.services.render.filter.RenderFilter;
@@ -19,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -53,11 +57,18 @@ public class SeoUrlFilter extends AbstractFilter {
         Source source = new Source(previousOut);
         OutputDocument od = new OutputDocument(source);
         JCRNodeWrapper node = resource.getNode();
+
         StringBuilder links = new StringBuilder();
+        initUrlGenerator(renderContext, resource);
         links.append(getPageLink(node, renderContext));
         links.append(getAlternativeLinks(node, renderContext, getActiveLanguagesForMode(renderContext, node)));
         addContentToHead(source, od, links.toString());
         return od.toString();
+    }
+
+    private void initUrlGenerator(RenderContext renderContext, Resource resource) {
+        URLGenerator urlGenerator = renderContext.getURLGenerator();
+        if (urlGenerator == null)  new URLGenerator(renderContext, resource); // this gets set in renderContext
     }
 
     private String getPageLink(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException, MalformedURLException {
@@ -175,7 +186,9 @@ public class SeoUrlFilter extends AbstractFilter {
     }
 
     private String buildHref(JCRNodeWrapper node, RenderContext renderContext, String path) throws MalformedURLException, RepositoryException {
-        return prependServerName(node, renderContext, path);
+        String serverName = renderContext.getURLGenerator().getServer();
+        String url = rewriteUrl(path, renderContext.getRequest(), renderContext.getResponse());
+        return serverName + url;
     }
 
     private String altLink(String lang, String href) {
@@ -186,24 +199,17 @@ public class SeoUrlFilter extends AbstractFilter {
         return String.format("<link rel=\"canonical\" href=\"%s\" />%n", href);
     }
 
-    private String prependServerName(JCRNodeWrapper node, RenderContext renderContext, String nodeURL) throws RepositoryException, MalformedURLException {
-        HttpServletRequest request = renderContext.getRequest();
-        String requestServerName = request.getServerName();
 
-        String serverName = node.getResolveSite().getServerName();
-        if (!StringUtils.isEmpty(serverName) && requestServerName.equals(serverName)) {
-            int serverPort = SettingsBean.getInstance().getSiteURLPortOverride();
-            if (serverPort == 0) {
-                serverPort = request.getServerPort();
-            }
+    /**
+     * Copied (relevant) implementation of c:url taglib from taglibs:standard:1.1.2 source
+     * prerequisite: url is not an absolute URL
+     */
+    private static String rewriteUrl(String url, HttpServletRequest request, HttpServletResponse response) {
+        // normalize relative URLs against a context root
+        String rewriteUrl = (url.startsWith("/")) ? (request.getContextPath() + url) : url;
+        rewriteUrl = response.encodeURL(rewriteUrl);
 
-            if (serverPort == 80 && "http".equals(request.getScheme()) || serverPort == 443 && "https".equals(request.getScheme())) {
-                serverPort = -1;
-            }
-
-            nodeURL = (new URL(request.getScheme(), serverName, serverPort, renderContext.getURLGenerator().getContext() + nodeURL)).toString();
-        }
-
-        return nodeURL;
+        return rewriteUrl;
     }
+
 }
