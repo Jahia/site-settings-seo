@@ -186,7 +186,7 @@ public class SeoUrlFilter extends AbstractFilter {
     }
 
     private String buildHref(JCRNodeWrapper node, RenderContext renderContext, String path) throws MalformedURLException, RepositoryException {
-        String serverName = renderContext.getURLGenerator().getServer();
+        String serverName = renderContext.getSite().getProperty("sitemapIndexURL").getValue().getString();
         String url = rewriteUrl(path, renderContext.getRequest(), renderContext.getResponse());
         return serverName + url;
     }
