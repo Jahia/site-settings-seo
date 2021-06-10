@@ -40,7 +40,7 @@ const styles = theme => ({
         },
         '& label': {}
     },
-    button: {
+    iconButton: {
         height: 18,
         width: 18,
         position: 'absolute',
@@ -73,8 +73,19 @@ const styles = theme => ({
         }
     },
     cell: {
-        padding: "4px 5px 4px 24px!important"
+        padding: "4px 5px 4px 24px"
+    },
+    textbox: {
+        fontSize: '1.2rem'
+    },
+    buttonContainer: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    actionButton: {
+        padding: '10px'
     }
+
 });
 
 class AddVanityUrl extends React.Component {
@@ -259,6 +270,7 @@ class AddVanityUrl extends React.Component {
                                         >
                                             <Input
                                                 ref={index}
+                                                inputProps={{ className: classes.textbox }}
                                                 inputRef={input => {
                                                     this.inputTab[index] = input;
                                                     if (index === 0) {
@@ -270,7 +282,7 @@ class AddVanityUrl extends React.Component {
                                                 data-vud-role="url"
                                                 endAdornment={entry.url ?
                                                 <IconButton disableRipple
-                                                            className={classes.button + ' ' + classes.cancel}
+                                                            className={classes.iconButton + ' ' + classes.cancel}
                                                             component="span"
                                                             onClick={() => {
                                                                 delete entry.url;
@@ -302,14 +314,19 @@ class AddVanityUrl extends React.Component {
                                                                              onChange={(event, checked) => this.handleFieldChange('defaultMapping', index, checked)}/>}
                                                           label={t('label.actions.canonical.set')} />
                                     </TableCell>
-                                    <TableCell className={classes.cell} width="1%">
-                                        <Button color="default" variant="ghost" data-vud-role="button-cancel" label={t('label.cancel')} onClick={this.handleClose}/>
-                                    </TableCell>
-                                    <TableCell className={classes.cell} width="1%">
-                                        <Button color="accent"
+                                    <TableCell className={`${classes.cell} ${classes.buttonContainer}`}>
+                                        <div className={classes.actionButton}>
+                                            <Button color="default" variant="ghost" 
+                                            data-vud-role="button-cancel" 
+                                            label={t('label.cancel')} 
+                                            onClick={this.handleClose}/>
+                                        </div>
+                                        <div className={classes.actionButton}>
+                                            <Button color="accent"
                                                 data-vud-role="button-primary"
                                                 label={t('label.dialogs.add.save')}
                                                 onClick={this.handleSave}/>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             );
