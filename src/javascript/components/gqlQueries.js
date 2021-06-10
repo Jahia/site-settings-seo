@@ -1,5 +1,5 @@
 import {DefaultVanityUrls, LiveVanityUrls} from './gqlFragments';
-import {PredefinedFragments} from '@jahia/apollo-dx';
+import {PredefinedFragments} from '@jahia/data-helper';
 import gql from 'graphql-tag';
 
 const TableQuery = gql`

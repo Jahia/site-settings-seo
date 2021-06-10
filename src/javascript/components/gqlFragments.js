@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import {PredefinedFragments} from '@jahia/apollo-dx';
+import {PredefinedFragments} from '@jahia/data-helper';
 
 const DefaultVanityUrlFields = gql`fragment DefaultVanityUrlFields on VanityUrl {
         ...NodeCacheRequiredFields
