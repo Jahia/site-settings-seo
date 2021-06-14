@@ -16,7 +16,7 @@ import {
     withStyles
 } from '@material-ui/core';
 import {withTranslation} from 'react-i18next';
-import {Picker} from '@jahia/react-apollo';
+import {Picker} from '@jahia/data-helper';
 import {PickerViewMaterial, withNotifications} from '@jahia/react-material';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {GetNodeQuery} from './gqlQueries';
