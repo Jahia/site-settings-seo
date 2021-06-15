@@ -87,8 +87,13 @@ class VanityUrlEnabledContent extends React.Component {
                 <Button className={classes.showToggle} data-vud-role="button-filter-switch" variant="ghost" label={filterSwitchButtonLabel} onClick={e => this.handleFilterSwitchClick(e)}/>
             );
         }
-
         let vanityUrls = this.state.localFilteringEnabled || !content.allUrls ? content.urls : content.allUrls;
+
+        /** sort so that deleted published urls are listed at the end of vanity url list */
+        const deleted = [];
+        const others = [];
+        vanityUrls.forEach((url) => (url.live && !url.default) ? deleted.push(url) : others.push(url));
+        vanityUrls = [...others, ...deleted];
         return (
             <div className={this.props.classes.root} data-vud-content-uuid={content.uuid}>
                 <Paper elevation={1}>
