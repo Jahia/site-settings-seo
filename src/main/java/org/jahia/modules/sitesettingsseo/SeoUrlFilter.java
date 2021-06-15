@@ -4,6 +4,7 @@ import net.htmlparser.jericho.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.taglibs.standard.resources.Resources;
 import org.apache.taglibs.standard.tag.common.core.ImportSupport;
+import org.jahia.modules.sitesettingsseo.utils.Utils;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.decorator.JCRSiteNode;
@@ -186,7 +187,7 @@ public class SeoUrlFilter extends AbstractFilter {
     }
 
     private String buildHref(JCRNodeWrapper node, RenderContext renderContext, String path) throws MalformedURLException, RepositoryException {
-        String serverName = renderContext.getSite().getProperty("sitemapIndexURL").getValue().getString();
+        String serverName = Utils.getServerName(renderContext.getSite().getPropertyAsString("sitemapIndexURL"));
         String url = rewriteUrl(path, renderContext.getRequest(), renderContext.getResponse());
         return serverName + url;
     }
