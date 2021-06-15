@@ -99,6 +99,9 @@
       "publicationDeletionConfirmed": "Löschen bestätigt, die Veröffentlichung wurde als Hintergrundjob gestartet.",
       "publicationStarted": "Die Veröffentlichung wurde als Hintergrundjob gestartet."
     },
+    "messages": {
+      "noVanityUrl": "Keine vanity URL"
+    },
     "okGotIt": "OK, ich habe es verstanden.",
     "selection": {
       "clear": "Löschen",
