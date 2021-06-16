@@ -92,6 +92,9 @@
       "publicationDeletionConfirmed": "Supprimé. Job de publication lancé en arrière plan",
       "publicationStarted": "Job de publication lancé en arrière plan"
     },
+    "messages": {
+      "noVanityUrl": "Pas d'URL personnalisées"
+    },
     "okGotIt": "OK, j'ai compris",
     "selection": {
       "clear": "Effacer",

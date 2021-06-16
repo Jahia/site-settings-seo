@@ -99,6 +99,9 @@
       "publicationDeletionConfirmed": "Deleted. Publication job started in background",
       "publicationStarted": "Publication job started in background"
     },
+    "messages": {
+      "noVanityUrl": "No vanity URL"
+    },
     "okGotIt": "OK",
     "selection": {
       "clear": "Clear",

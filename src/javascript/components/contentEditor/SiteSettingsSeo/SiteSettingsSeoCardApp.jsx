@@ -8,6 +8,9 @@ import {VanityUrlTableData} from '../VanityUrlTableData/VanityUrlTableData';
 import {SiteSettingsSeoApp, assembleWithHoc} from '../../SiteSettingsSeoApp';
 import {VanityUrlEnabledContent} from '../../VanityUrlEnabledContent';
 import SiteSettingsSeoConstants from '../../SiteSettingsSeoApp.constants';
+import classes from './SiteSettingsSeoCardApp.scss';
+import NoVanity from './NoVanity';
+
 
 class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
     constructor(props) {
@@ -16,35 +19,37 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
 
     // Override
     render() {
-        let {dxContext, classes, path} = this.props;
-        let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
+        let {dxContext, path, languages, t} = this.props;
+        let {lang} = dxContext;
+        let polling = !(this.state.publication.open || this.state.deletion.open 
+            || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
 
         return (
             <div>
-                <div className={classes.layout}>
+                <div className={classes.seoCardLayout}>
                     <VanityUrlTableData
                     {...this.state.loadParams}
                     path={path}
                     lang={dxContext.lang}
-                    poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
-                    >
+                    poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}>
+
                         {rows => {
                             if (!rows[0]) {
-                                return null;
+                                return (<NoVanity {...{ t, path, languages, lang }} />);
                             }
 
                             return (
-                            <VanityUrlEnabledContent
-                            {...this.state.loadParams}
-                            openCardMode
-                            lang={dxContext.lang}
-                            languages={this.props.languages}
-                            content={rows[0]}
-                            selection={this.state.selection}
-                            actions={this.actions}
-                            onChangeSelection={() => {}}
-                        />
-                      )}}
+                                <VanityUrlEnabledContent
+                                    {...this.state.loadParams}
+                                    openCardMode
+                                    lang={dxContext.lang}
+                                    languages={languages}
+                                    content={rows[0]}
+                                    selection={this.state.selection}
+                                    actions={this.actions}
+                                    onChangeSelection={() => {}} />
+                            );
+                        }}
                     </VanityUrlTableData>
 
                     {this.state.move.open && <Move
@@ -82,6 +87,5 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
         );
     }
 }
-
 
 export default assembleWithHoc(SiteSettingsSeoCardApp);

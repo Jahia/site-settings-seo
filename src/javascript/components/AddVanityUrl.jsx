@@ -119,7 +119,7 @@ class AddVanityUrl extends React.Component {
     };
 
     handleSave = event => {
-        let {vanityMutationsContext, notificationContext, path, t} = this.props;
+        let {vanityMutationsContext, notificationContext, path, t, setParentLoading} = this.props;
 
         // Exit if there is no mapping to save
         if (this.state.mappings.length === 0) {
@@ -143,6 +143,7 @@ class AddVanityUrl extends React.Component {
                         console.log(error);
                     });
                 } else {
+                    setParentLoading && setParentLoading(true)
                     this.handleClose(event);
                     notificationContext.notify(t('label.notifications.newMappingCreated'));
                 }
@@ -236,7 +237,10 @@ class AddVanityUrl extends React.Component {
         const {errors, mappings} = this.state;
 
         if (!this.state.showInputField) {
-            return <Button className={classes.addVanityButton}
+            return (
+             <>
+             {this.props.children && this.props.children(this.state.showInputField)}
+             <Button className={classes.addVanityButton}
                            aria-label="add"
                            label={t('label.buttons.addVanity')}
                            icon={<Add/>}
@@ -244,6 +248,8 @@ class AddVanityUrl extends React.Component {
                                event.stopPropagation();
                                this.setState({showInputField: true});
                            }}/>
+             </>
+            )
         }
 
         return (
