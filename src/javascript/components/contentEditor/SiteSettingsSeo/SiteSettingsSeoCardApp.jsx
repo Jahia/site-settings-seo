@@ -8,7 +8,7 @@ import {VanityUrlTableData} from '../VanityUrlTableData/VanityUrlTableData';
 import {SiteSettingsSeoApp, assembleWithHoc} from '../../SiteSettingsSeoApp';
 import {VanityUrlEnabledContent} from '../../VanityUrlEnabledContent';
 import SiteSettingsSeoConstants from '../../SiteSettingsSeoApp.constants';
-import './SiteSettingsSeoCardApp.css';
+import classes from './SiteSettingsSeoCardApp.scss';
 import NoVanity from './NoVanity';
 
 
@@ -26,7 +26,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
 
         return (
             <div>
-                <div className="seo-card-layout">
+                <div className={classes.seoCardLayout}>
                     <VanityUrlTableData
                     {...this.state.loadParams}
                     path={path}
