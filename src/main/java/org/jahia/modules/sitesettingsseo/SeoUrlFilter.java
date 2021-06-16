@@ -2,8 +2,6 @@ package org.jahia.modules.sitesettingsseo;
 
 import net.htmlparser.jericho.*;
 import org.apache.commons.lang.StringUtils;
-import org.apache.taglibs.standard.resources.Resources;
-import org.apache.taglibs.standard.tag.common.core.ImportSupport;
 import org.jahia.modules.sitesettingsseo.utils.Utils;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
@@ -14,7 +12,6 @@ import org.jahia.services.render.URLGenerator;
 import org.jahia.services.render.filter.AbstractFilter;
 import org.jahia.services.render.filter.RenderChain;
 import org.jahia.services.render.filter.RenderFilter;
-import org.jahia.settings.SettingsBean;
 import org.jahia.utils.LanguageCodeConverters;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -24,8 +21,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,7 +68,7 @@ public class SeoUrlFilter extends AbstractFilter {
         if (urlGenerator == null)  new URLGenerator(renderContext, resource); // this gets set in renderContext
     }
 
-    private String getPageLink(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException, MalformedURLException {
+    private String getPageLink(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException, URISyntaxException {
         // Default url if no vanity
         String canonicalLink = canonicalLink(buildHref(node, renderContext, getPathInfoForMode(node, renderContext)));
 
@@ -93,7 +89,7 @@ public class SeoUrlFilter extends AbstractFilter {
         return canonicalLink;
     }
 
-    private String getAlternativeLinks(JCRNodeWrapper node, RenderContext renderContext, Set<String> langs) throws RepositoryException, MalformedURLException {
+    private String getAlternativeLinks(JCRNodeWrapper node, RenderContext renderContext, Set<String> langs) throws RepositoryException, URISyntaxException {
         StringBuilder altLinks = new StringBuilder();
         Set<String> vanityLangs = new HashSet<>();
 
@@ -186,7 +182,7 @@ public class SeoUrlFilter extends AbstractFilter {
         return path;
     }
 
-    private String buildHref(JCRNodeWrapper node, RenderContext renderContext, String path) throws MalformedURLException, RepositoryException {
+    private String buildHref(JCRNodeWrapper node, RenderContext renderContext, String path) throws URISyntaxException, RepositoryException {
         String serverName = Utils.getServerName(renderContext.getSite().getPropertyAsString("sitemapIndexURL"));
         String url = rewriteUrl(path, renderContext.getRequest(), renderContext.getResponse());
         return serverName + url;

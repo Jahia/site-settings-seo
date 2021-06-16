@@ -27,7 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * General utility class
@@ -43,11 +44,11 @@ public class Utils {
      *
      * @param urlString [String] url string
      * @return  servername in format of protocal://hostname:port
-     * @throws MalformedURLException
+     * @throws URISyntaxException
      */
-    public static String getServerName(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String protocol = url.getProtocol();
+    public static String getServerName(String urlString) throws URISyntaxException {
+        URI url = new URI(urlString);
+        String protocol = url.getScheme();
         String host = url.getHost();
         int port = url.getPort();
         if (protocol == null && host.startsWith("www.")) { // for edge cases where starts with www. remove first 4 characters
