@@ -176,9 +176,9 @@ class Move extends React.Component {
                                     }]}
                                                 rootPaths={[path]}
                                                 defaultOpenPaths={[path]}
-                                                openableTypes={['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText']}
-                                                selectableTypes={['jnt:page']}
-                                                queryVariables={{lang: lang}}
+                                                openableTypes={['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText', 'jmix:droppableContent', 'jmix:mainResource']}
+                                                selectableTypes={['jnt:page', 'jmix:mainResource']}
+                                                queryVariables={{language: lang}}
                                                 selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
                                                 onSelectItem={path => {
                                                 this.setState({targetPath: path});
