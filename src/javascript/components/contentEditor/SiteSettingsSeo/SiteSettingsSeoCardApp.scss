@@ -1,7 +1,7 @@
 .seoCardLayout {
-    margin-top: -60px;
     height: 50vh;
     overflow-y: scroll;
+    box-shadow: none;
 }
 
 .seoCardLayout .noVanity {
@@ -16,4 +16,12 @@
 .seoCardLayout .noVanity > div {
     text-align: inherit;
     margin: 20px;
+}
+
+.dropdownDiv {
+    padding-left: 51px;
+}
+
+.root {
+    margin: 4px;
 }

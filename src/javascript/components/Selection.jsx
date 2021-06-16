@@ -14,8 +14,8 @@ let styles = theme => ({
         justifyContent: 'space-between',
         position: 'relative',
         transition: 'top 0.3s ease-in 0s',
-        top: '-140px',
-        padding: '13px 8px 13px 6px',
+        top: '-186px',
+        padding: '24px 8px 24px 6px',
         margin: '0',
         zIndex: '9999',
         borderRadius: '0',
@@ -24,7 +24,7 @@ let styles = theme => ({
         background: 'rgb(41, 49, 54)'
     },
     rootExpanded: {
-        top: '-70px'
+        top: '-93px'
     },
     closeButtonContainer: {
         display: 'flex',

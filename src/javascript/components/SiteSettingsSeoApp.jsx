@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core';
+import {Collapse, List, Paper, withStyles} from '@material-ui/core';
 import {withNotifications, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import {LanguageSelector} from './LanguageSelector';
@@ -15,8 +15,9 @@ import PublishDeletion from './PublishDeletion';
 import Move from './Move';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlTableData} from './VanityUrlTableData';
-import {Header} from '@jahia/moonstone';
+import {Header, Dropdown} from '@jahia/moonstone';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
+import {VanityUrlEnabledContent} from "~/components/VanityUrlEnabledContent";
 
 legacyTheme.overrides.MuiSelect.selectMenu.color = 'rgb(37, 43, 47)';
 modifyFontFamily();
@@ -31,6 +32,9 @@ function modifyFontFamily() {
 
 
 const styles = theme => ({
+    root: {
+        margin: theme.spacing.unit
+    },
     title: {
         width: '100%',
         color: 'rgb(37, 43, 47)'
@@ -101,8 +105,11 @@ class SiteSettingsSeoApp extends React.Component {
             publishDeletion: {
                 open: false,
                 urlPairs: []
+            },
+            workspace: {
+                key: SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].key,
+                value: SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value
             }
-
         };
 
         this.onChangeSelection = this.onChangeSelection.bind(this);
@@ -176,6 +183,13 @@ class SiteSettingsSeoApp extends React.Component {
                 }
             }
         };
+
+        this.workspaceDropdownData = SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA.map((element) => {
+            const obj = {};
+            obj['label'] = t('label.workspace.' + element.key);
+            obj['value'] = element.value;
+            return obj;
+        })
     }
 
     handleServerError(ex, onError) {
@@ -350,26 +364,53 @@ class SiteSettingsSeoApp extends React.Component {
         return null;
     }
 
+    getWorkspaceDropdown(dropdownProps) {
+        const {t, maxWidth, label, value, data, onChange} = dropdownProps;
+        return (<Dropdown
+            id="workspaceDropdown"
+            name="workspaceDropdown"
+            isDisabled={false}
+            variant="ghost"
+            maxWidth={maxWidth || "300px"}
+            label={label || t('label.workspace.' + this.state.workspace.key)}
+            value={value || this.state.workspace.value}
+            data={data || this.workspaceDropdownData}
+            onChange={(e, item) => {onChange ||
+                this.setState({
+                    workspace: {
+                        key: SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA.find(element => element.value === item.value).key,
+                        value: item.value
+                    }
+                })
+            }}
+        />)
+    }
+
     render() {
         let {dxContext, t, classes} = this.props;
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
 
         return (
             <div>
-                <Header title={`${t('label.title')} - ${dxContext.siteTitle}`} mainActions={<div className={classes.actions}>
-                        <LanguageSelector
-                            languages={this.props.languages}
-                            selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
-                            className={classes.languageSelector}
-                            classes={{icon: classes.languageSelectorIcon, selectMenu: classes.langSelectMenu}}
-                            onSelectionChange={this.onSelectedLanguagesChanged}
-                        />
+                <Header
+                    title={`${t('label.title')} - ${dxContext.siteTitle}`}
+                    mainActions={
+                        <div className={classes.actions}>
+                            <LanguageSelector
+                                languages={this.props.languages}
+                                selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
+                                className={classes.languageSelector}
+                                classes={{icon: classes.languageSelectorIcon, selectMenu: classes.langSelectMenu}}
+                                onSelectionChange={this.onSelectedLanguagesChanged}
+                            />
 
-                        <SearchBar placeholderLabel={t('label.filterPlaceholder')}
-                                   onChangeFilter={this.onChangeFilter}
-                                   onFocus={this.onSearchFocus}
-                                   onBlur={this.onSearchBlur}/>
-                    </div>}
+                            <SearchBar placeholderLabel={t('label.filterPlaceholder')}
+                                       onChangeFilter={this.onChangeFilter}
+                                       onFocus={this.onSearchFocus}
+                                       onBlur={this.onSearchBlur}/>
+                        </div>
+                    }
+                    toolbarLeft={[this.getWorkspaceDropdown({t})]}
                 />
 
                 <Selection selection={this.state.selection}
@@ -383,21 +424,29 @@ class SiteSettingsSeoApp extends React.Component {
                     lang={dxContext.lang}
                     poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
                     >
-                        {(rows, totalCount, numberOfPages) => (
+                        {(rows, totalCount) => (
                             <VanityUrlTableView
                             {...this.state.loadParams}
-                            lang={dxContext.lang}
-                            languages={this.props.languages}
-                            rows={rows}
                             totalCount={totalCount}
-                            numberOfPages={numberOfPages}
-                            selection={this.state.selection}
-                            actions={this.actions}
-                            onChangeSelection={this.onChangeSelection}
                             onChangePage={this.onChangePage}
-                            onChangeRowsPerPage={this.onChangeRowsPerPage}
-                        />
-                      )}
+                            onChangeRowsPerPage={this.onChangeRowsPerPage}>
+                                {rows.map(row => (
+                                    <div className={classes.root} data-vud-content-uuid={row.uuid}>
+                                        <Paper elevation={1}>
+                                            <VanityUrlEnabledContent key={row.uuid}
+                                               content={row}
+                                               lang={dxContext.lang}
+                                               filterText={this.state.loadParams.filterText}
+                                               selection={this.state.selection}
+                                               workspace={this.state.workspace}
+                                               actions={this.actions}
+                                               languages={this.props.languages}
+                                               onChangeSelection={this.onChangeSelection}/>
+                                        </Paper>
+                                    </div>
+                               ))}
+                            </VanityUrlTableView>
+                          )}
                     </VanityUrlTableData>
 
                     {this.state.move.open && <Move

@@ -116,6 +116,11 @@
     },
     "title": "Vanity URLs",
     "manage": "Manage Vanity URLs",
-    "close": "Close"
+    "close": "Close",
+    "workspace": {
+      "live": "Live vanity URLs",
+      "staging": "Staging vanity URLs",
+      "both": "Staging and live"
+    }
   }
 }
