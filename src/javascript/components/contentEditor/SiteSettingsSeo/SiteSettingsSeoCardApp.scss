@@ -1,0 +1,19 @@
+.seoCardLayout {
+    margin-top: -60px;
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+.seoCardLayout .noVanity {
+    padding-top: 20vh;
+    text-align: center;
+}
+
+.seoCardLayout .noVanity > p {
+    padding: 30px;
+}
+
+.seoCardLayout .noVanity > div {
+    text-align: inherit;
+    margin: 20px;
+}
