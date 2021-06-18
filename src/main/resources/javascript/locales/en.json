@@ -5,7 +5,7 @@
     "searchPlaceholder": "Search",
     "actions": {
       "delete": "Delete",
-      "move": "Move to another page",
+      "move": "Move",
       "publish": "Publish",
       "canonical": {
         "set": "Set as canonical",

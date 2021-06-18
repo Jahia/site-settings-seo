@@ -74,11 +74,11 @@ const VanityUrlsByPathVariables = (paths, props) => ({
 });
 
 const GetNodeQuery = gql`
-    query GetNodeQuery($path:String!) {
+    query GetNodeQuery($path:String!, $types: [String]!) {
         jcr {
             nodeByPath(path:$path) {
                 ...NodeCacheRequiredFields
-                inPicker : isNodeType(type: {types:["jnt:page"]})
+                inPicker : isNodeType(type: {types:$types})
             }
         }
     }
