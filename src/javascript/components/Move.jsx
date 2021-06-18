@@ -82,6 +82,8 @@ class Move extends React.Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.picker = React.createRef();
+
+        this.selectableTypes = ['jmix:mainResource', 'jnt:page'];
     }
 
     handleMove() {
@@ -128,7 +130,7 @@ class Move extends React.Component {
         const {t, classes, lang, path} = this.props;
         return (
             <div>
-                <Query fetchPolicy="network-only" query={GetNodeQuery} variables={{path: this.state.targetPath}}>
+                <Query fetchPolicy="network-only" query={GetNodeQuery} variables={{path: this.state.targetPath, types: this.selectableTypes}}>
                     {({loading, error, data}) => {
                         if (!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker) {
                             setTimeout(() => {
@@ -177,7 +179,7 @@ class Move extends React.Component {
                                                 rootPaths={[path]}
                                                 defaultOpenPaths={[path]}
                                                 openableTypes={['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText', 'jmix:droppableContent', 'jmix:mainResource']}
-                                                selectableTypes={['jnt:page', 'jmix:mainResource']}
+                                                selectableTypes={this.selectableTypes}
                                                 queryVariables={{language: lang}}
                                                 selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
                                                 onSelectItem={path => {
