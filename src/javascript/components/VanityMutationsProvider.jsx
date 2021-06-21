@@ -7,7 +7,13 @@ import * as gqlMutations from './gqlMutations';
 import * as _ from 'lodash';
 import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
-import {InvalidMappingError, MoveSiteError, DuplicateMappingError, AddMappingsError} from './Errors';
+import {
+    InvalidMappingError, 
+    MoveSiteError, 
+    DuplicateMappingError, 
+    AddMappingsError,
+    SitesMappingError
+} from './Errors';
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -17,6 +23,17 @@ class VanityMutationsProvider extends Component {
 
     addMutations() {
         const {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
+
+        const isSitesUrl = (url) => {
+            const isString = (typeof url === 'string') || url instanceof String;
+            return (isString && SiteSettingsSeoConstants.SITES_REG_EXP.test(url.trim()));
+        }
+
+        const isBlankUrl = (url) => {
+            const isString = (typeof url === 'string') || url instanceof String;
+            return (isString && !url.trim());
+        }
+
 
         vanityMutationsContext.delete = (pathsOrIds, props) => deleteMutation({
             variables: {
@@ -52,9 +69,8 @@ class VanityMutationsProvider extends Component {
         });
 
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
-            if (url && !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(url)) {
-                throw new InvalidMappingError(url);
-            }
+            if (isBlankUrl(url)) throw new InvalidMappingError(url)
+            if (isSitesUrl(url)) throw new SitesMappingError(url)
 
             return updateMutation({
                 variables: {
@@ -68,17 +84,20 @@ class VanityMutationsProvider extends Component {
             });
         };
 
-        vanityMutationsContext.add = (path, vanityUrls, props) => {
-            let invalidMappings = _.filter(vanityUrls, mapping => !SiteSettingsSeoConstants.MAPPING_REG_EXP.test(mapping.url));
+        vanityMutationsContext.add = (path, vanityUrls=[], props) => {
+            let invalidMappings = vanityUrls.filter(v => isBlankUrl(v.url));
+            let sitesMappings = vanityUrls.filter(v => isSitesUrl(v.url));
             let duplicateUrls = vanityUrls;
-            duplicateUrls = _.pullAllBy(duplicateUrls, invalidMappings, 'url');
+            duplicateUrls = _.pullAllBy(duplicateUrls, [...invalidMappings, ...sitesMappings], 'url');
             duplicateUrls = _.groupBy(duplicateUrls, 'url');
             duplicateUrls = _.pickBy(duplicateUrls, x => x.length > 1);
             duplicateUrls = _.keys(duplicateUrls);
 
-            let errors = [];
-            _.each(invalidMappings, invalidMapping => errors.push(new InvalidMappingError(invalidMapping.url)));
-            _.each(duplicateUrls, duplicateUrl => errors.push(new DuplicateMappingError(duplicateUrl)));
+            let errors = [
+                ...invalidMappings.map(v => new InvalidMappingError(v.url)),
+                ...sitesMappings.map(v => new SitesMappingError(v.url)),
+                ...duplicateUrls.map(url => new DuplicateMappingError(url))
+            ];
 
             if (errors.length > 0) {
                 throw new AddMappingsError(errors);

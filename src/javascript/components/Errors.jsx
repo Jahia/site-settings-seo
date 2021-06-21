@@ -7,6 +7,15 @@ class InvalidMappingError extends Error {
     }
 }
 
+class SitesMappingError extends Error {
+    constructor(mapping, ...params) {
+        super(...params);
+
+        this.name = 'SitesMappingError';
+        this.mapping = mapping;
+    }
+}
+
 class DuplicateMappingError extends Error {
     constructor(mapping, ...params) {
         super(...params);
@@ -32,4 +41,10 @@ class MoveSiteError extends Error {
     }
 }
 
-export {InvalidMappingError, MoveSiteError, DuplicateMappingError, AddMappingsError};
+export {
+    InvalidMappingError,
+    SitesMappingError,
+    MoveSiteError,
+    DuplicateMappingError,
+    AddMappingsError,
+};
