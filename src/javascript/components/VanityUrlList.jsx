@@ -20,6 +20,7 @@ import {withVanityMutationContext} from './VanityMutationsProvider';
 import {flowRight as compose} from 'lodash';
 import {withNotifications} from '@jahia/react-material';
 import {Typography, Button, MoreVert, Chip, SwapHoriz, Delete, Publish, Star} from '@jahia/moonstone';
+import SiteSettingsSeoConstants from "./SiteSettingsSeoApp.constants";
 
 
 const styles = theme => ({
@@ -468,7 +469,7 @@ class VanityUrlListLive extends React.Component {
     }
 
     render() {
-        let {vanityUrls, classes, t, actions, contentUuid} = this.props;
+        let {vanityUrls, classes, t, actions, contentUuid, workspace} = this.props;
         let deletedUrls = _.filter(vanityUrls, urlPair => urlPair.live && !urlPair.live.editNode);
 
         // Get all vanity with default not published
@@ -525,7 +526,7 @@ class VanityUrlListLive extends React.Component {
                                         </TableRow>
                                     );
                                 }
-
+                                if (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) {
                                     return (
                                         <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRowLive}>
                                             <TableCell colSpan={4} padding="none">
@@ -533,6 +534,7 @@ class VanityUrlListLive extends React.Component {
                                             </TableCell>
                                         </TableRow>
                                     );
+                                }
                             })}
                         </TableBody>
                     </Table>

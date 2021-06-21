@@ -10,7 +10,7 @@ import {VanityUrlEnabledContent} from '../../VanityUrlEnabledContent';
 import SiteSettingsSeoConstants from '../../SiteSettingsSeoApp.constants';
 import classes from './SiteSettingsSeoCardApp.scss';
 import NoVanity from './NoVanity';
-
+import {Paper} from "@material-ui/core";
 
 class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
     constructor(props) {
@@ -26,6 +26,10 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
 
         return (
             <div>
+                <div className={classes.dropdownDiv}>
+                    {this.getWorkspaceDropdown({t,
+                        maxWidth: "150px"})}
+                </div>
                 <div className={classes.seoCardLayout}>
                     <VanityUrlTableData
                     {...this.state.loadParams}
@@ -39,17 +43,22 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                             }
 
                             return (
-                                <VanityUrlEnabledContent
-                                    {...this.state.loadParams}
-                                    openCardMode
-                                    lang={dxContext.lang}
-                                    languages={languages}
-                                    content={rows[0]}
-                                    selection={this.state.selection}
-                                    actions={this.actions}
-                                    onChangeSelection={() => {}} />
-                            );
-                        }}
+                                <div className={classes.root} data-vud-content-uuid={rows[0].uuid}>
+                                    <Paper elevation={0}>
+                                        <VanityUrlEnabledContent
+                                            {...this.state.loadParams}
+                                            openCardMode
+                                            lang={dxContext.lang}
+                                            languages={this.props.languages}
+                                            content={rows[0]}
+                                            selection={this.state.selection}
+                                            workspace={this.state.workspace}
+                                            actions={this.actions}
+                                            onChangeSelection={() => {}}
+                                        />
+                                    </Paper>
+                                </div>
+                      )}}
                     </VanityUrlTableData>
 
                     {this.state.move.open && <Move

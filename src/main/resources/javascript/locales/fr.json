@@ -81,8 +81,8 @@
       "switchOn": "Afficher les URLs filtrées"
     },
     "mappings": {
-      "default": "Vanity URLs d'édition",
-      "live": "Vanity URLs en ligne",
+      "default": "URLs personnalisées d'édition",
+      "live": "URLs personnalisées en ligne",
       "missingDefault": "{{vanityUrl}} supprimée",
       "movedDefault": "Déplacée vers {{page}}"
     },
@@ -109,6 +109,11 @@
     },
     "title": "URL personnalisées",
     "manage": "gérer les URL personnalisées",
-    "close": "Fermer"
+    "close": "Fermer",
+    "workspace": {
+      "live": "URLs personnalisées en ligne",
+      "staging": "URLs personnalisées d'édition",
+      "both": "URLs personnalisées d'édition et en ligne"
+    }
   }
 }

@@ -6,6 +6,7 @@ import {KeyboardArrowDown, KeyboardArrowRight} from '@material-ui/icons';
 import {Typography, Button} from '@jahia/moonstone';
 import {flowRight as compose} from 'lodash';
 import AddVanityUrl from './AddVanityUrl';
+import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 
 const styles = theme => ({
     root: {
@@ -64,7 +65,7 @@ class VanityUrlEnabledContent extends React.Component {
     }
 
     render() {
-        const {content, filterText, classes, t, onChangeSelection, selection, actions, languages, lang, openCardMode} = this.props;
+        const {content, workspace, filterText, classes, t, onChangeSelection, selection, actions, languages, lang, openCardMode} = this.props;
 
         let filterMatchInfo = null;
         let localFilterSwitch = null;
@@ -94,34 +95,42 @@ class VanityUrlEnabledContent extends React.Component {
         const others = [];
         vanityUrls.forEach((url) => (url.live && !url.default) ? deleted.push(url) : others.push(url));
         vanityUrls = [...others, ...deleted];
+
         return (
-            <div className={this.props.classes.root} data-vud-content-uuid={content.uuid}>
-                <Paper elevation={1}>
-                    {
-                        !openCardMode && <ListItem className={classes.vanityUrlListHeader} onClick={() => this.handleExpandCollapseClick()}>
+            <>
+                {
+                    !openCardMode && <ListItem className={classes.vanityUrlListHeader} onClick={() => this.handleExpandCollapseClick()}>
 
-                            {this.state.expanded ? <KeyboardArrowDown/> : <KeyboardArrowRight/>}
+                        {this.state.expanded ? <KeyboardArrowDown/> : <KeyboardArrowRight/>}
 
-                            <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText} data-vud-role="content-title"/>
-                            {filterMatchInfo}
-                            {localFilterSwitch}
-                        </ListItem>
-                    }
-                    <Collapse unmountOnExit in={this.state.expanded || openCardMode} timeout="auto">
-                        <Grid container spacing={16} className={classes.vanityUrlLists}>
-                            <Grid item xs={6}>
-                                <VanityUrlListDefault selection={selection} vanityUrls={vanityUrls} filterText={filterText} expanded={this.state.expanded} actions={actions} languages={languages} contentUuid={content.uuid} onChangeSelection={onChangeSelection} openCardMode={openCardMode}/>
+                        <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText} data-vud-role="content-title"/>
+                        {filterMatchInfo}
+                        {localFilterSwitch}
+                    </ListItem>
+                }
+                <Collapse unmountOnExit in={this.state.expanded || openCardMode} timeout="auto">
+                    <Grid container spacing={16} className={classes.vanityUrlLists}>
+                        { (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value || workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) &&
+                            <Grid item xs={(workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value) ? 12: 6}>
+                                <VanityUrlListDefault selection={selection} vanityUrls={vanityUrls} filterText={filterText}
+                                                      expanded={this.state.expanded} actions={actions} languages={languages}
+                                                      contentUuid={content.uuid} onChangeSelection={onChangeSelection}
+                                                      openCardMode={openCardMode}/>
                             </Grid>
-                            <Grid item xs={6}>
-                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} contentUuid={content.uuid}/>
+                        }
+                        { (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[1].value || workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) &&
+                            <Grid item xs={(workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[1].value) ? 12 : 6}>
+                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} contentUuid={content.uuid} workspace={workspace} />
                             </Grid>
+                        }
+                        { (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value || workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) &&
                             <Grid item xs={12}>
                                 <AddVanityUrl path={content.path} lang={lang} availableLanguages={languages}/>
                             </Grid>
-                        </Grid>
-                    </Collapse>
-                </Paper>
-            </div>
+                        }
+                    </Grid>
+                </Collapse>
+            </>
         );
     }
 }

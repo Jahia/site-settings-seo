@@ -1,5 +1,4 @@
 import React from 'react';
-import {VanityUrlEnabledContent} from './VanityUrlEnabledContent';
 import {List} from '@material-ui/core';
 import {Pagination} from '@jahia/react-material';
 import {withTranslation} from 'react-i18next';
@@ -10,18 +9,10 @@ class VanityUrlTableView extends React.Component {
     }
 
     render() {
-        let {rows, selection, onChangeSelection, filterText, actions, languages, lang} = this.props;
         return (
             <>
                 <List>
-                    {rows.map(row => (<VanityUrlEnabledContent key={row.uuid}
-                                                               content={row}
-                                                               lang={lang}
-                                                               filterText={filterText}
-                                                               selection={selection}
-                                                               actions={actions}
-                                                               languages={languages}
-                                                               onChangeSelection={onChangeSelection}/>))}
+                    {this.props.children}
                 </List>
                 <Pagination {...this.props}/>
             </>
