@@ -42,12 +42,14 @@ public class Utils {
      * General utility method to get the server-name based on url
      * In the-case it cannot be parsed to URL or it does not have protocol will return null
      *
-     * @param urlString [String] url string
+     * @param urlString         [String] url string
+     * @param defaultServerName [String] default server name
      * @return  servername in format of protocal://hostname:port
      * @throws URISyntaxException
      */
-    public static String getServerName(String urlString) throws URISyntaxException {
-        URI url = new URI(urlString);
+    public static String getServerName(String urlString, String defaultServerName) throws URISyntaxException {
+        String urlParseString = (urlString == null || urlString.isEmpty()) ? defaultServerName : urlString;
+        URI url = new URI(urlParseString);
         String protocol = url.getScheme();
         String host = url.getHost();
         int port = url.getPort();

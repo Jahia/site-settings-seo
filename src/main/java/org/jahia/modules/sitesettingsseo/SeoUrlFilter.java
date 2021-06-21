@@ -183,7 +183,8 @@ public class SeoUrlFilter extends AbstractFilter {
     }
 
     private String buildHref(JCRNodeWrapper node, RenderContext renderContext, String path) throws URISyntaxException, RepositoryException {
-        String serverName = Utils.getServerName(renderContext.getSite().getPropertyAsString("sitemapIndexURL"));
+        String defaultServerName = renderContext.getURLGenerator().getServer();
+        String serverName = Utils.getServerName(renderContext.getSite().getPropertyAsString("sitemapIndexURL"), defaultServerName);
         String url = rewriteUrl(path, renderContext.getRequest(), renderContext.getResponse());
         return serverName + url;
     }
