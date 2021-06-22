@@ -114,6 +114,7 @@
       "live": "URLs personnalisées en ligne",
       "staging": "URLs personnalisées d'édition",
       "both": "URLs personnalisées d'édition et en ligne"
-    }
+    },
+    "noPublishedVanityUrl": "Aucune URL personnalisée n'est publiée"
   }
 }
