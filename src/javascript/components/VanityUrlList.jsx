@@ -265,6 +265,13 @@ const styles = theme => ({
         borderBottom: 'none',
         borderRadius: '0px'
     },
+    noShadowBox: {
+        boxShadow: 'none'
+    },
+    noPublishedVanityUrlText: {
+        color: 'rgba(41, 49, 54, 0.6)',
+        paddingTop: '12px'
+    },
     editLine: {
         backgroundColor: '#F7F7F7!important',
 
@@ -483,6 +490,8 @@ class VanityUrlListLive extends React.Component {
         // Filter found languages
         defaultNotPublished = _.filter(defaultNotPublished, vanity => _.includes(multipleDefaultLang, vanity.language));
 
+        let numberOfLiveVanityUrls = vanityUrls.filter( url => url.hasOwnProperty('live')).length;
+
         return (
             <div>
                 <div>
@@ -490,54 +499,62 @@ class VanityUrlListLive extends React.Component {
                         {t('label.mappings.live')}
                     </Typography>
                 </div>
-                <Paper elevation={2} className={classes.vanityGroupPaper}>
-                    <Table className={classes.table}>
-                        <TableBody data-vud-table-body-live={contentUuid}>
-                            {vanityUrls.map(urlPair => {
-                                const url = urlPair.live;
-                                if (url) {
-                                    const classInactive = (url.active ? '' : classes.inactive);
-                                    const defaultWithMissingCounterpart = urlPair.default && !_.includes(defaultNotPublished, url);
-                                    return (
-                                        <TableRow key={urlPair.uuid}
-                                                  hover={false}
-                                                  className={classes.tableRowLive + ' '  + classes.vanityUrlLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.missingDefaultCounterpart)}>
-                                            <TableCell className={classInactive + ' ' + classes.liveVanityUrl} width="80%">
-                                                <Typography variant="body" className={classes.vanityURLTextLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.colorWhite)}>{url.url}</Typography>
-                                            </TableCell>
-                                            <TableCell width="10%">
-                                                {url.default ? <Chip color="accent" label="Canonical"/> : null}
-                                            </TableCell>
-                                            <TableCell className={classes.liveLanguage} width="5%" align="center">
-                                                {url.language}
-                                            </TableCell>
-                                            <TableCell className={classInactive + ' ' + classes.actionButton} width="5%" align="center">
-                                                {url.editNode ?
-                                                    (url.editNode.path !== url.path ?
-                                                        <ActionButton action={actions.infoButton}
-                                                                      data={url.editNode.targetNode.path ? (
-                                                            t('label.dialogs.infoButton.moveAction', {pagePath: url.editNode.targetNode.path})
-                                                        ) : ('')}/> :
-                                                        _.includes(defaultNotPublished, url) ? <ActionButton action={actions.infoButton}
-                                                                                                             data={t('label.dialogs.infoButton.notPublished', {pagePath: url.editNode.targetNode.path})}/> :
-                                                             '') :
-                                                             <ActionButton role="action-publishDeletion" action={actions.publishDeleteAction} data={deletedUrls}/>}
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                }
-                                if (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) {
-                                    return (
-                                        <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRowLive}>
-                                            <TableCell colSpan={4} padding="none">
-                                                {/* Not published yet */}
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                }
-                            })}
-                        </TableBody>
-                    </Table>
+                <Paper elevation={2} className={(numberOfLiveVanityUrls === 0 && workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[1].value) ? classes.noShadowBox : classes.vanityGroupPaper}>
+                    {(numberOfLiveVanityUrls === 0 && workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[1].value) ?
+                        <Typography variant="body" className={classes.noPublishedVanityUrlText} weight="light">
+                            {t('label.noPublishedVanityUrl')}
+                        </Typography>
+                        :
+                        <Table className={classes.table}>
+                            <TableBody data-vud-table-body-live={contentUuid}>
+                                {vanityUrls.map(urlPair => {
+                                    const url = urlPair.live;
+                                    if (url) {
+                                        const classInactive = (url.active ? '' : classes.inactive);
+                                        const defaultWithMissingCounterpart = urlPair.default && !_.includes(defaultNotPublished, url);
+                                        return (
+                                            <TableRow key={urlPair.uuid}
+                                                      hover={false}
+                                                      className={classes.tableRowLive + ' ' + classes.vanityUrlLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.missingDefaultCounterpart)}>
+                                                <TableCell className={classInactive + ' ' + classes.liveVanityUrl} width="80%">
+                                                    <Typography variant="body"
+                                                                className={classes.vanityURLTextLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.colorWhite)}>{url.url}</Typography>
+                                                </TableCell>
+                                                <TableCell width="10%">
+                                                    {url.default ? <Chip color="accent" label="Canonical"/> : null}
+                                                </TableCell>
+                                                <TableCell className={classes.liveLanguage} width="5%" align="center">
+                                                    {url.language}
+                                                </TableCell>
+                                                <TableCell className={classInactive + ' ' + classes.actionButton} width="5%" align="center">
+                                                    {url.editNode ?
+                                                        (url.editNode.path !== url.path ?
+                                                            <ActionButton action={actions.infoButton}
+                                                                          data={url.editNode.targetNode.path ? (
+                                                                              t('label.dialogs.infoButton.moveAction', {pagePath: url.editNode.targetNode.path})
+                                                                          ) : ('')}/> :
+                                                            _.includes(defaultNotPublished, url) ? <ActionButton action={actions.infoButton}
+                                                                                                                 data={t('label.dialogs.infoButton.notPublished', {pagePath: url.editNode.targetNode.path})}/> :
+                                                                '') :
+                                                        <ActionButton role="action-publishDeletion" action={actions.publishDeleteAction}
+                                                                      data={deletedUrls}/>}
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    }
+                                    if (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) {
+                                        return (
+                                            <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRowLive}>
+                                                <TableCell colSpan={4} padding="none">
+                                                    {/* Not published yet */}
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    }
+                                })}
+                            </TableBody>
+                        </Table>
+                    }
                 </Paper>
             </div>
         );
