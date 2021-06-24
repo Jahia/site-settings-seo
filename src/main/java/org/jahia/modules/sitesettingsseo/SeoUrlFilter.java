@@ -78,7 +78,7 @@ public class SeoUrlFilter extends AbstractFilter {
         }
         String canonicalLink = canonicalLink(href);
 
-        if (node.isNodeType(VANITY_URL_MAPPED)) {
+        if (node.isNodeType(VANITY_URL_MAPPED) && isUrlRewriteSeoRulesEnabled()) {
             List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
             List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
             for (JCRNodeWrapper url : urls) {
@@ -98,7 +98,7 @@ public class SeoUrlFilter extends AbstractFilter {
         Set<String> vanityLangs = new HashSet<>();
 
         // Get vanity urls for active languages, keep memo of languages used
-        if (node.isNodeType(VANITY_URL_MAPPED)) {
+        if (node.isNodeType(VANITY_URL_MAPPED) && isUrlRewriteSeoRulesEnabled()) {
             List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
             List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
 
@@ -174,6 +174,10 @@ public class SeoUrlFilter extends AbstractFilter {
         return String.format("<link rel=\"canonical\" href=\"%s\" />%n", href);
     }
 
+    private static boolean isUrlRewriteSeoRulesEnabled() {
+        return SettingsBean.getInstance().isUrlRewriteSeoRulesEnabled();
+    }
+
     /**
      * Copied (relevant) implementation of c:url taglib from taglibs:standard:1.1.2 source
      * prerequisite: url is not an absolute URL
@@ -183,8 +187,7 @@ public class SeoUrlFilter extends AbstractFilter {
         contextPathOverride = (contextPathOverride == null) ? request.getContextPath() : contextPathOverride;
         String rewriteUrl = (url.startsWith("/")) ? (contextPathOverride + url) : url;
 
-        boolean seoUrlRewriteEnabled = SettingsBean.getInstance().isUrlRewriteSeoRulesEnabled();
-        return seoUrlRewriteEnabled ? response.encodeURL(rewriteUrl) : rewriteUrl;
+        return isUrlRewriteSeoRulesEnabled() ? response.encodeURL(rewriteUrl) : rewriteUrl;
     }
 
 }
