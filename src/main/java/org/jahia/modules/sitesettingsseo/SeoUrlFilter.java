@@ -1,7 +1,6 @@
 package org.jahia.modules.sitesettingsseo;
 
 import net.htmlparser.jericho.*;
-import org.apache.commons.lang.StringUtils;
 import org.jahia.modules.sitesettingsseo.utils.Utils;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
@@ -72,9 +71,11 @@ public class SeoUrlFilter extends AbstractFilter {
     private String getPageLink(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException, URISyntaxException {
         String defaultLanguage = node.getResolveSite().getDefaultLanguage();
         boolean isDefaultLanguage = defaultLanguage.equals(node.getLanguage());
-        String nodeUrl = (isDefaultLanguage) ? node.getUrl() :
-                renderContext.getURLGenerator().buildURL(node, node.getLanguage(), null, "html");
-        String href = buildHref(node, renderContext, nodeUrl);
+        String href = buildHref(node.getUrl(), renderContext, "");
+        if (!isDefaultLanguage) {
+            String nodeUrl = renderContext.getURLGenerator().buildURL(node, node.getLanguage(), null, "html");
+            href = buildHref(nodeUrl, renderContext);
+        }
         String canonicalLink = canonicalLink(href);
 
         if (node.isNodeType(VANITY_URL_MAPPED)) {
@@ -84,7 +85,7 @@ public class SeoUrlFilter extends AbstractFilter {
                 if (url.getProperty(J_ACTIVE).getBoolean()
                         && node.getLanguage().equals(url.getPropertyAsString(LANGUAGE))
                         && url.getProperty("j:default").getBoolean()) {
-                    canonicalLink = canonicalLink(buildHref(node, renderContext, url.getPropertyAsString(URL)));
+                    canonicalLink = canonicalLink(buildHref(url.getPropertyAsString(URL), renderContext));
                 }
             }
         }
@@ -105,8 +106,7 @@ public class SeoUrlFilter extends AbstractFilter {
                 String vanityLanguage = url.getPropertyAsString(LANGUAGE);
                 if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage) && url.getProperty(J_DEFAULT).getBoolean()) {
                     vanityLangs.add(vanityLanguage);
-                    altLinks.append(altLink(getDashFormatLanguage(vanityLanguage), buildHref(node, renderContext,
-                            url.getPropertyAsString(URL))));
+                    altLinks.append(altLink(getDashFormatLanguage(vanityLanguage), buildHref(url.getPropertyAsString(URL), renderContext)));
                 }
             }
         }
@@ -116,7 +116,7 @@ public class SeoUrlFilter extends AbstractFilter {
         for (String lang : langs) {
             if (!node.getLanguage().equals(lang) && !vanityLangs.contains(lang)) {
                 String url = renderContext.getURLGenerator().buildURL(node, lang, null, "html");
-                String href = buildHref(node, renderContext, url);
+                String href = buildHref(url, renderContext);
                 String altLink = altLink(getDashFormatLanguage(lang), href);
                 altLinks.append(altLink);
             }
@@ -153,10 +153,16 @@ public class SeoUrlFilter extends AbstractFilter {
         }
     }
 
-    private String buildHref(JCRNodeWrapper node, RenderContext renderContext, String url) throws URISyntaxException, RepositoryException {
+    private String buildHref(String url, RenderContext renderContext)
+            throws URISyntaxException {
+        return buildHref(url, renderContext, null);
+    }
+
+    private String buildHref(String url, RenderContext renderContext, String contextPathOverride)
+            throws URISyntaxException {
         String defaultServerName = renderContext.getURLGenerator().getServer();
         String serverName = Utils.getServerName(renderContext.getSite().getPropertyAsString("sitemapIndexURL"), defaultServerName);
-        url = rewriteUrl(url, renderContext.getRequest(), renderContext.getResponse());
+        url = rewriteUrl(url, contextPathOverride, renderContext.getRequest(), renderContext.getResponse());
         return serverName + url;
     }
 
@@ -168,14 +174,14 @@ public class SeoUrlFilter extends AbstractFilter {
         return String.format("<link rel=\"canonical\" href=\"%s\" />%n", href);
     }
 
-
     /**
      * Copied (relevant) implementation of c:url taglib from taglibs:standard:1.1.2 source
      * prerequisite: url is not an absolute URL
      */
-    private static String rewriteUrl(String url, HttpServletRequest request, HttpServletResponse response) {
+    private static String rewriteUrl(String url, String contextPathOverride, HttpServletRequest request, HttpServletResponse response) {
         // normalize relative URLs against a context root
-        String rewriteUrl = (url.startsWith("/")) ? (request.getContextPath() + url) : url;
+        contextPathOverride = (contextPathOverride == null) ? request.getContextPath() : contextPathOverride;
+        String rewriteUrl = (url.startsWith("/")) ? (contextPathOverride + url) : url;
 
         boolean seoUrlRewriteEnabled = SettingsBean.getInstance().isUrlRewriteSeoRulesEnabled();
         return seoUrlRewriteEnabled ? response.encodeURL(rewriteUrl) : rewriteUrl;
