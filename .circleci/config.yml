@@ -71,7 +71,7 @@ parameters:
     default: false
   SSH_KEY_FINGERPRINT:
     type: string
-    default: "71:4f:fc:0c:0a:01:a7:3b:df:50:e2:6c:12:14:9f:d7"
+    default: "eb:6a:7b:9e:e8:9f:5d:64:2a:d3:a3:da:04:0b:7d:6a"
 
 workflows:
   version: 2
@@ -97,6 +97,7 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - jahia-modules-orb/initialize
+            - jahia-modules-orb/update-signature
           module_id: << pipeline.parameters.MODULE_ID >>
       - jahia-modules-orb/sonar-analysis:
           context: QA_ENVIRONMENT
@@ -151,9 +152,7 @@ workflows:
       - jahia-modules-orb/update-signature:
           context: QA_ENVIRONMENT
           requires:
-            - jahia-modules-orb/initialize
-          pre-steps:
-            - jahia-modules-orb/update-signature-prestep
+            - jahia-modules-orb/release
           ssh_key_fingerprints:  << pipeline.parameters.SSH_KEY_FINGERPRINT >>
       - wait-for-approval:
           type: approval
