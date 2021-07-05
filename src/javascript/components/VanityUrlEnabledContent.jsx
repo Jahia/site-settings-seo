@@ -1,7 +1,7 @@
 import React from 'react';
 import {withTranslation} from 'react-i18next';
 import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
-import {Collapse, Grid, ListItem, ListItemText, Paper, withStyles} from '@material-ui/core';
+import {Collapse, Grid, ListItem, ListItemText, withStyles} from '@material-ui/core';
 import {KeyboardArrowDown, KeyboardArrowRight} from '@material-ui/icons';
 import {Typography, Button} from '@jahia/moonstone';
 import {flowRight as compose} from 'lodash';
@@ -96,6 +96,10 @@ class VanityUrlEnabledContent extends React.Component {
         vanityUrls.forEach((url) => (url.live && !url.default) ? deleted.push(url) : others.push(url));
         vanityUrls = [...others, ...deleted];
 
+        const isStaging = workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value;
+        const isLive = workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[1].value;
+        const isBoth = workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value;
+
         return (
             <>
                 {
@@ -110,20 +114,20 @@ class VanityUrlEnabledContent extends React.Component {
                 }
                 <Collapse unmountOnExit in={this.state.expanded || openCardMode} timeout="auto">
                     <Grid container spacing={16} className={classes.vanityUrlLists}>
-                        { (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value || workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) &&
-                            <Grid item xs={(workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value) ? 12: 6}>
+                        { (isStaging || isBoth) &&
+                            <Grid item xs={isStaging ? 12: 6}>
                                 <VanityUrlListDefault selection={selection} vanityUrls={vanityUrls} filterText={filterText}
                                                       expanded={this.state.expanded} actions={actions} languages={languages}
                                                       contentUuid={content.uuid} onChangeSelection={onChangeSelection}
                                                       openCardMode={openCardMode}/>
                             </Grid>
                         }
-                        { (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[1].value || workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) &&
-                            <Grid item xs={(workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[1].value) ? 12 : 6}>
+                        { (isLive || isBoth) &&
+                            <Grid item xs={isLive ? 12 : 6}>
                                 <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} contentUuid={content.uuid} workspace={workspace} />
                             </Grid>
                         }
-                        { (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value || workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) &&
+                        { (isStaging || isBoth) &&
                             <Grid item xs={12}>
                                 <AddVanityUrl path={content.path} lang={lang} availableLanguages={languages}/>
                             </Grid>

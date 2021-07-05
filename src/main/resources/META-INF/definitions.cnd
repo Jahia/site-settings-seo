@@ -2,3 +2,4 @@
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
 <mix = 'http://www.jcp.org/jcr/mix/1.0'>
 
+[jmix:canHaveVanityUrls] mixin
