@@ -31,7 +31,7 @@ export default function () {
             registry.add('action', 'vanityUrls', VanityAction, {
                 targets: ['content-editor/header/3dots:3'],
                 requiredPermission: 'siteAdminUrlmapping',
-                showOnNodeTypes: ['jmix:vanityUrlMapped', 'jnt:page', 'jmix:mainResource'],
+                showOnNodeTypes: ['jmix:vanityUrlMapped', 'jnt:page', 'jnt:file', 'jmix:mainResource'],
                 label:'site-settings-seo:label.manage',
                 dataSelRole: 'vanityUrls'
             });
