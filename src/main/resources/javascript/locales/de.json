@@ -63,6 +63,8 @@
       "GqlConstraintViolationException_message": "URL Mapping wird bereits für {{existingNodePath}} verwendet.",
       "InvalidMappingError": "Die Vanity URL ist ungültig.",
       "InvalidMappingError_message": "Die Vanity URL darf nicht leer sein",
+      "InvalidCharError": "Die Vanity URL ist ungültig",
+      "InvalidCharError_message": "Stellen Sie sicher, dass die URL nur gültige Zeichen enthält",
       "SitesMappingError": "Die Vanity URL ist ungültig.",
       "SitesMappingError_message": "SEO Url sollte nicht enthalten / Websites, wie es von dem System verwendet wird.",
       "MoveInvalidTarget_message": "Bitte überprüfen Sie den Pfad erneut, er ist ungültig.",
