@@ -18,12 +18,15 @@ const TableQuery = gql`
     ${LiveVanityUrls}
 `;
 
+// See https://stackoverflow.com/questions/23388485/xpath-whitespace-encoding for details
+const encodePathForJCR = path => path.replaceAll(' ', '_x0020_');
+
 const TableQueryVariables = props => ({
     lang: props.lang,
     languages: props.selectedLanguageCodes,
     offset: (props.currentPage * props.pageSize),
     limit: props.pageSize,
-    query: `/jcr:root${props.path}`,
+    query: `/jcr:root${encodePathForJCR(props.path)}`,
     filterText: props.filterText,
     doFilter: Boolean(props.filterText),
     queryFilter: {multi: 'ANY', filters: [{fieldName: 'vanityUrls', evaluation: 'NOT_EMPTY'}, {fieldName: 'liveNode.vanityUrls', evaluation: 'NOT_EMPTY'}]}
