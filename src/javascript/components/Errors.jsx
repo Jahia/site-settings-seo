@@ -7,6 +7,15 @@ class InvalidMappingError extends Error {
     }
 }
 
+class InvalidCharError extends Error {
+    constructor(mapping, ...params) {
+        super(...params);
+
+        this.name = 'InvalidCharError';
+        this.mapping = mapping;
+    }
+}
+
 class SitesMappingError extends Error {
     constructor(mapping, ...params) {
         super(...params);
@@ -47,4 +56,5 @@ export {
     MoveSiteError,
     DuplicateMappingError,
     AddMappingsError,
+    InvalidCharError
 };

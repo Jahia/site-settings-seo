@@ -63,6 +63,8 @@
       "GqlConstraintViolationException_message": "This mapping already points to {{existingNodePath}}",
       "InvalidMappingError": "Invalid URL",
       "InvalidMappingError_message": "The vanity URL cannot be empty",
+      "InvalidCharError": "Invalid URL",
+      "InvalidCharError_message": "Make sure the url contains only valid characters",
       "SitesMappingError": "Invalid URL",
       "SitesMappingError_message": "SEO Url should not contain /sites as it is used by the system",
       "MoveInvalidTarget_message": "Sorry, this path is invalid.",

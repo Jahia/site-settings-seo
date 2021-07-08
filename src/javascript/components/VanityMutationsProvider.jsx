@@ -8,9 +8,10 @@ import * as _ from 'lodash';
 import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {
-    InvalidMappingError, 
-    MoveSiteError, 
-    DuplicateMappingError, 
+    InvalidMappingError,
+    InvalidCharError,
+    MoveSiteError,
+    DuplicateMappingError,
     AddMappingsError,
     SitesMappingError
 } from './Errors';
@@ -27,12 +28,17 @@ class VanityMutationsProvider extends Component {
         const isSitesUrl = (url) => {
             const isString = (typeof url === 'string') || url instanceof String;
             return (isString && SiteSettingsSeoConstants.SITES_REG_EXP.test(url.trim()));
-        }
+        };
 
         const isBlankUrl = (url) => {
             const isString = (typeof url === 'string') || url instanceof String;
             return (isString && !url.trim());
-        }
+        };
+
+        const containsInvalidChars = (url) => {
+            const isString = (typeof url === 'string') || url instanceof String;
+            return (isString && SiteSettingsSeoConstants.INVALID_CHARS_REG_EXP.test(url.trim()));
+        };
 
 
         vanityMutationsContext.delete = (pathsOrIds, props) => deleteMutation({
@@ -69,8 +75,9 @@ class VanityMutationsProvider extends Component {
         });
 
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
-            if (isBlankUrl(url)) throw new InvalidMappingError(url)
-            if (isSitesUrl(url)) throw new SitesMappingError(url)
+            if (isBlankUrl(url)) throw new InvalidMappingError(url);
+            if (containsInvalidChars(url)) throw new InvalidCharError(url);
+            if (isSitesUrl(url)) throw new SitesMappingError(url);
 
             return updateMutation({
                 variables: {
@@ -87,16 +94,18 @@ class VanityMutationsProvider extends Component {
         vanityMutationsContext.add = (path, vanityUrls=[], props) => {
             let invalidMappings = vanityUrls.filter(v => isBlankUrl(v.url));
             let sitesMappings = vanityUrls.filter(v => isSitesUrl(v.url));
+            let invalidCharMappings = vanityUrls.filter(v => containsInvalidChars(v.url));
             let duplicateUrls = vanityUrls;
-            duplicateUrls = _.pullAllBy(duplicateUrls, [...invalidMappings, ...sitesMappings], 'url');
+            duplicateUrls = _.pullAllBy(duplicateUrls, [...invalidMappings, ...sitesMappings, ...invalidCharMappings], 'url');
             duplicateUrls = _.groupBy(duplicateUrls, 'url');
             duplicateUrls = _.pickBy(duplicateUrls, x => x.length > 1);
             duplicateUrls = _.keys(duplicateUrls);
 
             let errors = [
                 ...invalidMappings.map(v => new InvalidMappingError(v.url)),
+                ...invalidCharMappings.map(v => new InvalidCharError(v.url)),
                 ...sitesMappings.map(v => new SitesMappingError(v.url)),
-                ...duplicateUrls.map(url => new DuplicateMappingError(url))
+                ...duplicateUrls.map(v => new DuplicateMappingError(v.url))
             ];
 
             if (errors.length > 0) {
