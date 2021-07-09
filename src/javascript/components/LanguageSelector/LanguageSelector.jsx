@@ -1,31 +1,8 @@
 import React from 'react';
 import * as _ from 'lodash';
 import {withTranslation} from 'react-i18next';
-import {Checkbox, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
+import {Checkbox, ListItemText, MenuItem, Select} from '@material-ui/core';
 import scssStyles from './LanguageSelector.scss';
-
-const styles = theme => ({
-    languageSelector: {
-        marginRight: theme.spacing.unit,
-        boxShadow: 'none',
-        background: 'none',
-        color: 'black',
-
-        // Disable any underlining.
-        '&:before': {
-            background: 'transparent'
-        },
-        '&:after': {
-            background: 'transparent'
-        }
-    },
-    icon: {
-        color: 'inherit'
-    },
-    selectMenu: {
-        color: 'grey'
-    },
-});
 
 const MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED = 2;
 
@@ -97,7 +74,6 @@ class LanguageSelector extends React.Component {
 
 
     render() {
-        let classes = this.props.classes;
         let selectedLanguageCodes = this.props.selectedLanguageCodes;
         let allLanguagesChecked = (selectedLanguageCodes.length === this.props.languages.length);
         let allLanguagesIndeterminate = (selectedLanguageCodes.length > 0) && (selectedLanguageCodes.length < this.props.languages.length);
@@ -109,8 +85,8 @@ class LanguageSelector extends React.Component {
                 displayEmpty
                 value={selectedLanguageCodes}
                 renderValue={this.getSelectedLanguagesValue}
-                className={classes.languageSelector}
-                classes={{icon: classes.icon, selectMenu:classes.selectMenu}}
+                className={scssStyles.languageSelector}
+                classes={{icon: scssStyles.icon, selectMenu: scssStyles.selectMenu}}
                 style={this.props.style}
                 data-vud-role="language-selector"
                 onChange={this.onChange}
@@ -149,6 +125,6 @@ class LanguageSelector extends React.Component {
     }
 }
 
-LanguageSelector = withStyles(styles)(withTranslation('site-settings-seo')(LanguageSelector));
+LanguageSelector = (withTranslation('site-settings-seo')(LanguageSelector));
 
 export {LanguageSelector};
