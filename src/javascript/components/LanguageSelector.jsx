@@ -4,12 +4,32 @@ import {withTranslation} from 'react-i18next';
 import {Checkbox, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
 
 const styles = theme => ({
+    languageSelector: {
+        marginRight: theme.spacing.unit,
+        boxShadow: 'none',
+        background: 'none',
+        color: 'black',
+
+        // Disable any underlining.
+        '&:before': {
+            background: 'transparent !important'
+        },
+        '&:after': {
+            background: 'transparent'
+        }
+    },
     selected: {
         backgroundColor: 'inherit !important',
         '&:hover': {
             backgroundColor: 'rgba(0, 0, 0, .14) !important',
         }
-    }
+    },
+    icon: {
+        color: 'inherit'
+    },
+    selectMenu: {
+        color: 'grey'
+    },
 });
 
 const MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED = 2;
@@ -93,8 +113,8 @@ class LanguageSelector extends React.Component {
                 displayEmpty
                 value={selectedLanguageCodes}
                 renderValue={this.getSelectedLanguagesValue}
-                className={this.props.className}
-                classes={this.props.classes}
+                className={classes.languageSelector}
+                classes={{icon: classes.icon, selectMenu:classes.selectMenu}}
                 style={this.props.style}
                 data-vud-role="language-selector"
                 onChange={this.onChange}
