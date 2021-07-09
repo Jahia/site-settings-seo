@@ -14,14 +14,14 @@ const SiteSettingsSeo = _.flowRight(
         return <ProgressOverlay/>;
     }
 
-    const Component = props.component;
+    const {component : Component, ...otherProps} = props;
 
     return (
         <MuiThemeProvider theme={legacyTheme}>
             <NotificationProvider notificationContext={{}}>
                 <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
                     <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                        {languages => <Component languages={languages} {...props}/>}
+                        {languages => <Component languages={languages} {...otherProps}/>}
                     </VanityUrlLanguageData>
                 </VanityMutationsProvider>
             </NotificationProvider>

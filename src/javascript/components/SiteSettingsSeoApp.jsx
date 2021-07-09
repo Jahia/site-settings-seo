@@ -1,8 +1,8 @@
 import React from 'react';
-import {Collapse, List, Paper, withStyles} from '@material-ui/core';
+import {Paper, withStyles} from '@material-ui/core';
 import {withNotifications, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
-import {LanguageSelector} from './LanguageSelector';
+import LanguageSelector from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
 import {withTranslation} from 'react-i18next';
 import {Selection} from './Selection';
@@ -32,6 +32,14 @@ function modifyFontFamily() {
 
 
 const styles = theme => ({
+    pageContainer: {
+        height: '100vh',
+        display: 'flex',
+        flexFlow: 'column'
+    },
+    vanityHeader: {
+        minHeight: '95px'
+    },
     root: {
         margin: theme.spacing.unit
     },
@@ -39,32 +47,11 @@ const styles = theme => ({
         width: '100%',
         color: 'rgb(37, 43, 47)'
     },
-    languageSelector: {
-        marginRight: theme.spacing.unit,
-        boxShadow: 'none',
-        background: 'none',
-        color: 'black',
-
-        // Disable any underlining.
-        '&:before': {
-            background: 'transparent !important'
-        },
-        '&:after': {
-            background: 'transparent'
-        }
-    },
-    languageSelectorIcon: {
-        color: 'inherit'
-    },
-    langSelectMenu: {
-        color: 'grey'
-    },
     selectionMain: {
         height: '100%'
     },
     layout: {
         marginTop: '-60px',
-        height: 'calc(100vh - 70px)',
         overflowY: 'scroll'
     },
     actions: {
@@ -391,16 +378,14 @@ class SiteSettingsSeoApp extends React.Component {
         let polling = !(this.state.publication.open || this.state.deletion.open || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
 
         return (
-            <div>
-                <Header
+            <div className={classes.pageContainer}>
+                <Header className={classes.vanityHeader}
                     title={`${t('label.title')} - ${dxContext.siteTitle}`}
                     mainActions={
                         <div className={classes.actions}>
                             <LanguageSelector
                                 languages={this.props.languages}
                                 selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
-                                className={classes.languageSelector}
-                                classes={{icon: classes.languageSelectorIcon, selectMenu: classes.langSelectMenu}}
                                 onSelectionChange={this.onSelectedLanguagesChanged}
                             />
 
@@ -427,7 +412,7 @@ class SiteSettingsSeoApp extends React.Component {
                         {(rows, totalCount) => (
                             <VanityUrlTableView
                             {...this.state.loadParams}
-                            totalCount={totalCount}
+                            totalCount={totalCount || 0}
                             onChangePage={this.onChangePage}
                             onChangeRowsPerPage={this.onChangeRowsPerPage}>
                                 {rows.map(row => (

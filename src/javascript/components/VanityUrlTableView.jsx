@@ -9,12 +9,13 @@ class VanityUrlTableView extends React.Component {
     }
 
     render() {
+        const {children, ...otherProps} = this.props;
         return (
             <>
                 <List>
-                    {this.props.children}
+                    {children}
                 </List>
-                <Pagination {...this.props}/>
+                <Pagination {...otherProps}/>
             </>
         );
     }
