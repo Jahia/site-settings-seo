@@ -2,6 +2,7 @@ import React from 'react';
 import * as _ from 'lodash';
 import {withTranslation} from 'react-i18next';
 import {Checkbox, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
+import scssStyles from './LanguageSelector.scss';
 
 const styles = theme => ({
     languageSelector: {
@@ -16,12 +17,6 @@ const styles = theme => ({
         },
         '&:after': {
             background: 'transparent'
-        }
-    },
-    selected: {
-        backgroundColor: 'inherit !important',
-        '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, .14) !important',
         }
     },
     icon: {
@@ -100,6 +95,7 @@ class LanguageSelector extends React.Component {
         return languages;
     }
 
+
     render() {
         let classes = this.props.classes;
         let selectedLanguageCodes = this.props.selectedLanguageCodes;
@@ -137,7 +133,12 @@ class LanguageSelector extends React.Component {
                     let checked = (selectedLanguageCodes.indexOf(language.code) >= 0);
 
                     return (
-                        <MenuItem key={language.code} value={language.code} data-vud-role="language-selector-item" classes={{selected: classes.selected}}>
+                        <MenuItem
+                            key={language.code}
+                            value={language.code}
+                            data-vud-role="language-selector-item"
+                            classes={{selected: scssStyles.selected}}
+                        >
                             <Checkbox checked={checked}/>
                             <ListItemText primary={language.name + ' (' + language.code + ')'} data-vud-role="language-selector-item-label"/>
                         </MenuItem>

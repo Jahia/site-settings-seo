@@ -1,0 +1,7 @@
+li[role='option'].selected {
+  background-color: inherit;
+
+       &:hover {
+           background-color: rgba(0, 0, 0, .14);
+       }
+}
