@@ -13,7 +13,7 @@ const styles = theme => ({
 
         // Disable any underlining.
         '&:before': {
-            background: 'transparent !important'
+            background: 'transparent'
         },
         '&:after': {
             background: 'transparent'

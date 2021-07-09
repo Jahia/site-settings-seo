@@ -1,8 +1,8 @@
 import React from 'react';
-import {Collapse, List, Paper, withStyles} from '@material-ui/core';
+import {Paper, withStyles} from '@material-ui/core';
 import {withNotifications, legacyTheme} from '@jahia/react-material';
 import SearchBar from './SearchBar';
-import {LanguageSelector} from './LanguageSelector';
+import LanguageSelector from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
 import {withTranslation} from 'react-i18next';
 import {Selection} from './Selection';
