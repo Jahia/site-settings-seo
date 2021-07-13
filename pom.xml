@@ -24,7 +24,7 @@
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <yarn.arguments>build:simple</yarn.arguments>
-        <jahia-module-signature>MCwCFGgMkmwEQsHsVG4Se23Bb7qRI/2DAhQjI0mpjJDEOT1r58FxSh+O16yMWA==</jahia-module-signature>
+        <jahia-module-signature>MCwCFCNUXyeePDCn267K1uX7Yz8tXAc5AhQN2a5TGAz9tyQEKdXAz0mN5ZKRCg==</jahia-module-signature>
     </properties>
     <repositories>
         <repository>
