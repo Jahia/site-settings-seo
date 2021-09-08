@@ -7,3 +7,7 @@ export const gqlContentNodeToVanityUrlPairs = (gqlContentNode, vanityUrlsFieldNa
     urlPairs = sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
     return values(urlPairs);
 };
+
+export const trimUrl = (url) => {
+    return url.replace(/\s/g, '')
+};
