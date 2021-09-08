@@ -23,6 +23,7 @@ import * as _ from 'lodash';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {flowRight as compose} from 'lodash';
 import {Add, Button} from '@jahia/moonstone';
+import {trimUrl} from './utils';
 
 const styles = theme => ({
     pickerRoot: {
@@ -299,7 +300,7 @@ class AddVanityUrl extends React.Component {
                                                 </IconButton> : null}
                                                 onFocus={() => this.handleFieldChange('focus', index, true)}
                                                 onBlur={() => this.handleFieldChange('focus', index, false)}
-                                                onChange={event => this.handleFieldChange('url', index, event.target.value)}
+                                                onChange={event => this.handleFieldChange('url', index, trimUrl(event.target.value))}
                                             />
                                             {errorForRow && <FormHelperText>
                                                 <error><label>{errorForRow.label}</label>

@@ -2,6 +2,7 @@ import React from 'react';
 
 import {FormControl, FormHelperText, IconButton, withStyles, Input} from '@material-ui/core';
 import {Check, Clear} from '@material-ui/icons';
+import {trimUrl} from './utils';
 
 let styles = theme => ({
     root: {
@@ -103,7 +104,7 @@ class Editable extends React.Component {
     }
 
     onValueChange(event) {
-        this.setState({value: event.target.value, errorLabel: null, errorMessage: null});
+        this.setState({value: trimUrl(event.target.value), errorLabel: null, errorMessage: null});
     }
 
     render() {
