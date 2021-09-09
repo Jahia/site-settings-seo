@@ -9,5 +9,5 @@ export const gqlContentNodeToVanityUrlPairs = (gqlContentNode, vanityUrlsFieldNa
 };
 
 export const trimUrl = (url) => {
-    return url.replace(/\s/g, '')
+    return url.trim();
 };
