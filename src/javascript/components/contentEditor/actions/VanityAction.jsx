@@ -3,7 +3,7 @@ import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useNodeChecks} from '@jahia/data-helper';
 import EditVanityUrlsDialog from '../EditvanityUrlsDialog'
 
-const Action = ({siteInfo, nodeData, render: Render, label, requiredPermission, loading: Loading, language, showOnNodeTypes, ...otherProps}) => {
+const Action = ({mode, siteInfo, nodeData, render: Render, label, requiredPermission, loading: Loading, language, showOnNodeTypes, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const res = useNodeChecks(
         {path: nodeData.path, language: language},
@@ -32,7 +32,9 @@ const Action = ({siteInfo, nodeData, render: Render, label, requiredPermission, 
     return (
         <>
             <Render
+                enabled={mode !== 'create'}
                 {...otherProps}
+                mode={mode}
                 buttonLabel={label}
                 isVisible={res.checksResult}
                 onClick={openModal}/>
