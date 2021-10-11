@@ -1,6 +1,6 @@
 import React from 'react';
 import {Paper, withStyles} from '@material-ui/core';
-import {withNotifications, legacyTheme} from '@jahia/react-material';
+import {legacyTheme, withNotifications} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import LanguageSelector from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
@@ -15,9 +15,9 @@ import PublishDeletion from './PublishDeletion';
 import Move from './Move';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlTableData} from './VanityUrlTableData';
-import {Header, Dropdown} from '@jahia/moonstone';
+import {Dropdown, Header} from '@jahia/moonstone';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
-import {VanityUrlEnabledContent} from "~/components/VanityUrlEnabledContent";
+import {VanityUrlEnabledContent} from '~/components/VanityUrlEnabledContent';
 
 legacyTheme.overrides.MuiSelect.selectMenu.color = 'rgb(37, 43, 47)';
 modifyFontFamily();
@@ -27,9 +27,8 @@ function modifyFontFamily() {
         if (legacyTheme.typography[name].fontFamily) {
             legacyTheme.typography[name].fontFamily = '"Nunito", \'Nunito Sans\'';
         }
-    })
+    });
 }
-
 
 const styles = theme => ({
     pageContainer: {
@@ -176,12 +175,13 @@ class SiteSettingsSeoApp extends React.Component {
             obj['label'] = t('label.workspace.' + element.key);
             obj['value'] = element.value;
             return obj;
-        })
+        });
     }
 
     handleServerError(ex, onError) {
         let {t} = this.props;
-        let err; let mess;
+        let err;
+        let mess;
         if (ex.graphQLErrors && ex.graphQLErrors.length > 0) {
             let graphQLError = ex.graphQLErrors[0];
             err = t(['label.errors.' + graphQLError.errorType, 'label.errors.Error']);
@@ -326,9 +326,11 @@ class SiteSettingsSeoApp extends React.Component {
         }));
     }
 
-    onSearchFocus() {}
+    onSearchFocus() {
+    }
 
-    onSearchBlur() {}
+    onSearchBlur() {
+    }
 
     onSelectedLanguagesChanged(selectedLanguageCodes) {
         this.setState(state => ({
@@ -358,19 +360,20 @@ class SiteSettingsSeoApp extends React.Component {
             name="workspaceDropdown"
             isDisabled={false}
             variant="ghost"
-            maxWidth={maxWidth || "300px"}
+            maxWidth={maxWidth || '300px'}
             label={label || t('label.workspace.' + this.state.workspace.key)}
             value={value || this.state.workspace.value}
             data={data || this.workspaceDropdownData}
-            onChange={(e, item) => {onChange ||
+            onChange={(e, item) => {
+                onChange ||
                 this.setState({
                     workspace: {
                         key: SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA.find(element => element.value === item.value).key,
                         value: item.value
                     }
-                })
+                });
             }}
-        />)
+        />);
     }
 
     render() {
@@ -379,98 +382,98 @@ class SiteSettingsSeoApp extends React.Component {
 
         return (
             <div className={classes.pageContainer}>
-                <Header className={classes.vanityHeader}
-                    title={`${t('label.title')} - ${dxContext.siteTitle}`}
-                    mainActions={
-                        <div className={classes.actions}>
-                            <LanguageSelector
-                                languages={this.props.languages}
-                                selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
-                                onSelectionChange={this.onSelectedLanguagesChanged}
-                            />
-
-                            <SearchBar placeholderLabel={t('label.filterPlaceholder')}
-                                       onChangeFilter={this.onChangeFilter}
-                                       onFocus={this.onSearchFocus}
-                                       onBlur={this.onSearchBlur}/>
-                        </div>
-                    }
-                    toolbarLeft={[this.getWorkspaceDropdown({t})]}
-                />
-
-                <Selection selection={this.state.selection}
-                           actions={this.actions}
-                           onChangeSelection={this.onChangeSelection}/>
-
-                <div className={classes.layout}>
-                    <VanityUrlTableData
+                <VanityUrlTableData
                     {...this.state.loadParams}
                     path={dxContext.mainResourcePath}
                     lang={dxContext.lang}
                     poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
-                    >
-                        {(rows, totalCount) => (
+                >
+                    {(rows, totalCount) => (<>
+                        <Header className={classes.vanityHeader}
+                                title={`${t('label.title')} - ${dxContext.siteTitle}`}
+                                mainActions={
+                                    <div className={classes.actions}>
+                                        <LanguageSelector
+                                            languages={this.props.languages}
+                                            selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
+                                            onSelectionChange={this.onSelectedLanguagesChanged}
+                                        />
+
+                                        <SearchBar placeholderLabel={t('label.filterPlaceholder')}
+                                                   onChangeFilter={this.onChangeFilter}
+                                                   onFocus={this.onSearchFocus}
+                                                   onBlur={this.onSearchBlur}/>
+                                    </div>
+                                }
+                                toolbarLeft={!rows[0] ? [] : [this.getWorkspaceDropdown({t})]}
+                        />
+
+                        <Selection selection={this.state.selection}
+                                   actions={this.actions}
+                                   onChangeSelection={this.onChangeSelection}/>
+
+                        <div className={classes.layout}>
                             <VanityUrlTableView
-                            {...this.state.loadParams}
-                            totalCount={totalCount || 0}
-                            onChangePage={this.onChangePage}
-                            onChangeRowsPerPage={this.onChangeRowsPerPage}>
+                                {...this.state.loadParams}
+                                totalCount={totalCount || 0}
+                                onChangePage={this.onChangePage}
+                                onChangeRowsPerPage={this.onChangeRowsPerPage}>
                                 {rows.map(row => (
                                     <div className={classes.root} data-vud-content-uuid={row.uuid}>
                                         <Paper elevation={1}>
                                             <VanityUrlEnabledContent key={row.uuid}
-                                               content={row}
-                                               lang={dxContext.lang}
-                                               filterText={this.state.loadParams.filterText}
-                                               selection={this.state.selection}
-                                               workspace={this.state.workspace}
-                                               actions={this.actions}
-                                               languages={this.props.languages}
-                                               onChangeSelection={this.onChangeSelection}/>
+                                                                     content={row}
+                                                                     lang={dxContext.lang}
+                                                                     filterText={this.state.loadParams.filterText}
+                                                                     selection={this.state.selection}
+                                                                     workspace={this.state.workspace}
+                                                                     actions={this.actions}
+                                                                     languages={this.props.languages}
+                                                                     onChangeSelection={this.onChangeSelection}/>
                                         </Paper>
                                     </div>
-                               ))}
+                                ))}
                             </VanityUrlTableView>
-                          )}
-                    </VanityUrlTableData>
 
-                    {this.state.move.open && <Move
-                    {...this.state.move}
-                    {...this.state.loadParams}
-                    path={dxContext.mainResourcePath}
-                    lang={dxContext.lang}
-                    onClose={this.closeMove}
-                />}
+                            {this.state.move.open && <Move
+                                {...this.state.move}
+                                {...this.state.loadParams}
+                                path={dxContext.mainResourcePath}
+                                lang={dxContext.lang}
+                                onClose={this.closeMove}
+                            />}
 
-                    {this.state.infoButton.open && <InfoButton
-                    {...this.state.infoButton}
-                    onClose={this.closeInfoButton}
-                />}
+                            {this.state.infoButton.open && <InfoButton
+                                {...this.state.infoButton}
+                                onClose={this.closeInfoButton}
+                            />}
 
-                    {this.state.publication.open && <Publication
-                    {...this.state.publication}
-                    onClose={this.closePublication}
-                />}
+                            {this.state.publication.open && <Publication
+                                {...this.state.publication}
+                                onClose={this.closePublication}
+                            />}
 
-                    {this.state.deletion.open && <Deletion
-                    {...this.state.deletion}
-                    {...this.state.loadParams}
-                    path={dxContext.mainResourcePath}
-                    lang={dxContext.lang}
-                    onClose={this.closeDeletion}
-                />}
+                            {this.state.deletion.open && <Deletion
+                                {...this.state.deletion}
+                                {...this.state.loadParams}
+                                path={dxContext.mainResourcePath}
+                                lang={dxContext.lang}
+                                onClose={this.closeDeletion}
+                            />}
 
-                    {this.state.publishDeletion.open && <PublishDeletion
-                    {...this.state.publishDeletion}
-                    onClose={this.closePublishDeletion}
-                />}
-                </div>
+                            {this.state.publishDeletion.open && <PublishDeletion
+                                {...this.state.publishDeletion}
+                                onClose={this.closePublishDeletion}
+                            />}
+                        </div>
+                    </>)}
+                </VanityUrlTableData>
             </div>
         );
     }
 }
 
-const assembleWithHoc = function(component) {
+const assembleWithHoc = function (component) {
     return _.flowRight(
         withNotifications(),
         withStyles(styles),
@@ -480,6 +483,5 @@ const assembleWithHoc = function(component) {
 };
 
 const SiteSettingsSeoComponent = assembleWithHoc(SiteSettingsSeoApp);
-
 
 export {SiteSettingsSeoComponent, SiteSettingsSeoApp, assembleWithHoc};
