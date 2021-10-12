@@ -26,8 +26,9 @@ const LanguagesQuery = gql`
     query LanguagesQuery($path: String!) {
         jcr {
             nodeByPath(path: $path) {
-                id: uuid
+                ...NodeCacheRequiredFields
                 site {
+                    ...NodeCacheRequiredFields
                     languages {
                         code: language
                         name: displayName
@@ -37,6 +38,7 @@ const LanguagesQuery = gql`
             }
         }
     }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
 const TableQueryVariables = props => ({
