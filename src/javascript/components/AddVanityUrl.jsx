@@ -4,8 +4,6 @@ import {
     FormControl,
     FormControlLabel,
     FormHelperText,
-    IconButton,
-    Input,
     Paper,
     Switch,
     Table,
@@ -14,16 +12,16 @@ import {
     TableRow,
     withStyles
 } from '@material-ui/core';
-import {Cancel} from '@material-ui/icons';
 import {LanguageMenu} from './LanguageMenu';
 import {withTranslation} from 'react-i18next';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {withNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
-import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {flowRight as compose} from 'lodash';
-import {Add, Button} from '@jahia/moonstone';
+import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
+import {Add, Button, Typography} from '@jahia/moonstone';
 import {trimUrl} from './utils';
+import {Editable} from './Editable';
 
 const styles = theme => ({
     pickerRoot: {
@@ -51,14 +49,36 @@ const styles = theme => ({
             backgroundColor: 'inherit'
         }
     },
+    vanityURLText: {
+        lineHeight: '21px',
+        maxHeight: '42px',
+        overflow: 'hidden',
+        position: 'relative',
+        wordBreak: 'break-all',
+        padding: '3px 6px 1px',
+        fontSize: '0.8rem',
+        color: '#212121',
+        fontFamily: 'Nunito, "Nunito Sans"'
+    },
+    editableText: {
+        '&:hover': {
+            boxShadow: 'inset 1px 1px 0 0 #d9d7d7, inset -1px -1px 0 0 #d9d7d7',
+            cursor: 'text',
+            background: 'white'
+        },
+        '&:hover:before': {
+            background: '#FFF!important'
+        },
+        '&:hover:after': {
+            background: '#FFF!important'
+        }
+    },
     cancel: {
         color: 'red',
         right: '10px',
         top: '7px'
     },
     editDisabled: {
-        background: 'red',
-
         '& input': {}
     },
     addVanityButton: {
@@ -74,7 +94,7 @@ const styles = theme => ({
         }
     },
     cell: {
-        padding: "4px 5px 4px 24px"
+        padding: '4px 5px 4px 24px'
     },
     textbox: {
         fontSize: '1.2rem'
@@ -144,7 +164,7 @@ class AddVanityUrl extends React.Component {
                         console.log(error);
                     });
                 } else {
-                    setParentLoading && setParentLoading(true)
+                    setParentLoading && setParentLoading(true);
                     this.handleClose(event);
                     notificationContext.notify(t('label.notifications.newMappingCreated'));
                 }
@@ -239,18 +259,18 @@ class AddVanityUrl extends React.Component {
 
         if (!this.state.showInputField) {
             return (
-             <>
-             {this.props.children && this.props.children(this.state.showInputField)}
-             <Button className={classes.addVanityButton}
-                           aria-label="add"
-                           label={t('label.buttons.addVanity')}
-                           icon={<Add/>}
-                           onClick={event => {
-                               event.stopPropagation();
-                               this.setState({showInputField: true});
-                           }}/>
-             </>
-            )
+                <>
+                    {this.props.children && this.props.children(this.state.showInputField)}
+                    <Button className={classes.addVanityButton}
+                            aria-label="add"
+                            label={t('label.buttons.addVanity')}
+                            icon={<Add/>}
+                            onClick={event => {
+                                event.stopPropagation();
+                                this.setState({showInputField: true});
+                            }}/>
+                </>
+            );
         }
 
         return (
@@ -259,7 +279,6 @@ class AddVanityUrl extends React.Component {
                     <TableBody>
                         {mappings.map((entry, index) => {
                             let errorForRow = _.find(errors, error => error.url === entry.url || error.url === ('/' + entry.url));
-                            let lineEnabled = Boolean(entry.url) || entry.focus;
                             return (
                                 <TableRow key={index} hover={false} className={classes.row}>
                                     <TableCell className={classes.cell} width="5%">
@@ -269,39 +288,14 @@ class AddVanityUrl extends React.Component {
                                             onChange={(event, checked) => this.handleFieldChange('active', index, checked)}/>
                                     </TableCell>
                                     <TableCell className={classes.cell} width="70%">
-
-                                        <FormControl className={classes.root}
-                                                     classes={{
-                                            root: (lineEnabled ? '' : classes.editDisabled)
-                                        }}
-                                        >
-                                            <Input
-                                                ref={index}
-                                                inputProps={{ className: classes.textbox }}
-                                                inputRef={input => {
-                                                    this.inputTab[index] = input;
-                                                    if (index === 0) {
-                                                        this.firstMappingInputRef = input;
-                                                    }
-                                                }}
-                                                error={Boolean(errorForRow)}
-                                                placeholder={t('label.dialogs.add.text')}
-                                                data-vud-role="url"
-                                                endAdornment={entry.url ?
-                                                <IconButton disableRipple
-                                                            className={classes.iconButton + ' ' + classes.cancel}
-                                                            component="span"
-                                                            onClick={() => {
-                                                                delete entry.url;
-                                                                this.resetInput(this.inputTab[index]);
-                                                            }}
-                                                >
-                                                    <Cancel/>
-                                                </IconButton> : null}
-                                                onFocus={() => this.handleFieldChange('focus', index, true)}
-                                                onBlur={() => this.handleFieldChange('focus', index, false)}
-                                                onChange={event => this.handleFieldChange('url', index, trimUrl(event.target.value))}
-                                            />
+                                        <FormControl className={classes.root}>
+                                            <Editable render={() => <Typography
+                                                className={classes.vanityURLText + ' ' + classes.editableText}>
+                                                {t('label.dialogs.add.text')}
+                                            </Typography>}
+                                                      onEdit={() => {
+                                                      }}
+                                                      onChange={value => this.handleFieldChange('url', index, value ? trimUrl(value) : '')}/>
                                             {errorForRow && <FormHelperText>
                                                 <error><label>{errorForRow.label}</label>
                                                     <message>{errorForRow.message}</message>
@@ -319,20 +313,20 @@ class AddVanityUrl extends React.Component {
                                         <FormControlLabel control={<Checkbox checked={entry.defaultMapping}
                                                                              data-vud-role="default"
                                                                              onChange={(event, checked) => this.handleFieldChange('defaultMapping', index, checked)}/>}
-                                                          label={t('label.actions.canonical.set')} />
+                                                          label={t('label.actions.canonical.set')}/>
                                     </TableCell>
                                     <TableCell className={`${classes.cell} ${classes.buttonContainer}`}>
                                         <div className={classes.actionButton}>
-                                            <Button color="default" variant="ghost" 
-                                            data-vud-role="button-cancel" 
-                                            label={t('label.cancel')} 
-                                            onClick={this.handleClose}/>
+                                            <Button color="default" variant="ghost"
+                                                    data-vud-role="button-cancel"
+                                                    label={t('label.cancel')}
+                                                    onClick={this.handleClose}/>
                                         </div>
                                         <div className={classes.actionButton}>
                                             <Button color="accent"
-                                                data-vud-role="button-primary"
-                                                label={t('label.dialogs.add.save')}
-                                                onClick={this.handleSave}/>
+                                                    data-vud-role="button-primary"
+                                                    label={t('label.dialogs.add.save')}
+                                                    onClick={this.handleSave}/>
                                         </div>
                                     </TableCell>
                                 </TableRow>

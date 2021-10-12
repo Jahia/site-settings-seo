@@ -254,11 +254,6 @@ const styles = theme => ({
             background: '#FFF!important'
         }
     },
-    editableField: {
-        background: 'red'
-    },
-    publishArea: {
-    },
     vanityGroupPaper: {
         boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)',
         border: '1px solid #d5d5d5',

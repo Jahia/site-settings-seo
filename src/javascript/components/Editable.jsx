@@ -1,12 +1,11 @@
 import React from 'react';
 
-import {FormControl, FormHelperText, IconButton, withStyles, Input} from '@material-ui/core';
+import {FormControl, FormHelperText, IconButton, Input, withStyles} from '@material-ui/core';
 import {Check, Clear} from '@material-ui/icons';
 import {trimUrl} from './utils';
 
 let styles = theme => ({
     root: {
-        width: 'calc(100% + 72px)',
         zIndex: '9'
     },
     button: {
@@ -57,7 +56,7 @@ class Editable extends React.Component {
     shouldComponentUpdate = (nextProps, nextState) => {
         // Render only if the edit state change or edit is active
         return this.state.edit !== nextState.edit || this.state.edit;
-    }
+    };
 
     setEdit(event, edit) {
         let {onChange, onEdit} = this.props;
@@ -73,7 +72,8 @@ class Editable extends React.Component {
                         this.setState({loading: false, edit: false, errorLabel: null, errorMessage: null}, () => onEdit(this.state.edit));
                     },
                     (errorLabel, errorMessage) => {
-                        this.setState({loading: false, errorLabel: errorLabel, errorMessage: errorMessage}); this.nativeInput.focus();
+                        this.setState({loading: false, errorLabel: errorLabel, errorMessage: errorMessage});
+                        this.nativeInput.focus();
                     }
                 );
             }
@@ -121,18 +121,22 @@ class Editable extends React.Component {
                        inputRef={this.ref}
                        onChange={this.onValueChange}
                        onClick={e => {
-e.stopPropagation();
-}}
+                           e.stopPropagation();
+                       }}
                        onBlur={this.save}
                        onKeyUp={e => {
-if (e.key === 'Enter') {
- this.save(e);
-} else if (e.key === 'Escape') {
- this.cancel(e);
-}
-}}/>
+                           if (e.key === 'Enter') {
+                               this.save(e);
+                           } else if (e.key === 'Escape') {
+                               this.cancel(e);
+                           }
+                       }}/>
 
-                { errorLabel && <FormHelperText><error><label>{errorLabel}</label><message>{errorMessage}</message></error></FormHelperText> }
+                {errorLabel && <FormHelperText>
+                    <error><label>{errorLabel}</label>
+                        <message>{errorMessage}</message>
+                    </error>
+                </FormHelperText>}
                 <IconButton disableRipple className={classes.button + ' ' + classes.valid} component="span" onClick={this.save}>
                     <Check/>
                 </IconButton>
@@ -141,8 +145,8 @@ if (e.key === 'Enter') {
                 </IconButton>
             </FormControl> :
             <div onClick={event => {
-this.setEdit(event, true);
-}}
+                this.setEdit(event, true);
+            }}
             ><Render value={value} {...this.props}/>
             </div>;
     }
