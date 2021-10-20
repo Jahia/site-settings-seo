@@ -289,13 +289,15 @@ class AddVanityUrl extends React.Component {
                                     </TableCell>
                                     <TableCell className={classes.cell} width="70%">
                                         <FormControl className={classes.root}>
-                                            <Editable render={() => <Typography
-                                                className={classes.vanityURLText + ' ' + classes.editableText}>
-                                                {t('label.dialogs.add.text')}
-                                            </Typography>}
-                                                      onEdit={() => {
-                                                      }}
-                                                      onChange={value => this.handleFieldChange('url', index, value ? trimUrl(value) : '')}/>
+                                            <Editable
+                                                render={() => <Typography
+                                                    className={classes.vanityURLText + ' ' + classes.editableText}
+                                                    data-vud-role="url">
+                                                    {t('label.dialogs.add.text')}
+                                                </Typography>}
+                                                onEdit={() => {
+                                                }}
+                                                onChange={value => this.handleFieldChange('url', index, value ? trimUrl(value) : '')}/>
                                             {errorForRow && <FormHelperText>
                                                 <error><label>{errorForRow.label}</label>
                                                     <message>{errorForRow.message}</message>

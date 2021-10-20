@@ -354,7 +354,7 @@ const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, e
                 </TableCell>
                 <TableCell className={classInactive + ' ' + classes.tableCellTextInput} width="50%">
                     <Editable value={url.url}
-                              render={props => <Typography className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>}
+                              render={props => <Typography data-vud-role="url" className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>}
                               onEdit={() => setEditLine(urlPair.uuid)}
                               onChange={(value, onSuccess, onError) => onMappingChanged(value, onSuccess, onError)}/>
                 </TableCell>
