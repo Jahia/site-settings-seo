@@ -20,7 +20,7 @@ import {withVanityMutationContext} from './VanityMutationsProvider';
 import {flowRight as compose} from 'lodash';
 import {withNotifications} from '@jahia/react-material';
 import {Typography, Button, MoreVert, Chip, SwapHoriz, Delete, Publish, Star} from '@jahia/moonstone';
-import SiteSettingsSeoConstants from "./SiteSettingsSeoApp.constants";
+import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 
 
 const styles = theme => ({
@@ -213,7 +213,7 @@ const styles = theme => ({
         }
     },
     tableTitle: {
-        paddingBottom: '3px',
+        marginBottom: '8px',
         fontSize: 18
     },
     inactiveRow: {
@@ -436,7 +436,7 @@ class VanityUrlListDefault extends React.Component {
                                   onChange={(event, checked) => onChangeSelection(checked && !allCheckboxIndeterminate, urlPairs)}
                         />
                     ) : ''}
-                    <Typography variant="subheading" classes={{caption: classes.tableTitle}} weight="bold">
+                    <Typography variant="subheading" className={classes.tableTitle} weight="bold">
                         {t('label.mappings.default')}
                     </Typography>
                 </div>
