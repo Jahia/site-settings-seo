@@ -1,7 +1,6 @@
 import React from 'react';
 
-import {FormControl, FormHelperText, IconButton, Input, withStyles} from '@material-ui/core';
-import {Check, Clear} from '@material-ui/icons';
+import {FormControl, FormHelperText, Input, withStyles} from '@material-ui/core';
 import {trimUrl} from './utils';
 
 let styles = theme => ({
@@ -137,12 +136,6 @@ class Editable extends React.Component {
                         <message>{errorMessage}</message>
                     </error>
                 </FormHelperText>}
-                <IconButton disableRipple className={classes.button + ' ' + classes.valid} component="span" onClick={this.save}>
-                    <Check/>
-                </IconButton>
-                <IconButton disableRipple className={classes.button + ' ' + classes.cancel} component="span" onClick={this.cancel}>
-                    <Clear/>
-                </IconButton>
             </FormControl> :
             <div onClick={event => {
                 this.setEdit(event, true);
