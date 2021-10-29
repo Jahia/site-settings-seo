@@ -1,0 +1,28 @@
+.root {
+  z-index: 9
+}
+
+.button {
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  top: 4px;
+  transform: scale(0.75);
+
+  &:hover {
+    background-color: inherit;
+  }
+}
+
+.textInput {
+  color: inherit;
+  font-size: inherit;
+  width: 100%;
+  padding-right: 60px;
+  font-family: Nunito, "Nunito Sans", serif;
+}
+
+.errorMessage {
+  top: unset !important;
+  background: unset !important;
+}

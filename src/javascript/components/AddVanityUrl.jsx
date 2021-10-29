@@ -31,6 +31,10 @@ const styles = theme => ({
     error: {
         color: theme.palette.error.main
     },
+    errorMessage: {
+        top: 'unset !important',
+        background: 'unset !important'
+    },
     root: {
         width: '100%',
         '& error': {},
@@ -289,16 +293,11 @@ class AddVanityUrl extends React.Component {
                                     </TableCell>
                                     <TableCell className={classes.cell} width="70%">
                                         <FormControl className={classes.root}>
-                                            <Editable
-                                                render={() => <Typography
-                                                    className={classes.vanityURLText + ' ' + classes.editableText}
-                                                    data-vud-role="url">
-                                                    {t('label.dialogs.add.text')}
-                                                </Typography>}
+                                            <Editable isCreateMode
                                                 onEdit={() => {
                                                 }}
                                                 onChange={value => this.handleFieldChange('url', index, value ? trimUrl(value) : '')}/>
-                                            {errorForRow && <FormHelperText>
+                                            {errorForRow && <FormHelperText className={classes.errorMessage}>
                                                 <error><label>{errorForRow.label}</label>
                                                     <message>{errorForRow.message}</message>
                                                 </error>
