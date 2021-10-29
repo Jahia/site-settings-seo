@@ -1,150 +1,90 @@
-import React from 'react';
-
-import {FormControl, FormHelperText, Input, withStyles} from '@material-ui/core';
+import React, {useRef, useState} from 'react';
+import {FormControl, FormHelperText} from '@material-ui/core';
+import classes from './Editable.scss';
+import {Input} from '@jahia/moonstone';
 import {trimUrl} from './utils';
+import PropTypes from 'prop-types';
+import {useTranslation} from 'react-i18next';
 
-let styles = theme => ({
-    root: {
-        zIndex: '9'
-    },
-    button: {
-        height: 18,
-        width: 18,
-        position: 'absolute',
-        top: 4,
-        transform: 'scale(0.75)',
-        '&:hover': {
-            backgroundColor: 'inherit'
+export const Editable = React.memo(({onChange, onEdit, isCreateMode, render: Render, ...props}) => {
+    const [edit, setEdit] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [errorLabel, setErrorLabel] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(false);
+    const [value, setValue] = useState(props.value);
+    const inputRef = useRef(null);
+    const {t} = useTranslation('site-settings-seo');
+
+    const save = () => {
+        if (onChange.length === 1) {
+            onChange(value);
+            setEdit(false);
+        } else {
+            setLoading(true);
+            onChange(value,
+                () => {
+                    setLoading(false);
+                    setEdit(false);
+                    setErrorLabel(null);
+                    setErrorMessage(null);
+                },
+                (label, message) => {
+                    setLoading(false);
+                    setEdit(true);
+                    setErrorLabel(label);
+                    setErrorMessage(message);
+                }
+            );
         }
-    },
-    cancel: {
-        color: 'red',
-        right: '10px',
-        top: '6px'
-    },
-    valid: {
-        color: 'green',
-        right: '32px',
-        top: '6px'
-    },
-    textInput: {
-        color: 'inherit',
-        fontSize: 'inherit',
-        width: '100%',
-        paddingRight: '60px',
-        fontFamily: 'Nunito, "Nunito Sans"'
-    }
-});
-
-class Editable extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            edit: false,
-            loading: false,
-            errorLabel: null,
-            errorMessage: null,
-            value: props.value
-        };
-        this.onValueChange = this.onValueChange.bind(this);
-        this.save = this.save.bind(this);
-        this.cancel = this.cancel.bind(this);
-        this.ref = this.ref.bind(this);
-    }
-
-    shouldComponentUpdate = (nextProps, nextState) => {
-        // Render only if the edit state change or edit is active
-        return this.state.edit !== nextState.edit || this.state.edit;
     };
 
-    setEdit(event, edit) {
-        let {onChange, onEdit} = this.props;
-        let {value} = this.state;
-        if (!edit) {
-            if (onChange.length === 1) {
-                onChange(value);
-                this.setState({edit: false, errorLabel: null, errorMessage: null}, () => onEdit(this.state.edit));
-            } else {
-                this.setState({loading: true});
-                onChange(value,
-                    () => {
-                        this.setState({loading: false, edit: false, errorLabel: null, errorMessage: null}, () => onEdit(this.state.edit));
-                    },
-                    (errorLabel, errorMessage) => {
-                        this.setState({loading: false, errorLabel: errorLabel, errorMessage: errorMessage});
-                        this.nativeInput.focus();
-                    }
-                );
-            }
-        } else {
-            this.setState({edit: true}, () => onEdit(this.state.edit));
-        }
+    const onValueChange = event => {
+        setValue(trimUrl(event.target.value));
+        setErrorLabel(null);
+        setErrorMessage(null);
+    };
 
-        event.stopPropagation();
-    }
+    return (<> {edit || isCreateMode ?
+        <FormControl className={classes.root}>
+            <Input ref={inputRef}
+                   focusOnField
+                   value={value}
+                   placeholder={t('label.dialogs.add.text')}
+                   disabled={loading}
+                   error={Boolean(errorLabel)}
+                   classes={classes.textInput}
+                   onChange={onValueChange}
+                   onClick={e => {
+                       inputRef.current.focus();
+                       e.stopPropagation();
+                   }}
+                   onBlur={save}
+                   onKeyUp={e => {
+                       if (e.key === 'Enter') {
+                           save();
+                       } else if (e.key === 'Escape') {
+                           setValue(props.value);
+                       }
+                   }}/>
+            {errorLabel && <FormHelperText className={classes.errorMessage}>
+                <error><label>{errorLabel}</label>
+                    <message>{errorMessage}</message>
+                </error>
+            </FormHelperText>}
+        </FormControl> :
+        <div onClick={event => {
+            setEdit(true);
+            event.stopPropagation();
+        }}
+        >{Render && <Render value={value} {...props}/>}
+        </div>}
+    </>);
+});
 
-    ref(input) {
-        this.nativeInput = input;
-
-        if (input) {
-            input.focus();
-        }
-    }
-
-    save(event) {
-        this.setEdit(event, false);
-        event.stopPropagation();
-    }
-
-    cancel(event) {
-        const {value, onEdit} = this.props;
-        this.setState({edit: false, value: value, errorLabel: null, errorMessage: null}, () => onEdit(this.state.edit));
-        event.stopPropagation();
-    }
-
-    onValueChange(event) {
-        this.setState({value: trimUrl(event.target.value), errorLabel: null, errorMessage: null});
-    }
-
-    render() {
-        let {render: Render, classes} = this.props;
-        let {edit, loading, value, errorLabel, errorMessage} = this.state;
-
-        return edit ?
-            <FormControl className={classes.root}>
-
-                <Input value={value}
-                       disabled={loading}
-                       error={Boolean(errorLabel)}
-                       classes={{root: classes.textInput}}
-                       inputRef={this.ref}
-                       onChange={this.onValueChange}
-                       onClick={e => {
-                           e.stopPropagation();
-                       }}
-                       onBlur={this.save}
-                       onKeyUp={e => {
-                           if (e.key === 'Enter') {
-                               this.save(e);
-                           } else if (e.key === 'Escape') {
-                               this.cancel(e);
-                           }
-                       }}/>
-
-                {errorLabel && <FormHelperText>
-                    <error><label>{errorLabel}</label>
-                        <message>{errorMessage}</message>
-                    </error>
-                </FormHelperText>}
-            </FormControl> :
-            <div onClick={event => {
-                this.setEdit(event, true);
-            }}
-            ><Render value={value} {...this.props}/>
-            </div>;
-    }
-}
-
-Editable = withStyles(styles)(Editable);
-
-export {Editable};
+Editable.propTypes = {
+    render: PropTypes.object.isRequired,
+    isCreateMode: PropTypes.bool,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    onEdit: PropTypes.func
+};
