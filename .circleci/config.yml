@@ -209,33 +209,33 @@ workflows:
     when: << pipeline.parameters.IS_MANUAL_TESTRUN >>
     jobs:
       - jahia-modules-orb/initialize
-      - jahia-modules-orb/integration-tests:
-          context: QA_ENVIRONMENT
-          requires:
-            - jahia-modules-orb/initialize
-          jahia_image: << pipeline.parameters.JAHIA_IMAGE >>
-          tests_manifest: << pipeline.parameters.TESTS_MANIFEST >>
-          module_id: << pipeline.parameters.MODULE_ID >>
-          testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >>
-          testrail_milestone: << pipeline.parameters.TESTRAIL_MILESTONE >>
-          should_skip_artifacts: << pipeline.parameters.SHOULD_SKIP_ARTIFACTS >>
-          should_skip_testrail: << pipeline.parameters.SHOULD_SKIP_TESTRAIL >>
-          should_skip_notifications: << pipeline.parameters.SHOULD_SKIP_NOTIFICATIONS >>
-          should_skip_zencrepes: << pipeline.parameters.SHOULD_SKIP_ZENCREPES >>
+      # - jahia-modules-orb/integration-tests:
+      #     context: QA_ENVIRONMENT
+      #     requires:
+      #       - jahia-modules-orb/initialize
+      #     jahia_image: << pipeline.parameters.JAHIA_IMAGE >>
+      #     tests_manifest: << pipeline.parameters.TESTS_MANIFEST >>
+      #     module_id: << pipeline.parameters.MODULE_ID >>
+      #     testrail_project: << pipeline.parameters.TESTRAIL_PROJECTNAME >>
+      #     testrail_milestone: << pipeline.parameters.TESTRAIL_MILESTONE >>
+      #     should_skip_artifacts: << pipeline.parameters.SHOULD_SKIP_ARTIFACTS >>
+      #     should_skip_testrail: << pipeline.parameters.SHOULD_SKIP_TESTRAIL >>
+      #     should_skip_notifications: << pipeline.parameters.SHOULD_SKIP_NOTIFICATIONS >>
+      #     should_skip_zencrepes: << pipeline.parameters.SHOULD_SKIP_ZENCREPES >>
 
   # The objective of nightly runs is to ensure the codebase still passes tests:
   # - With the latest releases version of Jahia
   # - With the current snapshot of Jahia
-  nightly:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
-    jobs:
-      - jahia-modules-orb/initialize
+  # nightly:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 0 * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
+  #   jobs:
+  #     - jahia-modules-orb/initialize
 #      - jahia-modules-orb/integration-tests:
 #          name: Nightly-<< matrix.jahia_image >>
 #          context: QA_ENVIRONMENT
