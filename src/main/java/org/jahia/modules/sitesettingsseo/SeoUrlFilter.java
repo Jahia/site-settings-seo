@@ -80,12 +80,14 @@ public class SeoUrlFilter extends AbstractFilter {
 
         if (node.isNodeType(VANITY_URL_MAPPED) && isUrlRewriteSeoRulesEnabled()) {
             List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
-            List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
-            for (JCRNodeWrapper url : urls) {
-                if (url.getProperty(J_ACTIVE).getBoolean()
-                        && node.getLanguage().equals(url.getPropertyAsString(LANGUAGE))
-                        && url.getProperty("j:default").getBoolean()) {
-                    canonicalLink = canonicalLink(buildHref(url.getPropertyAsString(URL), renderContext));
+            if (!vanity.isEmpty()) {
+                List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
+                for (JCRNodeWrapper url : urls) {
+                    if (url.getProperty(J_ACTIVE).getBoolean()
+                            && node.getLanguage().equals(url.getPropertyAsString(LANGUAGE))
+                            && url.getProperty("j:default").getBoolean()) {
+                        canonicalLink = canonicalLink(buildHref(url.getPropertyAsString(URL), renderContext));
+                    }
                 }
             }
         }
@@ -100,13 +102,15 @@ public class SeoUrlFilter extends AbstractFilter {
         // Get vanity urls for active languages, keep memo of languages used
         if (node.isNodeType(VANITY_URL_MAPPED) && isUrlRewriteSeoRulesEnabled()) {
             List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
-            List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
+            if (!vanity.isEmpty()) {
+                List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
 
-            for (JCRNodeWrapper url : urls) {
-                String vanityLanguage = url.getPropertyAsString(LANGUAGE);
-                if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage) && url.getProperty(J_DEFAULT).getBoolean()) {
-                    vanityLangs.add(vanityLanguage);
-                    altLinks.append(altLink(getDashFormatLanguage(vanityLanguage), buildHref(url.getPropertyAsString(URL), renderContext)));
+                for (JCRNodeWrapper url : urls) {
+                    String vanityLanguage = url.getPropertyAsString(LANGUAGE);
+                    if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage) && url.getProperty(J_DEFAULT).getBoolean()) {
+                        vanityLangs.add(vanityLanguage);
+                        altLinks.append(altLink(getDashFormatLanguage(vanityLanguage), buildHref(url.getPropertyAsString(URL), renderContext)));
+                    }
                 }
             }
         }
