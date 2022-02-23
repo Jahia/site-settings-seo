@@ -17,13 +17,16 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.touk.throwing.ThrowingFunction;
+import pl.touk.throwing.ThrowingPredicate;
 
 import javax.jcr.RepositoryException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.jcr.Value;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.jahia.services.seo.jcr.VanityUrlManager.*;
 
 /**
  * Injects canonical and alternative urls in head element in preview and live modes.
@@ -32,18 +35,13 @@ import java.util.stream.Collectors;
 public class SeoUrlFilter extends AbstractFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(SeoUrlFilter.class);
-    private static final String VANITY_URL_MAPPED = "jmix:vanityUrlMapped";
-    private static final String VANITY_URLS = "jnt:vanityUrls";
-    private static final String VANITY_URL = "jnt:vanityUrl";
-    private static final String J_ACTIVE = "j:active";
-    private static final String J_DEFAULT = "j:default";
     private static final String LANGUAGE = "jcr:language";
-    private static final String URL = "j:url";
+    private static final String INVALID_LANGUAGES = "j:invalidLanguages";
 
     @Activate
     public void activate() {
         setPriority(16.2f);
-        setApplyOnNodeTypes("jnt:page");
+        setApplyOnMainResource(true);
         setApplyOnModes("live,preview");
         setDescription("Generates canonical and alternative urls");
         logger.debug("Activated SeoUrlFilter");
@@ -51,82 +49,72 @@ public class SeoUrlFilter extends AbstractFilter {
 
     @Override
     public String execute(String previousOut, RenderContext renderContext, Resource resource, RenderChain chain) throws Exception {
-        initUrlGenerator(renderContext, resource);
-
-        JCRNodeWrapper node = resource.getNode();
-        StringBuilder links = new StringBuilder();
-        links.append(getPageLink(node, renderContext));
-        links.append(getAlternativeLinks(node, renderContext));
-
         Source source = new Source(previousOut);
         OutputDocument od = new OutputDocument(source);
-        addContentToHead(source, od, links.toString());
-        return od.toString();
+        List<Element> headList = source.getAllElements(HTMLElementName.HEAD);
+        if (!headList.isEmpty()) {
+            initUrlGenerator(renderContext, resource);
+            JCRNodeWrapper node = resource.getNode();
+
+            // Get all valid languages for current node
+            Set<String> langs = getActiveLanguages(renderContext, node);
+            // Get all valid vanities for current node
+            Map<String, String> vanities = getActiveVanityUrls(node, langs);
+
+            // Generate the links based on all active languages and available precalculated vanities
+            String finalOutPutLink = langs.stream()
+                    .map(ThrowingFunction.unchecked(lang -> getLinkForLang(node, vanities, lang, renderContext)))
+                    .collect(Collectors.joining("\n"));
+
+            StartTag et = headList.get(0).getStartTag();
+            od.replace(et.getEnd(), et.getEnd(), finalOutPutLink);
+            return od.toString();
+        }
+        return previousOut;
     }
 
     private void initUrlGenerator(RenderContext renderContext, Resource resource) {
-        new URLGenerator(renderContext, resource); // this gets set in renderContext
+        if (renderContext.getURLGenerator() == null) {
+            new URLGenerator(renderContext, resource); // this gets set in renderContext
+        }
     }
 
-    private String getPageLink(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException, URISyntaxException {
-        String defaultLanguage = node.getResolveSite().getDefaultLanguage();
-        boolean isDefaultLanguage = defaultLanguage.equals(node.getLanguage());
-        String href = buildHref(node.getUrl(), renderContext, "");
-        if (!isDefaultLanguage) {
-            String nodeUrl = renderContext.getURLGenerator().buildURL(node, node.getLanguage(), null, "html");
-            href = buildHref(nodeUrl, renderContext);
-        }
-        String canonicalLink = canonicalLink(href);
+    private String getLinkForLang(JCRNodeWrapper node, Map<String, String> vanities, String lang, RenderContext renderContext) throws URISyntaxException {
+        String url = vanities.containsKey(lang) ?
+                vanities.get(lang) :
+                renderContext.getURLGenerator().buildURL(node, lang, null, "html");
+        String href = buildHref(url, renderContext);
 
-        if (node.isNodeType(VANITY_URL_MAPPED) && isUrlRewriteSeoRulesEnabled()) {
-            List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
-            if (!vanity.isEmpty()) {
-                List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
-                for (JCRNodeWrapper url : urls) {
-                    if (url.getProperty(J_ACTIVE).getBoolean()
-                            && node.getLanguage().equals(url.getPropertyAsString(LANGUAGE))
-                            && url.getProperty("j:default").getBoolean()) {
-                        canonicalLink = canonicalLink(buildHref(url.getPropertyAsString(URL), renderContext));
-                    }
-                }
-            }
-        }
-
-        return canonicalLink;
+        // In case it's current lang build a canonical else build alternate
+        return node.getLanguage().equals(lang) ?
+                String.format("<link rel=\"canonical\" href=\"%s\" />", href) :
+                String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", getDashFormatLanguage(lang), href);
     }
 
-    private String getAlternativeLinks(JCRNodeWrapper node, RenderContext renderContext) throws RepositoryException, URISyntaxException {
-        StringBuilder altLinks = new StringBuilder();
-        Set<String> vanityLangs = new HashSet<>();
-
-        // Get vanity urls for active languages, keep memo of languages used
-        if (node.isNodeType(VANITY_URL_MAPPED) && isUrlRewriteSeoRulesEnabled()) {
-            List<JCRNodeWrapper> vanity = JCRContentUtils.getChildrenOfType(node, VANITY_URLS);
-            if (!vanity.isEmpty()) {
-                List<JCRNodeWrapper> urls = JCRContentUtils.getChildrenOfType(vanity.get(0), VANITY_URL);
-
-                for (JCRNodeWrapper url : urls) {
-                    String vanityLanguage = url.getPropertyAsString(LANGUAGE);
-                    if (url.getProperty(J_ACTIVE).getBoolean() && !node.getLanguage().equals(vanityLanguage) && url.getProperty(J_DEFAULT).getBoolean()) {
-                        vanityLangs.add(vanityLanguage);
-                        altLinks.append(altLink(getDashFormatLanguage(vanityLanguage), buildHref(url.getPropertyAsString(URL), renderContext)));
-                    }
-                }
+    private Map<String, String> getActiveVanityUrls(JCRNodeWrapper node, Set<String> activeLangs) throws RepositoryException {
+        if (node.isNodeType(JAHIAMIX_VANITYURLMAPPED) && isUrlRewriteSeoRulesEnabled()) {
+            JCRNodeWrapper vanityMappings;
+            try {
+                vanityMappings = node.getNode(VANITYURLMAPPINGS_NODE);
+            } catch (RepositoryException e) {
+                // no mapping
+                return Collections.emptyMap();
             }
-        }
 
-        // Get urls for every language not covered by vanity urls
-        Set<String> langs = getActiveLanguagesForMode(renderContext, node);
-        for (String lang : langs) {
-            if (!node.getLanguage().equals(lang) && !vanityLangs.contains(lang)) {
-                String url = renderContext.getURLGenerator().buildURL(node, lang, null, "html");
-                String href = buildHref(url, renderContext);
-                String altLink = altLink(getDashFormatLanguage(lang), href);
-                altLinks.append(altLink);
-            }
+            boolean isLive = "live".equals(node.getSession().getWorkspace().getName());
+            return JCRContentUtils.getChildrenOfType(vanityMappings, JAHIANT_VANITYURL).stream()
+                    .filter(ThrowingPredicate.unchecked(url -> {
+                        return url.getProperty(PROPERTY_ACTIVE).getBoolean() && // Check it's active
+                                url.getProperty(PROPERTY_DEFAULT).getBoolean() && // Check it's default
+                                activeLangs.contains(url.getPropertyAsString(LANGUAGE)) && // Check that the current node have a displayable lang for the vanity
+                                (!isLive || !url.hasProperty("j:published") || url.getProperty("j:published").getBoolean()); // Check vanity is published
+                    }))
+                    .collect(Collectors.toMap(
+                            ThrowingFunction.unchecked(url -> url.getPropertyAsString(LANGUAGE)),
+                            ThrowingFunction.unchecked(url -> url.getPropertyAsString(PROPERTY_URL))
+                    ));
         }
-
-        return altLinks.toString();
+        return Collections.emptyMap();
     }
 
     private String getDashFormatLanguage(String language) {
@@ -135,63 +123,47 @@ public class SeoUrlFilter extends AbstractFilter {
         return locale.toLanguageTag();
     }
 
-    private Set<String> getActiveLanguagesForMode(RenderContext renderContext, JCRNodeWrapper node) throws RepositoryException {
+    private Set<String> getActiveLanguages(RenderContext renderContext, JCRNodeWrapper node) throws RepositoryException {
+        final Set<String> inactiveLangs = new HashSet<>();
+        final Set<String> langs = new LinkedHashSet<>();
+        // Insert current lang in first position: just to generate beautiful HTML with canonical link first :)
+        langs.add(node.getLanguage());
+
+        // Process mode languages
         JCRSiteNode site = node.getResolveSite();
-
-        Set<String> langs = new HashSet<>();
         if (renderContext.isLiveMode()) {
-            langs = site.getActiveLiveLanguages();
+            langs.addAll(site.getActiveLiveLanguages());
         } else if (renderContext.isPreviewMode()) {
-            Set<String> inactive = site.getInactiveLanguages();
-            langs = site.getLanguages().stream().filter(lang -> !inactive.contains(lang)).collect(Collectors.toSet());
+            langs.addAll(site.getLanguages());
+            inactiveLangs.addAll(site.getInactiveLanguages());
         }
 
-        return langs;
-    }
-
-    private void addContentToHead(Source source, OutputDocument od, String content) {
-        List<Element> headList = source.getAllElements(HTMLElementName.HEAD);
-        if (!headList.isEmpty()) {
-            StartTag et = headList.get(0).getStartTag();
-            od.replace(et.getEnd(), et.getEnd(), content);
+        // Check invalid languages on current node.
+        if (node.hasProperty(INVALID_LANGUAGES)) {
+            Value[] values = node.getProperty(INVALID_LANGUAGES).getValues();
+            if (values != null && values.length > 0) {
+                inactiveLangs.addAll(Arrays.stream(values).map(ThrowingFunction.unchecked(Value::getString)).collect(Collectors.toSet()));
+            }
         }
+
+        // Filter inactive language and check that the current node have a published translation node available
+        return langs.stream()
+                .filter(ThrowingPredicate.unchecked(lang -> !inactiveLangs.contains(lang) && node.hasI18N(Locale.forLanguageTag(lang), false)))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    private String buildHref(String url, RenderContext renderContext)
-            throws URISyntaxException {
-        return buildHref(url, renderContext, null);
-    }
-
-    private String buildHref(String url, RenderContext renderContext, String contextPathOverride)
-            throws URISyntaxException {
+    private String buildHref(String url, RenderContext renderContext) throws URISyntaxException {
         String defaultServerName = renderContext.getURLGenerator().getServer();
         String serverName = Utils.getServerName(renderContext.getSite().getPropertyAsString("sitemapIndexURL"), defaultServerName);
-        url = rewriteUrl(url, contextPathOverride, renderContext.getRequest(), renderContext.getResponse());
+
+        // Handle context
+        url = (url.startsWith("/")) ? (renderContext.getRequest().getContextPath() + url) : url;
+        // Handle Seo rewrite rules
+        url = isUrlRewriteSeoRulesEnabled() ? renderContext.getResponse().encodeURL(url) : url;
         return serverName + url;
-    }
-
-    private String altLink(String lang, String href) {
-        return String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", lang, href);
-    }
-
-    private String canonicalLink(String href) {
-        return String.format("<link rel=\"canonical\" href=\"%s\" />%n", href);
     }
 
     private static boolean isUrlRewriteSeoRulesEnabled() {
         return SettingsBean.getInstance().isUrlRewriteSeoRulesEnabled();
     }
-
-    /**
-     * Copied (relevant) implementation of c:url taglib from taglibs:standard:1.1.2 source
-     * prerequisite: url is not an absolute URL
-     */
-    private static String rewriteUrl(String url, String contextPathOverride, HttpServletRequest request, HttpServletResponse response) {
-        // normalize relative URLs against a context root
-        contextPathOverride = (contextPathOverride == null) ? request.getContextPath() : contextPathOverride;
-        String rewriteUrl = (url.startsWith("/")) ? (contextPathOverride + url) : url;
-
-        return isUrlRewriteSeoRulesEnabled() ? response.encodeURL(rewriteUrl) : rewriteUrl;
-    }
-
 }
