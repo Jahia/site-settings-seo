@@ -101,12 +101,13 @@ public class SeoUrlFilter extends AbstractFilter {
                 return Collections.emptyMap();
             }
 
+            boolean isLive = "live".equals(node.getSession().getWorkspace().getName());
             return JCRContentUtils.getChildrenOfType(vanityMappings, JAHIANT_VANITYURL).stream()
                     .filter(ThrowingPredicate.unchecked(url -> {
                         return url.getProperty(PROPERTY_ACTIVE).getBoolean() && // Check it's active
                                 url.getProperty(PROPERTY_DEFAULT).getBoolean() && // Check it's default
                                 activeLangs.contains(url.getPropertyAsString(LANGUAGE)) && // Check that the current node have a displayable lang for the vanity
-                                (!url.hasProperty("j:published") || url.getProperty("j:published").getBoolean()); // Check vanity is published
+                                (!isLive || !url.hasProperty("j:published") || url.getProperty("j:published").getBoolean()); // Check vanity is published
                     }))
                     .collect(Collectors.toMap(
                             ThrowingFunction.unchecked(url -> url.getPropertyAsString(LANGUAGE)),
