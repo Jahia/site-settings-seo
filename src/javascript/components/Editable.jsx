@@ -44,41 +44,43 @@ export const Editable = React.memo(({onChange, onEdit, isCreateMode, render: Ren
         setErrorMessage(null);
     };
 
-    return (<> {edit || isCreateMode ?
-        <FormControl className={classes.root}>
-            <Input ref={inputRef}
-                   focusOnField
-                   value={value}
-                   placeholder={t('label.dialogs.add.text')}
-                   disabled={loading}
-                   error={Boolean(errorLabel)}
-                   classes={classes.textInput}
-                   onChange={onValueChange}
-                   onClick={e => {
+    return (
+        <> {edit || isCreateMode ?
+            <FormControl className={classes.root}>
+                <Input ref={inputRef}
+                       focusOnField
+                       value={value}
+                       placeholder={t('label.dialogs.add.text')}
+                       disabled={loading}
+                       error={Boolean(errorLabel)}
+                       classes={classes.textInput}
+                       onChange={onValueChange}
+                       onClick={e => {
                        inputRef.current.focus();
                        e.stopPropagation();
                    }}
-                   onBlur={save}
-                   onKeyUp={e => {
+                       onBlur={save}
+                       onKeyUp={e => {
                        if (e.key === 'Enter') {
                            save();
                        } else if (e.key === 'Escape') {
                            setValue(props.value);
                        }
                    }}/>
-            {errorLabel && <FormHelperText className={classes.errorMessage}>
-                <error><label>{errorLabel}</label>
-                    <message>{errorMessage}</message>
-                </error>
-            </FormHelperText>}
-        </FormControl> :
-        <div onClick={event => {
+                {errorLabel && <FormHelperText className={classes.errorMessage}>
+                    <error><label>{errorLabel}</label>
+                        <message>{errorMessage}</message>
+                    </error>
+                               </FormHelperText>}
+            </FormControl> :
+            <div onClick={event => {
             setEdit(true);
             event.stopPropagation();
         }}
-        >{Render && <Render value={value} {...props}/>}
-        </div>}
-    </>);
+            >{Render && <Render value={value} {...props}/>}
+            </div>}
+        </>
+    );
 });
 
 Editable.propTypes = {

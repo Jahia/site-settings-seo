@@ -28,11 +28,12 @@ export default function () {
             });
 
             // Content editor action registration
-            registry.add('action', 'vanityUrls', VanityAction, {
+            registry.add('action', 'vanityUrls', {
+                component: VanityAction,
                 targets: ['content-editor/header/3dots:3'],
                 requiredPermission: 'siteAdminUrlmapping',
                 showOnNodeTypes: ['jmix:vanityUrlMapped', 'jnt:page', 'jnt:file', 'jmix:mainResource', 'jmix:canHaveVanityUrls'],
-                label:'site-settings-seo:label.manage',
+                label: 'site-settings-seo:label.manage',
                 dataSelRole: 'vanityUrls'
             });
 

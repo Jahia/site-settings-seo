@@ -7,10 +7,10 @@ import classes from './EditVanityUrlsDialog.scss';
 import SiteSettingsSeoCardEntry from '../SiteSettingsSeo/SiteSettingsSeoCardEntry';
 
 export const EditVanityUrlsDialog = ({
-                                         nodeData,
-                                         isOpen,
-                                         onCloseDialog
-                                     }) => {
+    nodeData,
+    isOpen,
+    onCloseDialog
+}) => {
     const {t} = useTranslation('site-settings-seo');
 
     const handleCancel = () => {

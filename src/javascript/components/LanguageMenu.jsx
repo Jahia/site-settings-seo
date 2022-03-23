@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dropdown} from '@jahia/moonstone'
+import {Dropdown} from '@jahia/moonstone';
 
 class LanguageMenu extends React.Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class LanguageMenu extends React.Component {
                 data={languages.map(lang => ({label: `${lang.name} (${lang.code})`, value: lang.code}))}
                 onChange={(e, item) => this.handleSelect(item.value)}
             />
-        )
+        );
     }
 }
 

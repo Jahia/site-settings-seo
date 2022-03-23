@@ -170,10 +170,10 @@ class SiteSettingsSeoApp extends React.Component {
             }
         };
 
-        this.workspaceDropdownData = SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA.map((element) => {
+        this.workspaceDropdownData = SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA.map(element => {
             const obj = {};
-            obj['label'] = t('label.workspace.' + element.key);
-            obj['value'] = element.value;
+            obj.label = t('label.workspace.' + element.key);
+            obj.value = element.value;
             return obj;
         });
     }
@@ -355,7 +355,8 @@ class SiteSettingsSeoApp extends React.Component {
 
     getWorkspaceDropdown(dropdownProps) {
         const {t, maxWidth, label, value, data, onChange} = dropdownProps;
-        return (<Dropdown
+        return (
+            <Dropdown
             id="workspaceDropdown"
             name="workspaceDropdown"
             isDisabled={false}
@@ -373,7 +374,8 @@ class SiteSettingsSeoApp extends React.Component {
                     }
                 });
             }}
-        />);
+        />
+        );
     }
 
     render() {
@@ -388,54 +390,56 @@ class SiteSettingsSeoApp extends React.Component {
                     lang={dxContext.lang}
                     poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
                 >
-                    {(rows, totalCount) => (<>
-                        <Header className={classes.vanityHeader}
-                                title={`${t('label.title')} - ${dxContext.siteTitle}`}
-                                mainActions={
-                                    <div className={classes.actions}>
-                                        <LanguageSelector
+                    {(rows, totalCount) => (
+                        <>
+                            <Header className={classes.vanityHeader}
+                                    title={`${t('label.title')} - ${dxContext.siteTitle}`}
+                                    mainActions={
+                                        <div className={classes.actions}>
+                                            <LanguageSelector
                                             languages={this.props.languages}
                                             selectedLanguageCodes={this.state.loadParams.selectedLanguageCodes}
                                             onSelectionChange={this.onSelectedLanguagesChanged}
                                         />
 
-                                        <SearchBar placeholderLabel={t('label.filterPlaceholder')}
-                                                   onChangeFilter={this.onChangeFilter}
-                                                   onFocus={this.onSearchFocus}
-                                                   onBlur={this.onSearchBlur}/>
-                                    </div>
+                                            <SearchBar placeholderLabel={t('label.filterPlaceholder')}
+                                                       onChangeFilter={this.onChangeFilter}
+                                                       onFocus={this.onSearchFocus}
+                                                       onBlur={this.onSearchBlur}/>
+                                        </div>
                                 }
-                                toolbarLeft={!rows[0] ? [] : [this.getWorkspaceDropdown({t})]}
+                                    toolbarLeft={!rows[0] ? [] : [this.getWorkspaceDropdown({t})]}
                         />
 
-                        <Selection selection={this.state.selection}
-                                   actions={this.actions}
-                                   onChangeSelection={this.onChangeSelection}/>
+                            <Selection selection={this.state.selection}
+                                       actions={this.actions}
+                                       onChangeSelection={this.onChangeSelection}/>
 
-                        <div className={classes.layout}>
-                            <VanityUrlTableView
+                            <div className={classes.layout}>
+                                <VanityUrlTableView
                                 {...this.state.loadParams}
                                 totalCount={totalCount || 0}
                                 onChangePage={this.onChangePage}
-                                onChangeRowsPerPage={this.onChangeRowsPerPage}>
-                                {rows.map(row => (
-                                    <div className={classes.root} data-vud-content-uuid={row.uuid}>
-                                        <Paper elevation={1}>
-                                            <VanityUrlEnabledContent key={row.uuid}
-                                                                     content={row}
-                                                                     lang={dxContext.lang}
-                                                                     filterText={this.state.loadParams.filterText}
-                                                                     selection={this.state.selection}
-                                                                     workspace={this.state.workspace}
-                                                                     actions={this.actions}
-                                                                     languages={this.props.languages}
-                                                                     onChangeSelection={this.onChangeSelection}/>
-                                        </Paper>
-                                    </div>
+                                onChangeRowsPerPage={this.onChangeRowsPerPage}
+                                >
+                                    {rows.map(row => (
+                                        <div className={classes.root} data-vud-content-uuid={row.uuid}>
+                                            <Paper elevation={1}>
+                                                <VanityUrlEnabledContent key={row.uuid}
+                                                                         content={row}
+                                                                         lang={dxContext.lang}
+                                                                         filterText={this.state.loadParams.filterText}
+                                                                         selection={this.state.selection}
+                                                                         workspace={this.state.workspace}
+                                                                         actions={this.actions}
+                                                                         languages={this.props.languages}
+                                                                         onChangeSelection={this.onChangeSelection}/>
+                                            </Paper>
+                                        </div>
                                 ))}
-                            </VanityUrlTableView>
+                                </VanityUrlTableView>
 
-                            {this.state.move.open && <Move
+                                {this.state.move.open && <Move
                                 {...this.state.move}
                                 {...this.state.loadParams}
                                 path={dxContext.mainResourcePath}
@@ -443,17 +447,17 @@ class SiteSettingsSeoApp extends React.Component {
                                 onClose={this.closeMove}
                             />}
 
-                            {this.state.infoButton.open && <InfoButton
+                                {this.state.infoButton.open && <InfoButton
                                 {...this.state.infoButton}
                                 onClose={this.closeInfoButton}
                             />}
 
-                            {this.state.publication.open && <Publication
+                                {this.state.publication.open && <Publication
                                 {...this.state.publication}
                                 onClose={this.closePublication}
                             />}
 
-                            {this.state.deletion.open && <Deletion
+                                {this.state.deletion.open && <Deletion
                                 {...this.state.deletion}
                                 {...this.state.loadParams}
                                 path={dxContext.mainResourcePath}
@@ -461,12 +465,13 @@ class SiteSettingsSeoApp extends React.Component {
                                 onClose={this.closeDeletion}
                             />}
 
-                            {this.state.publishDeletion.open && <PublishDeletion
+                                {this.state.publishDeletion.open && <PublishDeletion
                                 {...this.state.publishDeletion}
                                 onClose={this.closePublishDeletion}
                             />}
-                        </div>
-                    </>)}
+                            </div>
+                        </>
+)}
                 </VanityUrlTableData>
             </div>
         );

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Icon, IconButton, Input, InputAdornment, withStyles} from '@material-ui/core';
-import {Close, Search} from '@material-ui/icons';
+import {Close, Search} from '@jahia/moonstone';
 import {withTranslation} from 'react-i18next';
 
 const styles = theme => ({

@@ -17,7 +17,6 @@ class VanityUrlTableData extends React.Component {
         return (
             <Query fetchPolicy="network-only" query={TableQuery} variables={TableQueryVariables(this.props)} pollInterval={poll}>
                 { ({loading, error, data}) => {
-
                 if (error) {
                     console.log('Error when fetching data: ' + error);
                     notificationContext.notify(t('label.errors.loadingVanityUrl'), ['closeButton', 'noAutomaticClose']);

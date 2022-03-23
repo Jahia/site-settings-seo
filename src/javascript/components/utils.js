@@ -1,4 +1,4 @@
-import {keyBy, merge, values, sortBy, map} from "lodash";
+import {keyBy, merge, values, sortBy, map} from 'lodash';
 
 export const gqlContentNodeToVanityUrlPairs = (gqlContentNode, vanityUrlsFieldName) => {
     let defaultUrls = keyBy(map(gqlContentNode[vanityUrlsFieldName], vanityUrlNode => ({uuid: vanityUrlNode.uuid, default: vanityUrlNode})), 'uuid');
@@ -8,6 +8,6 @@ export const gqlContentNodeToVanityUrlPairs = (gqlContentNode, vanityUrlsFieldNa
     return values(urlPairs);
 };
 
-export const trimUrl = (url) => {
+export const trimUrl = url => {
     return url.trim();
 };
