@@ -21,8 +21,8 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
     render() {
         let {dxContext, path, languages, t} = this.props;
         let {lang} = dxContext;
-        let polling = !(this.state.publication.open || this.state.deletion.open
-            || this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
+        let polling = !(this.state.publication.open || this.state.deletion.open ||
+            this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
 
         return (
             <div>
@@ -30,7 +30,8 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                     {...this.state.loadParams}
                     path={path}
                     lang={dxContext.lang}
-                    poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}>
+                    poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
+                >
                     {rows => {
                         const isEmpty = !rows[0];
                         return (

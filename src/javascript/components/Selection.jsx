@@ -3,9 +3,9 @@ import {Button, Paper, withStyles} from '@material-ui/core';
 import {withTranslation} from 'react-i18next';
 import * as _ from 'lodash';
 import {fade} from '@material-ui/core/styles/colorManipulator';
-import {Clear} from '@material-ui/icons';
+import {Close} from '@jahia/moonstone';
 import classNames from 'classnames';
-import {Typography} from '@jahia/moonstone'
+import {Typography} from '@jahia/moonstone';
 
 let styles = theme => ({
     root: {
@@ -122,7 +122,7 @@ class Selection extends React.Component {
             <Paper elevation={1} classes={{root: (selection.length === 0 ? '' : classes.rootExpanded)}} className={classes.root}>
 
                 <div className={classes.closeButtonContainer}>
-                    <Clear classes={{root: classes.clearButton}}
+                    <Close classes={{root: classes.clearButton}}
                            tooltip={t('label.selection.clear')}
                            onClick={() => onChangeSelection()}/>
 

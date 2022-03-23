@@ -294,9 +294,9 @@ class AddVanityUrl extends React.Component {
                                     <TableCell className={classes.cell} width="70%">
                                         <FormControl className={classes.root}>
                                             <Editable isCreateMode
-                                                onEdit={() => {
+                                                      onEdit={() => {
                                                 }}
-                                                onChange={value => this.handleFieldChange('url', index, value ? trimUrl(value) : '')}/>
+                                                      onChange={value => this.handleFieldChange('url', index, value ? trimUrl(value) : '')}/>
                                             {errorForRow && <FormHelperText className={classes.errorMessage}>
                                                 <error><label>{errorForRow.label}</label>
                                                     <message>{errorForRow.message}</message>
@@ -318,7 +318,8 @@ class AddVanityUrl extends React.Component {
                                     </TableCell>
                                     <TableCell className={`${classes.cell} ${classes.buttonContainer}`}>
                                         <div className={classes.actionButton}>
-                                            <Button color="default" variant="ghost"
+                                            <Button color="default"
+                                                    variant="ghost"
                                                     data-vud-role="button-cancel"
                                                     label={t('label.cancel')}
                                                     onClick={this.handleClose}/>

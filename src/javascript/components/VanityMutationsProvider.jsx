@@ -25,21 +25,20 @@ class VanityMutationsProvider extends Component {
     addMutations() {
         const {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
 
-        const isSitesUrl = (url) => {
+        const isSitesUrl = url => {
             const isString = (typeof url === 'string') || url instanceof String;
             return (isString && SiteSettingsSeoConstants.SITES_REG_EXP.test(url.trim()));
         };
 
-        const isBlankUrl = (url) => {
+        const isBlankUrl = url => {
             const isString = (typeof url === 'string') || url instanceof String;
             return (isString && !url.trim());
         };
 
-        const containsInvalidChars = (url) => {
+        const containsInvalidChars = url => {
             const isString = (typeof url === 'string') || url instanceof String;
             return (isString && SiteSettingsSeoConstants.INVALID_CHARS_REG_EXP.test(url.trim()));
         };
-
 
         vanityMutationsContext.delete = (pathsOrIds, props) => deleteMutation({
             variables: {
@@ -75,9 +74,17 @@ class VanityMutationsProvider extends Component {
         });
 
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
-            if (isBlankUrl(url)) throw new InvalidMappingError(url);
-            if (containsInvalidChars(url)) throw new InvalidCharError(url);
-            if (isSitesUrl(url)) throw new SitesMappingError(url);
+            if (isBlankUrl(url)) {
+                throw new InvalidMappingError(url);
+            }
+
+            if (containsInvalidChars(url)) {
+                throw new InvalidCharError(url);
+            }
+
+            if (isSitesUrl(url)) {
+                throw new SitesMappingError(url);
+            }
 
             return updateMutation({
                 variables: {
@@ -91,7 +98,7 @@ class VanityMutationsProvider extends Component {
             });
         };
 
-        vanityMutationsContext.add = (path, vanityUrls=[], props) => {
+        vanityMutationsContext.add = (path, vanityUrls = [], props) => {
             let invalidMappings = vanityUrls.filter(v => isBlankUrl(v.url));
             let sitesMappings = vanityUrls.filter(v => isSitesUrl(v.url));
             let invalidCharMappings = vanityUrls.filter(v => containsInvalidChars(v.url));

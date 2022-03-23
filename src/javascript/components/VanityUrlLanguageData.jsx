@@ -3,7 +3,7 @@ import {Query} from 'react-apollo';
 import * as _ from 'lodash';
 import {LanguagesQuery} from './gqlQueries';
 import {ProgressOverlay, withNotifications} from '@jahia/react-material';
-import {withTranslation} from "react-i18next";
+import {withTranslation} from 'react-i18next';
 
 class VanityUrlLanguageDataComp extends React.Component {
     constructor(props) {
@@ -14,7 +14,6 @@ class VanityUrlLanguageDataComp extends React.Component {
         return (
             <Query fetchPolicy="network-only" query={LanguagesQuery} variables={{path: this.props.path}}>
                 { ({loading, error, data}) => {
-
                     if (error) {
                         console.log('Error when fetching data: ' + error);
                         this.props.notificationContext.notify(this.props.t('label.errors.loadingVanityUrl'), ['closeButton', 'noAutomaticClose']);

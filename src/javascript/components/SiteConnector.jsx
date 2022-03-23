@@ -1,18 +1,15 @@
 import React from 'react';
 import {SiteNodeQuery} from './gqlQueries';
 import {Query} from 'react-apollo';
-import {ProgressOverlay} from "@jahia/react-material";
-import {connect} from "react-redux";
-import * as _ from "lodash";
+import {ProgressOverlay} from '@jahia/react-material';
+import {connect} from 'react-redux';
+import * as _ from 'lodash';
 
 export const withSite = () => WrappedComponent => {
-
     const Comp = class extends React.Component {
-
         render() {
-
             if (!this.props.siteKey) {
-                return <ProgressOverlay/>
+                return <ProgressOverlay/>;
             }
 
             return (
@@ -25,7 +22,7 @@ export const withSite = () => WrappedComponent => {
                             }
 
                             if (loading) {
-                                return <ProgressOverlay/>
+                                return <ProgressOverlay/>;
                             }
 
                             const site = data.jcr.nodeByPath;
@@ -42,16 +39,15 @@ export const withSite = () => WrappedComponent => {
                                 }
                             };
 
-                            return <WrappedComponent {...props}/>
+                            return <WrappedComponent {...props}/>;
                         }
                     }
                 </Query>
-            )
+            );
         }
     };
 
     return _.flowRight(
-        connect(state => ({siteKey: state.site})),
+        connect(state => ({siteKey: state.site}))
     )(Comp);
-
 };

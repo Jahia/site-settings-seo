@@ -1,13 +1,14 @@
 import React, {useContext} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useNodeChecks} from '@jahia/data-helper';
-import EditVanityUrlsDialog from '../EditvanityUrlsDialog'
+import EditVanityUrlsDialog from '../EditvanityUrlsDialog';
+import {useContentEditorContext} from '@jahia/content-editor';
 
 export const VanityAction = ({render: Render, loading: Loading, label, requiredPermission, showOnNodeTypes, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
-    const {mode, nodeData, language} = useContentEditorContext();
+    const {mode, nodeData, lang, language} = useContentEditorContext ? useContentEditorContext() : otherProps;
     const res = useNodeChecks(
-        {path: nodeData.path, language: language},
+        {path: nodeData.path, language: lang | language},
         {requiredPermission: requiredPermission, showOnNodeTypes: showOnNodeTypes}
     );
 
@@ -40,5 +41,5 @@ export const VanityAction = ({render: Render, loading: Loading, label, requiredP
                 isVisible={res.checksResult}
                 onClick={openModal}/>
         </>
-    )
+    );
 };

@@ -22,7 +22,6 @@ import {withNotifications} from '@jahia/react-material';
 import {Typography, Button, MoreVert, Chip, SwapHoriz, Delete, Publish, Star} from '@jahia/moonstone';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 
-
 const styles = theme => ({
     boxTitle: {
         padding: theme.spacing.unit
@@ -181,7 +180,7 @@ const styles = theme => ({
         }
     },
     deleteAction: {
-        color: '##E0182D',
+        color: '##E0182D'
     },
     actionButton: {
         width: '38px',
@@ -298,12 +297,12 @@ const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, e
     const [anchor, setAnchor] = useState(null);
     const [editLine, setEditLine] = useState(null);
 
-    const openMenu = (event) => {
+    const openMenu = event => {
         setAnchor(event.currentTarget);
     };
 
     const closeMenu = () => {
-        setAnchor(null)
+        setAnchor(null);
     };
 
     const onMappingChanged = (value, onSuccess, onError) => {
@@ -336,8 +335,7 @@ const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, e
                                                 onClick={event => {
                                                     event.stopPropagation();
                                                 }}
-                                                onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>
-                    }
+                                                onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>}
                 </TableCell>
                 <TableCell width="10%"
                            onClick={event => {
@@ -368,31 +366,42 @@ const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, e
                     <span>
                         <Button variant="ghost" icon={<MoreVert/>} onClick={openMenu}/>
                         <Menu
+                            keepMounted
                             ModalClasses={{root: classes.popoverRoot}}
                             anchorEl={anchor}
-                            keepMounted
                             open={Boolean(anchor)}
                             onClose={closeMenu}
                         >
-                            <MenuItem onClick={e => {closeMenu(); actions.updateVanity.call({urlPair: urlPair, defaultMapping: !url.default}, e)}}>
-                                {!url.default ? <Button className={classes.menuAction} variant="ghost" label={t('label.actions.canonical.set')} icon={<Star/>} size="small" onClick={()=>{}}/> :
-                                    <Button className={classes.menuAction} variant="ghost" label={t('label.actions.canonical.unset')} icon={<Star/>} size="small" onClick={()=>{}}/>}
+                            <MenuItem onClick={e => {
+closeMenu(); actions.updateVanity.call({urlPair: urlPair, defaultMapping: !url.default}, e);
+}}
+                            >
+                                {!url.default ? <Button className={classes.menuAction} variant="ghost" label={t('label.actions.canonical.set')} icon={<Star/>} size="small" onClick={() => {}}/> :
+                                <Button className={classes.menuAction} variant="ghost" label={t('label.actions.canonical.unset')} icon={<Star/>} size="small" onClick={() => {}}/>}
                             </MenuItem>
-                            <MenuItem onClick={e => {closeMenu(); actions.moveAction.call([urlPair], e);}}>
-                                <Button className={classes.menuAction} variant="ghost" label={t('label.actions.move')} icon={<SwapHoriz/>} size="small" onClick={()=>{}}/>
+                            <MenuItem onClick={e => {
+closeMenu(); actions.moveAction.call([urlPair], e);
+}}
+                            >
+                                <Button className={classes.menuAction} variant="ghost" label={t('label.actions.move')} icon={<SwapHoriz/>} size="small" onClick={() => {}}/>
                             </MenuItem>
-                            { !isPublished && <MenuItem onClick={e => {closeMenu(); actions.publishAction.call([urlPair], e);}}>
-                                    <Button className={classes.menuAction} variant="ghost" label={t('label.actions.publish')} icon={<Publish/>} size="small" onClick={()=>{}}/>
-                                </MenuItem>
-                            }
-                            <MenuItem onClick={e => {closeMenu(); actions.deleteAction.call([urlPair], e);}}>
-                                <Button className={classes.menuAction} variant="ghost" color="danger" label={t('label.actions.delete')} icon={<Delete/>} size="small" onClick={()=>{}}/>
+                            { !isPublished && <MenuItem onClick={e => {
+closeMenu(); actions.publishAction.call([urlPair], e);
+}}
+                                              >
+                                <Button className={classes.menuAction} variant="ghost" label={t('label.actions.publish')} icon={<Publish/>} size="small" onClick={() => {}}/>
+                            </MenuItem>}
+                            <MenuItem onClick={e => {
+closeMenu(); actions.deleteAction.call([urlPair], e);
+}}
+                            >
+                                <Button className={classes.menuAction} variant="ghost" color="danger" label={t('label.actions.delete')} icon={<Delete/>} size="small" onClick={() => {}}/>
                             </MenuItem>
                         </Menu>
                     </span>
                 </TableCell>
             </TableRow>
-        )
+        );
     }
 
     return (
@@ -443,17 +452,19 @@ class VanityUrlListDefault extends React.Component {
                 <Paper elevation={2} className={classes.vanityGroupPaper}>
                     <Table className={classes.table}>
                         <TableBody data-vud-table-body-default={contentUuid}>
-                            {vanityUrls.map(urlPair => <DefaultRow key={urlPair.uuid}
-                                                                classes={classes}
-                                                                urlPair={urlPair}
-                                                                openCardMode={openCardMode}
-                                                                checkboxesDisplayed={checkboxesDisplayed}
-                                                                onChangeSelection={onChangeSelection}
-                                                                t={t}
-                                                                expanded={expanded}
-                                                                actions={actions}
-                                                                languages={languages}
-                                                                selection={selection}/>)}
+                            {vanityUrls.map(urlPair => (
+                                <DefaultRow key={urlPair.uuid}
+                                            classes={classes}
+                                            urlPair={urlPair}
+                                            openCardMode={openCardMode}
+                                            checkboxesDisplayed={checkboxesDisplayed}
+                                            t={t}
+                                            expanded={expanded}
+                                            actions={actions}
+                                            languages={languages}
+                                            selection={selection}
+                                            onChangeSelection={onChangeSelection}/>
+))}
                         </TableBody>
                     </Table>
                 </Paper>
@@ -485,7 +496,7 @@ class VanityUrlListLive extends React.Component {
         // Filter found languages
         defaultNotPublished = _.filter(defaultNotPublished, vanity => _.includes(multipleDefaultLang, vanity.language));
 
-        let numberOfLiveVanityUrls = vanityUrls.filter( url => url.hasOwnProperty('live')).length;
+        let numberOfLiveVanityUrls = vanityUrls.filter(url => url.hasOwnProperty('live')).length;
 
         return (
             <div>
@@ -498,8 +509,7 @@ class VanityUrlListLive extends React.Component {
                     {(numberOfLiveVanityUrls === 0 && workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[1].value) ?
                         <Typography variant="body" className={classes.noPublishedVanityUrlText} weight="light">
                             {t('label.noPublishedVanityUrl')}
-                        </Typography>
-                        :
+                        </Typography> :
                         <Table className={classes.table}>
                             <TableBody data-vud-table-body-live={contentUuid}>
                                 {vanityUrls.map(urlPair => {
@@ -510,10 +520,13 @@ class VanityUrlListLive extends React.Component {
                                         return (
                                             <TableRow key={urlPair.uuid}
                                                       hover={false}
-                                                      className={classes.tableRowLive + ' ' + classes.vanityUrlLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.missingDefaultCounterpart)}>
+                                                      className={classes.tableRowLive + ' ' + classes.vanityUrlLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.missingDefaultCounterpart)}
+                                            >
                                                 <TableCell className={classInactive + ' ' + classes.liveVanityUrl} width="80%">
                                                     <Typography variant="body"
-                                                                className={classes.vanityURLTextLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.colorWhite)}>{url.url}</Typography>
+                                                                className={classes.vanityURLTextLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.colorWhite)}
+                                                    >{url.url}
+                                                    </Typography>
                                                 </TableCell>
                                                 <TableCell width="10%">
                                                     {url.default ? <Chip color="accent" label="Canonical"/> : null}
@@ -531,12 +544,14 @@ class VanityUrlListLive extends React.Component {
                                                             _.includes(defaultNotPublished, url) ? <ActionButton action={actions.infoButton}
                                                                                                                  data={t('label.dialogs.infoButton.notPublished', {pagePath: url.editNode.targetNode.path})}/> :
                                                                 '') :
-                                                        <ActionButton role="action-publishDeletion" action={actions.publishDeleteAction}
-                                                                      data={deletedUrls}/>}
+                                                                <ActionButton role="action-publishDeletion"
+                                                                              action={actions.publishDeleteAction}
+                                                                              data={deletedUrls}/>}
                                                 </TableCell>
                                             </TableRow>
                                         );
                                     }
+
                                     if (workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value) {
                                         return (
                                             <TableRow key={urlPair.uuid} className={classes.vanityUrl + ' ' + classes.tableRowLive}>
@@ -548,8 +563,7 @@ class VanityUrlListLive extends React.Component {
                                     }
                                 })}
                             </TableBody>
-                        </Table>
-                    }
+                        </Table>}
                 </Paper>
             </div>
         );
