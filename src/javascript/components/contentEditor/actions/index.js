@@ -1,5 +1,1 @@
-import VanityAction from './VanityAction';
-
-export {
-    VanityAction
-}
+export * from './VanityAction';
