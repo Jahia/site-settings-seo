@@ -48,6 +48,7 @@
         <jahia-depends>default,siteSettings,graphql-dxm-provider</jahia-depends>
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
+        <yarn.arguments>build:simple</yarn.arguments>
         <jahia-module-signature>MCwCFBfRkoA1LBhNxXexF9CGp/Y3E71cAhQyvX2ECNYLVhscZpPdZQ1fngaEdg==</jahia-module-signature>
     </properties>
     <repositories>
