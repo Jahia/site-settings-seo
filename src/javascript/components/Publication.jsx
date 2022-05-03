@@ -2,7 +2,6 @@ import React from 'react';
 import {withNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -12,6 +11,7 @@ import {
 } from '@material-ui/core';
 import {withTranslation} from 'react-i18next';
 import {withVanityMutationContext} from './VanityMutationsProvider';
+import {Button} from "@jahia/moonstone";
 
 let styles = theme => ({
     dialogActionsContainer: {
@@ -54,18 +54,19 @@ class Publication extends React.Component {
                     </DialogContent>
 
                     <DialogActions className={classes.dialogActionsContainer}>
-                        <Button color="default" data-vud-role="button-cancel" onClick={onClose}>
-                            {t('label.cancel')}
-                        </Button>
-                        <Button autoFocus
-                                color="secondary"
+                        <Button color="default"
+                                label={t('label.cancel')}
+                                size="big"
+                                data-vud-role="button-cancel"
+                                onClick={onClose}/>
+                        <Button color="accent"
+                                label={t('label.dialogs.publish.publish')}
+                                size="big"
                                 data-vud-role="button-primary"
                                 onClick={() => {
-this.publish();
-}}
-                        >
-                            {t('label.dialogs.publish.publish')}
-                        </Button>
+                                    this.publish();
+                                }}
+                        />
                     </DialogActions>
                 </Dialog>
             </div>
