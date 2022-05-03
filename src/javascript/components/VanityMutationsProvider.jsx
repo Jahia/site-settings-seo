@@ -126,7 +126,7 @@ class VanityMutationsProvider extends Component {
                     lang: props.lang
                 }, refetchQueries: [{
                     query: VanityUrlsByPath,
-                    variables: VanityUrlsByPathVariables(path, props)
+                    variables: VanityUrlsByPathVariables([path], props)
                 }]
             });
         };

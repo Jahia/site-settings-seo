@@ -42,7 +42,9 @@ const LiveVanityUrlFields = gql`fragment LiveVanityUrlFields on VanityUrl {
                 language
             }
         }
-        parent{uuid}
+        parent{
+            ...NodeCacheRequiredFields
+        }
     }
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
@@ -72,6 +74,7 @@ const DefaultVanityUrls = gql`fragment DefaultVanityUrls on JCRNode {
 
 const LiveVanityUrls = gql`fragment LiveVanityUrls on JCRNode {
         liveNode: nodeInWorkspace(workspace: LIVE) {
+            ...NodeCacheRequiredFields
             vanityUrls(fieldFilter: {filters: [{${SearchFilter}}, {${LiveLanguageFilter}}]}) {
                 ...LiveVanityUrlFields
             }
@@ -80,6 +83,7 @@ const LiveVanityUrls = gql`fragment LiveVanityUrls on JCRNode {
             }
         }
     }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
     ${LiveVanityUrlFields}
 `;
 

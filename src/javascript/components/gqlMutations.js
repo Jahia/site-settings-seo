@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import {DefaultVanityUrlFields} from './gqlFragments';
+import {PredefinedFragments} from '@jahia/data-helper';
 
 const UpdateVanityMutation = gql`
     mutation updateVanity($ids: [String!]!, $defaultMapping: Boolean, $active: Boolean, $url: String, $language: String, $lang: String!) {
@@ -57,10 +58,12 @@ const AddVanityMutation = gql`
                     uuid
                 }
             }
-            modifiedNodes{
+            modifiedNodes {
+                ...NodeCacheRequiredFields
                 uuid
             }
         }
     }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 export {MoveMutation, UpdateVanityMutation, PublishMutation, DeleteVanity, AddVanityMutation};

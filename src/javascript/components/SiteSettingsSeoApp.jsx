@@ -6,7 +6,7 @@ import LanguageSelector from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
 import {withTranslation} from 'react-i18next';
 import {Selection} from './Selection';
-import {Delete, Info, Publish, SwapHoriz} from '@material-ui/icons';
+import {Information, SwapHoriz, Delete, Publish} from '@jahia/moonstone';
 import * as _ from 'lodash';
 import InfoButton from './InfoButton';
 import Publication from './Publication';
@@ -147,7 +147,7 @@ class SiteSettingsSeoApp extends React.Component {
                 call: this.openMove
             },
             infoButton: {
-                buttonIcon: <Info/>,
+                buttonIcon: <Information/>,
                 className: 'move',
                 call: this.openInfoButton
             },

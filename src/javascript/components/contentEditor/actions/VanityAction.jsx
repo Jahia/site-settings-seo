@@ -13,7 +13,7 @@ export const VanityAction = ({render: Render, loading: Loading, label, requiredP
     );
 
     if (res.loading) {
-        return (Loading && <Loading {...otherProps}/>) || <></>;
+        return (Loading && <Loading buttonLabel={label} {...otherProps}/>) || <></>;
     }
 
     const closeDialog = () => {

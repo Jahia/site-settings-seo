@@ -1,10 +1,23 @@
 import React from 'react';
 import * as _ from 'lodash';
-import {Button, Checkbox, FormControlLabel, withStyles, Table, TableBody, TableRow, TableCell, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
+import {
+    FormControlLabel,
+    withStyles,
+    Table,
+    TableBody,
+    TableRow,
+    TableCell,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from '@material-ui/core';
 import {flowRight as compose} from 'lodash';
 import {withTranslation} from 'react-i18next';
 import {withNotifications} from '@jahia/react-material';
 import {withVanityMutationContext} from './VanityMutationsProvider';
+import {Button, Checkbox, Typography} from "@jahia/moonstone";
 
 let styles = theme => ({
     dialogNote: {
@@ -17,11 +30,9 @@ let styles = theme => ({
         boxShadow: '1px 1px 2px 0px rgba(0, 0, 0, 0.09)'
     },
     dialogActionsButtonContainer: {
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        position: 'absolute',
-        right: '20px',
-        paddingTop: '7px'
+        '& *': {
+            padding: '0 8px'
+        }
     },
     vanityUrlTableCellLanguage: {
         color: '#676767',
@@ -38,6 +49,9 @@ let styles = theme => ({
     },
     dialogRoot: {
         zIndex: 2010
+    },
+    checkbox: {
+        margin: '8px'
     }
 });
 
@@ -94,11 +108,13 @@ class Deletion extends React.Component {
                         <Table className={classes.vanityUrlTable}>
                             <TableBody>
                                 {urlPairs.map((url, i) => (
-                                    <TableRow key={i}>
-                                        <TableCell className={classes.vanityUrlTableCellUrl}>{url.default.url}</TableCell>
-                                        <TableCell className={classes.vanityUrlTableCellLanguage}>{url.default.language}</TableCell>
-                                    </TableRow>
-                                  )
+                                        <TableRow key={i}>
+                                            <TableCell
+                                                className={classes.vanityUrlTableCellUrl}>{url.default.url}</TableCell>
+                                            <TableCell
+                                                className={classes.vanityUrlTableCellLanguage}>{url.default.language}</TableCell>
+                                        </TableRow>
+                                    )
                                 )}
                             </TableBody>
                         </Table>
@@ -107,31 +123,32 @@ class Deletion extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <span>
-                            <FormControlLabel
-        control={
-            <Checkbox checked={!this.state.deleteDisabled}
-                      data-vud-role="checkbox-hint"
-                      onChange={() => this.handleDeleteDisabled()}/>
-                                }
-        label={t('label.dialogs.delete.terms')}
-                            />
-                            <div className={classes.dialogActionsButtonContainer}>
-                                <Button color="default" data-vud-role="button-cancel" onClick={this.handleClose}>
-                                    {t('label.cancel')}
-                                </Button>
-                                <Button autoFocus
-                                        color="secondary"
-                                        disabled={this.state.deleteDisabled}
-                                        data-vud-role="button-primary"
-                                        onClick={() => {
-this.delete();
-}}
-                                >
-                                    {t('label.dialogs.delete.delete')}
-                                </Button>
-                            </div>
-                        </span>
+                        <FormControlLabel
+                            control={
+                                <Checkbox className={classes.checkbox}
+                                          checked={!this.state.deleteDisabled}
+                                          data-vud-role="checkbox-hint"
+                                          onChange={() => this.handleDeleteDisabled()}/>
+                            }
+                            label={t('label.dialogs.delete.terms')}
+                        />
+                        <div className="flexFluid"/>
+                        <Button color="default"
+                                size="big"
+                                label={t('label.cancel')}
+                                data-vud-role="button-cancel"
+                                onClick={() => {
+                                    this.handleClose();
+                                }}/>
+                        <Button color="accent"
+                                size="big"
+                                label={t('label.dialogs.delete.delete')}
+                                isDisabled={this.state.deleteDisabled}
+                                data-vud-role="button-primary"
+                                onClick={() => {
+                                    this.delete();
+                                }}
+                        />
                     </DialogActions>
                 </Dialog>
             </div>

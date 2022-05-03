@@ -50,7 +50,9 @@ const singletonDeps = [
     '@apollo/react-hooks'
 ];
 
-const notImported = [];
+const notImported = [
+    '@jahia/react-material'
+];
 
 module.exports = {
     ...sharedDeps.reduce((acc, item) => ({

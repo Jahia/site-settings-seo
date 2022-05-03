@@ -12,7 +12,6 @@ export const Editable = React.memo(({onChange, onEdit, isCreateMode, render: Ren
     const [errorLabel, setErrorLabel] = useState(null);
     const [errorMessage, setErrorMessage] = useState(false);
     const [value, setValue] = useState(props.value);
-    const inputRef = useRef(null);
     const {t} = useTranslation('site-settings-seo');
 
     const save = () => {
@@ -47,16 +46,13 @@ export const Editable = React.memo(({onChange, onEdit, isCreateMode, render: Ren
     return (
         <> {edit || isCreateMode ?
             <FormControl className={classes.root}>
-                <Input ref={inputRef}
-                       focusOnField
+                <Input focusOnField
                        value={value}
                        placeholder={t('label.dialogs.add.text')}
                        disabled={loading}
-                       error={Boolean(errorLabel)}
                        classes={classes.textInput}
                        onChange={onValueChange}
                        onClick={e => {
-                       inputRef.current.focus();
                        e.stopPropagation();
                    }}
                        onBlur={save}
@@ -84,9 +80,12 @@ export const Editable = React.memo(({onChange, onEdit, isCreateMode, render: Ren
 });
 
 Editable.propTypes = {
-    render: PropTypes.object.isRequired,
+    render: PropTypes.func,
     isCreateMode: PropTypes.bool,
     value: PropTypes.string,
     onChange: PropTypes.func,
     onEdit: PropTypes.func
 };
+
+Editable.displayName = 'Editable'
+

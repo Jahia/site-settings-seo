@@ -104,9 +104,9 @@ let styles = theme => ({
         },
         marginTop: '8px',
         marginRight: '4px',
-	    marginLeft: '10px',
+        marginLeft: '10px',
         padding: '4px',
-	    color: 'whitesmoke'
+        color: 'whitesmoke'
     }
 });
 
@@ -119,7 +119,8 @@ class Selection extends React.Component {
         let {t, selection, classes, onChangeSelection, actions} = this.props;
 
         return (
-            <Paper elevation={1} classes={{root: (selection.length === 0 ? '' : classes.rootExpanded)}} className={classes.root}>
+            <Paper elevation={1} classes={{root: (selection.length === 0 ? '' : classes.rootExpanded)}}
+                   className={classes.root}>
 
                 <div className={classes.closeButtonContainer}>
                     <Close classes={{root: classes.clearButton}}
@@ -127,23 +128,24 @@ class Selection extends React.Component {
                            onClick={() => onChangeSelection()}/>
 
                     <div className={classes.selected}>
-                        <Typography className={classes.selectedText}>{t('label.selection.count', {count: selection.length})}</Typography>
+                        <Typography
+                            className={classes.selectedText}>{t('label.selection.count', {count: selection.length})}</Typography>
                     </div>
                 </div>
 
                 <div className={classes.buttonsBar}>
-                    { _.sortBy(_.filter(actions, x => x.buttonLabel), 'priority').map((action, i) => (
+                    {_.sortBy(_.filter(actions, x => x.buttonLabel), 'priority').map((action, i) => (
                         <Button key={i}
                                 className={classNames(classes[action.className], classes.buttonAction)}
                                 data-vud-role={'toolbar-button-' + action.className}
                                 onClick={event => {
- action.call(selection, event);
-}}
+                                    action.call(selection, event);
+                                }}
                         >
                             <span className={classes.buttonActionLeftIcon}>{action.buttonIcon}</span>
                             {action.buttonLabel}
                         </Button>
-                  )) }
+                    ))}
                 </div>
             </Paper>
         );
