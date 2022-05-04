@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import * as _ from 'lodash';
 import {
     Dialog,
@@ -13,16 +13,16 @@ import {
     TextField,
     withStyles
 } from '@material-ui/core';
-import {withTranslation} from 'react-i18next';
+import {useTranslation, withTranslation} from 'react-i18next';
 import {Picker} from '@jahia/data-helper';
 import {PickerViewMaterial, withNotifications} from '@jahia/react-material';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {GetNodeQuery} from './gqlQueries';
-import {Query} from 'react-apollo';
+import {Query, useQuery} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Button, Checkbox} from "@jahia/moonstone";
 
-let styles = theme => ({
+let styles = () => ({
     pickerRoot: {
         minHeight: '330px',
         maxHeight: '350px',
@@ -69,31 +69,19 @@ let styles = theme => ({
     }
 });
 
-class Move extends React.Component {
-    constructor(props) {
-        super(props);
+const MoveCmp = (props) => {
+    const {classes, lang, path, urlPairs, vanityMutationsContext, notificationContext, open, onClose} = props;
+    const {t} = useTranslation('site-settings-seo');
+    const [targetPath, setTargetPath] = useState('');
+    const [saveDisabled, setSaveDisabled] = useState(true);
+    const picker = useRef();
+    const selectableTypes = ['jmix:mainResource', 'jnt:page'];
 
-        this.state = {
-            targetPath: '',
-            saveDisabled: true
-        };
-
-        this.handleMove = this.handleMove.bind(this);
-        this.handleSaveDisabled = this.handleSaveDisabled.bind(this);
-        this.handleTargetPathChange = this.handleTargetPathChange.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.picker = React.createRef();
-
-        this.selectableTypes = ['jmix:mainResource', 'jnt:page'];
-    }
-
-    handleMove() {
-        let {vanityMutationsContext, notificationContext, t} = this.props;
+    const handleMove = () => {
         try {
-            vanityMutationsContext.move(_.map(this.props.urlPairs, 'uuid'), this.state.targetPath, this.props)
+            vanityMutationsContext.move(_.map(urlPairs, 'uuid'), targetPath, props)
                 .then(() => {
-                    this.handleClose();
+                    handleClose();
                     notificationContext.notify(t('label.notifications.moveConfirmed'));
                 })
                 .catch(errors => {
@@ -112,132 +100,119 @@ class Move extends React.Component {
         }
     }
 
-    handleSaveDisabled() {
-        this.setState(previous => ({saveDisabled: !previous.saveDisabled}));
+    const handleSaveDisabled = () => {
+        setSaveDisabled(previous => !previous);
     }
 
-    handleTargetPathChange(event) {
-        this.setState({targetPath: event.target.value});
+    const handleTargetPathChange = (event) => {
+        setTargetPath(event.target.value);
     }
 
-    handleClose() {
-        this.setState({
-            targetPath: '',
-            saveDisabled: true
+    const handleClose = () => {
+        setTargetPath('');
+        setSaveDisabled(true);
+        onClose();
+    }
+
+    const {loading, error, data} = useQuery(GetNodeQuery, {
+        fetchPolicy: "network-only",
+        errorPolicy: "all",
+        variables: {path: targetPath, types: selectableTypes}
+    });
+
+    if (!loading && !error && data && data.jcr && data.jcr.nodeByPath.inPicker) {
+        setTimeout(() => {
+            picker.current.openPaths(data.jcr.nodeByPath.path.substr(0, data.jcr.nodeByPath.path.lastIndexOf('/')));
         });
-        this.props.onClose();
     }
 
-    render() {
-        const {t, classes, lang, path} = this.props;
-        return (
-            <div>
-                <Query fetchPolicy="network-only" query={GetNodeQuery}
-                       variables={{path: this.state.targetPath, types: this.selectableTypes}}>
-                    {({loading, error, data}) => {
-                        if (!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker) {
-                            setTimeout(() => {
-                                this.picker.current.openPaths(data.jcr.nodeByPath.path.substr(0, data.jcr.nodeByPath.path.lastIndexOf('/')));
-                            });
+    return (
+        <div>
+            <Dialog
+                open={open}
+                classes={{root: classes.dialogRoot}}
+                aria-labelledby="form-dialog-title"
+                data-vud-role="dialog"
+                onClose={handleClose}
+            >
+                <DialogTitle id="form-dialog-title">{t('label.dialogs.move.title')}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>{t('label.dialogs.move.content')}</DialogContentText>
+                    <FormControl className={classes.formControl}>
+                        <TextField
+                            autoFocus
+                            fullWidth
+                            error={Boolean(error)}
+                            id="targetPath"
+                            type="text"
+                            placeholder="Enter a path"
+                            className={classes.filterPath}
+                            value={targetPath}
+                            onChange={handleTargetPathChange}
+                        />
+                        <FormHelperText className={classes.helperContainer}>{error &&
+                            <error><label>{t('label.errors.MoveInvalidTarget')}</label>
+                                <message
+                                    className={classes.helperErrorMessage}
+                                >{t(['label.errors.MoveInvalidTarget_message', 'label.errors.MoveInvalidTarget'])}
+                                </message>
+                            </error>}
+                        </FormHelperText>
+                    </FormControl>
+                    <Paper elevation={4} classes={{root: classes.pickerRoot}}>
+                        <Picker ref={picker}
+                                fragments={['displayName', {
+                                    applyFor: 'node',
+                                    gql: gql`fragment PrimaryNodeTypeName on JCRNode { primaryNodeType { name } }`
+                                }]}
+                                rootPaths={[path]}
+                                defaultOpenPaths={[path]}
+                                openableTypes={['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText', 'jmix:droppableContent', 'jmix:mainResource']}
+                                selectableTypes={selectableTypes}
+                                queryVariables={{language: lang}}
+                                selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
+                                onSelectItem={setTargetPath}
+                        >
+                            {({loading, ...others}) => (
+                                <PickerViewMaterial {...others}
+                                                    textRenderer={entry => entry.node.displayName}/>
+                            )}
+                        </Picker>
+                    </Paper>
+                </DialogContent>
+                <DialogActions>
+                    <FormControlLabel
+                        control={
+                            <Checkbox className={classes.checkbox}
+                                      checked={!saveDisabled}
+                                      data-vud-role="checkbox-hint"
+                                      onChange={handleSaveDisabled}/>
                         }
-
-                        return (
-                            <Dialog
-                                open={this.props.open}
-                                classes={{root: classes.dialogRoot}}
-                                aria-labelledby="form-dialog-title"
-                                data-vud-role="dialog"
-                                onClose={this.handleClose}
-                            >
-                                <DialogTitle id="form-dialog-title">{t('label.dialogs.move.title')}</DialogTitle>
-                                <DialogContent>
-                                    <DialogContentText>{t('label.dialogs.move.content')}</DialogContentText>
-                                    <FormControl className={classes.formControl}>
-                                        <TextField
-                                            autoFocus
-                                            fullWidth
-                                            error={Boolean(error)}
-                                            id="targetPath"
-                                            type="text"
-                                            placeholder="Enter a path"
-                                            className={classes.filterPath}
-                                            value={this.state.targetPath}
-                                            onChange={this.handleTargetPathChange}
-                                        />
-                                        <FormHelperText className={classes.helperContainer}>{error &&
-                                            <error><label>{t('label.errors.MoveInvalidTarget')}</label>
-                                                <message
-                                                    className={classes.helperErrorMessage}
-                                                >{t(['label.errors.MoveInvalidTarget_message', 'label.errors.MoveInvalidTarget'])}
-                                                </message>
-                                            </error>}
-                                        </FormHelperText>
-                                    </FormControl>
-                                    <Paper elevation={4} classes={{root: classes.pickerRoot}}>
-                                        <Picker ref={this.picker}
-                                                fragments={['displayName', {
-                                                    applyFor: 'node',
-                                                    gql: gql`fragment PrimaryNodeTypeName on JCRNode { primaryNodeType { name } }`
-                                                }]}
-                                                rootPaths={[path]}
-                                                defaultOpenPaths={[path]}
-                                                openableTypes={['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText', 'jmix:droppableContent', 'jmix:mainResource']}
-                                                selectableTypes={this.selectableTypes}
-                                                queryVariables={{language: lang}}
-                                                selectedPaths={!loading && !error && data.jcr && data.jcr.nodeByPath.inPicker ? [data.jcr.nodeByPath.path] : []}
-                                                onSelectItem={path => {
-                                                    this.setState({targetPath: path});
-                                                }}
-                                        >
-                                            {({loading, ...others}) => (
-                                                <PickerViewMaterial {...others}
-                                                                    textRenderer={entry => entry.node.displayName}/>
-                                            )}
-                                        </Picker>
-                                    </Paper>
-                                </DialogContent>
-                                <DialogActions>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox className={classes.checkbox}
-                                                      checked={!this.state.saveDisabled}
-                                                      data-vud-role="checkbox-hint"
-                                                      onChange={() => this.handleSaveDisabled()}/>
-                                        }
-                                        label={t('label.dialogs.move.confirm')}
-                                    />
-                                    <div className="flexFluid"/>
-                                    <Button color="default"
-                                            size="big"
-                                            label={t('label.cancel')}
-                                            data-vud-role="button-cancel"
-                                            onClick={() => {
-                                                this.handleClose();
-                                            }}/>
-                                    <Button color="accent"
-                                            size="big"
-                                            label={t('label.dialogs.move.move')}
-                                            disabled={this.state.saveDisabled || this.state.targetPath.length === 0 || Boolean(error)}
-                                            data-vud-role="button-primary"
-                                            onClick={() => {
-                                                this.handleMove();
-                                            }}
-                                    />
-                                </DialogActions>
-                            </Dialog>
-                        );
-                    }}
-                </Query>
-            </div>
-        );
-    }
+                        label={t('label.dialogs.move.confirm')}
+                    />
+                    <div className="flexFluid"/>
+                    <Button color="default"
+                            size="big"
+                            label={t('label.cancel')}
+                            data-vud-role="button-cancel"
+                            onClick={handleClose}/>
+                    <Button color="accent"
+                            size="big"
+                            label={t('label.dialogs.move.move')}
+                            disabled={saveDisabled || targetPath.length === 0 || Boolean(error)}
+                            data-vud-role="button-primary"
+                            onClick={handleMove}
+                    />
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
 }
 
-Move = _.flowRight(
+const Move = _.flowRight(
     withStyles(styles),
     withVanityMutationContext(),
     withNotifications(),
-    (withTranslation('site-settings-seo'))
-)(Move);
+)(MoveCmp);
 
 export default Move;
