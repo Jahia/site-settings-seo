@@ -87,5 +87,5 @@ Editable.propTypes = {
     onEdit: PropTypes.func
 };
 
-Editable.displayName = 'Editable'
+Editable.displayName = 'Editable';
 

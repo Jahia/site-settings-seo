@@ -2,7 +2,11 @@ import React, {useContext} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useNodeChecks} from '@jahia/data-helper';
 import EditVanityUrlsDialog from '../EditvanityUrlsDialog';
-import {useContentEditorContext} from '@jahia/content-editor';
+
+let useContentEditorContext;
+import('@jahia/content-editor').then(v => {
+    useContentEditorContext = v.useContentEditorContext;
+});
 
 export const VanityAction = ({render: Render, loading: Loading, label, requiredPermission, showOnNodeTypes, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
