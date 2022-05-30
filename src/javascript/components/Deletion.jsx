@@ -17,7 +17,7 @@ import {flowRight as compose} from 'lodash';
 import {withTranslation} from 'react-i18next';
 import {withNotifications} from '@jahia/react-material';
 import {withVanityMutationContext} from './VanityMutationsProvider';
-import {Button, Checkbox, Typography} from "@jahia/moonstone";
+import {Button, Checkbox, Typography} from '@jahia/moonstone';
 
 let styles = theme => ({
     dialogNote: {
@@ -108,12 +108,16 @@ class Deletion extends React.Component {
                         <Table className={classes.vanityUrlTable}>
                             <TableBody>
                                 {urlPairs.map((url, i) => (
-                                        <TableRow key={i}>
-                                            <TableCell
-                                                className={classes.vanityUrlTableCellUrl}>{url.default.url}</TableCell>
-                                            <TableCell
-                                                className={classes.vanityUrlTableCellLanguage}>{url.default.language}</TableCell>
-                                        </TableRow>
+                                    <TableRow key={i}>
+                                        <TableCell
+                                                className={classes.vanityUrlTableCellUrl}
+                                        >{url.default.url}
+                                        </TableCell>
+                                        <TableCell
+                                                className={classes.vanityUrlTableCellLanguage}
+                                        >{url.default.language}
+                                        </TableCell>
+                                    </TableRow>
                                     )
                                 )}
                             </TableBody>

@@ -119,8 +119,10 @@ class Selection extends React.Component {
         let {t, selection, classes, onChangeSelection, actions} = this.props;
 
         return (
-            <Paper elevation={1} classes={{root: (selection.length === 0 ? '' : classes.rootExpanded)}}
-                   className={classes.root}>
+            <Paper elevation={1}
+                   classes={{root: (selection.length === 0 ? '' : classes.rootExpanded)}}
+                   className={classes.root}
+            >
 
                 <div className={classes.closeButtonContainer}>
                     <Close classes={{root: classes.clearButton}}
@@ -129,7 +131,9 @@ class Selection extends React.Component {
 
                     <div className={classes.selected}>
                         <Typography
-                            className={classes.selectedText}>{t('label.selection.count', {count: selection.length})}</Typography>
+                            className={classes.selectedText}
+                        >{t('label.selection.count', {count: selection.length})}
+                        </Typography>
                     </div>
                 </div>
 

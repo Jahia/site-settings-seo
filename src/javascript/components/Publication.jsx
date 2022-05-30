@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import {withTranslation} from 'react-i18next';
 import {withVanityMutationContext} from './VanityMutationsProvider';
-import {Button} from "@jahia/moonstone";
+import {Button} from '@jahia/moonstone';
 
 let styles = theme => ({
     dialogActionsContainer: {

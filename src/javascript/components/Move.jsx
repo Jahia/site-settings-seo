@@ -20,7 +20,7 @@ import {withVanityMutationContext} from './VanityMutationsProvider';
 import {GetNodeQuery} from './gqlQueries';
 import {Query, useQuery} from 'react-apollo';
 import gql from 'graphql-tag';
-import {Button, Checkbox} from "@jahia/moonstone";
+import {Button, Checkbox} from '@jahia/moonstone';
 
 let styles = () => ({
     pickerRoot: {
@@ -69,7 +69,7 @@ let styles = () => ({
     }
 });
 
-const MoveCmp = (props) => {
+const MoveCmp = props => {
     const {classes, lang, path, urlPairs, vanityMutationsContext, notificationContext, open, onClose} = props;
     const {t} = useTranslation('site-settings-seo');
     const [targetPath, setTargetPath] = useState('');
@@ -98,25 +98,25 @@ const MoveCmp = (props) => {
         } catch (e) {
             notificationContext.notify(t('label.errors.' + (e.name ? e.name : 'Error')));
         }
-    }
+    };
 
     const handleSaveDisabled = () => {
         setSaveDisabled(previous => !previous);
-    }
+    };
 
-    const handleTargetPathChange = (event) => {
+    const handleTargetPathChange = event => {
         setTargetPath(event.target.value);
-    }
+    };
 
     const handleClose = () => {
         setTargetPath('');
         setSaveDisabled(true);
         onClose();
-    }
+    };
 
     const {loading, error, data} = useQuery(GetNodeQuery, {
-        fetchPolicy: "network-only",
-        errorPolicy: "all",
+        fetchPolicy: 'network-only',
+        errorPolicy: 'all',
         variables: {path: targetPath, types: selectableTypes}
     });
 
@@ -207,12 +207,12 @@ const MoveCmp = (props) => {
             </Dialog>
         </div>
     );
-}
+};
 
 const Move = _.flowRight(
     withStyles(styles),
     withVanityMutationContext(),
-    withNotifications(),
+    withNotifications()
 )(MoveCmp);
 
 export default Move;
