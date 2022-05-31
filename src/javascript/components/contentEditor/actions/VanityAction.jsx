@@ -6,7 +6,7 @@ import EditVanityUrlsDialog from '../EditvanityUrlsDialog';
 let useContentEditorContext;
 import('@jahia/content-editor').then(v => {
     useContentEditorContext = v.useContentEditorContext;
-});
+}).catch(e => console.warn('Error loading context from content-editor', e));
 
 export const VanityAction = ({render: Render, loading: Loading, label, requiredPermission, showOnNodeTypes, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
