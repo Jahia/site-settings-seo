@@ -19,7 +19,7 @@ import {withNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {flowRight as compose} from 'lodash';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
-import {Add, Button, Typography} from '@jahia/moonstone';
+import {Add, Button} from '@jahia/moonstone';
 import {trimUrl} from './utils';
 import {Editable} from './Editable';
 
@@ -176,10 +176,13 @@ class AddVanityUrl extends React.Component {
                 if (error.graphQLErrors && error.graphQLErrors[0].extensions) {
                     this.setState({
                         errors: _.map(error.graphQLErrors[0].extensions, value => {
+                            const messageKey = value.existingNodePath ? 'used' : 'notAllowed';
+                            const message = t(`label.errors.GqlConstraintViolationException.${messageKey}_message`, {existingNodePath: value.existingNodePath, urlMapping: value.urlMapping});
+                            const label = t(`label.errors.GqlConstraintViolationException.${messageKey}`);
                             return {
                                 url: value.urlMapping,
-                                message: t('label.errors.GqlConstraintViolationException_message', {existingNodePath: value.existingNodePath}),
-                                label: t('label.errors.GqlConstraintViolationException')
+                                message,
+                                label
                             };
                         })
                     });

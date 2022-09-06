@@ -52,8 +52,12 @@
       "DuplicateMappingError": "URL Dupliquée",
       "DuplicateMappingError_message": "URL Dupliquée",
       "Error": "Une erreur imprévue s'est produite",
-      "GqlConstraintViolationException": "Cette URL est déjà utilisée",
-      "GqlConstraintViolationException_message": "Cette URL est déjà utilisée par {{existingNodePath}}",
+      "GqlConstraintViolationException": {
+        "notAllowed": "Non autorisé",
+        "notAllowed_message": "{{urlMapping}} n'est pas autorisé comme URL",
+        "used": "Cette URL est déjà utilisée",
+        "used_message": "Cette URL est déjà utilisée par {{existingNodePath}}"
+      },
       "InvalidMappingError": "L'URL est invalide",
       "InvalidMappingError_message": "Une URL ne peut pas être vide",
       "InvalidCharError": "L'URL est invalide",

@@ -59,8 +59,12 @@
       "DuplicateMappingError": "Duplicate mappings",
       "DuplicateMappingError_message": "Duplicate mappings",
       "Error": "An unexpected error has occurred",
-      "GqlConstraintViolationException": "Already in use",
-      "GqlConstraintViolationException_message": "This mapping already points to {{existingNodePath}}",
+      "GqlConstraintViolationException": {
+        "notAllowed": "Not allowed",
+        "notAllowed_message": "{{urlMapping}} is not allowed in vanity url",
+        "used": "Already in use",
+        "used_message": "This mapping already points to {{existingNodePath}}"
+      },
       "InvalidMappingError": "Invalid URL",
       "InvalidMappingError_message": "The vanity URL cannot be empty",
       "InvalidCharError": "Invalid URL",
