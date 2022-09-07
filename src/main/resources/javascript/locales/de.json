@@ -59,8 +59,12 @@
       "DuplicateMappingError": "Doppelte Mappings.",
       "DuplicateMappingError_message": "Doppelte Mappings.",
       "Error": "Ein unerwarteter Fehler ist aufgetreten.",
-      "GqlConstraintViolationException": "URL Mapping wird bereits verwendet.",
-      "GqlConstraintViolationException_message": "URL Mapping wird bereits für {{existingNodePath}} verwendet.",
+      "GqlConstraintViolationException": {
+        "notAllowed": "URL Mapping ist nicht erlaubt.",
+        "notAllowed_message": "{{existingNodePath}}  ist in URL Mapping nicht erlaubt.",
+        "used": "URL Mapping wird bereits verwendet.",
+        "used_message": "URL Mapping wird bereits für {{param}} verwendet."
+      },
       "InvalidMappingError": "Die Vanity URL ist ungültig.",
       "InvalidMappingError_message": "Die Vanity URL darf nicht leer sein",
       "InvalidCharError": "Die Vanity URL ist ungültig",
