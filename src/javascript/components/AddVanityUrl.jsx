@@ -179,6 +179,9 @@ class AddVanityUrl extends React.Component {
                             const messageKey = value.existingNodePath ? 'used' : 'notAllowed';
                             const message = t(`label.errors.GqlConstraintViolationException.${messageKey}_message`, {existingNodePath: value.existingNodePath, urlMapping: value.urlMapping});
                             const label = t(`label.errors.GqlConstraintViolationException.${messageKey}`);
+                            if (value.errorMessage) {
+                                console.error(value.errorMessage);
+                            }
                             return {
                                 url: value.urlMapping,
                                 message,
