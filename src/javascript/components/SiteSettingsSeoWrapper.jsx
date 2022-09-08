@@ -1,11 +1,10 @@
 import React from 'react';
 import {MuiThemeProvider} from '@material-ui/core';
-import {NotificationProvider, legacyTheme} from '@jahia/react-material';
+import {ProgressOverlay, NotificationProvider, legacyTheme} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {VanityMutationsProvider} from './VanityMutationsProvider';
 import {VanityUrlLanguageData} from './VanityUrlLanguageData';
 import {withSite} from './SiteConnector';
-import {ProgressOverlay} from '@jahia/react-material';
 
 const SiteSettingsSeo = _.flowRight(
     withSite()

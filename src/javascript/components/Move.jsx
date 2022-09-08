@@ -13,12 +13,12 @@ import {
     TextField,
     withStyles
 } from '@material-ui/core';
-import {useTranslation, withTranslation} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {Picker} from '@jahia/data-helper';
 import {PickerViewMaterial, withNotifications} from '@jahia/react-material';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {GetNodeQuery} from './gqlQueries';
-import {Query, useQuery} from 'react-apollo';
+import {useQuery} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Button, Checkbox} from '@jahia/moonstone';
 

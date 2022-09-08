@@ -6,7 +6,7 @@ import LanguageSelector from './LanguageSelector';
 import {VanityUrlTableView} from './VanityUrlTableView';
 import {withTranslation} from 'react-i18next';
 import {Selection} from './Selection';
-import {Information, SwapHoriz, Delete, Publish} from '@jahia/moonstone';
+import {Information, SwapHoriz, Delete, Publish, Dropdown, Header} from '@jahia/moonstone';
 import * as _ from 'lodash';
 import InfoButton from './InfoButton';
 import Publication from './Publication';
@@ -15,7 +15,6 @@ import PublishDeletion from './PublishDeletion';
 import Move from './Move';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlTableData} from './VanityUrlTableData';
-import {Dropdown, Header} from '@jahia/moonstone';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {VanityUrlEnabledContent} from '~/components/VanityUrlEnabledContent';
 
@@ -37,7 +36,7 @@ const styles = theme => ({
         flexFlow: 'column'
     },
     vanityHeader: {
-        minHeight: '95px'
+        minHeight: 'inherit'
     },
     root: {
         margin: theme.spacing.unit
@@ -50,7 +49,7 @@ const styles = theme => ({
         height: '100%'
     },
     layout: {
-        marginTop: '-60px',
+        marginTop: '-80px',
         overflowY: 'scroll'
     },
     actions: {
