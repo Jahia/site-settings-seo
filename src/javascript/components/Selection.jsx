@@ -3,9 +3,8 @@ import {Button, Paper, withStyles} from '@material-ui/core';
 import {withTranslation} from 'react-i18next';
 import * as _ from 'lodash';
 import {fade} from '@material-ui/core/styles/colorManipulator';
-import {Close} from '@jahia/moonstone';
+import {Close, Typography} from '@jahia/moonstone';
 import classNames from 'classnames';
-import {Typography} from '@jahia/moonstone';
 
 let styles = theme => ({
     root: {
@@ -14,8 +13,8 @@ let styles = theme => ({
         justifyContent: 'space-between',
         position: 'relative',
         transition: 'top 0.3s ease-in 0s',
-        top: '-186px',
-        padding: '24px 8px 24px 6px',
+        top: '-206px',
+        padding: '28px 8px 28px 6px',
         margin: '0',
         zIndex: '9999',
         borderRadius: '0',
@@ -24,7 +23,7 @@ let styles = theme => ({
         background: 'rgb(41, 49, 54)'
     },
     rootExpanded: {
-        top: '-93px'
+        top: '-102px'
     },
     closeButtonContainer: {
         display: 'flex',

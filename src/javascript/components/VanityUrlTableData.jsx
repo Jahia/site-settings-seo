@@ -22,6 +22,10 @@ class VanityUrlTableData extends React.Component {
                     notificationContext.notify(t('label.errors.loadingVanityUrl'), ['closeButton', 'noAutomaticClose']);
                 }
 
+                if (loading) {
+                    return <ProgressOverlay/>;
+                }
+
                 let numberOfPages = 0;
                 let rows = [];
                 if (data && data.jcr && data.jcr.nodesByQuery) {
@@ -48,7 +52,6 @@ class VanityUrlTableData extends React.Component {
 
                 return (
                     <>
-                        {loading && <ProgressOverlay/>}
                         {this.props.children(rows, totalCount, numberOfPages)}
                     </>
 );
