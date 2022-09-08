@@ -8,7 +8,7 @@
  * JAHIA'S ENTERPRISE DISTRIBUTIONS LICENSING - IMPORTANT INFORMATION
  * ==========================================================================================
  *
- *     Copyright (C) 2002-2021 Jahia Solutions Group. All rights reserved.
+ *     Copyright (C) 2002-2022 Jahia Solutions Group. All rights reserved.
  *
  *     This file is part of a Jahia's Enterprise Distribution.
  *
@@ -21,35 +21,42 @@
  *
  * ==========================================================================================
  */
-package org.jahia.modules.sitesettingsseo.config;
+package org.jahia.modules.sitesettingsseo.config.impl;
 
+import org.jahia.modules.sitesettingsseo.config.ConfigService;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ServiceScope;
+import org.osgi.service.component.annotations.Deactivate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Map;
 
 /**
- * A service class that retrieves add-canonical-meta-tag configuration value from the module site settings seo karaf cfg file
+ * A service class that retrieves enableSEOAutomaticMetaTagGeneration configuration value from the module site settings seo karaf cfg file
  *
  * @author carp
  */
-@Component(service = { SiteSettingsSEOService.class }, scope= ServiceScope.SINGLETON, immediate = true)
-public class SiteSettingsSEOService {
+@Component(service = ConfigService.class, immediate = true)
+public class ConfigServiceImpl implements ConfigService {
+    private static final Logger logger = LoggerFactory.getLogger(ConfigServiceImpl.class);
 
-    private String addCanonicalMetaTag;
+    private Boolean isMetagTagGenerationEnabled;
 
     @Activate
     public void activate(Map<String, ?> props)  {
-        addCanonicalMetaTag = (String) props.get("add-canonical-meta-tag");
+        isMetagTagGenerationEnabled = Boolean.parseBoolean((String) props.get("enableSEOAutomaticMetaTagGeneration"));
+        logger.info("Site Settings SEO configuration activated with meta tag generation enabled at: {}", isMetagTagGenerationEnabled);
     }
 
-    /**
-     * Gets property value from add-canonical-meta-tag configuration key.
-     * @return add-canonical-meta-tag value.
-     */
-    public String getAddCanonicalMetaTag() {
-        return addCanonicalMetaTag;
+    @Override
+    public boolean isMetagTagGenerationEnabled() {
+        return isMetagTagGenerationEnabled;
+    }
+
+    @Deactivate
+    public void deactivate() {
+        logger.info("Site Settings SEO configuration deactivated");
     }
 
 }
