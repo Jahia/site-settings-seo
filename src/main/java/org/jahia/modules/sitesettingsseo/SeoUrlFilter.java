@@ -24,7 +24,9 @@
 package org.jahia.modules.sitesettingsseo;
 
 import net.htmlparser.jericho.*;
+import org.jahia.modules.sitesettingsseo.config.SiteSettingsSEOService;
 import org.jahia.modules.sitesettingsseo.utils.Utils;
+import org.jahia.osgi.BundleUtils;
 import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.decorator.JCRSiteNode;
@@ -75,7 +77,7 @@ public class SeoUrlFilter extends AbstractFilter {
         Source source = new Source(previousOut);
         OutputDocument od = new OutputDocument(source);
         List<Element> headList = source.getAllElements(HTMLElementName.HEAD);
-        if (!headList.isEmpty()) {
+        if (!headList.isEmpty() && isAddCanonicalMetaTagEnabled()) {
             initUrlGenerator(renderContext, resource);
             JCRNodeWrapper node = resource.getNode();
 
@@ -188,5 +190,10 @@ public class SeoUrlFilter extends AbstractFilter {
 
     private static boolean isUrlRewriteSeoRulesEnabled() {
         return SettingsBean.getInstance().isUrlRewriteSeoRulesEnabled();
+    }
+
+    private static boolean isAddCanonicalMetaTagEnabled() {
+        SiteSettingsSEOService siteSettingsSEOService = BundleUtils.getOsgiService(SiteSettingsSEOService.class, null);
+        return Boolean.parseBoolean(siteSettingsSEOService.getAddCanonicalMetaTag());
     }
 }
