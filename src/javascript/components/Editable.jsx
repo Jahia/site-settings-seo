@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {FormControl, FormHelperText} from '@material-ui/core';
 import classes from './Editable.scss';
 import {Input} from '@jahia/moonstone';
