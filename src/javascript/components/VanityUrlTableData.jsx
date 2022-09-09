@@ -1,6 +1,6 @@
 import React from 'react';
 import {Query} from 'react-apollo';
-import {withNotifications, ProgressOverlay} from '@jahia/react-material';
+import {withNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {TableQuery, TableQueryVariables} from './gqlQueries';
 import {withTranslation} from 'react-i18next';
@@ -16,14 +16,10 @@ class VanityUrlTableData extends React.Component {
 
         return (
             <Query fetchPolicy="network-only" query={TableQuery} variables={TableQueryVariables(this.props)} pollInterval={poll}>
-                { ({loading, error, data}) => {
+                { ({error, data}) => {
                 if (error) {
                     console.log('Error when fetching data: ' + error);
                     notificationContext.notify(t('label.errors.loadingVanityUrl'), ['closeButton', 'noAutomaticClose']);
-                }
-
-                if (loading) {
-                    return <ProgressOverlay/>;
                 }
 
                 let numberOfPages = 0;
