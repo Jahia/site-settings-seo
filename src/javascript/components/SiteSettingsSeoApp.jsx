@@ -183,8 +183,12 @@ class SiteSettingsSeoApp extends React.Component {
         let mess;
         if (ex.graphQLErrors && ex.graphQLErrors.length > 0) {
             let graphQLError = ex.graphQLErrors[0];
-            err = t(['label.errors.' + graphQLError.errorType, 'label.errors.Error']);
-            mess = t(['label.errors.' + graphQLError.errorType + '_message', graphQLError.message], graphQLError.extensions);
+            const messageKey = graphQLError.extensions.existingNodePath ? 'used' : 'notAllowed';
+            err = t(`label.errors.GqlConstraintViolationException.${messageKey}`);
+            mess = t(`label.errors.GqlConstraintViolationException.${messageKey}_message`, graphQLError.extensions);
+            if (graphQLError.extensions.errorMessage) {
+                console.error(graphQLError.extensions.errorMessage);
+            }
         } else {
             err = t(['label.errors.' + ex.name, 'label.errors.Error']);
             mess = t(['label.errors.' + ex.name + '_message', ex.message]);
