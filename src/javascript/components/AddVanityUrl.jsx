@@ -182,6 +182,7 @@ class AddVanityUrl extends React.Component {
                             if (value.errorMessage) {
                                 console.error(value.errorMessage);
                             }
+
                             return {
                                 url: value.urlMapping,
                                 message,
