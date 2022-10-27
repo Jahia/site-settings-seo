@@ -19,7 +19,9 @@ const TableQuery = gql`
 `;
 
 // See https://stackoverflow.com/questions/23388485/xpath-whitespace-encoding for details
-const encodePathForJCR = path => path.replaceAll(' ', '_x0020_');
+const encodePathForJCR = path => path
+    .replaceAll(' ', '_x0020_')
+    .replaceAll(/\/(\d)/g, (_, s) => '/_x00' + s.charCodeAt(0).toString(16).slice(-4) + '_');
 
 const TableQueryVariables = props => ({
     lang: props.lang,

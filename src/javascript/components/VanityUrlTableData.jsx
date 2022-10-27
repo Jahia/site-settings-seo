@@ -50,7 +50,7 @@ class VanityUrlTableData extends React.Component {
                     <>
                         {this.props.children(rows, totalCount, numberOfPages)}
                     </>
-);
+                );
             }}
             </Query>
         );

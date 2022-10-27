@@ -48,7 +48,7 @@ class VanityUrlTableData extends React.Component {
                         {loading && <ProgressOverlay/>}
                         {this.props.children(rows, totalCount, numberOfPages)}
                     </>
-);
+                );
             }}
             </Query>
         );
