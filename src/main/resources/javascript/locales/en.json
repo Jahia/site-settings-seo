@@ -8,8 +8,8 @@
       "move": "Move",
       "publish": "Publish",
       "canonical": {
-        "set": "Set as canonical",
-        "unset": "Unset as canonical"
+        "set": "Set as canonical (default URL)",
+        "unset": "Unset as canonical (default URL)"
       }
     },
     "buttons": {
@@ -21,27 +21,27 @@
       "add": {
         "check": "Automatically publish on save",
         "save": "Save",
-        "text": "Enter mapping URL",
-        "title": "Add Mapping"
+        "text": "Enter URL",
+        "title": "Add Vanity URL"
       },
       "delete": {
-        "content": "Note: if you want to use a mapping on a different page, it is advised to reassign it instead of deleting it.",
+        "content": "Note: if you want to use a Vanity URL on a different page, it is advised to reassign it instead of deleting it.",
         "delete": "Delete",
-        "headline": "Are you sure you want to delete the following Default Mapping?",
-        "headline_plural": "Are you sure you want to delete the following Default Mappings?",
+        "headline": "Are you sure you want to delete the canonical (default) vanity URL?",
+        "headline_plural": "Are you sure you want to delete the canonical (default) vanity URLs?",
         "terms": "I understand that this cannot be undone",
-        "title": "Delete Default Mapping"
+        "title": "Delete canonical (default) vanity URL"
       },
       "infoButton": {
-        "moveAction": "Mapping to this page will be removed when {{pagePath}} is published",
-        "notPublished": "Several mappings will be set as default until publication of {{pagePath}}"
+        "moveAction": "Vanity URLs of this page will be removed when {{pagePath}} is published",
+        "notPublished": "Several vanity URLs will be defined as canonical until publication of {{pagePath}}"
       },
       "move": {
         "confirm": "I understand that this action cannot be undone",
         "content": "Please select a page or enter a path directly",
         "move": "Move",
         "target": "Target node path",
-        "title": "Move Mapping"
+        "title": "Move Vanity URL"
       },
       "publish": {
         "content": "Are you sure you want to publish the selected vanity URL(s)? Publication will be started as a background job.",
@@ -49,37 +49,37 @@
         "title": "Confirm Publication"
       },
       "publishdeletion": {
-        "content": "It is not possible to delete Live Mappings individually, so please note that all of the listed Live Mappings will be deleted.",
-        "headline": "You are about to delete the following Live Mapping URL",
-        "headline_plural": "You are about to delete multiple Live Mapping URLs",
-        "title": "Delete Live Mappings"
+        "content": "It is not possible to delete Live Vanity URL individually, so please note that all of the listed Live Vanity URL(s) will be deleted.",
+        "headline": "You are about to delete the following Live Vanity URL",
+        "headline_plural": "You are about to delete multiple Live Vanity URLs",
+        "title": "Delete Live Vanity URLs"
       }
     },
     "errors": {
-      "DuplicateMappingError": "Duplicate mappings",
-      "DuplicateMappingError_message": "Duplicate mappings",
+      "DuplicateMappingError": "Duplicate vanity URLs",
+      "DuplicateMappingError_message": "Duplicate vanity URLs",
       "Error": "An unexpected error has occurred",
       "GqlConstraintViolationException": {
         "notAllowed": "Not allowed",
-        "notAllowed_message": "{{urlMapping}} is not allowed in vanity url",
+        "notAllowed_message": "{{urlMapping}} is not allowed in a vanity url",
         "used": "Already in use",
-        "used_message": "This mapping already points to {{existingNodePath}}"
+        "used_message": "This vanity URL already points to {{existingNodePath}}"
       },
       "InvalidMappingError": "Invalid URL",
       "InvalidMappingError_message": "The vanity URL cannot be empty",
       "InvalidCharError": "Invalid URL",
       "InvalidCharError_message": "Make sure the url contains only valid characters",
       "SitesMappingError": "Invalid URL",
-      "SitesMappingError_message": "SEO Url should not contain /sites as it is used by the system",
+      "SitesMappingError_message": "Vanity URL should not contain /sites as it is used by the system",
       "MoveInvalidTarget_message": "Sorry, this path is invalid.",
-      "MoveSiteError": "Mappings cannot be assigned to different sites",
+      "MoveSiteError": "Vanity URLs cannot be assigned to different sites",
       "loadingSiteLanguages": "Error loading site languages",
       "loadingVanityUrl": "Error loading vanity URLs",
       "MoveInvalidTarget": "Invalid path"
     },
-    "filterMatch": "Matching {{count}} of {{totalCount}} mappings",
-    "filterMatch_plural": "Matching {{count}} of {{totalCount}} mappings",
-    "filterPlaceholder": "Filter by mapping",
+    "filterMatch": "Matching {{count}} of {{totalCount}} Vanity URLs",
+    "filterMatch_plural": "Matching {{count}} of {{totalCount}} Vanity URLs",
+    "filterPlaceholder": "Filter by vanity URL",
     "importantInfo": "Important Info",
     "languageSelector": {
       "noLanguages": "Select a language",
@@ -102,8 +102,8 @@
     "notifications": {
       "deletionConfirmed": "Deleted",
       "moveConfirmed": "Moved",
-      "newMappingCreated": "New mapping(s) added",
-      "newMappingCreatedAndPublished": "New mapping(s) added, publication job started in background",
+      "newMappingCreated": "New vanity URL(s) created",
+      "newMappingCreatedAndPublished": "New vanity URL(s) added, publication job started in background",
       "publicationDeletionConfirmed": "Deleted. Publication job started in background",
       "publicationStarted": "Publication job started in background"
     },
@@ -113,8 +113,8 @@
     "okGotIt": "OK",
     "selection": {
       "clear": "Clear",
-      "count": "{{count}} mapping selected",
-      "count_plural": "{{count}} mappings selected"
+      "count": "{{count}} vanity URL selected",
+      "count_plural": "{{count}} vanity URL selected"
     },
     "pagination": {
         "rowsPerPage": "Rows per page",
