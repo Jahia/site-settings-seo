@@ -501,7 +501,7 @@ class VanityUrlListLive extends React.Component {
         return (
             <div>
                 <div>
-                    <Typography variant="subheading" classes={{caption: classes.tableTitle}} weight="bold">
+                    <Typography variant="subheading" className={classes.tableTitle}  weight="bold">
                         {t('label.mappings.live')}
                     </Typography>
                 </div>
