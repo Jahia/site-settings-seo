@@ -19,7 +19,7 @@ import {Editable} from './Editable';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {flowRight as compose} from 'lodash';
 import {withNotifications} from '@jahia/react-material';
-import {Typography, Button, MoreVert, Chip, SwapHoriz, Delete, Publish, Star} from '@jahia/moonstone';
+import {Typography, Button, MoreVert, Chip, SwapHoriz, Delete, Publish, Star, TableHeadCell, TableHead} from '@jahia/moonstone';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 
 const styles = theme => ({
@@ -32,12 +32,12 @@ const styles = theme => ({
             opacity: 1
         },
         '& td': {
-            padding: '7px 0'
+            padding: '6px'
         }
     },
     vanityUrlLive: {
         '& td': {
-            padding: '7px 0'
+            padding: '6px  !important'
         }
     },
     hidden: {
@@ -59,9 +59,6 @@ const styles = theme => ({
     },
     tableRow: {
         height: '66px',
-        '&:hover $editableText': {
-            marginRight: '78px'
-        },
         '&:hover $vanityURLText:before': {
             background: '#f7f7f7'
         },
@@ -90,7 +87,7 @@ const styles = theme => ({
     },
     liveLanguage: {
         color: '#676767',
-        width: '50px'
+        width: '56px'
     },
     inactive: {
         '& $languageContainer': {
@@ -166,10 +163,7 @@ const styles = theme => ({
 	    maxHeight: '42px',
 	    wordBreak: 'break-all',
 	    lineHeight: '21px',
-        display: 'block',
-        '&:hover': {
-            marginRight: '78px'
-        }
+        display: 'block'
     },
     moveAction: {
         color: '#212121',
@@ -183,9 +177,11 @@ const styles = theme => ({
         color: '##E0182D'
     },
     actionButton: {
-        width: '38px',
+        width: '50px',
         '& button': {
             opacity: '0.9',
+            padding: '0',
+            margin: '0',
             '&:hover': {
                 background: 'transparent',
                 opacity: '1'
@@ -290,6 +286,11 @@ const styles = theme => ({
     },
     popoverRoot: {
         zIndex: 2000
+    },
+    theadRow: {
+        height: '0px !important',
+        pointEvents: 'none',
+        border: 'unset'
     }
 });
 
@@ -337,7 +338,7 @@ const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, e
                                                 }}
                                                 onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>}
                 </TableCell>
-                <TableCell width="10%"
+                <TableCell width="55px"
                            onClick={event => {
                                console.log(url);
                            }}
@@ -350,19 +351,19 @@ const DefaultRow = ({classes, urlPair, checkboxesDisplayed, onChangeSelection, e
                             }}
                             onChange={event => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)}/>
                 </TableCell>
-                <TableCell className={classInactive + ' ' + classes.tableCellTextInput} width="50%">
+                <TableCell className={classInactive + ' ' + classes.tableCellTextInput} width="100%">
                     <Editable value={url.url}
                               render={props => <Typography data-vud-role="url" className={classes.vanityURLText + ' ' + classes.editableText}>{props.value}</Typography>}
                               onEdit={() => setEditLine(urlPair.uuid)}
                               onChange={(value, onSuccess, onError) => onMappingChanged(value, onSuccess, onError)}/>
                 </TableCell>
-                <TableCell width="20%">
+                <TableCell width="86px">
                     {url.default ? <Chip color="accent" label="Canonical"/> : null}
                 </TableCell>
-                <TableCell className={classInactive + ' ' + classes.languageContainer} width="10%">
+                <TableCell className={classInactive + ' ' + classes.languageContainer} width="90px">
                     <LanguageMenu languageCode={urlPair.default.language} languages={languages} onLanguageSelected={languageCode => actions.updateVanity.call({urlPair: urlPair, language: languageCode})}/>
                 </TableCell>
-                <TableCell width="7%" align="center" padding="none">
+                <TableCell width="40px" align="center" padding="none">
                     <span>
                         <Button variant="ghost" icon={<MoreVert/>} onClick={openMenu}/>
                         <Menu
@@ -501,7 +502,7 @@ class VanityUrlListLive extends React.Component {
         return (
             <div>
                 <div>
-                    <Typography variant="subheading" className={classes.tableTitle}  weight="bold">
+                    <Typography variant="subheading" className={classes.tableTitle} weight="bold">
                         {t('label.mappings.live')}
                     </Typography>
                 </div>
@@ -511,6 +512,14 @@ class VanityUrlListLive extends React.Component {
                             {t('label.noPublishedVanityUrl')}
                         </Typography> :
                         <Table className={classes.table}>
+                            <TableHead>
+                                <TableRow className={classes.theadRow}>
+                                    <TableHeadCell/>
+                                    <TableHeadCell width="86px"/>
+                                    <TableHeadCell width="56px"/>
+                                    <TableHeadCell width="50px"/>
+                                </TableRow>
+                            </TableHead>
                             <TableBody data-vud-table-body-live={contentUuid}>
                                 {vanityUrls.map(urlPair => {
                                     const url = urlPair.live;
@@ -522,19 +531,19 @@ class VanityUrlListLive extends React.Component {
                                                       hover={false}
                                                       className={classes.tableRowLive + ' ' + classes.vanityUrlLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.missingDefaultCounterpart)}
                                             >
-                                                <TableCell className={classInactive + ' ' + classes.liveVanityUrl} width="80%">
+                                                <TableCell className={classInactive + ' ' + classes.liveVanityUrl} width="100%">
                                                     <Typography variant="body"
                                                                 className={classes.vanityURLTextLive + ' ' + (defaultWithMissingCounterpart ? '' : classes.colorWhite)}
                                                     >{url.url}
                                                     </Typography>
                                                 </TableCell>
-                                                <TableCell width="10%">
-                                                    {url.default ? <Chip color="accent" label="Canonical"/> : null}
+                                                <TableCell width="86px">
+                                                    {url.default ? <Chip color="light" label="Canonical"/> : null}
                                                 </TableCell>
-                                                <TableCell className={classes.liveLanguage} width="5%" align="center">
+                                                <TableCell className={classes.liveLanguage} width="56px" align="center">
                                                     {url.language}
                                                 </TableCell>
-                                                <TableCell className={classInactive + ' ' + classes.actionButton} width="5%" align="center">
+                                                <TableCell className={classInactive + ' ' + classes.actionButton} width="50px" align="center">
                                                     {url.editNode ?
                                                         (url.editNode.path !== url.path ?
                                                             <ActionButton action={actions.infoButton}

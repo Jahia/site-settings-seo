@@ -5,7 +5,7 @@
       "move": "Réaffecter",
       "publish": "Publier",
       "canonical": {
-        "set": "Définir comme canonique (URL par défaut)",
+        "set": "URL canonique (URL par défaut)",
         "unset": "Ne pas définir comme canonique (URL par défault)"
       }
     },

@@ -25,8 +25,8 @@ import {Editable} from './Editable';
 
 const styles = theme => ({
     pickerRoot: {
-        borderRadius: '4px',
-        border: '1px solid #00A0E3'
+        borderRadius: 'unset',
+        border: '1px solid #d5d5d5'
     },
     error: {
         color: theme.palette.error.main
@@ -93,11 +93,13 @@ const styles = theme => ({
         }
     },
     row: {
+        borderBottom: 'unset',
         '&:hover': {
             backgroundColor: 'inherit'
         }
     },
     cell: {
+        borderBottom: 'unset',
         padding: '4px 5px 4px 24px'
     },
     textbox: {
@@ -105,10 +107,26 @@ const styles = theme => ({
     },
     buttonContainer: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottom: 'unset'
     },
     actionButton: {
-        padding: '10px'
+        padding: '13px 10px 10px 10px'
+    },
+    cellCanonical: {
+        minWidth: '150px'
+    },
+    setCanonical: {
+        marginRight: 'unset',
+        '& span + span': {
+            padding: '4px 0px 0px 0px'
+        }
+    },
+    chooseLanguage: {
+        width: '90px',
+        '& div div': {
+            width: '80px',
+        }
     }
 
 });
@@ -298,7 +316,7 @@ class AddVanityUrl extends React.Component {
                                             data-vud-role="active"
                                             onChange={(event, checked) => this.handleFieldChange('active', index, checked)}/>
                                     </TableCell>
-                                    <TableCell className={classes.cell} width="70%">
+                                    <TableCell className={classes.cell} width="80%">
                                         <FormControl className={classes.root}>
                                             <Editable isCreateMode
                                                       onEdit={() => {
@@ -312,16 +330,16 @@ class AddVanityUrl extends React.Component {
                                         </FormControl>
 
                                     </TableCell>
-                                    <TableCell className={classes.cell} data-vud-role="language" width="9%">
+                                    <TableCell className={classes.cell + ' ' + classes.chooseLanguage} data-vud-role="language" width="5%">
                                         <LanguageMenu languages={availableLanguages}
                                                       languageCode={entry.language}
                                                       onLanguageSelected={languageCode => this.handleFieldChange('language', index, languageCode)}/>
                                     </TableCell>
-                                    <TableCell className={classes.cell} width="14%">
+                                    <TableCell className={classes.cell + ' ' + classes.cellCanonical}>
                                         <FormControlLabel control={<Checkbox checked={entry.defaultMapping}
                                                                              data-vud-role="default"
                                                                              onChange={(event, checked) => this.handleFieldChange('defaultMapping', index, checked)}/>}
-                                                          label={t('label.actions.canonical.set')}/>
+                                                          label={t('label.actions.canonical.set')} className={classes.setCanonical}/>
                                     </TableCell>
                                     <TableCell className={`${classes.cell} ${classes.buttonContainer}`}>
                                         <div className={classes.actionButton}>
