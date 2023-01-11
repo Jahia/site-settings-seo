@@ -3,7 +3,11 @@
     "actions": {
       "delete": "Supprimer",
       "move": "Réaffecter",
-      "publish": "Publier"
+      "publish": "Publier",
+      "canonical": {
+        "set": "Définir comme canonique (URL par défaut)",
+        "unset": "Ne pas définir comme canonique (URL par défault)"
+      }
     },
     "buttons": {
       "addVanity": "Ajouter une URL personnalisée"
@@ -27,7 +31,7 @@
       },
       "infoButton": {
         "moveAction": "Cette URL sera supprimée lorsque {{pagePath}} sera publiée",
-        "notPublished": "Plusieurs URL seront considérées par defaut jusqu'a publication du contenu  {{pagePath}}"
+        "notPublished": "Plusieurs URL seront considérées par defaut jusqu'a publication du contenu {{pagePath}}"
       },
       "move": {
         "confirm": "Cette opération ne peut être annulée.",
@@ -63,7 +67,7 @@
       "InvalidCharError": "L'URL est invalide",
       "InvalidCharError_message": "Assurez-vous que l'url ne contienne que des caractères valides",
       "SitesMappingError": "L'URL est invalide",
-      "SitesMappingError_message": "SEO Url ne doivent pas contenir /sites.",
+      "SitesMappingError_message": "Les URL personnalisées ne doivent pas contenir /sites.",
       "MoveInvalidTarget_message": "Désolé, ce chemin est invalide.",
       "MoveSiteError": "Les URLs ne peuvent être assignées à une autre site.",
       "loadingSiteLanguages": "Erreur lors du chargement des langues du site",
@@ -101,7 +105,7 @@
       "publicationStarted": "Job de publication lancé en arrière plan"
     },
     "messages": {
-      "noVanityUrl": "Pas d'URL personnalisées"
+      "noVanityUrl": "Pas d'URL personnalisée"
     },
     "okGotIt": "OK, j'ai compris",
     "selection": {
@@ -114,7 +118,7 @@
         "of": "sur"
     },
     "title": "URL personnalisées",
-    "manage": "gérer les URL personnalisées",
+    "manage": "Gérer les URL personnalisées",
     "close": "Fermer",
     "workspace": {
       "live": "URLs personnalisées en ligne",
