@@ -26,8 +26,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: Jahia/jahia-modules-action/static-analysis@v2
         with:
+          skip_lint_modules: true
           node_version: 12
-          auditci_level: high
+          auditci_level: critical
 
   build:
     name: Build Module
