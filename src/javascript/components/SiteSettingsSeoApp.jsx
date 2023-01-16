@@ -65,7 +65,7 @@ class SiteSettingsSeoApp extends React.Component {
         this.state = {
             loadParams: {
                 filterText: '',
-                selectedLanguageCodes: this.props.languages.map(language => language.code),
+                selectedLanguageCodes: this.props.languages,
                 currentPage: 0,
                 pageSize: 10,
                 labels: {labelRowsPerPage: props.t('label.pagination.rowsPerPage'), of: props.t('label.pagination.of')}
@@ -493,3 +493,4 @@ const assembleWithHoc = function (component) {
 const SiteSettingsSeoComponent = assembleWithHoc(SiteSettingsSeoApp);
 
 export {SiteSettingsSeoComponent, SiteSettingsSeoApp, assembleWithHoc};
+

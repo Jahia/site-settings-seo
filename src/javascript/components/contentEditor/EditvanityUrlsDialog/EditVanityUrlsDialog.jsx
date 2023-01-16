@@ -1,10 +1,13 @@
 import React from 'react';
-import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
+import SiteSettingsSeoCard from '../SiteSettingsSeo/SiteSettingsSeoCardApp';
 import {Button, Typography} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import classes from './EditVanityUrlsDialog.scss';
-import SiteSettingsSeoCardEntry from '../SiteSettingsSeo/SiteSettingsSeoCardEntry';
+import {DisplayAction} from '@jahia/ui-extender';
+import {ButtonRenderer} from '@jahia/content-editor';
+import {useVanityUrlContext} from '../../Context/VanityUrl.context';
+import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
 
 export const EditVanityUrlsDialog = ({
     nodeData,
@@ -12,35 +15,37 @@ export const EditVanityUrlsDialog = ({
     onCloseDialog
 }) => {
     const {t} = useTranslation('site-settings-seo');
-
-    const handleCancel = () => {
-        onCloseDialog();
-    };
-
+    const {languages} = useVanityUrlContext();
     return (
         <Dialog
-            aria-labelledby="alert-dialog-slide-title"
             className={classes.dialogOverflow}
             open={isOpen}
             maxWidth="xl"
+            className={classes.dialog}
+            open={isOpen}
             onClose={onCloseDialog}
         >
-            <DialogTitle id="dialog-language-title">
-                <Typography variant="heading" weight="bold" className={classes.dialogTitle}>
-                    {nodeData.displayName}
-                </Typography>
-                <Typography className={classes.dialogSubTitle}>
-                    {nodeData.displayableNode.path}
-                </Typography>
-            </DialogTitle>
+            <div className={classes.header}>
+                <DialogTitle id="dialog-language-title" className={classes.titleContainer}>
+                    <Typography variant="heading" weight="bold" className={classes.dialogTitle}>
+                        {nodeData.displayName}
+                    </Typography>
+                    <Typography className={classes.dialogSubTitle}>
+                        {nodeData.displayableNode.path}
+                    </Typography>
+                </DialogTitle>
+                <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer} nodeData={nodeData}/>
+            </div>
             <DialogContent className={classes.dialogContent}>
-                <SiteSettingsSeoCardEntry dxContext={{...window.contextJsParameters}} path={`${nodeData.path}`}/>
+                <SiteSettingsSeoCard dxContext={{...window.contextJsParameters}}
+                                     path={nodeData.path}
+                                     languages={languages}/>
             </DialogContent>
             <DialogActions className={classes.actions}>
                 <Button
                     size="big"
                     label={t('label.close')}
-                    onClick={handleCancel}/>
+                    onClick={onCloseDialog}/>
             </DialogActions>
         </Dialog>
     );

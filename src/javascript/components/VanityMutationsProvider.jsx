@@ -93,7 +93,7 @@ class VanityMutationsProvider extends Component {
                     active: active,
                     language: language,
                     url: url,
-                    lang: this.props.lang
+                    lang: window.contextJsParameters.lang
                 }
             });
         };

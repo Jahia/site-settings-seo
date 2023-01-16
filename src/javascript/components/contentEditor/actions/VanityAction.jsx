@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useNodeChecks} from '@jahia/data-helper';
-import EditVanityUrlsDialog from '../EditvanityUrlsDialog';
+import {SiteSettingsSeoCardEntry} from '../SiteSettingsSeo/SiteSettingsSeoCardEntry';
+import * as PropTypes from 'prop-types';
 
 let useContentEditorContext;
 import('@jahia/content-editor').then(v => {
@@ -11,12 +12,12 @@ import('@jahia/content-editor').then(v => {
 export const VanityAction = ({render: Render, loading: Loading, label, requiredPermission, showOnNodeTypes, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {mode, nodeData, lang, language} = useContentEditorContext ? useContentEditorContext() : otherProps;
-    const res = useNodeChecks(
+    const {loading, checksResult} = useNodeChecks(
         {path: nodeData.path, language: lang | language},
         {requiredPermission: requiredPermission, showOnNodeTypes: showOnNodeTypes}
     );
 
-    if (res.loading) {
+    if (loading) {
         return (Loading && <Loading buttonLabel={label} {...otherProps}/>) || <></>;
     }
 
@@ -27,7 +28,7 @@ export const VanityAction = ({render: Render, loading: Loading, label, requiredP
     const openModal = () => {
         componentRenderer.render(
             'VanityUrlsDialog',
-            EditVanityUrlsDialog,
+            SiteSettingsSeoCardEntry,
             {
                 nodeData,
                 isOpen: true,
@@ -42,8 +43,16 @@ export const VanityAction = ({render: Render, loading: Loading, label, requiredP
                 {...otherProps}
                 mode={mode}
                 buttonLabel={label}
-                isVisible={res.checksResult}
+                isVisible={checksResult}
                 onClick={openModal}/>
         </>
     );
+};
+
+VanityAction.propTypes = {
+    render: PropTypes.object.isRequired,
+    loading: PropTypes.object.isRequired,
+    label: PropTypes.string.isRequired,
+    requiredPermission: PropTypes.string.isRequired,
+    showOnNodeTypes: PropTypes.array.isRequired
 };

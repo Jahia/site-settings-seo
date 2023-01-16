@@ -1,7 +1,7 @@
 import React from 'react';
-import SiteSettingsSeoCard from './SiteSettingsSeoCardApp';
 import SiteSettingsSeoWrapper from '../../SiteSettingsSeoWrapper';
+import EditVanityUrlsDialog from '../EditvanityUrlsDialog';
 
-const SiteSettingsSeoCardEntry = props => <SiteSettingsSeoWrapper component={SiteSettingsSeoCard} {...props}/>;
-
-export default SiteSettingsSeoCardEntry;
+export const SiteSettingsSeoCardEntry = props => {
+    return (<SiteSettingsSeoWrapper component={EditVanityUrlsDialog} {...props}/>);
+};

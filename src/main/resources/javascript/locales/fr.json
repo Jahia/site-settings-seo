@@ -4,6 +4,7 @@
       "delete": "Supprimer",
       "move": "Réaffecter",
       "publish": "Publier",
+      "publishVanityUrl": "Publier les URL personnalisées",
       "canonical": {
         "set": "URL canonique (URL par défaut)",
         "unset": "Ne pas définir comme canonique (URL par défault)"
