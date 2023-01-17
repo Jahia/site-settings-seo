@@ -12,7 +12,8 @@ import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/co
 export const EditVanityUrlsDialog = ({
     nodeData,
     isOpen,
-    onCloseDialog
+    onCloseDialog,
+    ...props
 }) => {
     const {t} = useTranslation('site-settings-seo');
     const {languages} = useVanityUrlContext();
@@ -37,9 +38,9 @@ export const EditVanityUrlsDialog = ({
                 <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer} nodeData={nodeData}/>
             </div>
             <DialogContent className={classes.dialogContent}>
-                <SiteSettingsSeoCard dxContext={{...window.contextJsParameters}}
-                                     path={nodeData.path}
-                                     languages={languages}/>
+                <SiteSettingsSeoCard path={nodeData.path}
+                                     languages={languages}
+                                     {...props}/>
             </DialogContent>
             <DialogActions className={classes.actions}>
                 <Button

@@ -3,8 +3,7 @@ import {registry} from '@jahia/ui-extender';
 import {CloudUpload} from '@jahia/moonstone';
 import i18next from 'i18next';
 import {SiteSettingsSeoEntry} from './components/SiteSettingsSeoEntry';
-import {VanityAction} from './components/contentEditor/actions';
-import {PublishAction} from './components/contentEditor/actions/PublishAction';
+import {PublishAction, VanityAction} from './components/contentEditor/actions';
 
 const COMP_NAME = 'siteSettingsSeo';
 

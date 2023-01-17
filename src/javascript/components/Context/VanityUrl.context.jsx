@@ -20,8 +20,9 @@ export const VanityUrlContextProvider = ({path, children}) => {
     const context = {
         languages: data?.jcr?.nodeByPath?.site?.languages
             ?.filter(language => language.activeInEdit)
-            .map(language => language.code)
-            .sort(),
+            .sort(function (a, b) {
+                return a.code.localeCompare(b.code);
+            }),
         lang: window.contextJsParameters.lang
     };
 

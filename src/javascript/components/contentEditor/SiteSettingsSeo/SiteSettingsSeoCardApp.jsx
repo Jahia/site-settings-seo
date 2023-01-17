@@ -9,7 +9,7 @@ import {assembleWithHoc, SiteSettingsSeoApp} from '../../SiteSettingsSeoApp';
 import {VanityUrlEnabledContent} from '../../VanityUrlEnabledContent';
 import SiteSettingsSeoConstants from '../../SiteSettingsSeoApp.constants';
 import classes from './SiteSettingsSeoCardApp.scss';
-import NoVanity from './NoVanity';
+import {NoVanity} from './NoVanity';
 import {Paper} from '@material-ui/core';
 
 class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
@@ -19,8 +19,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
 
     // Override
     render() {
-        let {dxContext, path, languages, t} = this.props;
-        let {lang} = dxContext;
+        let {dxContext, path, t} = this.props;
         let polling = !(this.state.publication.open || this.state.deletion.open ||
             this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
 
@@ -43,7 +42,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                     })}
                                 </div>
                                 <div className={classes.seoCardLayout}>
-                                    {isEmpty && <NoVanity {...{t, path, languages, lang}}/>}
+                                    {isEmpty && <NoVanity path={path}/>}
                                     {!isEmpty &&
                                         <div className={classes.root} data-vud-content-uuid={rows[0].uuid}>
                                             <Paper elevation={0}>

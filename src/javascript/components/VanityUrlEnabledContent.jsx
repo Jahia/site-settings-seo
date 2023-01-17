@@ -7,6 +7,8 @@ import {Typography, Button} from '@jahia/moonstone';
 import {flowRight as compose} from 'lodash';
 import AddVanityUrl from './AddVanityUrl';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
+import {DisplayAction} from '@jahia/ui-extender';
+import {ButtonRenderer} from '@jahia/content-editor';
 
 const styles = theme => ({
     root: {
@@ -29,12 +31,12 @@ const styles = theme => ({
     },
     showToggle: {
         color: '#ffffff',
-	    background: '#757575',
-	    fontSize: '10px',
-	    minHeight: 'auto',
-	    minWidth: 'auto',
-	    padding: '5px',
-	    borderRadius: '0',
+        background: '#757575',
+        fontSize: '10px',
+        minHeight: 'auto',
+        minWidth: 'auto',
+        padding: '5px',
+        borderRadius: '0',
         '&:hover': {
             backgroundColor: '#595858'
         }
@@ -65,14 +67,26 @@ class VanityUrlEnabledContent extends React.Component {
     }
 
     render() {
-        const {content, workspace, filterText, classes, t, onChangeSelection, selection, actions, languages, lang, openCardMode} = this.props;
+        const {
+            content,
+            workspace,
+            filterText,
+            classes,
+            t,
+            onChangeSelection,
+            selection,
+            actions,
+            languages,
+            lang,
+            openCardMode
+        } = this.props;
 
         let filterMatchInfo = null;
         let localFilterSwitch = null;
 
         if (filterText && this.state.expanded) {
             filterMatchInfo = (
-                <Typography variant="caption" classes={{caption: classes.filterMatchInfo}}>
+                <Typography variant="caption" className={classes.filterMatchInfo}>
                     {t('label.filterMatch', {count: content.urls.length, totalCount: content.allUrls.length})}
                 </Typography>
             );
@@ -85,7 +99,8 @@ class VanityUrlEnabledContent extends React.Component {
             }
 
             localFilterSwitch = (
-                <Button className={classes.showToggle} data-vud-role="button-filter-switch" variant="ghost" label={filterSwitchButtonLabel} onClick={e => this.handleFilterSwitchClick(e)}/>
+                <Button className={classes.showToggle} data-vud-role="button-filter-switch" variant="ghost" label={filterSwitchButtonLabel}
+                        onClick={e => this.handleFilterSwitchClick(e)}/>
             );
         }
 
@@ -104,18 +119,23 @@ class VanityUrlEnabledContent extends React.Component {
         return (
             <>
                 {
-                    !openCardMode && <ListItem className={classes.vanityUrlListHeader} onClick={() => this.handleExpandCollapseClick()}>
+                    !openCardMode &&
+                    <ListItem className={classes.vanityUrlListHeader} onClick={() => this.handleExpandCollapseClick()}>
 
                         {this.state.expanded ? <ChevronDown/> : <ChevronRight/>}
 
-                        <ListItemText inset primary={content.displayName} secondary={content.path} className={classes.vanityUrlListHeaderText} data-vud-role="content-title"/>
+                        <ListItemText inset primary={content.displayName} secondary={content.path}
+                                      className={classes.vanityUrlListHeaderText}
+                                      data-vud-role="content-title"/>
+                        {this.state.expanded && <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer} nodeData={content}/>}
+
                         {filterMatchInfo}
                         {localFilterSwitch}
                     </ListItem>
                 }
                 <Collapse unmountOnExit in={this.state.expanded || openCardMode} timeout="auto">
                     <Grid container spacing={16} className={classes.vanityUrlLists}>
-                        { (isStaging || isBoth) &&
+                        {(isStaging || isBoth) &&
                             <Grid item xs={isStaging ? 12 : 6}>
                                 <VanityUrlListDefault selection={selection}
                                                       vanityUrls={vanityUrls}
@@ -127,11 +147,12 @@ class VanityUrlEnabledContent extends React.Component {
                                                       openCardMode={openCardMode}
                                                       onChangeSelection={onChangeSelection}/>
                             </Grid>}
-                        { (isLive || isBoth) &&
+                        {(isLive || isBoth) &&
                             <Grid item xs={isLive ? 12 : 6}>
-                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions} contentUuid={content.uuid} workspace={workspace}/>
+                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions}
+                                                   contentUuid={content.uuid} workspace={workspace}/>
                             </Grid>}
-                        { (isStaging || isBoth) &&
+                        {(isStaging || isBoth) &&
                             <Grid item xs={12}>
                                 <AddVanityUrl path={content.path} lang={lang} availableLanguages={languages}/>
                             </Grid>}

@@ -3,5 +3,5 @@ import SiteSettingsSeoWrapper from '../../SiteSettingsSeoWrapper';
 import EditVanityUrlsDialog from '../EditvanityUrlsDialog';
 
 export const SiteSettingsSeoCardEntry = props => {
-    return (<SiteSettingsSeoWrapper component={EditVanityUrlsDialog} {...props}/>);
+    return (<SiteSettingsSeoWrapper component={EditVanityUrlsDialog} dxContext={{...window.contextJsParameters}} {...props}/>);
 };
