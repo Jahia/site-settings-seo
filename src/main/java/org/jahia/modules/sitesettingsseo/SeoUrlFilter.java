@@ -118,10 +118,11 @@ public class SeoUrlFilter extends AbstractFilter {
                 renderContext.getURLGenerator().buildURL(node, lang, null, "html");
         String href = buildHref(url, renderContext);
 
-        // In case it's current lang build a canonical else build alternate
+        // In case it's current lang build a canonical
+        String links = String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", getDashFormatLanguage(lang), href);
         return node.getLanguage().equals(lang) ?
-                String.format("<link rel=\"canonical\" href=\"%s\" />", href) :
-                String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", getDashFormatLanguage(lang), href);
+                String.format("<link rel=\"canonical\" href=\"%s\" />", href) + links:
+                links;
     }
 
     private Map<String, String> getActiveVanityUrls(JCRNodeWrapper node, Set<String> activeLangs) throws RepositoryException {
