@@ -5,9 +5,14 @@ import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import classes from './EditVanityUrlsDialog.scss';
 import {DisplayAction} from '@jahia/ui-extender';
-import {ButtonRenderer} from '@jahia/content-editor';
 import {useVanityUrlContext} from '../../Context/VanityUrl.context';
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
+let ButtonRenderer;
+import('@jahia/content-editor').then(v => {
+    ButtonRenderer = v.ButtonRenderer;
+}).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
+
+import {ButtonRenderer as LocalButtonRenderer} from '../../ButtonRenderer/getButtonRenderer';
 
 export const EditVanityUrlsDialog = ({
     nodeData,
@@ -35,7 +40,7 @@ export const EditVanityUrlsDialog = ({
                         {nodeData.displayableNode.path}
                     </Typography>
                 </DialogTitle>
-                <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer} nodeData={nodeData}/>
+                <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer || LocalButtonRenderer} nodeData={nodeData}/>
             </div>
             <DialogContent className={classes.dialogContent}>
                 <SiteSettingsSeoCard path={nodeData.path}
