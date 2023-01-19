@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useNodeChecks} from '@jahia/data-helper';
-import {SiteSettingsSeoCardEntry} from '../SiteSettingsSeo/SiteSettingsSeoCardEntry';
+import {SiteSettingsSeoCardEntry} from '../contentEditor/SiteSettingsSeo/SiteSettingsSeoCardEntry';
 import * as PropTypes from 'prop-types';
 
 let useContentEditorContext;
@@ -50,8 +50,8 @@ export const VanityAction = ({render: Render, loading: Loading, label, requiredP
 };
 
 VanityAction.propTypes = {
-    render: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
+    render: PropTypes.elementType.isRequired,
+    loading: PropTypes.elementType.isRequired,
     label: PropTypes.string.isRequired,
     requiredPermission: PropTypes.string.isRequired,
     showOnNodeTypes: PropTypes.array.isRequired

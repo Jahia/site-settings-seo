@@ -1,25 +1,26 @@
 import React, {useState} from 'react';
 import {FormControl, FormHelperText} from '@material-ui/core';
 import classes from './Editable.scss';
-import {Input} from '@jahia/moonstone';
+import {Input, Typography} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
+import clsx from 'clsx';
 
-export const Editable = React.memo(({onChange, onEdit, isCreateMode, render: Render, ...props}) => {
+export const Editable = React.memo(({value, onChange, isCreateMode}) => {
     const [edit, setEdit] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errorLabel, setErrorLabel] = useState(null);
     const [errorMessage, setErrorMessage] = useState(false);
-    const [value, setValue] = useState(props.value);
+    const [currentValue, setCurrentValue] = useState(value);
     const {t} = useTranslation('site-settings-seo');
 
     const save = () => {
         if (onChange.length === 1) {
-            onChange(value);
+            onChange(currentValue);
             setEdit(false);
         } else {
             setLoading(true);
-            onChange(value,
+            onChange(currentValue,
                 () => {
                     setLoading(false);
                     setEdit(false);
@@ -37,54 +38,63 @@ export const Editable = React.memo(({onChange, onEdit, isCreateMode, render: Ren
     };
 
     const onValueChange = event => {
-        setValue(event.target.value.trim());
+        setCurrentValue(event.target.value.trim());
         setErrorLabel(null);
         setErrorMessage(null);
     };
 
+    if (!edit && !isCreateMode) {
+        return (
+            <div onClick={event => {
+                setEdit(true);
+                event.stopPropagation();
+            }}
+            >
+                <Typography data-vud-role="url"
+                            className={clsx(
+                                classes.vanityURLText,
+                                classes.editableText
+                            )}
+                >
+                    {currentValue}
+                </Typography>
+            </div>
+        );
+    }
+
     return (
-        <> {edit || isCreateMode ?
+        <>
             <FormControl className={classes.root}>
                 <Input focusOnField
-                       value={value}
+                       value={currentValue}
                        placeholder={t('label.dialogs.add.text')}
                        disabled={loading}
                        classes={classes.textInput}
                        onChange={onValueChange}
                        onClick={e => {
-                       e.stopPropagation();
-                   }}
+                           e.stopPropagation();
+                       }}
                        onBlur={save}
                        onKeyUp={e => {
-                       if (e.key === 'Enter') {
-                           save();
-                       } else if (e.key === 'Escape') {
-                           setValue(props.value);
-                       }
-                   }}/>
-                {errorLabel && <FormHelperText className={classes.errorMessage}>
-                    <error><label>{errorLabel}</label>
-                        <message>{errorMessage}</message>
-                    </error>
-                               </FormHelperText>}
-            </FormControl> :
-            <div onClick={event => {
-            setEdit(true);
-            event.stopPropagation();
-        }}
-            >{Render && <Render value={value} {...props}/>}
-            </div>}
+                           if (e.key === 'Enter') {
+                               save();
+                           } else if (e.key === 'Escape') {
+                               currentValue(value);
+                           }
+                       }}/>
+                {errorLabel &&
+                    <FormHelperText className={classes.errorMessage}>
+                        <error><label>{errorLabel}</label>
+                            <message>{errorMessage}</message>
+                        </error>
+                    </FormHelperText>}
+            </FormControl>
         </>
     );
 });
 
 Editable.propTypes = {
-    render: PropTypes.func,
     isCreateMode: PropTypes.bool,
     value: PropTypes.string,
-    onChange: PropTypes.func,
-    onEdit: PropTypes.func
+    onChange: PropTypes.func
 };
-
-Editable.displayName = 'Editable';
-

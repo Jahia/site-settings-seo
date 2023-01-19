@@ -25,14 +25,6 @@
         "text": "Mapping URL eingeben",
         "title": "Mapping hinzufügen"
       },
-      "delete": {
-        "content": "Hinweis: Wenn Sie ein Mapping auf einer anderen Seite verwenden wollen, sollte dieses neu zugewiesen und nicht gelöscht werden.",
-        "delete": "Löschen",
-        "headline": "Möchten Sie das folgende Standard Mapping wirklich löschen?",
-        "headline_plural": "Möchten Sie die folgenden Standard Mappings wirklich löschen?",
-        "terms": "Ich verstehe, dass diese Operation unwideruflich ist",
-        "title": "Standard Mapping löschen"
-      },
       "infoButton": {
         "moveAction": "Mappings von dieser Seite werden beim Veröffentlichen gelöscht: {{pagePath}}",
         "notPublished": "Bis zur Veröffentlichung von {{pagePath}} werden mehrere Mappings als Standard gesetzt"
@@ -48,12 +40,6 @@
         "content": "Sind Sie sicher, dass Sie die ausgewählten Vanity URLs veröffentlichen wollen? Die Veröffentlichung wird als Hintergrundjob gestartet.",
         "publish": "Veröffentlichen",
         "title": "Veröffentlichung bestätigen"
-      },
-      "publishdeletion": {
-        "content": "Es ist nicht möglich, Live Mappings einzeln zu löschen. Bitte beachten Sie daher, dass alle folgenden Live Mappings gelöscht werden:",
-        "headline": "Sie sind dabei, folgendes Live Mapping zu löschen",
-        "headline_plural": "Sie sind dabei, mehrere Live Mappings zu löschen",
-        "title": "Live Mappings Löschen"
       }
     },
     "errors": {
@@ -97,15 +83,12 @@
     "mappings": {
       "default": "Staging Vanity URLs",
       "live": "Live Vanity URLs",
-      "missingDefault": "{{vanityUrl}} gelöscht",
       "movedDefault": "Verschoben zu {{page}}"
     },
     "notifications": {
-      "deletionConfirmed": "Löschen bestätigt.",
       "moveConfirmed": "Verschieben bestätigt.",
       "newMappingCreated": "Neue(s) Mapping(s) hinzugefügt.",
       "newMappingCreatedAndPublished": "Neue(s) Mapping(s) hinzugefügt, die Veröffentlichung wurde als Hintergrundjob gestartet.",
-      "publicationDeletionConfirmed": "Löschen bestätigt, die Veröffentlichung wurde als Hintergrundjob gestartet.",
       "publicationStarted": "Die Veröffentlichung wurde als Hintergrundjob gestartet."
     },
     "messages": {

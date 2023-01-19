@@ -282,7 +282,7 @@ class AddVanityUrl extends React.Component {
     };
 
     render() {
-        const {t, availableLanguages, classes} = this.props;
+        const {t, classes} = this.props;
         const {errors, mappings} = this.state;
 
         if (!this.state.showInputField) {
@@ -330,7 +330,7 @@ class AddVanityUrl extends React.Component {
 
                                     </TableCell>
                                     <TableCell className={classes.cell + ' ' + classes.chooseLanguage} data-vud-role="language" width="5%">
-                                        <LanguageMenu languages={availableLanguages}
+                                        <LanguageMenu
                                                       languageCode={entry.language}
                                                       onLanguageSelected={languageCode => this.handleFieldChange('language', index, languageCode)}/>
                                     </TableCell>

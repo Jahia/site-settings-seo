@@ -12,7 +12,7 @@ import('@jahia/content-editor').then(v => {
     ButtonRenderer = v.ButtonRenderer;
 }).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
 
-import {ButtonRenderer as LocalButtonRenderer} from '../../ButtonRenderer/getButtonRenderer';
+import {ButtonRenderer as LocalButtonRenderer} from '../../Renderer/getButtonRenderer';
 
 export const EditVanityUrlsDialog = ({
     nodeData,
@@ -21,7 +21,7 @@ export const EditVanityUrlsDialog = ({
     ...props
 }) => {
     const {t} = useTranslation('site-settings-seo');
-    const {languages} = useVanityUrlContext();
+    const {languages, siteInfo} = useVanityUrlContext();
     return (
         <Dialog
             className={classes.dialogOverflow}
@@ -44,6 +44,7 @@ export const EditVanityUrlsDialog = ({
             </div>
             <DialogContent className={classes.dialogContent}>
                 <SiteSettingsSeoCard path={nodeData.path}
+                                     siteInfo={siteInfo}
                                      languages={languages}
                                      {...props}/>
             </DialogContent>

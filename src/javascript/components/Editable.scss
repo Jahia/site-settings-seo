@@ -26,3 +26,31 @@
   top: unset !important;
   background: unset !important;
 }
+
+.vanityURLText {
+  line-height: 21px;
+  max-height: 42px;
+  overflow: hidden;
+  position: relative;
+  word-break: break-all;
+  padding: 3px 6px 1px;
+  font-size: 0.8rem;
+  color: #212121;
+  font-family: Nunito, "Nunito Sans", serif
+}
+
+.editableText {
+  &:hover {
+    box-shadow: inset 1px 1px 0 0 #d9d7d7, inset -1px -1px 0 0 #d9d7d7;
+    cursor: text;
+    background: white;
+  }
+
+  &:hover:before {
+    background: #FFF !important
+  }
+
+  &:hover:after {
+    background: #FFF !important
+  }
+}

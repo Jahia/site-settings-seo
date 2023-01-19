@@ -38,5 +38,5 @@ export const VanityUrlTableData = ({poll, children, ...props}) => {
 
 VanityUrlTableData.propTypes = {
     poll: PropTypes.number,
-    children: PropTypes.array
+    children: PropTypes.func
 };

@@ -22,7 +22,7 @@ class LanguageSelector extends React.Component {
     onAllLanguagesChange(event, checked) {
         if (checked && this.props.selectedLanguageCodes.length === 0) {
             // Was checked while no languages were selected: select all.
-            let selectedLanguageCodes = this.props.languages.map(language => language.code);
+            let selectedLanguageCodes = this.props.languages.map(language => language.language);
             this.props.onSelectionChange(selectedLanguageCodes);
         } else {
             // Either was unchecked or was clicked while a part of languages was selected: de-select all.
@@ -46,7 +46,7 @@ class LanguageSelector extends React.Component {
             return this.props.t('label.languageSelector.allLanguages');
         }
 
-        let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => _.find(this.props.languages, language => language.code === selectedLanguageCode).name);
+        let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => _.find(this.props.languages, language => language.language === selectedLanguageCode).name);
         if (selectedLanguageNames.length > MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED) {
             // (Too) many languages selected: will display a part of them, plus "N more languages".
             selectedLanguageNames = selectedLanguageNames.slice(0, MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED - 1);
@@ -105,17 +105,17 @@ class LanguageSelector extends React.Component {
                 </MenuItem>
 
                 {this.props.languages.map(language => {
-                    let checked = (selectedLanguageCodes.indexOf(language.code) >= 0);
+                    let checked = (selectedLanguageCodes.indexOf(language.language) >= 0);
 
                     return (
                         <MenuItem
-                            key={language.code}
-                            value={language.code}
+                            key={language.language}
+                            value={language.language}
                             data-vud-role="language-selector-item"
                             classes={{selected: scssStyles.selected}}
                         >
                             <Checkbox checked={checked}/>
-                            <ListItemText primary={language.name + ' (' + language.code + ')'} data-vud-role="language-selector-item-label"/>
+                            <ListItemText primary={language.displayName + ' (' + language.language + ')'} data-vud-role="language-selector-item-label"/>
                         </MenuItem>
                     );
                 })}

@@ -1,0 +1,36 @@
+.hidden {
+  opacity: 0;
+}
+
+.hiddenOnHover {
+  opacity: 0;
+  transition: opacity 0.25s
+}
+
+.allCheckbox {
+  position: absolute;
+  margin-left: -31px;
+  margin-top: -12px;
+
+  &:hover {
+    transition: opacity 0.25s;
+    opacity: 1;
+  }
+}
+
+.tableTitle {
+  margin-bottom: var(--spacing-small);
+  font-size: 18px;
+}
+
+.vanityGroupPaper {
+  box-shadow: none !important;
+  border: 1px solid #d5d5d5;
+  border-bottom: none;
+  border-radius: 0;
+}
+
+.table {
+  color: #504e4d;
+  table-layout: fixed;
+}

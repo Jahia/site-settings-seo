@@ -26,20 +26,6 @@ const PublishMutation = gql`
     }
 `;
 
-const DeleteVanity = gql`
-    mutation deleteVanityUrls($pathsOrIds: [String!]!, $lang: String!) {
-        jcr {
-            mutateVanityUrls(pathsOrIds: $pathsOrIds){
-                delete
-            }
-            modifiedNodes {
-              ...DefaultVanityUrlFields
-            }
-        }
-    }    
-    ${DefaultVanityUrlFields}
-`;
-
 const MoveMutation = gql`
     mutation mutateNodes($pathsOrIds: [String!]!, $target: String!) {
         jcr {
@@ -66,4 +52,4 @@ const AddVanityMutation = gql`
     }
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
-export {MoveMutation, UpdateVanityMutation, PublishMutation, DeleteVanity, AddVanityMutation};
+export {MoveMutation, UpdateVanityMutation, PublishMutation, AddVanityMutation};

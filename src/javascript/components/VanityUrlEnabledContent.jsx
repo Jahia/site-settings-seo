@@ -1,6 +1,7 @@
 import React from 'react';
 import {withTranslation} from 'react-i18next';
-import {VanityUrlListDefault, VanityUrlListLive} from './VanityUrlList';
+import {VanityUrlListLive} from './VanityUrlList';
+import {VanityUrlListDefault} from './VanityList/VanityUrlListDefault';
 import {Collapse, Grid, ListItem, ListItemText, withStyles} from '@material-ui/core';
 import {ChevronDown, ChevronRight} from '@jahia/moonstone';
 import {Typography, Button} from '@jahia/moonstone';
@@ -12,7 +13,7 @@ let ButtonRenderer;
 import('@jahia/content-editor').then(v => {
     ButtonRenderer = v.ButtonRenderer;
 }).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
-import {ButtonRenderer as LocalButtonRenderer} from './ButtonRenderer/getButtonRenderer';
+import {ButtonRenderer as LocalButtonRenderer} from './Renderer/getButtonRenderer';
 
 const styles = theme => ({
     root: {
@@ -110,12 +111,6 @@ class VanityUrlEnabledContent extends React.Component {
 
         let vanityUrls = this.state.localFilteringEnabled || !content.allUrls ? content.urls : content.allUrls;
 
-        /** Sort so that deleted published urls are listed at the end of vanity url list */
-        const deleted = [];
-        const others = [];
-        vanityUrls.forEach(url => (url.live && !url.default) ? deleted.push(url) : others.push(url));
-        vanityUrls = [...others, ...deleted];
-
         const isStaging = workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value;
         const isLive = workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[1].value;
         const isBoth = workspace.value === SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[2].value;
@@ -145,11 +140,11 @@ class VanityUrlEnabledContent extends React.Component {
                                 <VanityUrlListDefault selection={selection}
                                                       vanityUrls={vanityUrls}
                                                       filterText={filterText}
-                                                      expanded={this.state.expanded}
+                                                      isExpanded={this.state.expanded}
                                                       actions={actions}
                                                       languages={languages}
                                                       contentUuid={content.uuid}
-                                                      openCardMode={openCardMode}
+                                                      isOpenCardMode={openCardMode}
                                                       onChangeSelection={onChangeSelection}/>
                             </Grid>}
                         {(isLive || isBoth) &&
@@ -159,7 +154,7 @@ class VanityUrlEnabledContent extends React.Component {
                             </Grid>}
                         {(isStaging || isBoth) &&
                             <Grid item xs={12}>
-                                <AddVanityUrl path={content.path} lang={lang} availableLanguages={languages}/>
+                                <AddVanityUrl path={content.path} lang={lang}/>
                             </Grid>}
                     </Grid>
                 </Collapse>

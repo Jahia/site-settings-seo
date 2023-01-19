@@ -1,0 +1,118 @@
+.inactive {
+  .languageContainer {
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    .liveLanguage {
+      color: #B2B2B2
+    }
+
+    div > p {
+      color: #B2B2B2
+    }
+  }
+}
+
+.vanityUrl {
+  &:hover .hiddenOnHover {
+    transition: opacity 0.25s;
+    opacity: 1;
+  }
+
+  td {
+    padding: 6px;
+    border: 0;
+  }
+}
+
+.toBePublished {
+  box-shadow: inset 7px 0 0 0 #FB9926;
+  color: rgb(228, 174, 28)
+}
+
+.isPublished {
+  box-shadow: inset 7px 0 0 0 #08D000;
+  color: rgb(228, 174, 28);
+}
+
+.isMarkedForDeletion {
+  box-shadow: inset 7px 0 0 0 #CC0000
+}
+
+.tableRow {
+  height: 66px !important;
+
+  &:hover .vanityURLText:before {
+    background: #f7f7f7
+  }
+
+  &:hover .vanityURLText:after {
+    background: #f7f7f7;
+  }
+}
+
+.editLine {
+  background-color: #F7F7F7 !important;
+
+  & .tableCellTextInput > div > div {
+    background: white !important
+  }
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.hiddenOnHover {
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.checkboxLeft {
+  margin-left: -32px;
+  margin-top: 2px;
+  position: absolute;
+  border: 0;
+  color: #504e4d;
+}
+
+.switchBase {
+  width: 38px !important;
+}
+
+.switchChecked {
+  width: inherit;
+}
+
+.tableCellTextInput {
+  background: transparent;
+  width: 100%;
+}
+
+.languageContainer {
+  padding-right: 10px;
+}
+
+.chipContainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.deletedUrl {
+  text-decoration: line-through;
+}
+
+.missingDefault {
+  font-style: italic;
+  font-weight: 100;
+  color: #B2B2B2;
+  font-size: 0.8125rem;
+  padding-left: 22px !important;
+  box-shadow: inset 7px 0 0 0 #bab7b7;
+}

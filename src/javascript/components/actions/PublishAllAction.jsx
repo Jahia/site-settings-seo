@@ -1,15 +1,15 @@
 import React from 'react';
 import {useQuery} from 'react-apollo';
 import {useApolloClient} from '@apollo/react-hooks';
-import {TableQuery} from '../VanityUrlTableData/gqlQueries';
-import {PublishMutation} from '../../gqlMutations';
+import {TableQuery} from '../contentEditor/VanityUrlTableData/gqlQueries';
+import {PublishMutation} from '../gqlMutations';
 import * as PropTypes from 'prop-types';
-import {useVanityUrlContext} from '../../Context/VanityUrl.context';
+import {useVanityUrlContext} from '../Context/VanityUrl.context';
 import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
-import {buildTableQueryVariablesOneNode} from '../../Utils/Utils';
+import {buildTableQueryVariablesOneNode} from '../Utils/Utils';
 
-export const PublishAction = ({render: Render, loading: Loading, label, nodeData, ...otherProps}) => {
+export const PublishAllAction = ({render: Render, loading: Loading, label, nodeData, ...otherProps}) => {
     const vanityUrlContext = useVanityUrlContext();
     const client = useApolloClient();
     const notificationContext = useNotifications();
@@ -19,7 +19,7 @@ export const PublishAction = ({render: Render, loading: Loading, label, nodeData
         fetchPolicy: 'network-only',
         variables: buildTableQueryVariablesOneNode({
             lang: window.contextJsParameters.lang,
-            selectedLanguageCodes: vanityUrlContext.languages.map(language => language.code), ...nodeData
+            selectedLanguageCodes: vanityUrlContext.languages.map(language => language.language), ...nodeData
         })
     });
 
@@ -52,8 +52,8 @@ export const PublishAction = ({render: Render, loading: Loading, label, nodeData
     );
 };
 
-PublishAction.propTypes = {
-    render: PropTypes.object.isRequired,
+PublishAllAction.propTypes = {
+    render: PropTypes.elementType.isRequired,
     loading: PropTypes.object,
     nodeData: PropTypes.object,
     label: PropTypes.string.isRequired

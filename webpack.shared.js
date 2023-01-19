@@ -11,7 +11,6 @@ const sharedDeps = [
     'i18next-xhr-backend',
     'graphql-tag',
     'react-apollo',
-    'react-redux',
     'redux',
     'rxjs',
     'whatwg-fetch',
@@ -26,11 +25,7 @@ const sharedDeps = [
     // Apollo
     '@apollo/react-common',
     '@apollo/react-components',
-    '@apollo/react-hooks',
-
-    // DEPRECATED JAHIA PACKAGES
-    '@jahia/design-system-kit',
-    '@jahia/icons'
+    '@apollo/react-hooks'
 ];
 
 const singletonDeps = [

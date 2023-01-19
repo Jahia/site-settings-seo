@@ -4,6 +4,7 @@
 
 .dialog {
   z-index: 1300 !important;
+  overflow: unset;
 
   .header {
     padding: var(--spacing-medium);
