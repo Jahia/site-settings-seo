@@ -20,7 +20,7 @@ export const EditVanityUrlsDialog = ({
     return (
         <Dialog
             aria-labelledby="alert-dialog-slide-title"
-            PaperProps={{style: {minWidth: '85vw',overflow: 'unset'}}} // Firefox fix
+            className={classes.dialogOverflow}
             open={isOpen}
             maxWidth="xl"
             onClose={onCloseDialog}
