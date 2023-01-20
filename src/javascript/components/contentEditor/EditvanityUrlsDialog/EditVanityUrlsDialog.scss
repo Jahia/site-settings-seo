@@ -73,3 +73,7 @@
 .actions {
   justify-content: flex-end !important;
 }
+
+.dialogOverflow div:first-child {
+  overflow: unset;
+}
