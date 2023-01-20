@@ -7,6 +7,7 @@
       "delete": "Delete",
       "move": "Move",
       "publish": "Publish",
+      "publishVanityUrl": "Publish vanity URLs",
       "canonical": {
         "set": "Set as canonical (default URL)",
         "unset": "Unset as canonical (default URL)"

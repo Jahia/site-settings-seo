@@ -20,7 +20,6 @@ import * as _ from 'lodash';
 import {flowRight as compose} from 'lodash';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {Add, Button} from '@jahia/moonstone';
-import {trimUrl} from './utils';
 import {Editable} from './Editable';
 
 const styles = theme => ({
@@ -321,7 +320,7 @@ class AddVanityUrl extends React.Component {
                                             <Editable isCreateMode
                                                       onEdit={() => {
                                                 }}
-                                                      onChange={value => this.handleFieldChange('url', index, value ? trimUrl(value) : '')}/>
+                                                      onChange={value => this.handleFieldChange('url', index, value ? value.trim() : '')}/>
                                             {errorForRow && <FormHelperText className={classes.errorMessage}>
                                                 <error><label>{errorForRow.label}</label>
                                                     <message>{errorForRow.message}</message>

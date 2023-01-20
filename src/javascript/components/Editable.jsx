@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {FormControl, FormHelperText} from '@material-ui/core';
 import classes from './Editable.scss';
 import {Input} from '@jahia/moonstone';
-import {trimUrl} from './utils';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 
@@ -38,7 +37,7 @@ export const Editable = React.memo(({onChange, onEdit, isCreateMode, render: Ren
     };
 
     const onValueChange = event => {
-        setValue(trimUrl(event.target.value));
+        setValue(event.target.value.trim());
         setErrorLabel(null);
         setErrorMessage(null);
     };

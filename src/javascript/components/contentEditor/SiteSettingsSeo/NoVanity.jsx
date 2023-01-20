@@ -2,26 +2,32 @@ import React, {useState} from 'react';
 import AddVanityUrl from '../../AddVanityUrl';
 import {Typography, Loader} from '@jahia/moonstone';
 import classes from './SiteSettingsSeoCardApp.scss';
+import {useTranslation} from 'react-i18next';
+import {useVanityUrlContext} from '../../Context/VanityUrl.context';
+import * as PropTypes from 'prop-types';
 
-const NoVanity = ({t, path, lang, languages}) => {
+export const NoVanity = ({path}) => {
+    const {t} = useTranslation('site-settings-seo');
+    const {languages, lang} = useVanityUrlContext();
     const [loading, setLoading] = useState(false);
     return (
         <div className={classes.noVanity}>
-            { loading ?
-            (<Loader size="big"/>) :
-            (<AddVanityUrl path={path}
-                           lang={lang}
-                           availableLanguages={languages}
-                           setParentLoading={setLoading}
-            >
-
-                { showInput => !showInput && (
-                    <Typography weight="light">
-                        {t('label.messages.noVanityUrl')}
-                    </Typography>) }
-            </AddVanityUrl>) }
+            {loading ?
+                <Loader size="big"/> :
+                <AddVanityUrl path={path}
+                              lang={lang}
+                              availableLanguages={languages}
+                              setParentLoading={setLoading}
+                >
+                    {showInput => !showInput && (
+                        <Typography weight="light">
+                            {t('label.messages.noVanityUrl')}
+                        </Typography>)}
+                </AddVanityUrl>}
         </div>
     );
 };
 
-export default NoVanity;
+NoVanity.propTypes = {
+    path: PropTypes.string.isRequired
+};

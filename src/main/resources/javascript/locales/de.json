@@ -7,6 +7,7 @@
       "delete": "Löschen",
       "move": "Verschieben",
       "publish": "Veröffentlichen",
+      "publishVanityUrl": "Veröffentlichen Sie Vanity-URLs",
       "canonical": {
         "set": "Als carnonical setzen",
         "unset": "Nicht carnonical setzen"
