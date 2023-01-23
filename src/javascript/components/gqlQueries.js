@@ -22,36 +22,6 @@ const TableQuery = gql`
     ${LiveVanityUrls}
 `;
 
-const LanguagesQuery = gql`
-    query LanguagesQuery($path: String!) {
-        jcr {
-            nodeByPath(path: $path) {
-                ...NodeCacheRequiredFields
-                site {
-                    ...NodeCacheRequiredFields
-                    languages {
-                        code: language
-                        name: displayName
-                        activeInEdit
-                    }
-                }
-            }
-        }
-    }
-    ${PredefinedFragments.nodeCacheRequiredFields.gql}
-`;
-
-const TableQueryVariables = props => ({
-    lang: props.lang,
-    languages: props.selectedLanguageCodes,
-    offset: (props.currentPage * props.pageSize),
-    limit: props.pageSize,
-    query: 'select * from [jmix:vanityUrlMapped] as content where isDescendantNode(\'' + props.path + '\') order by [j:fullpath]',
-    filterText: props.filterText,
-    doFilter: Boolean(props.filterText),
-    queryFilter: {multi: 'ANY', filters: [{fieldName: 'vanityUrls', evaluation: 'NOT_EMPTY'}, {fieldName: 'liveNode.vanityUrls', evaluation: 'NOT_EMPTY'}]}
-});
-
 const VanityUrlsByPath = gql`
     query NodesbyPath($paths: [String!]!, $lang: String!, $filterText: String, $doFilter: Boolean!, $languages: [String!]) {
         jcr {
@@ -87,6 +57,25 @@ const GetNodeQuery = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
+const LanguagesQuery = gql`
+    query LanguagesQuery($path: String!) {
+        jcr {
+            nodeByPath(path: $path) {
+                ...NodeCacheRequiredFields
+                site {
+                    ...NodeCacheRequiredFields
+                    languages {
+                        code: language
+                        name: displayName
+                        activeInEdit
+                    }
+                }
+            }
+        }
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+`;
+
 const SiteNodeQuery = gql`
     query GetNodeQuery($sitePath:String!) {
         jcr {
@@ -101,4 +90,4 @@ const SiteNodeQuery = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-export {TableQuery, LanguagesQuery, GetNodeQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables, SiteNodeQuery};
+export {TableQuery, LanguagesQuery, GetNodeQuery, VanityUrlsByPath, VanityUrlsByPathVariables, SiteNodeQuery};

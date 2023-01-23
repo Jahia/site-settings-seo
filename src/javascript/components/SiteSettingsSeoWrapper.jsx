@@ -3,8 +3,8 @@ import {MuiThemeProvider} from '@material-ui/core';
 import {ProgressOverlay, NotificationProvider, legacyTheme} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {VanityMutationsProvider} from './VanityMutationsProvider';
-import {VanityUrlLanguageData} from './VanityUrlLanguageData';
 import {withSite} from './SiteConnector';
+import {VanityUrlContextProvider} from './Context/VanityUrl.context';
 
 const SiteSettingsSeo = _.flowRight(
     withSite()
@@ -17,13 +17,13 @@ const SiteSettingsSeo = _.flowRight(
 
     return (
         <MuiThemeProvider theme={legacyTheme}>
-            <NotificationProvider notificationContext={{}}>
-                <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                    <VanityUrlLanguageData path={props.dxContext.mainResourcePath}>
-                        {languages => <Component languages={languages} {...otherProps}/>}
-                    </VanityUrlLanguageData>
-                </VanityMutationsProvider>
-            </NotificationProvider>
+            <VanityUrlContextProvider path={props.dxContext.mainResourcePath}>
+                <NotificationProvider notificationContext={{}}>
+                    <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
+                        <Component {...otherProps}/>
+                    </VanityMutationsProvider>
+                </NotificationProvider>
+            </VanityUrlContextProvider>
         </MuiThemeProvider>
     );
 });

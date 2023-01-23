@@ -5,7 +5,7 @@ import {graphql} from 'react-apollo/lib/index';
 import {flowRight as compose} from 'lodash';
 import * as gqlMutations from './gqlMutations';
 import * as _ from 'lodash';
-import {TableQuery, TableQueryVariables, VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
+import {TableQuery, VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {
     InvalidMappingError,
@@ -15,6 +15,7 @@ import {
     AddMappingsError,
     SitesMappingError
 } from './Errors';
+import {buildTableQueryVariablesAllVanity} from './Utils/Utils';
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -46,7 +47,7 @@ class VanityMutationsProvider extends Component {
                 lang: props.lang
             }, refetchQueries: [{
                 query: TableQuery,
-                variables: TableQueryVariables(props)
+                variables: buildTableQueryVariablesAllVanity(props)
             }]
         });
 
@@ -61,7 +62,7 @@ class VanityMutationsProvider extends Component {
                     target: target
                 }, refetchQueries: [{
                     query: TableQuery,
-                    variables: TableQueryVariables(props)
+                    variables: buildTableQueryVariablesAllVanity(props)
                 }]
             });
         };
@@ -93,7 +94,7 @@ class VanityMutationsProvider extends Component {
                     active: active,
                     language: language,
                     url: url,
-                    lang: this.props.lang
+                    lang: window.contextJsParameters.lang
                 }
             });
         };

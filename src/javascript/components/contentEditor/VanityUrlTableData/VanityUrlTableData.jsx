@@ -1,63 +1,42 @@
 import React from 'react';
-import {Query} from 'react-apollo';
-import {withNotifications, ProgressOverlay} from '@jahia/react-material';
-import * as _ from 'lodash';
-import {TableQuery, TableQueryVariables} from './gqlQueries';
-import {withTranslation} from 'react-i18next';
-import {gqlContentNodeToVanityUrlPairs} from '../../utils';
+import {useQuery} from 'react-apollo';
+import {useNotifications} from '@jahia/react-material';
+import {TableQuery} from './gqlQueries';
+import {useTranslation} from 'react-i18next';
+import {buildTableQueryVariablesOneNode, gqlContentNodeToVanityUrlPairs} from '../../Utils/Utils';
+import * as PropTypes from 'prop-types';
 
-class VanityUrlTableData extends React.Component {
-    constructor(props) {
-        super(props);
+export const VanityUrlTableData = ({poll, children, ...props}) => {
+    const notificationContext = useNotifications();
+    const {t} = useTranslation('site-settings-seo');
+    const {data, error} = useQuery(TableQuery, {
+        fetchPolicy: 'network-only',
+        variables: buildTableQueryVariablesOneNode(props),
+        pollInterval: poll
+    });
+
+    if (error) {
+        notificationContext.notify(t('label.errors.loadingVanityUrl'), ['closeButton', 'noAutomaticClose']);
+        return <>error</>;
     }
 
-    render() {
-        let {t, filterText, totalCount, poll, notificationContext} = this.props;
+    const rows = data?.jcr?.nodesByQuery?.nodes?.map(node => {
+        return {
+            path: node.path,
+            uuid: node.uuid,
+            displayName: node.displayName,
+            urls: gqlContentNodeToVanityUrlPairs(node, 'vanityUrls')
+        };
+    });
 
-        return (
-            <Query fetchPolicy="network-only" query={TableQuery} variables={TableQueryVariables(this.props)} pollInterval={poll}>
-                { ({loading, error, data}) => {
-                if (error) {
-                    console.log('Error when fetching data: ' + error);
-                    notificationContext.notify(t('label.errors.loadingVanityUrl'), ['closeButton', 'noAutomaticClose']);
-                }
+    return (
+        <>
+            {rows && children(rows)}
+        </>
+    );
+};
 
-                let numberOfPages = 0;
-                let rows = [];
-                if (data && data.jcr && data.jcr.nodesByQuery) {
-                    rows = _.map(data.jcr.nodesByQuery.nodes, contentNode => {
-                        let urlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'vanityUrls');
-                        let allUrlPairs;
-                        if (filterText) {
-                            allUrlPairs = gqlContentNodeToVanityUrlPairs(contentNode, 'allVanityUrls');
-                            urlPairs = _.filter(allUrlPairs, urlPair => _.find(urlPairs, url => url.uuid === urlPair.uuid));
-                        }
-
-                        return {
-                            path: contentNode.path,
-                            uuid: contentNode.uuid,
-                            displayName: contentNode.displayName,
-                            urls: urlPairs,
-                            allUrls: allUrlPairs
-                        };
-                    });
-                }
-
-                return (
-                    <>
-                        {loading && <ProgressOverlay/>}
-                        {this.props.children(rows, totalCount, numberOfPages)}
-                    </>
-                );
-            }}
-            </Query>
-        );
-    }
-}
-
-VanityUrlTableData = _.flowRight(
-    withNotifications(),
-    withTranslation('site-settings-seo')
-)(VanityUrlTableData);
-
-export {VanityUrlTableData};
+VanityUrlTableData.propTypes = {
+    poll: PropTypes.number,
+    children: PropTypes.array
+};

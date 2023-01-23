@@ -2,20 +2,32 @@
   color: #0072b1 !important;
 }
 
+.dialog {
+  z-index: 1300 !important;
+
+  .header {
+    padding: var(--spacing-medium);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
 .radioButton {
   color: #0072b1 !important;
 }
 
-.dialogTitle {
-  margin: var(--spacing-medium) 10px;
+.titleContainer {
+  padding: unset !important;
 
-  color: #373c42;
-}
+  .dialogTitle {
+    color: #373c42;
+  }
 
-.dialogSubTitle {
-  margin: 10px;
-
-  color: #525c65;
+  .dialogSubTitle {
+    color: #525c65;
+  }
 }
 
 .link {
@@ -72,4 +84,8 @@
 
 .actions {
   justify-content: flex-end !important;
+}
+
+.dialogOverflow div:first-child {
+  overflow: unset;
 }

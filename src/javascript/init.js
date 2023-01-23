@@ -1,8 +1,9 @@
 import React from 'react';
 import {registry} from '@jahia/ui-extender';
+import {CloudUpload} from '@jahia/moonstone';
 import i18next from 'i18next';
 import {SiteSettingsSeoEntry} from './components/SiteSettingsSeoEntry';
-import {VanityAction} from './components/contentEditor/actions';
+import {PublishAction, VanityAction} from './components/contentEditor/actions';
 
 const COMP_NAME = 'siteSettingsSeo';
 
@@ -35,6 +36,15 @@ export default function () {
                 showOnNodeTypes: ['jmix:vanityUrlMapped', 'jnt:page', 'jnt:file', 'jmix:mainResource', 'jmix:canHaveVanityUrls'],
                 label: 'site-settings-seo:label.manage',
                 dataSelRole: 'vanityUrls'
+            });
+
+            registry.add('action', 'publishAllVanity', {
+                component: PublishAction,
+                targets: ['vanity-url/header'],
+                buttonIcon: <CloudUpload/>,
+                buttonProps: {color: 'accent'},
+                label: 'site-settings-seo:label.actions.publishVanityUrl',
+                dataSelRole: 'publish-all-vanitys'
             });
 
             console.log('%c Site Settings SEO registered routes', 'color: #3c8cba');
