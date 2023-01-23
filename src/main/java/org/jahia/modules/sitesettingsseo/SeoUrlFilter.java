@@ -182,7 +182,7 @@ public class SeoUrlFilter extends AbstractFilter {
 
         // Filter inactive language and check that the current node have a published translation node available
         return langs.stream()
-                .filter(ThrowingPredicate.unchecked(lang -> !inactiveLangs.contains(lang)))
+                .filter(ThrowingPredicate.unchecked(lang -> !inactiveLangs.contains(lang) && node.hasI18N(Locale.forLanguageTag(lang.replace("_", "-").toLowerCase()), false)))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
