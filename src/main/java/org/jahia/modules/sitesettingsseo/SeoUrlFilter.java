@@ -24,6 +24,7 @@
 package org.jahia.modules.sitesettingsseo;
 
 import net.htmlparser.jericho.*;
+import org.apache.commons.lang3.LocaleUtils;
 import org.jahia.modules.sitesettingsseo.config.ConfigService;
 import org.jahia.modules.sitesettingsseo.utils.Utils;
 import org.jahia.services.content.JCRContentUtils;
@@ -182,7 +183,7 @@ public class SeoUrlFilter extends AbstractFilter {
 
         // Filter inactive language and check that the current node have a published translation node available
         return langs.stream()
-                .filter(ThrowingPredicate.unchecked(lang -> !inactiveLangs.contains(lang) && node.hasI18N(Locale.forLanguageTag(lang), false)))
+                .filter(ThrowingPredicate.unchecked(lang -> !inactiveLangs.contains(lang) && node.hasI18N(LocaleUtils.toLocale(lang), false)))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
