@@ -32,7 +32,7 @@
       },
       "infoButton": {
         "moveAction": "Cette URL sera supprimée lorsque {{pagePath}} sera publiée",
-        "notPublished": "Plusieurs URL seront considérées par defaut jusqu'a publication du contenu {{pagePath}}"
+        "notPublished": "Plusieurs URLs seront considérées par defaut jusqu'a publication du contenu {{pagePath}}"
       },
       "move": {
         "confirm": "Cette opération ne peut être annulée.",
@@ -68,7 +68,7 @@
       "InvalidCharError": "L'URL est invalide",
       "InvalidCharError_message": "Assurez-vous que l'url ne contienne que des caractères valides",
       "SitesMappingError": "L'URL est invalide",
-      "SitesMappingError_message": "Les URL personnalisées ne doivent pas contenir /sites.",
+      "SitesMappingError_message": "Les URLs personnalisées ne doivent pas contenir /sites.",
       "MoveInvalidTarget_message": "Désolé, ce chemin est invalide.",
       "MoveSiteError": "Les URLs ne peuvent être assignées à une autre site.",
       "loadingSiteLanguages": "Erreur lors du chargement des langues du site",
@@ -118,8 +118,8 @@
         "rowsPerPage": "Lignes par page",
         "of": "sur"
     },
-    "title": "URL personnalisées",
-    "manage": "Gérer les URL personnalisées",
+    "title": "URLs personnalisées",
+    "manage": "Gérer les URLs personnalisées",
     "close": "Fermer",
     "workspace": {
       "live": "URLs personnalisées en ligne",
