@@ -13,6 +13,7 @@ export const LanguageMenu = ({languageCode, onLanguageSelected, isDisabled}) => 
             value={languageCode}
             isDisabled={isDisabled}
             size="small"
+            data-sel-role="vanity-language-menu"
             data={languages.map(lang => ({label: `${lang.displayName} (${lang.language})`, value: lang.language}))}
             onChange={(e, item) => onLanguageSelected(item.value)}
         />

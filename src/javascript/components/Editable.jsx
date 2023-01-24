@@ -66,6 +66,7 @@ export const Editable = React.memo(({value, onChange, isCreateMode}) => {
         <>
             <FormControl className={classes.root}>
                 <Input focusOnField
+                       data-sel-role="vanity-input-text"
                        value={currentValue}
                        placeholder={t('label.dialogs.add.text')}
                        disabled={loading}
