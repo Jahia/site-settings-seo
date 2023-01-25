@@ -13,6 +13,7 @@ import('@jahia/content-editor').then(v => {
 }).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
 
 import {ButtonRenderer as LocalButtonRenderer} from '../../Renderer/getButtonRenderer';
+import clsx from 'clsx';
 
 export const EditVanityUrlsDialog = ({
     nodeData,
@@ -24,11 +25,9 @@ export const EditVanityUrlsDialog = ({
     const {languages, siteInfo} = useVanityUrlContext();
     return (
         <Dialog
-            className={classes.dialogOverflow}
+            className={clsx(classes.dialog, classes.dialogOverflow)}
             open={isOpen}
             maxWidth="xl"
-            className={classes.dialog}
-            open={isOpen}
             onClose={onCloseDialog}
         >
             <div className={classes.header}>
