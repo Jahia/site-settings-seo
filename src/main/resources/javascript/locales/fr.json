@@ -14,7 +14,7 @@
       "addVanity": "Ajouter une URL personnalisée"
     },
     "cancel": "Annuler",
-    "copyright": "© Copyright 2002-2020 - Jahia Solutions Group SA",
+    "copyright": "© Copyright 2002-2023 - Jahia Solutions Group SA",
     "dialogs": {
       "add": {
         "check": "Publier automatiquement",
@@ -25,14 +25,14 @@
       "delete": {
         "content": "Note: Si vous voulez utiliser une URL sur une autre page, il est préférable de la déplacer plutôt que de la supprimer.",
         "delete": "Effacer",
-        "headline": "Êtes vous sûr de vouloir supprimer l'URL personnalisée suivante ?",
-        "headline_plural": "Êtes vous sûr de vouloir supprimer les URLs personnalisées suivantes ?",
+        "headline": "Êtes-vous sûr de vouloir supprimer l'URL personnalisée suivante ?",
+        "headline_plural": "Êtes-vous sûr de vouloir supprimer les URLs personnalisées suivantes ?",
         "terms": "Je comprend que cette opération ne peut être annulée.",
         "title": "Suppression d'URLs"
       },
       "infoButton": {
         "moveAction": "Cette URL sera supprimée lorsque {{pagePath}} sera publiée",
-        "notPublished": "Plusieurs URLs seront considérées par defaut jusqu'a publication du contenu {{pagePath}}"
+        "notPublished": "Plusieurs URLs seront considérées par défaut jusqu'à publication du contenu {{pagePath}}"
       },
       "move": {
         "confirm": "Cette opération ne peut être annulée.",
@@ -42,7 +42,7 @@
         "title": "Déplacer URL"
       },
       "publish": {
-        "content": "Êtes vous sûr de vouloir publier les URLs sélectionnées ? La publication sera démarrée en tâche de fond.",
+        "content": "Êtes-vous sûr de vouloir publier les URLs sélectionnées ? La publication sera démarrée en tâche de fond.",
         "publish": "Publier",
         "title": "Confirmation de publication"
       },
