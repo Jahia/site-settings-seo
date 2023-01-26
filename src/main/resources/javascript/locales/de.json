@@ -9,8 +9,8 @@
       "publish": "Veröffentlichen",
       "publishVanityUrl": "Veröffentlichen Sie Vanity-URLs",
       "canonical": {
-        "set": "Als carnonical setzen",
-        "unset": "Nicht carnonical setzen"
+        "set": "Als canonical setzen",
+        "unset": "Nicht canonical setzen"
       }
     },
     "buttons": {
