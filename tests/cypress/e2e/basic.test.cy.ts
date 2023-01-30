@@ -21,7 +21,7 @@ describe("Basic tests of the module's seo filter", () => {
     before('create test data', function () {
         cy.executeGroovy('groovy/admin/createSite.groovy', {
             SITEKEY: siteKey,
-            TEMPLATES_SET: templateSet
+            TEMPLATES_SET: templateSet,
         })
         createPage(homePath, 'without-seo-links', 'withoutseo')
         publishAndWaitJobEnding(homePath)
@@ -36,16 +36,8 @@ describe("Basic tests of the module's seo filter", () => {
     it('Verify no duplicate SEO links on page with existing SEO links.', function () {
         cy.visit(homePath + '.html')
         cy.get('link[rel="canonical"]').should('have.attr', 'href', 'http://localhost/canonical/home/en')
-        cy.get('link[rel="canonical"]').should(
-            'not.have.attr',
-            'href',
-            Cypress.config().baseUrl + homePath + '.html',
-        )
-        cy.get('link[rel="alternate"]').should(
-            'not.have.attr',
-            'href',
-            Cypress.config().baseUrl + homePath + '.html',
-        )
+        cy.get('link[rel="canonical"]').should('not.have.attr', 'href', Cypress.config().baseUrl + homePath + '.html')
+        cy.get('link[rel="alternate"]').should('not.have.attr', 'href', Cypress.config().baseUrl + homePath + '.html')
     })
 
     it('Verify proper addition of SEO links on page without existing SEO links', function () {
