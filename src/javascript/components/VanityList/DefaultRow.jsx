@@ -52,6 +52,7 @@ export const DefaultRow = ({
                           hover: (statuses.find(status => status.key === url.publicationInfo.publicationStatus).value)
                       }}
                       data-vud-url={url.url}
+                      data-sel-marked-for-deletion={isMarkedForDeletion}
             >
                 <TableCell
                     className={(isCheckboxesDisplayed ? (isExpanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}

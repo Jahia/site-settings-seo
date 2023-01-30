@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {FormControl, FormHelperText} from '@material-ui/core';
 import classes from './Editable.scss';
+import {FormControl, FormHelperText} from '@material-ui/core';
 import {Input, Typography} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
@@ -84,7 +84,7 @@ export const Editable = React.memo(({value, onChange, isCreateMode}) => {
                            }
                        }}/>
                 {errorLabel &&
-                    <FormHelperText className={classes.errorMessage}>
+                    <FormHelperText classes={{root: classes.errorMessage}}>
                         <error><label>{errorLabel}</label>
                             <message>{errorMessage}</message>
                         </error>

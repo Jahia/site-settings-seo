@@ -23,8 +23,8 @@
 }
 
 .errorMessage {
-  top: unset !important;
-  background: unset !important;
+  top: unset;
+  background: unset;
 }
 
 .vanityURLText {
@@ -47,10 +47,10 @@
   }
 
   &:hover:before {
-    background: #FFF !important
+    background: var(--color-white);
   }
 
   &:hover:after {
-    background: #FFF !important
+    background: var(--color-white);
   }
 }

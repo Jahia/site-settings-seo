@@ -8,7 +8,7 @@ function checkAction(node) {
     return node.operationsSupport.markForDeletion && !isMarkedForDeletion(node);
 }
 
-export const DeleteVanityAction = ({path, paths, buttonProps, render: Render, loading: Loading, ...others}) => {
+export const DeleteVanityAction = ({path, paths, buttonProps, render: Render, loading: Loading, onChangeSelection, ...others}) => {
     const {lang: language} = useVanityUrlContext();
 
     const res = useNodeChecks(
@@ -47,6 +47,10 @@ export const DeleteVanityAction = ({path, paths, buttonProps, render: Render, lo
                         inheritedNodeTypes: ['nt:base']
                     })), false, false);
                 }
+
+                if (onChangeSelection) {
+                    onChangeSelection();
+                }
             }}
         />
     );
@@ -54,12 +58,9 @@ export const DeleteVanityAction = ({path, paths, buttonProps, render: Render, lo
 
 DeleteVanityAction.propTypes = {
     path: PropTypes.string,
-
     paths: PropTypes.arrayOf(PropTypes.string),
-
     buttonProps: PropTypes.object,
-
     render: PropTypes.func.isRequired,
-
-    loading: PropTypes.func
+    loading: PropTypes.func,
+    onChangeSelection: PropTypes.func
 };

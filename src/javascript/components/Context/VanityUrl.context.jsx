@@ -16,7 +16,7 @@ export const VanityUrlContextProvider = ({siteKey, children}) => {
         return (<></>);
     }
 
-    const site = data?.jcr?.result?.site;
+    const site = data?.jcr?.result?.site || {};
 
     const context = {
         languages: site?.languages

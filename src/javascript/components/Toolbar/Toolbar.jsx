@@ -22,10 +22,10 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
                className={clsx(classes.root, {[classes.rootExpanded]: selection.length > 0})}
         >
             <div className={classes.closeButtonContainer}>
-                <Close classes={classes.clearButton}
+                <Close className={classes.clearButton}
                        tooltip={t('label.selection.clear')}
                        onClick={() => onChangeSelection()}/>
-                <div className={classes.selected}>
+                <div>
                     <Typography
                         className={classes.selectedText}
                     >{t('label.selection.count', {count: selection.length})}
@@ -43,6 +43,7 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
                     filter={action => {
                         return action.key !== 'updateVanity';
                     }}
+                    onChangeSelection={onChangeSelection}
                 />
             </div>
         </Paper>

@@ -25,6 +25,7 @@ export const EditVanityUrlsDialog = ({
     const {languages, siteInfo} = useVanityUrlContext();
     return (
         <Dialog
+            data-sel-role="manage-vanity-url-dialog"
             className={clsx(classes.dialog, classes.dialogOverflow)}
             open={isOpen}
             maxWidth="xl"

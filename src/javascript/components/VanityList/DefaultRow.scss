@@ -43,7 +43,7 @@
 }
 
 .tableRow {
-  height: 66px !important;
+  height: 66px;
 
   &:hover .vanityURLText:before {
     background: #f7f7f7
@@ -55,10 +55,10 @@
 }
 
 .editLine {
-  background-color: #F7F7F7 !important;
+  background-color: #F7F7F7;
 
   & .tableCellTextInput > div > div {
-    background: white !important
+    background: white;
   }
 }
 
@@ -80,7 +80,7 @@
 }
 
 .switchBase {
-  width: 38px !important;
+  width: 38px;
 }
 
 .switchChecked {
@@ -113,6 +113,6 @@
   font-weight: 100;
   color: #B2B2B2;
   font-size: 0.8125rem;
-  padding-left: 22px !important;
+  padding-left: 22px;
   box-shadow: inset 7px 0 0 0 #bab7b7;
 }

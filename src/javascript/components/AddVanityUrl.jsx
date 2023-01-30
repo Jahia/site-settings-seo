@@ -308,7 +308,7 @@ class AddVanityUrl extends React.Component {
                         {mappings.map((entry, index) => {
                             let errorForRow = _.find(errors, error => error.url === entry.url || error.url === ('/' + entry.url));
                             return (
-                                <TableRow key={index} hover={false} className={classes.row}>
+                                <TableRow key={index} hover={false} className={classes.row} data-sel-role="new-vanity-url">
                                     <TableCell className={classes.cell} width="5%">
                                         <Switch
                                             checked={entry.active}

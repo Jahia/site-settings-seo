@@ -31,42 +31,40 @@ export const VanityUrlListDefault = ({
     let checkboxesDisplayed = (allCheckboxChecked || allCheckboxIndeterminate);
 
     return (
-        <>
-            <div>
-                {!isOpenCardMode && urlPairs.length > 0 ? (
-                    <div className={classes.allCheckbox}>
-                        <Checkbox
-                            className={(checkboxesDisplayed ? (isExpanded ? '' : classes.hidden) : (classes.hiddenOnHover))}
-                            checked={allCheckboxChecked}
-                            indeterminate={allCheckboxIndeterminate}
-                            data-vud-checkbox-all={contentUuid}
-                            onChange={(event, checked) => onChangeSelection(checked && !allCheckboxIndeterminate, urlPairs)}
-                        />
-                    </div>
-                ) : <></>}
-                <Typography variant="subheading" className={classes.tableTitle} weight="bold">
-                    {t('label.mappings.default')}
-                </Typography>
-                <Paper elevation={2} className={classes.vanityGroupPaper}>
-                    <Table className={classes.table}>
-                        <TableBody data-vud-table-body-default={contentUuid}>
-                            {vanityUrls.map(urlPair => (
-                                <DefaultRow key={urlPair.uuid}
-                                            classes={classes}
-                                            urlPair={urlPair}
-                                            isOpenCardMode={isOpenCardMode}
-                                            isCheckboxesDisplayed={checkboxesDisplayed}
-                                            isExpanded={isExpanded}
-                                            actions={actions}
-                                            languages={languages}
-                                            selection={selection}
-                                            onChangeSelection={onChangeSelection}/>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Paper>
-            </div>
-        </>
+        <div>
+            {!isOpenCardMode && urlPairs.length > 0 ? (
+                <div className={classes.allCheckbox}>
+                    <Checkbox
+                        className={(checkboxesDisplayed ? (isExpanded ? '' : classes.hidden) : (classes.hiddenOnHover))}
+                        checked={allCheckboxChecked}
+                        indeterminate={allCheckboxIndeterminate}
+                        data-vud-checkbox-all={contentUuid}
+                        onChange={(event, checked) => onChangeSelection(checked && !allCheckboxIndeterminate, urlPairs)}
+                    />
+                </div>
+            ) : <></>}
+            <Typography variant="subheading" className={classes.tableTitle} weight="bold">
+                {t('label.mappings.default')}
+            </Typography>
+            <Paper elevation={2} className={classes.vanityGroupPaper}>
+                <Table className={classes.table}>
+                    <TableBody data-vud-table-body-default={contentUuid}>
+                        {vanityUrls.map(urlPair => (
+                            <DefaultRow key={urlPair.uuid}
+                                        classes={classes}
+                                        urlPair={urlPair}
+                                        isOpenCardMode={isOpenCardMode}
+                                        isCheckboxesDisplayed={checkboxesDisplayed}
+                                        isExpanded={isExpanded}
+                                        actions={actions}
+                                        languages={languages}
+                                        selection={selection}
+                                        onChangeSelection={onChangeSelection}/>
+                        ))}
+                    </TableBody>
+                </Table>
+            </Paper>
+        </div>
     );
 };
 
