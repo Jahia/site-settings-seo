@@ -86,7 +86,7 @@ public class SeoUrlFilter extends AbstractFilter {
         Source source = new Source(previousOut);
         OutputDocument od = new OutputDocument(source);
         List<Element> headList = source.getAllElements(HTMLElementName.HEAD);
-        if (!headList.isEmpty()) {
+        if (!headList.isEmpty() && !isCanonicalOrAlternateLinkExist(headList)) {
             initUrlGenerator(renderContext, resource);
             JCRNodeWrapper node = resource.getNode();
 
@@ -202,4 +202,13 @@ public class SeoUrlFilter extends AbstractFilter {
         return SettingsBean.getInstance().isUrlRewriteSeoRulesEnabled();
     }
 
+    private static boolean isCanonicalOrAlternateLinkExist(List<Element> headList) {
+        for (Element link : headList.get(0).getAllElements(HTMLElementName.LINK)) {
+            String rel = link.getAttributeValue("rel");
+            if (rel != null && (rel.equals("canonical") || rel.equals("alternate"))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
