@@ -32,25 +32,24 @@
         <version>8.1.0.0</version>
         <relativePath />
     </parent>
-    <artifactId>site-settings-seo</artifactId>
+    <artifactId>site-settings-seo-parent</artifactId>
+    <name>Site Settings - SEO Parent Project</name>
     <version>3.6.0-SNAPSHOT</version>
-    <packaging>bundle</packaging>
-    <name>Site Settings - SEO</name>
-    <description>This is the custom module (Site Settings - SEO) for running on a Digital Experience Manager server.
-    </description>
+    <packaging>pom</packaging>
+    <description>Site settings seo parent</description>
+
     <scm>
         <connection>scm:git:git@github.com:Jahia/site-settings-seo.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/site-settings-seo.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/site-settings-seo.git</url>
       <tag>HEAD</tag>
     </scm>
-    <properties>
-        <jahia-depends>default,siteSettings,graphql-dxm-provider</jahia-depends>
-        <jahia-module-type>system</jahia-module-type>
-        <jahia-deploy-on-site>all</jahia-deploy-on-site>
-        <yarn.arguments>build:simple</yarn.arguments>
-        <jahia-module-signature>MCwCFGA0nlqQ5knXxpIB3TqQugukJ8YIAhQo04xCptalAfERJB3VfXc6EXaByA==</jahia-module-signature>
-    </properties>
+
+    <modules>
+        <module>core</module>
+        <module>test-module</module>
+    </modules>
+
     <repositories>
         <repository>
             <releases>
@@ -65,57 +64,4 @@
             <url>https://devtools.jahia.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Import-Package>
-                            ${jahia.plugin.projectPackageImport},
-                            *
-                        </Import-Package>
-                        <_dsannotations>*</_dsannotations>
-                    </instructions>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>npm install node and yarn</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>install-node-and-yarn</goal>
-                        </goals>
-                        <configuration>
-                            <nodeVersion>v14.18.2</nodeVersion>
-                            <yarnVersion>v1.22.10</yarnVersion>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>yarn install</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>yarn post-install</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>${yarn.arguments}</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>
