@@ -24,7 +24,7 @@ class VanityMutationsProvider extends Component {
     }
 
     addMutations() {
-        const {vanityMutationsContext, deleteMutation, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
+        const {vanityMutationsContext, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
 
         const isSitesUrl = url => {
             const isString = (typeof url === 'string') || url instanceof String;
@@ -40,16 +40,6 @@ class VanityMutationsProvider extends Component {
             const isString = (typeof url === 'string') || url instanceof String;
             return (isString && SiteSettingsSeoConstants.INVALID_CHARS_REG_EXP.test(url.trim()));
         };
-
-        vanityMutationsContext.delete = (pathsOrIds, props) => deleteMutation({
-            variables: {
-                pathsOrIds: pathsOrIds,
-                lang: props.lang
-            }, refetchQueries: [{
-                query: TableQuery,
-                variables: buildTableQueryVariablesAllVanity(props)
-            }]
-        });
 
         vanityMutationsContext.move = (pathsOrIds, target, props) => {
             if (!_.startsWith(target, props.path)) {
@@ -173,7 +163,6 @@ VanityMutationsProvider.childContextTypes = {
 };
 
 VanityMutationsProvider = compose(
-    graphql(gqlMutations.DeleteVanity, {name: 'deleteMutation'}),
     graphql(gqlMutations.MoveMutation, {name: 'moveMutation'}),
     graphql(gqlMutations.PublishMutation, {name: 'publishMutation'}),
     graphql(gqlMutations.UpdateVanityMutation, {name: 'updateMutation'}),

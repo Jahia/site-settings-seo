@@ -1,8 +1,6 @@
 import React from 'react';
 import InfoButton from '../../InfoButton';
 import Publication from '../../Publication';
-import Deletion from '../../Deletion';
-import PublishDeletion from '../../PublishDeletion';
 import Move from '../../Move';
 import {VanityUrlTableData} from '../VanityUrlTableData/VanityUrlTableData';
 import {assembleWithHoc, SiteSettingsSeoApp} from '../../SiteSettingsSeoApp';
@@ -19,16 +17,16 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
 
     // Override
     render() {
-        let {dxContext, path, t} = this.props;
-        let polling = !(this.state.publication.open || this.state.deletion.open ||
-            this.state.move.open || this.state.infoButton.open || this.state.publishDeletion.open);
+        let {path, t, lang, siteInfo} = this.props;
+        let polling = !(this.state.publication.open ||
+            this.state.move.open || this.state.infoButton.open);
 
         return (
             <div>
                 <VanityUrlTableData
                     {...this.state.loadParams}
                     path={path}
-                    lang={dxContext.lang}
+                    lang={lang}
                     poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
                 >
                     {rows => {
@@ -49,7 +47,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                                 <VanityUrlEnabledContent
                                                     {...this.state.loadParams}
                                                     openCardMode
-                                                    lang={dxContext.lang}
+                                                    lang={lang}
                                                     languages={this.props.languages}
                                                     content={rows[0]}
                                                     selection={this.state.selection}
@@ -65,8 +63,8 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                 {this.state.move.open && <Move
                                     {...this.state.move}
                                     {...this.state.loadParams}
-                                    path={dxContext.mainResourcePath}
-                                    lang={dxContext.lang}
+                                    path={siteInfo.path}
+                                    lang={lang}
                                     onClose={this.closeMove}
                                 />}
 
@@ -78,19 +76,6 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                 {this.state.publication.open && <Publication
                                     {...this.state.publication}
                                     onClose={this.closePublication}
-                                />}
-
-                                {this.state.deletion.open && <Deletion
-                                    {...this.state.deletion}
-                                    {...this.state.loadParams}
-                                    path={dxContext.mainResourcePath}
-                                    lang={dxContext.lang}
-                                    onClose={this.closeDeletion}
-                                />}
-
-                                {this.state.publishDeletion.open && <PublishDeletion
-                                    {...this.state.publishDeletion}
-                                    onClose={this.closePublishDeletion}
                                 />}
                             </>
                         );

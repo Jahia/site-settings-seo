@@ -68,7 +68,7 @@ class SearchBarCmp extends React.Component {
         }.bind(this), 1000);
     }
 
-    onClear(e) {
+    onClear() {
         this.inputSearchBar.value = '';
         this.props.onChangeFilter('');
         this.onBlur();

@@ -11,6 +11,9 @@ const TableQuery = gql`
                 }
                 nodes {
                     ...NodeCacheRequiredFields
+                    mixinTypes{
+                        name
+                    }
                     displayName(language: $lang)
                     ...DefaultVanityUrls
                     ...LiveVanityUrls
@@ -57,37 +60,4 @@ const GetNodeQuery = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-const LanguagesQuery = gql`
-    query LanguagesQuery($path: String!) {
-        jcr {
-            nodeByPath(path: $path) {
-                ...NodeCacheRequiredFields
-                site {
-                    ...NodeCacheRequiredFields
-                    languages {
-                        code: language
-                        name: displayName
-                        activeInEdit
-                    }
-                }
-            }
-        }
-    }
-    ${PredefinedFragments.nodeCacheRequiredFields.gql}
-`;
-
-const SiteNodeQuery = gql`
-    query GetNodeQuery($sitePath:String!) {
-        jcr {
-            nodeByPath(path:$sitePath) {
-                ...NodeCacheRequiredFields
-                displayName,
-                uuid,
-                path
-            }
-        }
-    }
-    ${PredefinedFragments.nodeCacheRequiredFields.gql}
-`;
-
-export {TableQuery, LanguagesQuery, GetNodeQuery, VanityUrlsByPath, VanityUrlsByPathVariables, SiteNodeQuery};
+export {TableQuery, GetNodeQuery, VanityUrlsByPath, VanityUrlsByPathVariables};

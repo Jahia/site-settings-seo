@@ -25,14 +25,6 @@
         "text": "Enter URL",
         "title": "Add Vanity URL"
       },
-      "delete": {
-        "content": "Note: if you want to use a Vanity URL on a different page, it is advised to reassign it instead of deleting it.",
-        "delete": "Delete",
-        "headline": "Are you sure you want to delete the canonical (default) vanity URL?",
-        "headline_plural": "Are you sure you want to delete the canonical (default) vanity URLs?",
-        "terms": "I understand that this cannot be undone",
-        "title": "Delete canonical (default) vanity URL"
-      },
       "infoButton": {
         "moveAction": "Vanity URLs of this page will be removed when {{pagePath}} is published",
         "notPublished": "Several vanity URLs will be defined as canonical until publication of {{pagePath}}"
@@ -48,12 +40,6 @@
         "content": "Are you sure you want to publish the selected vanity URL(s)? Publication will be started as a background job.",
         "publish": "Publish",
         "title": "Confirm Publication"
-      },
-      "publishdeletion": {
-        "content": "It is not possible to delete Live Vanity URL individually, so please note that all of the listed Live Vanity URL(s) will be deleted.",
-        "headline": "You are about to delete the following Live Vanity URL",
-        "headline_plural": "You are about to delete multiple Live Vanity URLs",
-        "title": "Delete Live Vanity URLs"
       }
     },
     "errors": {
@@ -97,15 +83,12 @@
     "mappings": {
       "default": "Staging vanity URLs",
       "live": "Live vanity URLs",
-      "missingDefault": "Deleted {{vanityUrl}}",
       "movedDefault": "Moved to {{page}}"
     },
     "notifications": {
-      "deletionConfirmed": "Deleted",
       "moveConfirmed": "Moved",
       "newMappingCreated": "New vanity URL(s) created",
       "newMappingCreatedAndPublished": "New vanity URL(s) added, publication job started in background",
-      "publicationDeletionConfirmed": "Deleted. Publication job started in background",
       "publicationStarted": "Publication job started in background"
     },
     "messages": {

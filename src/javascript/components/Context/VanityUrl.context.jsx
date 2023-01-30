@@ -1,13 +1,12 @@
 import React, {useContext} from 'react';
 import * as PropTypes from 'prop-types';
-import {useQuery} from 'react-apollo';
-import {LanguagesQuery} from '../gqlQueries';
+import {useSiteInfo} from '@jahia/data-helper';
 
 export const VanityUrlContext = React.createContext({});
 export const useVanityUrlContext = () => useContext(VanityUrlContext);
 
-export const VanityUrlContextProvider = ({path, children}) => {
-    const {data, loading, error} = useQuery(LanguagesQuery, {variables: {path: path}});
+export const VanityUrlContextProvider = ({siteKey, children}) => {
+    const {data, loading, error} = useSiteInfo({siteKey: siteKey, displayLanguage: window.contextJsParameters.lang});
 
     if (error) {
         return <>{error.message}</>;
@@ -17,13 +16,20 @@ export const VanityUrlContextProvider = ({path, children}) => {
         return (<></>);
     }
 
+    const site = data?.jcr?.result?.site || {};
+
     const context = {
-        languages: data?.jcr?.nodeByPath?.site?.languages
+        languages: site?.languages
             ?.filter(language => language.activeInEdit)
             .sort(function (a, b) {
-                return a.code.localeCompare(b.code);
+                return a.language.localeCompare(b.language);
             }),
-        lang: window.contextJsParameters.lang
+        lang: window.contextJsParameters.lang,
+        siteInfo: {
+            displayName: site.displayName,
+            uuid: site.uuid,
+            path: site.path
+        }
     };
 
     return (
@@ -34,6 +40,6 @@ export const VanityUrlContextProvider = ({path, children}) => {
 };
 
 VanityUrlContextProvider.propTypes = {
-    path: PropTypes.string.isRequired,
+    siteKey: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired
 };

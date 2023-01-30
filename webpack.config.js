@@ -62,15 +62,25 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.scss$/i,
+                    include: [path.join(__dirname, 'src')],
                     sideEffects: true,
                     use: [
-                        'style-loader',
+                        {
+                            loader: 'style-loader',
+                            options: {
+                                insert: "body",
+                                attributes: {
+                                    styleloader: true
+                                }
+                            }
+                        },
                         // Translates CSS into CommonJS
                         {
                             loader: 'css-loader',
                             options: {
                                 modules: {
-                                    mode: 'local'
+                                    mode: 'local',
+                                    localIdentName: "[path][name]__[local]--[hash:base64:5]",
                                 }
                             }
                         },

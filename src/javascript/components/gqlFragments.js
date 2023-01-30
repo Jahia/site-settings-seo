@@ -7,6 +7,9 @@ const DefaultVanityUrlFields = gql`fragment DefaultVanityUrlFields on VanityUrl 
         default
         url
         language
+        mixinTypes{
+            name
+        }
         targetNode {
             ...NodeCacheRequiredFields
         }

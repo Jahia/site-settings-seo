@@ -20,11 +20,6 @@
     "lint": "yarn lint:js && yarn lint:scss",
     "lint:fix": "yarn lint:js:fix && yarn lint:scss:fix"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": ""
-    }
-  },
   "description": "Site Settings Seo for Jahia",
   "main": "index.js",
   "repository": "git@github.com:Jahia/site-settings-seo.git",
@@ -38,12 +33,10 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
     "@jahia/data-helper": "^1.0.0",
-    "@jahia/design-system-kit": "^1.1.11",
     "@jahia/moonstone": "^2.2.1",
     "@jahia/react-material": "^3.0.1",
     "@jahia/ui-extender": "^1.0.0",
     "@material-ui/core": "^3.6.2",
-    "classnames": "^2.2.5",
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
     "i18next": "^19.0.3",
@@ -52,8 +45,7 @@
     "react": "^16.8.4",
     "react-apollo": "^3.1.5",
     "react-dom": "^16.8.4",
-    "react-i18next": "^11.2.7",
-    "react-redux": "^7.2.0"
+    "react-i18next": "^11.2.7"
   },
   "resolutions": {
     "graphql": "15.4.0",
@@ -91,7 +83,6 @@
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
     "file-loader": "^2.0.0",
-    "husky": "^3.0.5",
     "jest": "^24.9.0",
     "rimraf": "^2.6.2",
     "sass": "^1.55.0",

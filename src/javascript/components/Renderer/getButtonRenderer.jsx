@@ -3,9 +3,9 @@ import {Button, Report} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './getButtonRenderer.scss';
-//Copy of the button renderer from content editor
-//The code has been copied here because the ButtonRenderer from content editor is available from the version 4.3.0 of content editor
-//TODO this could be removed once CE 4.3.0 is the minimal version of content-editor
+// Copy of the button renderer from content editor
+// The code has been copied here because the ButtonRenderer from content editor is available from the version 4.3.0 of content editor
+// TODO this could be removed once CE 4.3.0 is the minimal version of content-editor
 export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {}) => {
     const ButtonRenderer = props => {
         const {addWarningBadge, buttonLabelNamespace, buttonLabelShort, buttonLabel, isVisible, buttonLabelParams, buttonIcon, actionKey, enabled, disabled, onClick, buttonProps, dataSelRole, className} = props;
@@ -73,3 +73,5 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
 };
 
 export const ButtonRenderer = getButtonRenderer();
+export const ButtonRendererNoLabel = getButtonRenderer({labelStyle: 'none'});
+

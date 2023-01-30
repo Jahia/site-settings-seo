@@ -1,31 +1,29 @@
 import React from 'react';
 import {MuiThemeProvider} from '@material-ui/core';
 import {ProgressOverlay, NotificationProvider, legacyTheme} from '@jahia/react-material';
-import * as _ from 'lodash';
 import {VanityMutationsProvider} from './VanityMutationsProvider';
-import {withSite} from './SiteConnector';
 import {VanityUrlContextProvider} from './Context/VanityUrl.context';
+import * as PropTypes from 'prop-types';
 
-const SiteSettingsSeo = _.flowRight(
-    withSite()
-)(function (props) {
-    if (!props.dxContext.mainResourcePath) {
+export const SiteSettingsSeoWrapper = ({dxContext, component: Component, ...props}) => {
+    if (!dxContext.siteKey) {
         return <ProgressOverlay/>;
     }
 
-    const {component: Component, ...otherProps} = props;
-
     return (
         <MuiThemeProvider theme={legacyTheme}>
-            <VanityUrlContextProvider path={props.dxContext.mainResourcePath}>
+            <VanityUrlContextProvider siteKey={dxContext.siteKey}>
                 <NotificationProvider notificationContext={{}}>
-                    <VanityMutationsProvider lang={props.dxContext.lang} vanityMutationsContext={{}}>
-                        <Component {...otherProps}/>
+                    <VanityMutationsProvider lang={dxContext.lang} vanityMutationsContext={{}}>
+                        <Component {...dxContext} {...props}/>
                     </VanityMutationsProvider>
                 </NotificationProvider>
             </VanityUrlContextProvider>
         </MuiThemeProvider>
     );
-});
+};
 
-export default SiteSettingsSeo;
+SiteSettingsSeoWrapper.propTypes = {
+    dxContext: PropTypes.object.isRequired,
+    component: PropTypes.elementType.isRequired
+};

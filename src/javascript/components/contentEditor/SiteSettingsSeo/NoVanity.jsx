@@ -8,7 +8,7 @@ import * as PropTypes from 'prop-types';
 
 export const NoVanity = ({path}) => {
     const {t} = useTranslation('site-settings-seo');
-    const {languages, lang} = useVanityUrlContext();
+    const {lang} = useVanityUrlContext();
     const [loading, setLoading] = useState(false);
     return (
         <div className={classes.noVanity}>
@@ -16,7 +16,6 @@ export const NoVanity = ({path}) => {
                 <Loader size="big"/> :
                 <AddVanityUrl path={path}
                               lang={lang}
-                              availableLanguages={languages}
                               setParentLoading={setLoading}
                 >
                     {showInput => !showInput && (

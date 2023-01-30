@@ -22,14 +22,6 @@
         "text": "Entrer une URL",
         "title": "Ajouter URL"
       },
-      "delete": {
-        "content": "Note: Si vous voulez utiliser une URL sur une autre page, il est préférable de la déplacer plutôt que de la supprimer.",
-        "delete": "Effacer",
-        "headline": "Êtes-vous sûr de vouloir supprimer l'URL personnalisée suivante ?",
-        "headline_plural": "Êtes-vous sûr de vouloir supprimer les URLs personnalisées suivantes ?",
-        "terms": "Je comprend que cette opération ne peut être annulée.",
-        "title": "Suppression d'URLs"
-      },
       "infoButton": {
         "moveAction": "Cette URL sera supprimée lorsque {{pagePath}} sera publiée",
         "notPublished": "Plusieurs URLs seront considérées par défaut jusqu'à publication du contenu {{pagePath}}"
@@ -45,12 +37,6 @@
         "content": "Êtes-vous sûr de vouloir publier les URLs sélectionnées ? La publication sera démarrée en tâche de fond.",
         "publish": "Publier",
         "title": "Confirmation de publication"
-      },
-      "publishdeletion": {
-        "content": "Il n'est pas possible de supprimer des URLs en ligne individuellement. Les URLs en ligne listées ci-dessous vont être supprimées",
-        "headline": "Vous êtes sur le point de supprimer l'URL en ligne suivante.",
-        "headline_plural": "Vous êtes sur le point de supprimer plusieurs URLs en ligne",
-        "title": "Suppression d'URLs en ligne"
       }
     },
     "errors": {
@@ -94,15 +80,12 @@
     "mappings": {
       "default": "URLs personnalisées d'édition",
       "live": "URLs personnalisées en ligne",
-      "missingDefault": "{{vanityUrl}} supprimée",
       "movedDefault": "Déplacée vers {{page}}"
     },
     "notifications": {
-      "deletionConfirmed": "Supprimé",
       "moveConfirmed": "Déplacé",
       "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)",
       "newMappingCreatedAndPublished": "Nouvelle(s) URL(s) ajoutée(s), job de publication lancé en arrière plan",
-      "publicationDeletionConfirmed": "Supprimé. Job de publication lancé en arrière plan",
       "publicationStarted": "Job de publication lancé en arrière plan"
     },
     "messages": {

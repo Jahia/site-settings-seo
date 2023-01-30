@@ -5,7 +5,7 @@ const TableQuery = gql`
     query NodesQuery($query: String!, $lang: String!, $filterText: String = "", $doFilter: Boolean!, $languages: [String!], $queryFilter: InputFieldFiltersInput) {
         jcr {
             nodesByQuery(query: $query, queryLanguage: XPATH, fieldFilter: $queryFilter) {
-                    nodes {
+                nodes {
                     ...NodeCacheRequiredFields
                     displayName(language: $lang)
                     ...DefaultVanityUrls

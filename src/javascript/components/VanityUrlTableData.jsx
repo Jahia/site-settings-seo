@@ -1,7 +1,6 @@
 import React from 'react';
 import {useQuery} from 'react-apollo';
 import {useNotifications} from '@jahia/react-material';
-import * as _ from 'lodash';
 import {TableQuery} from './gqlQueries';
 import {useTranslation} from 'react-i18next';
 import {buildTableQueryVariablesAllVanity, gqlContentNodeToVanityUrlPairs} from './Utils/Utils';
@@ -35,7 +34,7 @@ export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, chil
             let allUrlPairs;
             if (filterText) {
                 allUrlPairs = gqlContentNodeToVanityUrlPairs(node, 'allVanityUrls');
-                urlPairs = _.filter(allUrlPairs, urlPair => _.find(urlPairs, url => url.uuid === urlPair.uuid));
+                urlPairs = allUrlPairs.filter(pairFromAllPair => urlPairs.find(urlPair => pairFromAllPair.uuid === urlPair.uuid));
             }
 
             return {
@@ -56,5 +55,5 @@ VanityUrlTableData.propTypes = {
     totalCount: PropTypes.number,
     pageSize: PropTypes.number,
     poll: PropTypes.number,
-    children: PropTypes.array
+    children: PropTypes.elementType
 };

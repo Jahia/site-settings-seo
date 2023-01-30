@@ -1,29 +1,28 @@
 import React from 'react';
 import {Dropdown} from '@jahia/moonstone';
+import * as PropTypes from 'prop-types';
+import {useVanityUrlContext} from './Context/VanityUrl.context';
 
-class LanguageMenu extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+export const LanguageMenu = ({languageCode, onLanguageSelected, isDisabled}) => {
+    const {languages} = useVanityUrlContext();
 
-    handleSelect(languageCode) {
-        this.props.onLanguageSelected(languageCode);
-    }
+    return (
+        <Dropdown
+            variant="outlined"
+            label={languageCode}
+            value={languageCode}
+            isDisabled={isDisabled}
+            size="small"
+            data-sel-role="vanity-language-menu"
+            data={languages.map(lang => ({label: `${lang.displayName} (${lang.language})`, value: lang.language, attributes: {'data-sel-value': lang.language}}))}
+            onChange={(e, item) => onLanguageSelected(item.value)}
+        />
+    );
+};
 
-    render() {
-        const {languageCode, languages} = this.props;
+LanguageMenu.propTypes = {
+    languageCode: PropTypes.string.isRequired,
+    isDisabled: PropTypes.bool,
+    onLanguageSelected: PropTypes.func.isRequired
+};
 
-        return (
-            <Dropdown
-                variant="outlined"
-                label={languageCode}
-                value={languageCode}
-                size="small"
-                data={languages.map(lang => ({label: `${lang.name} (${lang.code})`, value: lang.code}))}
-                onChange={(e, item) => this.handleSelect(item.value)}
-            />
-        );
-    }
-}
-
-export {LanguageMenu};
