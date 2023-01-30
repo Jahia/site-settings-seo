@@ -24,10 +24,9 @@
 
 <h2 data-sel="without-seo-link">TEMPLATE SET  WITHOUT SEO LINKS</h2>
 
-<div class="bodywrapper"><!--start bodywrapper-->
+<div class="bodywrapper">
     <template:area path="pagecontent"/>
 </div>
-<!--stop bodywrapper-->
 
 <c:if test="${renderContext.editMode}">
     <template:addResources type="css" resources="edit.css" />

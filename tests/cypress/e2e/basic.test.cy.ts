@@ -6,7 +6,7 @@ describe("Basic tests of the module's seo filter", () => {
     const homePath = sitePath + '/home'
     const templateSet = 'site-settings-seo-test-module'
 
-    const createPage = (parent, name, template = undefined) => {
+    const createPage = (parent, name, template) => {
         cy.apollo({
             variables: {
                 parentPathOrId: parent,

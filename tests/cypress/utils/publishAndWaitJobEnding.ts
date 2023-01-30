@@ -1,8 +1,8 @@
-export const publishAndWaitJobEnding = (path: string): void => {
+export const publishAndWaitJobEnding = (path: string, languages: string[] = ['en']) => {
     cy.apollo({
         variables: {
             pathOrId: path,
-            languages: ['en'],
+            languages: languages,
             publishSubNodes: true,
             includeSubTree: true,
         },
