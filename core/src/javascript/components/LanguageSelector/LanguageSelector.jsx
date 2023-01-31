@@ -1,14 +1,13 @@
 import React from 'react';
-import * as _ from 'lodash';
 import {withTranslation} from 'react-i18next';
 import {Checkbox, ListItemText, MenuItem, Select} from '@material-ui/core';
 import scssStyles from './LanguageSelector.scss';
 
 const MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED = 2;
 
-function getSelectedLanguageCodes(selected) {
+function getNotNullLanguages(selected) {
     // Filter out the All Languages fake (null) language code when handling menu events.
-    return _.filter(selected, (selected => selected != null));
+    return selected.filter(selected => selected);
 }
 
 class LanguageSelector extends React.Component {
@@ -31,12 +30,12 @@ class LanguageSelector extends React.Component {
     }
 
     onChange(event) {
-        let selectedLanguageCodes = getSelectedLanguageCodes(event.target.value);
+        let selectedLanguageCodes = getNotNullLanguages(event.target.value);
         this.props.onSelectionChange(selectedLanguageCodes);
     }
 
     getSelectedLanguagesValue(selected) {
-        let selectedLanguageCodes = _.sortBy(getSelectedLanguageCodes(selected));
+        let selectedLanguageCodes = getNotNullLanguages(selected).sort();
 
         if (selectedLanguageCodes.length === 0) {
             return this.props.t('label.languageSelector.noLanguages');
@@ -46,7 +45,8 @@ class LanguageSelector extends React.Component {
             return this.props.t('label.languageSelector.allLanguages');
         }
 
-        let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => _.find(this.props.languages, language => language.language === selectedLanguageCode).displayName);
+        let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => this.props.languages.find(language => language.language === selectedLanguageCode)?.displayName);
+        selectedLanguageNames = getNotNullLanguages(selectedLanguageNames).sort();
         if (selectedLanguageNames.length > MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED) {
             // (Too) many languages selected: will display a part of them, plus "N more languages".
             selectedLanguageNames = selectedLanguageNames.slice(0, MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED - 1);
