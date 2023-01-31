@@ -15,7 +15,7 @@
                 <repository>
                     <id>jahia-internal</id>
                     <name>Jahia Internal Repository</name>
-                    <url>https://devtools.jahia.com/nexus/content/groups/internal/</url>
+                    <url>${env.NEXUS_INTERNAL_URL}</url>
                     <releases>
                         <enabled>true</enabled>
                         <updatePolicy>never</updatePolicy>
@@ -60,12 +60,19 @@
             <password>${env.NEXUS_PASSWORD}</password>
         </server>
         <server>
+            <id>jahia-enterprise-snapshots</id>
+            <username>${env.NEXUS_USERNAME}</username>
+            <password>${env.NEXUS_PASSWORD}</password>
+        </server>
+        <server>
+            <id>jahia-enterprise-releases</id>
+            <username>${env.NEXUS_USERNAME}</username>
+            <password>${env.NEXUS_PASSWORD}</password>
+        </server>
+        <server>
             <id>staging-repository</id>
             <username>${env.NEXUS_USERNAME}</username>
             <password>${env.NEXUS_PASSWORD}</password>
         </server>
     </servers>
-    <pluginGroups>
-        <pluginGroup>org.owasp</pluginGroup>
-    </pluginGroups>
 </settings>
