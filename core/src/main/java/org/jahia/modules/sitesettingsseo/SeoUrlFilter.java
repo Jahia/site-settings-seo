@@ -84,25 +84,30 @@ public class SeoUrlFilter extends AbstractFilter {
     @Override
     public String execute(String previousOut, RenderContext renderContext, Resource resource, RenderChain chain) throws Exception {
         Source source = new Source(previousOut);
-        OutputDocument od = new OutputDocument(source);
-        List<Element> headList = source.getAllElements(HTMLElementName.HEAD);
-        if (!headList.isEmpty() && !isCanonicalOrAlternateLinkExist(headList)) {
-            initUrlGenerator(renderContext, resource);
-            JCRNodeWrapper node = resource.getNode();
+         List<Element> headList = source.getAllElements(HTMLElementName.HEAD);
+        if (!headList.isEmpty()) {
+            Element rootHeadList = headList.get(0);
 
-            // Get all valid languages for current node
-            Set<String> langs = getActiveLanguages(renderContext, node);
-            // Get all valid vanities for current node
-            Map<String, String> vanities = getActiveVanityUrls(node, langs);
+            if(!isCanonicalOrAlternateLinkExist(rootHeadList)) {
+                OutputDocument od = new OutputDocument(source);
+                initUrlGenerator(renderContext, resource);
+                JCRNodeWrapper node = resource.getNode();
 
-            // Generate the links based on all active languages and available precalculated vanities
-            String finalOutPutLink = langs.stream()
-                    .map(ThrowingFunction.unchecked(lang -> getLinkForLang(node, vanities, lang, renderContext)))
-                    .collect(Collectors.joining("\n"));
+                // Get all valid languages for current node
+                Set<String> langs = getActiveLanguages(renderContext, node);
+                // Get all valid vanities for current node
+                Map<String, String> vanities = getActiveVanityUrls(node, langs);
 
-            StartTag et = headList.get(0).getStartTag();
-            od.replace(et.getEnd(), et.getEnd(), finalOutPutLink);
-            return od.toString();
+                // Generate the links based on all active languages and available precalculated vanities
+                String finalOutPutLink = langs.stream()
+                        .map(ThrowingFunction.unchecked(lang -> getLinkForLang(node, vanities, lang, renderContext)))
+                        .collect(Collectors.joining("\n"));
+
+                StartTag et = rootHeadList.getStartTag();
+                od.replace(et.getEnd(), et.getEnd(), finalOutPutLink);
+                return od.toString();
+            }
+
         }
         return previousOut;
     }
@@ -202,8 +207,8 @@ public class SeoUrlFilter extends AbstractFilter {
         return SettingsBean.getInstance().isUrlRewriteSeoRulesEnabled();
     }
 
-    private static boolean isCanonicalOrAlternateLinkExist(List<Element> headList) {
-        for (Element link : headList.get(0).getAllElements(HTMLElementName.LINK)) {
+    private static boolean isCanonicalOrAlternateLinkExist(Element rootHeadList) {
+        for (Element link : rootHeadList.getAllElements(HTMLElementName.LINK)) {
             String rel = link.getAttributeValue("rel");
             if (rel != null && (rel.equals("canonical") || rel.equals("alternate"))) {
                 return true;
