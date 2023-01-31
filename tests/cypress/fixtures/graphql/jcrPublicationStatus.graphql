@@ -1,4 +1,4 @@
-query ($path: String!, $language: string = 'en')) {
+query ($path: String!, $language: string = "en") {
     jcr {
         nodeByPath(path: $path) {
             uuid
