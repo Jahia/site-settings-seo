@@ -36,12 +36,6 @@
     <packaging>bundle</packaging>
     <name>Site Settings - SEO Project</name>
     <description>This is the custom module (Site Settings - SEO) for running on a Digital Experience Manager server.</description>
-    <scm>
-        <connection>scm:git:git@github.com:Jahia/site-settings-seo.git</connection>
-        <developerConnection>scm:git:git@github.com:Jahia/site-settings-seo.git</developerConnection>
-        <url>scm:git:git@github.com:Jahia/site-settings-seo.git</url>
-      <tag>HEAD</tag>
-    </scm>
     <properties>
         <jahia-depends>default,siteSettings,graphql-dxm-provider</jahia-depends>
         <jahia-module-type>system</jahia-module-type>
