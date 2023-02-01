@@ -28,17 +28,20 @@
   }
 }
 
+.notPublished {
+  box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-notPublished);
+}
+
 .toBePublished {
-  box-shadow: inset 7px 0 0 0 #FB9926;
+  box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-modified);
 }
 
 .isPublished {
-  box-shadow: inset 7px 0 0 0 #08D000;
-  color: rgb(228, 174, 28);
+  box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-published);
 }
 
 .isMarkedForDeletion {
-  box-shadow: inset 7px 0 0 0 #CC0000
+  box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-markedForDeletion);
 }
 
 .tableRow {
