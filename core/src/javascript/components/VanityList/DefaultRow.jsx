@@ -38,7 +38,7 @@ export const DefaultRow = ({
         const statuses = [
             {key: 'PUBLISHED', value: classes.isPublished},
             {key: 'MODIFIED', value: classes.toBePublished},
-            {key: 'NOT_PUBLISHED', value: classes.toBePublished},
+            {key: 'NOT_PUBLISHED', value: classes.notPublished},
             {key: 'MARKED_FOR_DELETION', value: classes.isMarkedForDeletion}
         ];
 
@@ -49,7 +49,7 @@ export const DefaultRow = ({
                       className={clsx(classes.tableRow, {[classes.inactive]: !url.active})}
                       classes={{
                           root: classes.vanityUrl,
-                          hover: (statuses.find(status => status.key === url.publicationInfo.publicationStatus).value)
+                          hover: (isMarkedForDeletion ? classes.isMarkedForDeletion : statuses.find(status => status.key === url.publicationInfo.publicationStatus).value)
                       }}
                       data-vud-url={url.url}
                       data-sel-marked-for-deletion={isMarkedForDeletion}

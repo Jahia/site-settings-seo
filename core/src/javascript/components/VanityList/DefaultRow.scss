@@ -28,6 +28,10 @@
   }
 }
 
+.notPublished {
+  box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-notPublished);
+}
+
 .toBePublished {
   box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-modified);
 }
