@@ -38,8 +38,7 @@ export const DefaultRow = ({
         const statuses = [
             {key: 'PUBLISHED', value: classes.isPublished},
             {key: 'MODIFIED', value: classes.toBePublished},
-            {key: 'NOT_PUBLISHED', value: classes.notPublished},
-            {key: 'MARKED_FOR_DELETION', value: classes.isMarkedForDeletion}
+            {key: 'NOT_PUBLISHED', value: classes.notPublished}
         ];
 
         const isMarkedForDeletion = url.publicationInfo.publicationStatus === 'MARKED_FOR_DELETION' || url.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion');
