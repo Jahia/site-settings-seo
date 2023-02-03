@@ -85,7 +85,7 @@ export const DefaultRow = ({
                 </TableCell>
                 <TableCell width="120px">
                     <div className={classes.chipContainer}>
-                        {url.default ? <Chip color="accent" label="Canonical"/> : null}
+                        {url.default ? <Chip color="accent" label="Canonical" className={clsx({[classes.chipWithMargin]: isMarkedForDeletion})}/> : null}
                         {isMarkedForDeletion ? <Chip color="danger" icon={<Lock/>}/> : null}
                     </div>
                 </TableCell>
