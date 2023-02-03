@@ -100,10 +100,14 @@
 
 .chipContainer {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
   flex-direction: row;
+}
+
+.chipWithMargin {
+  margin-right: var(--spacing-small);
 }
 
 .deletedUrl {
