@@ -117,10 +117,12 @@ export const DefaultRow = ({
 
     return (
         <TableRow key={urlPair.uuid} className={clsx(classes.vanityUrl, classes.tableRow)}>
-            <TableCell colSpan={7} className={classes.missingDefault}>
-                {urlPair.live && urlPair.live.editNode ? (
+            <TableCell colSpan={6} className={classes.missingDefault}>
+                <Typography>
+                    {urlPair.live && urlPair.live.editNode ? (
                         t('label.mappings.movedDefault', {page: urlPair.live.editNode.targetNode.displayName})
                     ) : ''}
+                </Typography>
             </TableCell>
         </TableRow>
     );
