@@ -34,3 +34,9 @@
   color: #504e4d;
   table-layout: fixed;
 }
+
+.theadRow {
+  height: 0 !important;
+  pointer-events: none;
+  border: unset;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as _ from 'lodash';
-import {Checkbox, Paper, Table, TableBody} from '@material-ui/core';
-import {Typography} from '@jahia/moonstone';
+import {Checkbox, Paper, Table, TableBody, TableRow} from '@material-ui/core';
+import {TableHead, TableHeadCell, Typography} from '@jahia/moonstone';
 import classes from './VanityUrlListDefault.scss';
 import {useTranslation} from 'react-i18next';
 import {DefaultRow} from './DefaultRow';
@@ -48,6 +48,16 @@ export const VanityUrlListDefault = ({
             </Typography>
             <Paper elevation={2} className={classes.vanityGroupPaper}>
                 <Table className={classes.table}>
+                    <TableHead>
+                        <TableRow className={classes.theadRow}>
+                            <TableHeadCell/>
+                            <TableHeadCell width="55px"/>
+                            <TableHeadCell width="100%"/>
+                            <TableHeadCell width="120px"/>
+                            <TableHeadCell width="90px"/>
+                            <TableHeadCell width="40px"/>
+                        </TableRow>
+                    </TableHead>
                     <TableBody data-vud-table-body-default={contentUuid}>
                         {vanityUrls.map(urlPair => (
                             <DefaultRow key={urlPair.uuid}
