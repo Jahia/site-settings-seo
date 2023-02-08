@@ -36,7 +36,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                 <div className={classes.dropdownDiv}>
                                     {!isEmpty && this.getWorkspaceDropdown({
                                         t,
-                                        maxWidth: 'fit-content'
+                                        classes
                                     })}
                                 </div>
                                 <div className={classes.seoCardLayout}>
