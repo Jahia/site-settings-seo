@@ -99,7 +99,14 @@ const styles = theme => ({
     },
     cell: {
         borderBottom: 'unset',
-        padding: '4px 5px 4px 24px'
+        padding: '4px 6px 4px 0px'
+    },
+    cellFirst: {
+        paddingLeft: '6px!important',
+        paddingRight: '4px!'
+    },
+    cellLast: {
+        paddingRight: '6px!important'
     },
     textbox: {
         fontSize: '1.2rem'
@@ -113,7 +120,8 @@ const styles = theme => ({
         padding: '13px 10px 10px 10px'
     },
     cellCanonical: {
-        minWidth: '150px'
+        minWidth: '150px',
+        padding: '4px 6px 4px 24px'
     },
     setCanonical: {
         marginRight: 'unset',
@@ -124,8 +132,14 @@ const styles = theme => ({
     chooseLanguage: {
         width: '90px',
         '& div div': {
-            width: '80px',
+            width: '80px'
         }
+    },
+    switchBase: {
+        width: '38px'
+    },
+    switchChecked: {
+        width: 'inherit'
     }
 
 });
@@ -309,13 +323,13 @@ class AddVanityUrl extends React.Component {
                             let errorForRow = _.find(errors, error => error.url === entry.url || error.url === ('/' + entry.url));
                             return (
                                 <TableRow key={index} hover={false} className={classes.row} data-sel-role="new-vanity-url">
-                                    <TableCell className={classes.cell} width="5%">
-                                        <Switch
-                                            checked={entry.active}
-                                            data-vud-role="active"
-                                            onChange={(event, checked) => this.handleFieldChange('active', index, checked)}/>
+                                    <TableCell className={classes.cell + ' ' + classes.cellFirst} width="55px">
+                                        <Switch classes={{switchBase: classes.switchBase, checked: classes.switchChecked}}
+                                                checked={entry.active}
+                                                data-vud-role="active"
+                                                onChange={(event, checked) => this.handleFieldChange('active', index, checked)}/>
                                     </TableCell>
-                                    <TableCell className={classes.cell} width="80%">
+                                    <TableCell className={classes.cell} width="100%">
                                         <FormControl className={classes.root}>
                                             <Editable isCreateMode
                                                       onEdit={() => {
@@ -329,7 +343,7 @@ class AddVanityUrl extends React.Component {
                                         </FormControl>
 
                                     </TableCell>
-                                    <TableCell className={classes.cell + ' ' + classes.chooseLanguage} data-vud-role="language" width="5%">
+                                    <TableCell className={classes.cell + ' ' + classes.chooseLanguage} data-vud-role="language" width="90px">
                                         <LanguageMenu
                                                       languageCode={entry.language}
                                                       onLanguageSelected={languageCode => this.handleFieldChange('language', index, languageCode)}/>
@@ -338,9 +352,10 @@ class AddVanityUrl extends React.Component {
                                         <FormControlLabel control={<Checkbox checked={entry.defaultMapping}
                                                                              data-vud-role="default"
                                                                              onChange={(event, checked) => this.handleFieldChange('defaultMapping', index, checked)}/>}
-                                                          label={t('label.actions.canonical.set')} className={classes.setCanonical}/>
+                                                          label={t('label.actions.canonical.set')}
+                                                          className={classes.setCanonical}/>
                                     </TableCell>
-                                    <TableCell className={`${classes.cell} ${classes.buttonContainer}`}>
+                                    <TableCell className={classes.cell + ' ' + classes.cellLast + ' ' + classes.buttonContainer} width="150px">
                                         <div className={classes.actionButton}>
                                             <Button color="default"
                                                     variant="ghost"
