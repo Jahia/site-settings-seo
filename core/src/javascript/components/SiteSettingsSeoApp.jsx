@@ -296,7 +296,7 @@ class SiteSettingsSeoApp extends React.Component {
     }
 
     getWorkspaceDropdown(dropdownProps) {
-        const {t, maxWidth, label, value, data, onChange} = dropdownProps;
+        const {t, classes, label, value, data, onChange} = dropdownProps;
         return (
             <Dropdown
                 key="dropdown"
@@ -304,7 +304,7 @@ class SiteSettingsSeoApp extends React.Component {
                 name="workspaceDropdown"
                 isDisabled={false}
                 variant="ghost"
-                maxWidth={maxWidth || '300px'}
+                className={classes.workspaceDropdown}
                 label={label || t('label.workspace.' + this.state.workspace.key)}
                 value={value || this.state.workspace.value}
                 data={data || this.workspaceDropdownData}
@@ -352,7 +352,7 @@ class SiteSettingsSeoApp extends React.Component {
                                                        onBlur={this.onSearchBlur}/>
                                         </div>
                                     }
-                                    toolbarLeft={!rows[0] ? [] : [this.getWorkspaceDropdown({t})]}
+                                    toolbarLeft={!rows[0] ? [] : [this.getWorkspaceDropdown({t, classes})]}
                             />
 
                             <Toolbar selection={this.state.selection}
