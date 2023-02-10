@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useQuery} from 'react-apollo';
 import {useNotifications} from '@jahia/react-material';
 import {TableQuery} from './gqlQueries';
 import {useTranslation} from 'react-i18next';
 import {buildTableQueryVariablesAllVanity, gqlContentNodeToVanityUrlPairs} from './Utils/Utils';
 import * as PropTypes from 'prop-types';
+
+export const VanityUrlTableDataContext = React.createContext({});
+export const useVanityTableDataUrlContext = () => useContext(VanityUrlTableDataContext);
 
 export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, children, ...props}) => {
     const notificationContext = useNotifications();
@@ -47,7 +50,12 @@ export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, chil
         });
     }
 
-    return (<>{rows && children(rows, totalCount, numberOfPages)}</>);
+    const context = {rows: rows};
+    return (
+        <VanityUrlTableDataContext.Provider value={context}>
+            {rows && children(rows, totalCount, numberOfPages)}
+        </VanityUrlTableDataContext.Provider>
+    );
 };
 
 VanityUrlTableData.propTypes = {

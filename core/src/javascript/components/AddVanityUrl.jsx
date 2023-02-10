@@ -21,6 +21,8 @@ import {flowRight as compose} from 'lodash';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {Add, Button} from '@jahia/moonstone';
 import {Editable} from './Editable';
+import {atLeastOneCanonicalLockedForLang, getRowUrlsFromPath} from '~/components/Utils/Utils';
+import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
 
 const styles = theme => ({
     pickerRoot: {
@@ -31,7 +33,7 @@ const styles = theme => ({
         color: theme.palette.error.main
     },
     errorMessage: {
-        top: 'unset !important',
+        top: '-1px !important',
         background: 'unset !important'
     },
     root: {
@@ -144,13 +146,14 @@ const styles = theme => ({
 
 });
 
-class AddVanityUrl extends React.Component {
+class AddVanityUrlComponent extends React.Component {
     constructor(props) {
         super(props);
         // Get default language for the language selector
         this.defaultLanguage = this.props.lang;
 
         this.state = {
+            rows: this.props.rows,
             mappings: this._resetMap(),
             errors: [],
             doPublish: false,
@@ -187,6 +190,26 @@ class AddVanityUrl extends React.Component {
             delete entry.focus;
             return entry;
         });
+
+        const urls = getRowUrlsFromPath(this.state.rows, path);
+        const lang = mappings[0].language;
+
+        // Exit if there is a canonical lock for deletion for the current lang
+        if (mappings[0].defaultMapping === true && atLeastOneCanonicalLockedForLang(urls, lang)) {
+            const url = mappings[0].url;
+            const message = t('label.errors.CanonicalMappingError_message', {urlMapping: url});
+            const label = t('label.errors.CanonicalMappingError');
+            this.setState({
+                errors: _.map([message], error => {
+                    return {
+                        url: url,
+                        message: error,
+                        label
+                    };
+                })
+            });
+            return;
+        }
 
         try {
             vanityMutationsContext.add(path, mappings, this.props).then(result => {
@@ -380,11 +403,16 @@ class AddVanityUrl extends React.Component {
     }
 }
 
-AddVanityUrl = compose(
+AddVanityUrlComponent = compose(
     withVanityMutationContext(),
     withNotifications(),
     withStyles(styles),
     withTranslation('site-settings-seo')
-)(AddVanityUrl);
+)(AddVanityUrlComponent);
+
+const AddVanityUrl = props => {
+    const {rows} = useVanityTableDataUrlContext();
+    return (<AddVanityUrlComponent rows={rows} {...props}/>);
+};
 
 export default AddVanityUrl;
