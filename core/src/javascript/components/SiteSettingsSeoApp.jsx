@@ -326,7 +326,7 @@ class SiteSettingsSeoApp extends React.Component {
     render() {
         let {siteInfo, t, classes, lang, polling: globalPolling} = this.props;
         let polling = !(this.state.publication.open || this.state.move.open || this.state.infoButton.open);
-        let variables = buildTableQueryVariablesAllVanity({selectedLanguageCodes: this.state.loadParams.selectedLanguageCodes, path: siteInfo.path, lang: lang, poll: polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0, ...this.state.loadParams});
+        let variables = buildTableQueryVariablesAllVanity({selectedLanguageCodes: this.state.loadParams.selectedLanguageCodes, path: siteInfo.path, lang: lang, ...this.state.loadParams});
 
         return (
             <div className={classes.pageContainer}>
@@ -334,8 +334,6 @@ class SiteSettingsSeoApp extends React.Component {
                     {...this.state.loadParams}
                     tableQuery={DashboardTableQuery}
                     variables={variables}
-                    path={siteInfo.path}
-                    lang={lang}
                     poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
                 >
                     {(rows, totalCount) => (

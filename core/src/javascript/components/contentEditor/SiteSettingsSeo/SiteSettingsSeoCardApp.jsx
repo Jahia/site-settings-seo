@@ -22,7 +22,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
         let {path, t, lang, siteInfo} = this.props;
         let polling = !(this.state.publication.open ||
             this.state.move.open || this.state.infoButton.open);
-        let variables = buildTableQueryVariablesOneNode({selectedLanguageCodes: this.props.languages, path: path, lang: lang, poll: polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0, ...this.state.loadParams});
+        let variables = buildTableQueryVariablesOneNode({selectedLanguageCodes: this.props.languages, path: path, lang: lang, ...this.state.loadParams});
 
         return (
             <div>
@@ -30,8 +30,6 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                     {...this.state.loadParams}
                     tableQuery={ContentEditorTableQuery}
                     variables={variables}
-                    path={path}
-                    lang={lang}
                     poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
                 >
                     {rows => {
