@@ -15,6 +15,8 @@ import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {VanityUrlEnabledContent} from '~/components/VanityUrlEnabledContent';
 import {useVanityUrlContext} from './Context/VanityUrl.context';
 import {Toolbar} from './Toolbar/Toolbar';
+import {DashboardTableQuery} from '~/components/gqlQueries';
+import {buildTableQueryVariablesAllVanity} from '~/components/Utils/Utils';
 
 legacyTheme.overrides.MuiSelect.selectMenu.color = 'rgb(37, 43, 47)';
 modifyFontFamily();
@@ -324,11 +326,14 @@ class SiteSettingsSeoApp extends React.Component {
     render() {
         let {siteInfo, t, classes, lang, polling: globalPolling} = this.props;
         let polling = !(this.state.publication.open || this.state.move.open || this.state.infoButton.open);
+        let variables = buildTableQueryVariablesAllVanity({selectedLanguageCodes: this.state.loadParams.selectedLanguageCodes, path: siteInfo.path, lang: lang, poll: polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0, ...this.state.loadParams});
 
         return (
             <div className={classes.pageContainer}>
                 <VanityUrlTableData
                     {...this.state.loadParams}
+                    tableQuery={DashboardTableQuery}
+                    variables={variables}
                     path={siteInfo.path}
                     lang={lang}
                     poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}

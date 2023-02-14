@@ -22,7 +22,7 @@ export const atLeastOneMarkedForDeletion = urls => {
 };
 
 export const atLeastOneCanonicalLockedForLang = (urls, lang) => {
-    return urls.some(url => url.default.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion') && url.default.language === lang && url.default.default === true);
+    return urls.some(url => url.default.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion') && url.default.language === lang && url.default.default);
 };
 
 export const allNotPublishedAndMarkedForDeletion = urls => {

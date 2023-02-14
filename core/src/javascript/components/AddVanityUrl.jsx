@@ -191,24 +191,26 @@ class AddVanityUrlComponent extends React.Component {
             return entry;
         });
 
-        const urls = getRowUrlsFromPath(this.state.rows, path);
-        const lang = mappings[0].language;
+        if (this.props.rows.length > 0) {
+            const urls = getRowUrlsFromPath(this.props.rows, path);
+            const lang = mappings[0].language;
 
-        // Exit if there is a canonical lock for deletion for the current lang
-        if (mappings[0].defaultMapping === true && atLeastOneCanonicalLockedForLang(urls, lang)) {
-            const url = mappings[0].url;
-            const message = t('label.errors.CanonicalMappingError_message', {urlMapping: url});
-            const label = t('label.errors.CanonicalMappingError');
-            this.setState({
-                errors: _.map([message], error => {
-                    return {
-                        url: url,
-                        message: error,
-                        label
-                    };
-                })
-            });
-            return;
+            // Exit if there is a canonical lock for deletion for the current lang
+            if (mappings[0].defaultMapping && atLeastOneCanonicalLockedForLang(urls, lang)) {
+                const url = mappings[0].url;
+                const message = t('label.errors.CanonicalMappingError_message', {urlMapping: url});
+                const label = t('label.errors.CanonicalMappingError');
+                this.setState({
+                    errors: _.map([message], error => {
+                        return {
+                            url: url,
+                            message: error,
+                            label
+                        };
+                    })
+                });
+                return;
+            }
         }
 
         try {
@@ -309,8 +311,6 @@ class AddVanityUrlComponent extends React.Component {
     handleDialogEntered = () => {
         this.firstMappingInputRef.focus();
     };
-
-    inputTab = [];
 
     resetInput = input => {
         console.log('reset input');

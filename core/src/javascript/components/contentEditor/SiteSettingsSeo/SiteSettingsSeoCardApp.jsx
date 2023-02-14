@@ -2,13 +2,15 @@ import React from 'react';
 import InfoButton from '../../InfoButton';
 import Publication from '../../Publication';
 import Move from '../../Move';
-import {VanityUrlTableData} from '../VanityUrlTableData/VanityUrlTableData';
+import {VanityUrlTableData} from '~/components/VanityUrlTableData';
 import {assembleWithHoc, SiteSettingsSeoApp} from '../../SiteSettingsSeoApp';
 import {VanityUrlEnabledContent} from '../../VanityUrlEnabledContent';
 import SiteSettingsSeoConstants from '../../SiteSettingsSeoApp.constants';
 import classes from './SiteSettingsSeoCardApp.scss';
 import {NoVanity} from './NoVanity';
 import {Paper} from '@material-ui/core';
+import {ContentEditorTableQuery} from '~/components/gqlQueries';
+import {buildTableQueryVariablesOneNode} from '~/components/Utils/Utils';
 
 class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
     constructor(props) {
@@ -20,11 +22,14 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
         let {path, t, lang, siteInfo} = this.props;
         let polling = !(this.state.publication.open ||
             this.state.move.open || this.state.infoButton.open);
+        let variables = buildTableQueryVariablesOneNode({selectedLanguageCodes: this.props.languages, path: path, lang: lang, poll: polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0, ...this.state.loadParams});
 
         return (
             <div>
                 <VanityUrlTableData
                     {...this.state.loadParams}
+                    tableQuery={ContentEditorTableQuery}
+                    variables={variables}
                     path={path}
                     lang={lang}
                     poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}

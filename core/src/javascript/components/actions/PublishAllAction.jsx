@@ -1,7 +1,7 @@
 import React from 'react';
 import {useQuery} from 'react-apollo';
 import {useApolloClient} from '@apollo/react-hooks';
-import {TableQuery} from '../contentEditor/VanityUrlTableData/gqlQueries';
+import {ContentEditorTableQuery} from '~/components/gqlQueries';
 import {PublishMutation} from '../gqlMutations';
 import * as PropTypes from 'prop-types';
 import {useVanityUrlContext} from '../Context/VanityUrl.context';
@@ -15,7 +15,7 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
     const notificationContext = useNotifications();
     const {t} = useTranslation('site-settings-seo');
 
-    const {data, loading, error} = useQuery(TableQuery, {
+    const {data, loading, error} = useQuery(ContentEditorTableQuery, {
         fetchPolicy: 'network-only',
         variables: buildTableQueryVariablesOneNode({
             lang: window.contextJsParameters.lang,
