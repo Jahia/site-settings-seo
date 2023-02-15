@@ -49,6 +49,8 @@
         "used": "Cette URL est déjà utilisée",
         "used_message": "Cette URL est déjà utilisée par {{existingNodePath}}"
       },
+      "CanonicalMappingError" : "Une URL canonique est verrouillée pour suppression",
+      "CanonicalMappingError_message" : "{{urlMapping}} ne peut pas être définie comme canonique",
       "InvalidMappingError": "L'URL est invalide",
       "InvalidMappingError_message": "Une URL ne peut pas être vide",
       "InvalidCharError": "L'URL est invalide",

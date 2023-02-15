@@ -21,6 +21,10 @@ export const atLeastOneMarkedForDeletion = urls => {
     return urls.some(url => url.default.publicationInfo.publicationStatus === 'MARKED_FOR_DELETION' || url.default.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion'));
 };
 
+export const atLeastOneCanonicalLockedForLang = (urls, lang) => {
+    return urls.some(url => url.default.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion') && url.default.language === lang && url.default.default);
+};
+
 export const allNotPublishedAndMarkedForDeletion = urls => {
     return urls.every(url => !url.live && url.default.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion'));
 };
@@ -35,6 +39,13 @@ export const buildTableQueryVariablesOneNode = props => {
 
 export const buildTableQueryVariablesAllVanity = props => {
     return buildTableQueryVariables({query: 'select * from [jmix:vanityUrlMapped] as content where isDescendantNode(\'' + props.path + '\') order by [j:fullpath]', ...props});
+};
+
+export const getRowUrlsFromPath = (rows, path) => {
+    const targetRow = rows.find(row => {
+        return row.path === path;
+    });
+    return targetRow.allUrls || targetRow.urls;
 };
 
 export const gqlContentNodeToVanityUrlPairs = (gqlContentNode, vanityUrlsFieldName) => {

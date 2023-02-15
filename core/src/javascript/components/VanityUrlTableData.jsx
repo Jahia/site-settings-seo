@@ -1,17 +1,19 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useQuery} from 'react-apollo';
 import {useNotifications} from '@jahia/react-material';
-import {TableQuery} from './gqlQueries';
 import {useTranslation} from 'react-i18next';
-import {buildTableQueryVariablesAllVanity, gqlContentNodeToVanityUrlPairs} from './Utils/Utils';
+import {gqlContentNodeToVanityUrlPairs} from './Utils/Utils';
 import * as PropTypes from 'prop-types';
 
-export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, children, ...props}) => {
+export const VanityUrlTableDataContext = React.createContext({});
+export const useVanityTableDataUrlContext = () => useContext(VanityUrlTableDataContext);
+
+export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, children, tableQuery, variables}) => {
     const notificationContext = useNotifications();
     const {t} = useTranslation('site-settings-seo');
-    const {data, error} = useQuery(TableQuery, {
+    const {data, error} = useQuery(tableQuery, {
         fetchPolicy: 'network-only',
-        variables: buildTableQueryVariablesAllVanity({filterText: filterText, totalCount: totalCount, pageSize: pageSize, ...props}),
+        variables: variables,
         pollInterval: poll
     });
 
@@ -47,10 +49,17 @@ export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, chil
         });
     }
 
-    return (<>{rows && children(rows, totalCount, numberOfPages)}</>);
+    const context = {rows: rows};
+    return (
+        <VanityUrlTableDataContext.Provider value={context}>
+            {rows && children(rows, totalCount, numberOfPages)}
+        </VanityUrlTableDataContext.Provider>
+    );
 };
 
 VanityUrlTableData.propTypes = {
+    tableQuery: PropTypes.object,
+    variables: PropTypes.object,
     filterText: PropTypes.string,
     totalCount: PropTypes.number,
     pageSize: PropTypes.number,

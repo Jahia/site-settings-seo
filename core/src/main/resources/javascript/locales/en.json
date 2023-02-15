@@ -52,6 +52,8 @@
         "used": "Already in use",
         "used_message": "This vanity URL already points to {{existingNodePath}}"
       },
+      "CanonicalMappingError": "A canonical is locked for deletion",
+      "CanonicalMappingError_message": "{{urlMapping}} can not be set as canonical",
       "InvalidMappingError": "Invalid URL",
       "InvalidMappingError_message": "The vanity URL cannot be empty",
       "InvalidCharError": "Invalid URL",

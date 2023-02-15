@@ -5,7 +5,7 @@ import {graphql} from 'react-apollo/lib/index';
 import {flowRight as compose} from 'lodash';
 import * as gqlMutations from './gqlMutations';
 import * as _ from 'lodash';
-import {TableQuery, VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
+import {DashboardTableQuery, VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {
     InvalidMappingError,
@@ -51,7 +51,7 @@ class VanityMutationsProvider extends Component {
                     pathsOrIds: pathsOrIds,
                     target: target
                 }, refetchQueries: [{
-                    query: TableQuery,
+                    query: DashboardTableQuery,
                     variables: buildTableQueryVariablesAllVanity(props)
                 }]
             });

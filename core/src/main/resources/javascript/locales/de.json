@@ -52,6 +52,8 @@
         "used": "URL Mapping wird bereits verwendet.",
         "used_message": "URL Mapping wird bereits für {{param}} verwendet."
       },
+      "CanonicalMappingError": "Een canonical is vergrendeld voor verwijdering",
+      "CanonicalMappingError_message": "{{urlMapping}} kan niet worden ingesteld als canonical",
       "InvalidMappingError": "Die Vanity URL ist ungültig.",
       "InvalidMappingError_message": "Die Vanity URL darf nicht leer sein",
       "InvalidCharError": "Die Vanity URL ist ungültig",
