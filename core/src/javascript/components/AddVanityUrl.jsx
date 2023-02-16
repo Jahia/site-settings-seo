@@ -378,7 +378,7 @@ class AddVanityUrlComponent extends React.Component {
                                                           label={t('label.actions.canonical.set')}
                                                           className={classes.setCanonical}/>
                                     </TableCell>
-                                    <TableCell className={classes.cell + ' ' + classes.cellLast + ' ' + classes.buttonContainer} width="150px">
+                                    <TableCell className={classes.cell + ' ' + classes.cellLast + ' ' + classes.buttonContainer}>
                                         <div className={classes.actionButton}>
                                             <Button color="default"
                                                     variant="ghost"
