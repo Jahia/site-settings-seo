@@ -38,6 +38,7 @@ export const DefaultRow = ({
         const statuses = [
             {key: 'PUBLISHED', value: classes.isPublished},
             {key: 'MODIFIED', value: classes.toBePublished},
+            {key: 'CONFLICT', value: classes.notPublished},
             {key: 'NOT_PUBLISHED', value: classes.notPublished}
         ];
 
