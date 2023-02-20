@@ -28,7 +28,7 @@
         GNU General Public License for more details.
 
         You should have received a copy of the GNU General Public License
-        along with this program. If not, see <http://www.gnu.org/licenses/>.
+        along with this program. If not, see <http://www.gnu.org/licenses />.
 
 
         2/ JSEL - Commercial and Supported Versions of the program
@@ -44,20 +44,17 @@
         please contact the sales department at sales@jahia.com.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jahia.modules</groupId>
         <artifactId>site-settings-seo-parent</artifactId>
-        <version>3.6.0-SNAPSHOT</version>
+        <version>3.6.0</version>
     </parent>
     <groupId>org.jahia.test</groupId>
     <artifactId>site-settings-seo-test-module</artifactId>
     <name>Test module for site settings seo</name>
-    <version>3.6.0-SNAPSHOT</version>
+    <version>3.6.0</version>
     <packaging>bundle</packaging>
     <description>This is the custom profile module (templateSiteSettingsSEO) for running on a Jahia server.</description>
 
