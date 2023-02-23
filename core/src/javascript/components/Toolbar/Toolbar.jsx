@@ -1,8 +1,9 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {Close, Typography, Paper} from '@jahia/moonstone';
+import {Close, Typography} from '@jahia/moonstone';
 import classes from './Toolbar.scss';
 import * as PropTypes from 'prop-types';
+import {Paper} from '@material-ui/core';
 import clsx from 'clsx';
 import {DisplayActions} from '@jahia/ui-extender';
 

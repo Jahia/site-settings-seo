@@ -104,7 +104,10 @@ class VanityUrlEnabledContent extends React.Component {
             }
 
             localFilterSwitch = (
-                <Button className={classes.showToggle} data-vud-role="button-filter-switch" variant="ghost" label={filterSwitchButtonLabel}
+                <Button className={classes.showToggle}
+                        data-vud-role="button-filter-switch"
+                        variant="ghost"
+                        label={filterSwitchButtonLabel}
                         onClick={e => this.handleFilterSwitchClick(e)}/>
             );
         }
@@ -123,7 +126,9 @@ class VanityUrlEnabledContent extends React.Component {
 
                         {this.state.expanded ? <ChevronDown/> : <ChevronRight/>}
 
-                        <ListItemText inset primary={content.displayName} secondary={content.path}
+                        <ListItemText inset
+                                      primary={content.displayName}
+                                      secondary={content.path}
                                       className={classes.vanityUrlListHeaderText}
                                       data-vud-role="content-title"/>
                         {this.state.expanded &&
@@ -149,8 +154,11 @@ class VanityUrlEnabledContent extends React.Component {
                             </Grid>}
                         {(isLive || isBoth) &&
                             <Grid item xs={isLive ? 12 : 6}>
-                                <VanityUrlListLive vanityUrls={vanityUrls} filterText={filterText} actions={actions}
-                                                   contentUuid={content.uuid} workspace={workspace}/>
+                                <VanityUrlListLive vanityUrls={vanityUrls}
+                                                   filterText={filterText}
+                                                   actions={actions}
+                                                   contentUuid={content.uuid}
+                                                   workspace={workspace}/>
                             </Grid>}
                         {(isStaging || isBoth) &&
                             <Grid item xs={12}>

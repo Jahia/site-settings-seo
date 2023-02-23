@@ -5,14 +5,14 @@ import {ContentEditorTableQuery} from '~/components/gqlQueries';
 import {PublishMutation} from '../gqlMutations';
 import * as PropTypes from 'prop-types';
 import {useVanityUrlContext} from '../Context/VanityUrl.context';
-import {useNotifications} from '@jahia/react-material';
+import {withNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {buildTableQueryVariablesOneNode} from '../Utils/Utils';
+import {flowRight as compose} from 'lodash';
 
-export const PublishAllAction = ({render: Render, loading: Loading, label, nodeData, ...otherProps}) => {
+const PublishAllActionCmp = ({render: Render, loading: Loading, label, nodeData, notificationContext, ...otherProps}) => {
     const vanityUrlContext = useVanityUrlContext();
     const client = useApolloClient();
-    const notificationContext = useNotifications();
     const {t} = useTranslation('site-settings-seo');
 
     const {data, loading, error} = useQuery(ContentEditorTableQuery, {
@@ -52,9 +52,12 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
     );
 };
 
+export const PublishAllAction = compose(withNotifications())(PublishAllActionCmp);
+
 PublishAllAction.propTypes = {
     render: PropTypes.elementType.isRequired,
     loading: PropTypes.object,
     nodeData: PropTypes.object,
-    label: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
+    notificationContext: PropTypes.func
 };
