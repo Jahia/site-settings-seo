@@ -57,8 +57,4 @@ private static List<JCRNodeWrapper> findAllVanitys(JCRSessionWrapper session) th
     return existingVanityUrls;
 }
 
-try {
-    restoreDeletedVanitys();
-} catch (RepositoryException e) {
-    log.error("Error while migrating vanity urls", e);
-}
+restoreDeletedVanitys();
