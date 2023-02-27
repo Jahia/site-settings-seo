@@ -34,7 +34,7 @@
     </parent>
     <artifactId>site-settings-seo-parent</artifactId>
     <name>Site Settings - SEO Parent Project</name>
-    <version>3.7.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Site settings seo parent</description>
 

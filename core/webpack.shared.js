@@ -12,6 +12,7 @@ const sharedDeps = [
     'graphql-tag',
     'react-apollo',
     'redux',
+    'react-redux',
     'rxjs',
     'whatwg-fetch',
     'dayjs',
