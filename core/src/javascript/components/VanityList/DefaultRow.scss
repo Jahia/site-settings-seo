@@ -29,19 +29,19 @@
 }
 
 .notPublished {
-  box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-notPublished);
+  box-shadow: inset 7px 0 0 0 #212121;
 }
 
 .toBePublished {
-  box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-modified);
+  box-shadow: inset 7px 0 0 0 #ef6c00;
 }
 
 .isPublished {
-  box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-published);
+  box-shadow: inset 7px 0 0 0 #00aa4f;
 }
 
 .isMarkedForDeletion {
-  box-shadow: inset 7px 0 0 0 var(--color-publicationStatus-markedForDeletion);
+  box-shadow: inset 7px 0 0 0 #c00;
 }
 
 .tableRow {
