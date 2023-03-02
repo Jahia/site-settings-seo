@@ -4,15 +4,16 @@ import {ProgressOverlay, NotificationProvider, legacyTheme} from '@jahia/react-m
 import {VanityMutationsProvider} from './VanityMutationsProvider';
 import {VanityUrlContextProvider} from './Context/VanityUrl.context';
 import * as PropTypes from 'prop-types';
+import {shallowEqual, useSelector} from "react-redux";
 
 export const SiteSettingsSeoWrapper = ({dxContext, component: Component, ...props}) => {
-    if (!dxContext.siteKey) {
-        return <ProgressOverlay/>;
-    }
+    const {siteKey} = useSelector(state => ({
+        siteKey: state.site,
+    }), shallowEqual);
 
     return (
         <MuiThemeProvider theme={legacyTheme}>
-            <VanityUrlContextProvider siteKey={dxContext.siteKey}>
+            <VanityUrlContextProvider siteKey={siteKey}>
                 <NotificationProvider notificationContext={{}}>
                     <VanityMutationsProvider lang={dxContext.lang} vanityMutationsContext={{}}>
                         <Component {...dxContext} {...props}/>
