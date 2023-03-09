@@ -8,13 +8,19 @@ const shared = require("./webpack.shared");
 const moonstone = require("@jahia/moonstone/dist/rulesconfig-wp");
 
 module.exports = (env, argv) => {
+    const buildTimeStamp = new Date().toISOString()
+        .replace(/\..+$/, '')
+        .replace(/[:\sT]/g, '-');
+
+    const bundleName = 'siteSettingsSeo.bundle';
+    const fileName = `${bundleName}.${buildTimeStamp}.js`;
     let config = {
         entry: {
             main: path.resolve(__dirname, 'src/javascript/index')
         },
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
-            filename: 'siteSettingsSeo.bundle.js',
+            filename: fileName,
             chunkFilename: '[name].siteSettingsSeo.[chunkhash:6].js'
         },
         resolve: {
