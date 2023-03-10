@@ -3,7 +3,7 @@
   password: ${env:NEXUS_PASSWORD}
 - installBundle:
     - 'mvn:org.jahia.modules/site-settings-seo'
-    - 'mvn:org.jahia.modules/site-settings-seo-test-module'
+    - 'mvn:org.jahia.test/site-settings-seo-test-module'
   autoStart: true
   uninstallPreviousVersion: true
 
