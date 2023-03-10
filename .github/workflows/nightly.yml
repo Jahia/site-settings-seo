@@ -26,6 +26,7 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: site-settings-seo
+          jahia_image: ${{ matrix.jahia_image }}
           testrail_project: Site Settings SEO Module
           tests_manifest: provisioning-manifest-snapshot.yml
           should_use_build_artifacts: false
