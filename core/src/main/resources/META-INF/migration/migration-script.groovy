@@ -1,26 +1,26 @@
 import org.jahia.api.Constants
 import org.jahia.services.content.JCRContentUtils
-import org.jahia.services.content.JCRNodeWrapper;
-import org.jahia.services.content.JCRSessionWrapper;
+import org.jahia.services.content.JCRNodeWrapper
+import org.jahia.services.content.JCRSessionWrapper
 import org.jahia.services.content.JCRTemplate
 import org.jahia.services.query.ScrollableQueryCallback
 import org.jahia.services.usermanager.JahiaUserManagerService
 import org.jahia.services.query.ScrollableQuery
 
 import org.slf4j.Logger
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory
 
 import javax.jcr.ItemNotFoundException
-import javax.jcr.NodeIterator;
-import javax.jcr.RepositoryException;
+import javax.jcr.NodeIterator
+import javax.jcr.RepositoryException
 import javax.jcr.query.Query
-import javax.jcr.query.QueryResult;
+import javax.jcr.query.QueryResult
 
-final Logger logger = LoggerFactory.getLogger("org.jahia.tools.groovyConsole");
+final Logger logger = LoggerFactory.getLogger("org.jahia.tools.groovyConsole")
 
 private static Query getVanitysQuery(JCRSessionWrapper session) {
-    String textQuery = "SELECT * FROM [jnt:vanityUrl] AS vanityURL order by [j:url] asc";
-    Query vanityUrlsQuery = session.getWorkspace().getQueryManager().createQuery(textQuery, Query.JCR_SQL2);
+    String textQuery = "SELECT * FROM [jnt:vanityUrl] AS vanityURL order by [j:url] asc"
+    Query vanityUrlsQuery = session.getWorkspace().getQueryManager().createQuery(textQuery, Query.JCR_SQL2)
     return vanityUrlsQuery
 }
 
@@ -32,7 +32,7 @@ private static boolean restoreNodeToDefaultIfNecessary(JCRNodeWrapper node, JCRS
         try {
             if (e instanceof ItemNotFoundException) {
                 defaultSession.getWorkspace().clone(Constants.LIVE_WORKSPACE, node.getPath(), node.getPath(), true)
-                defaultSession.getNodeByIdentifier(node.getIdentifier()).markForDeletion("");
+                defaultSession.getNodeByIdentifier(node.getIdentifier()).markForDeletion("")
                 updated = true
                 logger.debug("Cloned node {} to default workspace", node.getPath())
             }
@@ -67,71 +67,25 @@ private static int handleVanitysInLive(JCRSessionWrapper session, QueryResult st
     return numberUpdated
 }
 
-private void migrateLiveVanitys(Integer pageSize, Logger logger) {
-    logger.info("------------------------------------")
-    logger.info("Manage vanitys in the live workspace")
-    logger.info("------------------------------------")
-
-    Integer numberUpdated = JCRTemplate.getInstance()
-            .doExecuteWithSystemSessionAsUser(JahiaUserManagerService.getInstance().lookupRootUser().getJahiaUser(),
-                    Constants.LIVE_WORKSPACE, null, session -> {
-                try {
-                    ScrollableQuery scrollableQuery = new ScrollableQuery(pageSize, getVanitysQuery(session))
-
-                    return scrollableQuery.execute(new ScrollableQueryCallback<Integer>() {
-
-                        Integer result = 0
-
-                        @Override
-                        boolean scroll() throws RepositoryException {
-                            result += handleVanitysInLive(session, stepResult, logger)
-                            return true
-                        }
-
-                        @Override
-                        protected Integer getResult() {
-                            return result
-                        }
-                    })
-                } catch (RepositoryException e) {
-                    logger.error("Failed to migrate vanitys: ", e)
-                }
-            })
-    logger.info("{} vanitys updated while checking live workspace", numberUpdated)
-}
-
-private void migrateDefaultVanitys(Integer pageSize, logger) {
-    logger.info("---------------------------------------")
-    logger.info("Manage vanitys in the default workspace")
-    logger.info("---------------------------------------")
-
-    Integer numberUpdated = JCRTemplate.getInstance()
-            .doExecuteWithSystemSessionAsUser(JahiaUserManagerService.getInstance().lookupRootUser().getJahiaUser(),
-                    Constants.EDIT_WORKSPACE, null, session -> {
-                try {
-                    ScrollableQuery scrollableQuery = new ScrollableQuery(pageSize, getVanitysQuery(session))
-
-
-                    return scrollableQuery.execute(new ScrollableQueryCallback<Integer>() {
-
-                        Integer result = 0
-
-                        @Override
-                        boolean scroll() throws RepositoryException {
-                            result += handleVanitysInDefault(session, stepResult, logger)
-                            return true
-                        }
-
-                        @Override
-                        protected Integer getResult() {
-                            return result
-                        }
-                    })
-                } catch (RepositoryException e) {
-                    logger.error("Failed to migrate vanitys: ", e)
-                }
-            })
-    logger.info("{} vanitys updated while checking default workspace", numberUpdated)
+private static boolean recalculateVanitySystemName(JCRNodeWrapper vanity, JCRSessionWrapper session, Logger logger) {
+    boolean updated = false
+    try {
+        JCRNodeWrapper currentVanity = session.getNodeByUUID(vanity.getIdentifier())
+        String urlProperty = currentVanity.getProperty("j:url").getString()
+        String newSystemName = JCRContentUtils.escapeLocalNodeName(urlProperty)
+        if (!currentVanity.getName().equals(newSystemName)) {
+            logger.debug("Recalculate system name for vanity url: " + currentVanity.getPath())
+            if (session.itemExists(currentVanity.getParent().getPath() + "/" + newSystemName)) {
+                logger.warn("A node with the path {} already exists, the modification won't be done", currentVanity.getParent().getPath() + "/" + newSystemName)
+            } else {
+                session.move(currentVanity.getPath(), currentVanity.getParent().getPath() + "/" + newSystemName)
+                updated = true
+            }
+        }
+    } catch (RepositoryException e) {
+        logger.error("Failed to recalculate the vanity url system name in workspace: ", e)
+    }
+    return updated
 }
 
 private static int handleVanitysInDefault(JCRSessionWrapper session, QueryResult stepResult, Logger logger)
@@ -152,27 +106,40 @@ private static int handleVanitysInDefault(JCRSessionWrapper session, QueryResult
     return numberUpdated
 }
 
-private static boolean recalculateVanitySystemName(JCRNodeWrapper vanity, JCRSessionWrapper session, Logger logger) {
-    boolean updated = false
-    try {
-        JCRNodeWrapper currentVanity = session.getNodeByUUID(vanity.getIdentifier())
-        String urlProperty = currentVanity.getProperty("j:url").getString()
-        String newSystemName = JCRContentUtils.escapeLocalNodeName(urlProperty)
-        if (!currentVanity.getName().equals(newSystemName)) {
-            logger.debug("Recalculate system name for vanity url: " + currentVanity.getPath())
-            if (session.itemExists(currentVanity.getParent().getPath() + "/" + newSystemName)) {
-                logger.warn("A node with the path {} already exists, the modification won't be done", currentVanity.getParent().getPath() + "/" + newSystemName)
-            } else {
-                session.move(currentVanity.getPath(), currentVanity.getParent().getPath() + "/" + newSystemName)
-                updated = true
-            }
-        }
-    } catch (RepositoryException e) {
-        logger.error("Failed to recalculate the vanity url system name in workspace: ", e);
-    }
-    return updated
+private void migrateVanitys(Integer pageSize, Logger logger, String workspace, Closure handler) {
+    logger.info("---------------------------------------")
+    logger.info("Manage vanitys in the {} workspace", workspace)
+    logger.info("---------------------------------------")
+
+    Integer numberUpdated = JCRTemplate.getInstance()
+            .doExecuteWithSystemSessionAsUser(JahiaUserManagerService.getInstance().lookupRootUser().getJahiaUser(),
+                    workspace, null, session -> {
+                try {
+                    ScrollableQuery scrollableQuery = new ScrollableQuery(pageSize, getVanitysQuery(session))
+
+
+                    return scrollableQuery.execute(new ScrollableQueryCallback<Integer>() {
+
+                        Integer result = 0
+
+                        @Override
+                        boolean scroll() throws RepositoryException {
+                            result += handler(session, stepResult, logger)
+                            return true
+                        }
+
+                        @Override
+                        protected Integer getResult() {
+                            return result
+                        }
+                    })
+                } catch (RepositoryException e) {
+                    logger.error("Failed to migrate vanitys: ", e)
+                }
+            })
+    logger.info("{} vanitys updated while checking {} workspace", numberUpdated, workspace)
 }
 
 Integer pageSize = 1000
-migrateLiveVanitys(pageSize, logger)
-migrateDefaultVanitys(pageSize, logger)
+migrateVanitys(pageSize, logger, Constants.LIVE_WORKSPACE, this::handleVanitysInLive)
+migrateVanitys(pageSize, logger, Constants.EDIT_WORKSPACE, this::handleVanitysInDefault)
