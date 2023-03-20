@@ -1,35 +1,30 @@
 import org.jahia.api.Constants
 import org.jahia.services.content.JCRContentUtils
-import org.jahia.services.content.JCRNodeIteratorWrapper;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.JCRTemplate
-import org.jahia.services.query.QueryResultWrapper
-import org.jahia.services.scheduler.JSR223ScriptJob
+import org.jahia.services.query.ScrollableQueryCallback
 import org.jahia.services.usermanager.JahiaUserManagerService
+import org.jahia.services.query.ScrollableQuery
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.ItemNotFoundException;
+import javax.jcr.ItemNotFoundException
+import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
-import javax.jcr.query.Query;
-import java.util.List;
+import javax.jcr.query.Query
+import javax.jcr.query.QueryResult;
 
 final Logger logger = LoggerFactory.getLogger("org.jahia.tools.groovyConsole");
 
-private QueryResultWrapper getVanitys(JCRSessionWrapper session, Integer pageSize, Integer offset) {
-    String textQuery = "SELECT * FROM [jnt:vanityUrl] AS vanityURL";
+private static Query getVanitysQuery(JCRSessionWrapper session) {
+    String textQuery = "SELECT * FROM [jnt:vanityUrl] AS vanityURL order by [j:url] asc";
     Query vanityUrlsQuery = session.getWorkspace().getQueryManager().createQuery(textQuery, Query.JCR_SQL2);
-    if (pageSize != null) {
-        vanityUrlsQuery.setLimit(pageSize);
-    }
-    if (offset != null) {
-        vanityUrlsQuery.setOffset(offset);
-    }
-    return vanityUrlsQuery.execute()
+    return vanityUrlsQuery
 }
 
-private boolean restoreNodeToDefaultIfNecessary(JCRNodeWrapper node, JCRSessionWrapper defaultSession, Logger logger) {
+private static boolean restoreNodeToDefaultIfNecessary(JCRNodeWrapper node, JCRSessionWrapper defaultSession, Logger logger) {
     boolean updated = false
     try {
         defaultSession.getNodeByIdentifier(node.getIdentifier())
@@ -48,120 +43,136 @@ private boolean restoreNodeToDefaultIfNecessary(JCRNodeWrapper node, JCRSessionW
     return updated
 }
 
-private List<JCRNodeWrapper> handleVanitysInLiveWithPagination(JCRSessionWrapper session, int pageSize, int offset, long totalNumberOfVanity, Logger logger) throws
+private static int handleVanitysInLive(JCRSessionWrapper session, QueryResult stepResult, Logger logger) throws
         RepositoryException {
-    if (offset >= totalNumberOfVanity) {
-        return
-    }
-    long timer = System.currentTimeMillis()
-    QueryResultWrapper vanityUrls = getVanitys(session, pageSize, offset)
+    logger.info("Manage next {} vanitys", JCRContentUtils.size(stepResult.getRows()))
 
-    logger.info("Manage from {} to {} on {} vanitys", offset, offset + JCRContentUtils.size(vanityUrls.getRows()), totalNumberOfVanity)
-    Integer numberUpdated = 0
+    long timer = System.currentTimeMillis()
+
+    int numberUpdated = 0
     JCRTemplate.getInstance()
             .doExecuteWithSystemSessionAsUser(JahiaUserManagerService.getInstance().lookupRootUser().getJahiaUser(),
                     Constants.EDIT_WORKSPACE, null, defaultSession -> {
-                JCRNodeIteratorWrapper vanityNodes = vanityUrls.getNodes();
-                boolean doSave = false
-
-                while (vanityNodes.hasNext()) {
-                    JCRNodeWrapper node = (JCRNodeWrapper) vanityNodes.nextNode()
-                    numberUpdated += recalculateVanitySystemName(node, session, true, logger)
-                    boolean restored = restoreNodeToDefaultIfNecessary(node, defaultSession, logger)
-                    if (restored) {
+                NodeIterator nodeIterator = stepResult.getNodes()
+                while (nodeIterator.hasNext()) {
+                    JCRNodeWrapper node = (JCRNodeWrapper) nodeIterator.nextNode()
+                    if (recalculateVanitySystemName(node, session, logger)) {
                         numberUpdated += 1
-                        doSave = true
+                        session.save()
                     }
-                }
-                if (doSave) {
-                    defaultSession.save()
+                    numberUpdated += restoreNodeToDefaultIfNecessary(node, defaultSession, logger) ? 1 : 0
                 }
             })
     logger.info("Took {}ms to update {} vanitys", System.currentTimeMillis() - timer, numberUpdated)
-
-    handleVanitysInLiveWithPagination(session, pageSize, offset + pageSize, totalNumberOfVanity, logger);
+    return numberUpdated
 }
 
-private void handleLiveWorkspaceVanitys(Integer pageSize, Logger logger) {
+private void migrateLiveVanitys(Integer pageSize, Logger logger) {
     logger.info("------------------------------------")
     logger.info("Manage vanitys in the live workspace")
     logger.info("------------------------------------")
 
-    JCRTemplate.getInstance()
+    Integer numberUpdated = JCRTemplate.getInstance()
             .doExecuteWithSystemSessionAsUser(JahiaUserManagerService.getInstance().lookupRootUser().getJahiaUser(),
                     Constants.LIVE_WORKSPACE, null, session -> {
                 try {
-                    long totalNumberOfVanity = getVanitys(session, null, null).getRows().getSize()
-                    handleVanitysInLiveWithPagination(session, pageSize, 0, totalNumberOfVanity, logger)
+                    ScrollableQuery scrollableQuery = new ScrollableQuery(pageSize, getVanitysQuery(session))
+
+                    return scrollableQuery.execute(new ScrollableQueryCallback<Integer>() {
+
+                        Integer result = 0
+
+                        @Override
+                        boolean scroll() throws RepositoryException {
+                            result += handleVanitysInLive(session, stepResult, logger)
+                            return true
+                        }
+
+                        @Override
+                        protected Integer getResult() {
+                            return result
+                        }
+                    })
                 } catch (RepositoryException e) {
                     logger.error("Failed to migrate vanitys: ", e)
                 }
             })
+    logger.info("{} vanitys updated while checking live workspace", numberUpdated)
 }
 
-private void handleDefaultWorkspaceVanitys(Integer pageSize, logger) {
+private void migrateDefaultVanitys(Integer pageSize, logger) {
     logger.info("---------------------------------------")
     logger.info("Manage vanitys in the default workspace")
     logger.info("---------------------------------------")
 
-    JCRTemplate.getInstance().doExecuteWithSystemSessionAsUser(JahiaUserManagerService.getInstance().lookupRootUser().getJahiaUser(),
-            Constants.EDIT_WORKSPACE, null, session -> {
-        try {
-            long totalNumberOfVanity = getVanitys(session, null, null).getRows().getSize()
-            handleVanitysInDefaultWithPagination(session, pageSize, 0, totalNumberOfVanity, logger)
-        } catch (RepositoryException e) {
-            logger.error("Failed to migrate vanitys: ", e)
-        }
-    })
+    Integer numberUpdated = JCRTemplate.getInstance()
+            .doExecuteWithSystemSessionAsUser(JahiaUserManagerService.getInstance().lookupRootUser().getJahiaUser(),
+                    Constants.EDIT_WORKSPACE, null, session -> {
+                try {
+                    ScrollableQuery scrollableQuery = new ScrollableQuery(pageSize, getVanitysQuery(session))
+
+
+                    return scrollableQuery.execute(new ScrollableQueryCallback<Integer>() {
+
+                        Integer result = 0
+
+                        @Override
+                        boolean scroll() throws RepositoryException {
+                            result += handleVanitysInDefault(session, stepResult, logger)
+                            return true
+                        }
+
+                        @Override
+                        protected Integer getResult() {
+                            return result
+                        }
+                    })
+                } catch (RepositoryException e) {
+                    logger.error("Failed to migrate vanitys: ", e)
+                }
+            })
+    logger.info("{} vanitys updated while checking default workspace", numberUpdated)
 }
 
-private void handleVanitysInDefaultWithPagination(JCRSessionWrapper session, int pageSize, int offset, long totalNumberOfVanity, Logger logger)
+private static int handleVanitysInDefault(JCRSessionWrapper session, QueryResult stepResult, Logger logger)
         throws RepositoryException {
-    if (offset >= totalNumberOfVanity) {
-        return
-    }
+    logger.info("Manage next {} vanitys", JCRContentUtils.size(stepResult.getRows()))
+
     long timer = System.currentTimeMillis()
-    QueryResultWrapper vanityUrls = getVanitys(session, pageSize, offset)
 
-    logger.info("Manage from {} to {} on {} vanitys", offset, offset + JCRContentUtils.size(vanityUrls.getRows()), totalNumberOfVanity)
-
-    JCRNodeIteratorWrapper vanityNodes = vanityUrls.getNodes();
+    NodeIterator nodeIterator = stepResult.getNodes()
     Integer numberUpdated = 0
-    while (vanityNodes.hasNext()) {
-        JCRNodeWrapper node = (JCRNodeWrapper) vanityNodes.nextNode()
-        numberUpdated += recalculateVanitySystemName(node, session, false, logger)
+    while (nodeIterator.hasNext()) {
+        JCRNodeWrapper node = (JCRNodeWrapper) nodeIterator.nextNode()
+        numberUpdated += recalculateVanitySystemName(node, session, logger) ? 1 : 0
     }
     session.save()
 
     logger.info("Took {}ms to update {} vanitys", System.currentTimeMillis() - timer, numberUpdated)
-
-    handleVanitysInDefaultWithPagination(session, pageSize, offset + pageSize, totalNumberOfVanity, logger);
+    return numberUpdated
 }
 
-private Integer recalculateVanitySystemName(JCRNodeWrapper vanity, JCRSessionWrapper session, boolean saveImmediately, Logger logger) {
-    Integer numberUpdated = 0
+private static boolean recalculateVanitySystemName(JCRNodeWrapper vanity, JCRSessionWrapper session, Logger logger) {
+    boolean updated = false
     try {
         JCRNodeWrapper currentVanity = session.getNodeByUUID(vanity.getIdentifier())
         String urlProperty = currentVanity.getProperty("j:url").getString()
-        String newSystemName = JCRContentUtils.escapeLocalNodeName(urlProperty);
+        String newSystemName = JCRContentUtils.escapeLocalNodeName(urlProperty)
         if (!currentVanity.getName().equals(newSystemName)) {
             logger.debug("Recalculate system name for vanity url: " + currentVanity.getPath())
             if (session.itemExists(currentVanity.getParent().getPath() + "/" + newSystemName)) {
                 logger.warn("A node with the path {} already exists, the modification won't be done", currentVanity.getParent().getPath() + "/" + newSystemName)
             } else {
                 session.move(currentVanity.getPath(), currentVanity.getParent().getPath() + "/" + newSystemName)
-                if (saveImmediately) {
-                    session.save()
-                }
-                numberUpdated = 1
+                updated = true
             }
         }
     } catch (RepositoryException e) {
         logger.error("Failed to recalculate the vanity url system name in workspace: ", e);
     }
-    return numberUpdated
+    return updated
 }
 
 Integer pageSize = 1000
-handleLiveWorkspaceVanitys(pageSize, logger)
-handleDefaultWorkspaceVanitys(pageSize, logger)
+migrateLiveVanitys(pageSize, logger)
+migrateDefaultVanitys(pageSize, logger)
