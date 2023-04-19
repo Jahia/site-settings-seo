@@ -17,7 +17,7 @@ describe('Copy Cut and Paste tests with Vanity Urls', () => {
         contextMenu = composer.openContextualMenuOnLeftTree('Home')
         contextMenu.paste()
         // eslint-disable-next-line
-        cy.wait(5000)
+        cy.wait(7500)
         getVanityUrl('/sites/digitall/home/about-1', ['en']).then((result) => {
             expect(result?.data?.jcr?.nodeByPath?.vanityUrls).deep.eq([])
         })
@@ -35,7 +35,7 @@ describe('Copy Cut and Paste tests with Vanity Urls', () => {
         contextMenu = composer.openContextualMenuOnLeftTree('Newsroom')
         contextMenu.paste()
         // eslint-disable-next-line
-        cy.wait(5000)
+        cy.wait(7500)
         getVanityUrl('/sites/digitall/home/newsroom/about', ['en']).then((result) => {
             expect(result?.data?.jcr?.nodeByPath?.vanityUrls).deep.eq([])
         })
@@ -53,7 +53,7 @@ describe('Copy Cut and Paste tests with Vanity Urls', () => {
         contextMenu = composer.openContextualMenuOnLeftTree('Newsroom')
         contextMenu.paste()
         // eslint-disable-next-line
-        cy.wait(5000)
+        cy.wait(7500)
         getVanityUrl('/sites/digitall/home/newsroom/about', ['en']).then((result) => {
             expect(result?.data?.jcr?.nodeByPath?.vanityUrls[0].url).to.eq('/about')
         })
