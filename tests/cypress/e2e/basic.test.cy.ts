@@ -1,4 +1,4 @@
-import { publishAndWaitJobEnding } from '../utils/publishAndWaitJobEnding'
+import { publishAndWaitJobEnding, createSite, deleteSite } from '@jahia/cypress'
 
 describe("Basic tests of the module's seo filter", () => {
     const siteKey = 'headLinksTest'
@@ -6,7 +6,7 @@ describe("Basic tests of the module's seo filter", () => {
     const homePath = sitePath + '/home'
     const templateSet = 'site-settings-seo-test-module'
 
-    const createPage = (parent, name, template) => {
+    const createPage = (parent: string, name: string, template: string) => {
         cy.apollo({
             variables: {
                 parentPathOrId: parent,
@@ -19,18 +19,13 @@ describe("Basic tests of the module's seo filter", () => {
     }
 
     before('create test data', function () {
-        cy.executeGroovy('groovy/admin/createSite.groovy', {
-            SITEKEY: siteKey,
-            TEMPLATES_SET: templateSet,
-        })
+        createSite(siteKey, { languages: 'en', templateSet: templateSet, serverName: 'localhost', locale: 'en' })
         createPage(homePath, 'without-seo-links', 'withoutseo')
         publishAndWaitJobEnding(homePath)
     })
 
     after('clear test data', function () {
-        cy.executeGroovy('groovy/admin/deleteSite.groovy', {
-            SITEKEY: siteKey,
-        })
+        deleteSite(siteKey)
     })
 
     it('Verify no duplicate SEO links on page with existing SEO links.', function () {
