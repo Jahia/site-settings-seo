@@ -1,8 +1,7 @@
 import {registry} from '@jahia/ui-extender';
-import {PublishAllAction, VanityAction, UpdateVanityAction, MoveVanityAction, PublishVanityAction} from '../actions';
-import {CloudUpload, Delete, Publish, Star, SwapHoriz} from '@jahia/moonstone';
+import {MoveVanityAction, PublishAllAction, PublishVanityAction, UpdateVanityAction, VanityAction} from '../actions';
+import {CloudUpload, Publish, Star, SwapHoriz} from '@jahia/moonstone';
 import React from 'react';
-import {DeleteVanityAction} from '../actions/DeleteVanityAction';
 
 export const registerActions = () => {
     // Content editor action registration
