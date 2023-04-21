@@ -43,12 +43,8 @@ export const registerActions = () => {
         component: PublishVanityAction
     });
 
-    registry.addOrReplace('action', 'deleteVanity', {
-        targets: ['site-settings-seo/vanity-list-menu:0.4'],
-        showOnNodeTypes: ['jnt:vanityUrl'],
-        buttonIcon: <Delete/>,
-        buttonLabel: 'site-settings-seo:label.actions.delete',
-        component: DeleteVanityAction
+    registry.addOrReplace('action', 'delete', registry.get('action', 'delete'), {
+        targets: ['site-settings-seo/vanity-list-menu:0.4']
     });
 
     registry.addOrReplace('action', 'undelete', registry.get('action', 'undelete'), {
