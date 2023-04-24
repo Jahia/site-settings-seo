@@ -1,8 +1,7 @@
 import {registry} from '@jahia/ui-extender';
-import {PublishAllAction, VanityAction, UpdateVanityAction, MoveVanityAction, PublishVanityAction} from '../actions';
-import {CloudUpload, Delete, Publish, Star, SwapHoriz} from '@jahia/moonstone';
+import {MoveVanityAction, PublishAllAction, PublishVanityAction, UpdateVanityAction, VanityAction} from '../actions';
+import {CloudUpload, Publish, Star, SwapHoriz} from '@jahia/moonstone';
 import React from 'react';
-import {DeleteVanityAction} from '../actions/DeleteVanityAction';
 
 export const registerActions = () => {
     // Content editor action registration
@@ -43,12 +42,8 @@ export const registerActions = () => {
         component: PublishVanityAction
     });
 
-    registry.addOrReplace('action', 'deleteVanity', {
-        targets: ['site-settings-seo/vanity-list-menu:0.4'],
-        showOnNodeTypes: ['jnt:vanityUrl'],
-        buttonIcon: <Delete/>,
-        buttonLabel: 'site-settings-seo:label.actions.delete',
-        component: DeleteVanityAction
+    registry.addOrReplace('action', 'delete', registry.get('action', 'delete'), {
+        targets: ['site-settings-seo/vanity-list-menu:0.4']
     });
 
     registry.addOrReplace('action', 'undelete', registry.get('action', 'undelete'), {
