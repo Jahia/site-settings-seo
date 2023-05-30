@@ -5,8 +5,9 @@
 *.iml
 *.ipr
 target
-core/src/main/resources/javascript/bundles
-core/src/main/resources/javascript/apps
+src/main/resources/javascript/bundles
+src/main/resources/javascript/apps
 node
 node_modules
 yarn-error.log
+.yalc

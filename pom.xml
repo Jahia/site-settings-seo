@@ -37,7 +37,8 @@
     <name>Site Settings - SEO Project</name>
     <description>This is the custom module (Site Settings - SEO) for running on a Digital Experience Manager server.</description>
     <properties>
-        <jahia-depends>graphql-dxm-provider, jcontent, seo</jahia-depends>
+        <jahia.plugin.version>6.6</jahia.plugin.version>
+        <jahia-depends>graphql-dxm-provider, jcontent, seo,app-shell=2.6</jahia-depends>
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <yarn.arguments>build:simple</yarn.arguments>
@@ -85,7 +86,7 @@
                             <goal>install-node-and-yarn</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v14.18.2</nodeVersion>
+                            <nodeVersion>v18.15.0</nodeVersion>
                             <yarnVersion>v1.22.10</yarnVersion>
                         </configuration>
                     </execution>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Component, Children} from 'react';
-import {graphql} from 'react-apollo/lib/index';
+import {graphql} from '@apollo/react-hoc';
 import {flowRight as compose} from 'lodash';
 import * as gqlMutations from './gqlMutations';
 import * as _ from 'lodash';

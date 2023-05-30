@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {useQuery} from 'react-apollo';
+import {useQuery} from '@apollo/client';
 import {withNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {gqlContentNodeToVanityUrlPairs} from './Utils/Utils';

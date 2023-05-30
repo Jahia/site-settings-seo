@@ -1,6 +1,5 @@
 import React from 'react';
-import {useQuery} from 'react-apollo';
-import {useApolloClient} from '@apollo/react-hooks';
+import {useQuery, useApolloClient} from '@apollo/client';
 import {ContentEditorTableQuery} from '~/components/gqlQueries';
 import {PublishMutation} from '../gqlMutations';
 import * as PropTypes from 'prop-types';

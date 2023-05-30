@@ -31,8 +31,10 @@
     }
   },
   "dependencies": {
-    "@apollo/react-hooks": "^3.1.5",
-    "@jahia/data-helper": "^1.0.0",
+    "@apollo/client": "^3.7.14",
+    "@apollo/react-components": "^4.0.0",
+    "@apollo/react-hoc": "^4.0.0",
+    "@jahia/data-helper": "^1.1.4",
     "@jahia/moonstone": "^2.5.1",
     "@jahia/react-material": "^3.0.1",
     "@jahia/ui-extender": "^1.0.0",
@@ -43,12 +45,12 @@
     "lodash": "^4.17.19",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
-    "react-apollo": "^3.1.5",
     "react-dom": "^16.8.4",
     "react-i18next": "^11.2.7",
     "react-redux": "^7.2.0"
   },
   "resolutions": {
+    "@apollo/client": "3.5.10",
     "graphql": "15.4.0",
     "@jahia/data-helper/graphql": "^15.4.0"
   },
@@ -68,8 +70,6 @@
     "@jahia/stylelint-config": "^0.0.3",
     "@jahia/test-framework": "^1.2.0",
     "@types/jest": "^24.0.11",
-    "apollo-cache-inmemory": "^1.6.5",
-    "apollo-client": "^2.6.8",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-lodash": "^3.3.4",
