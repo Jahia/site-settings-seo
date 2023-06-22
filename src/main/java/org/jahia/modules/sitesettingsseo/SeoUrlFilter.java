@@ -127,12 +127,12 @@ public class SeoUrlFilter extends AbstractFilter {
         // We only want alternate for multilingual site and in case it's current lang we want to build a canonical
         if (langs.size() == 1 && langs.contains(lang)) {
             return String.format("<link rel=\"canonical\" href=\"%s\" />", href);
-        } else {
-            String links = String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", getDashFormatLanguage(lang), href);
-            return node.getLanguage().equals(lang) ?
-                    String.format("<link rel=\"canonical\" href=\"%s\" />", href) + links:
-                    links;
         }
+
+        String links = String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", getDashFormatLanguage(lang), href);
+        return node.getLanguage().equals(lang) ?
+                String.format("<link rel=\"canonical\" href=\"%s\" />", href) + links:
+                links;
     }
 
     private Map<String, String> getActiveVanityUrls(JCRNodeWrapper node, Set<String> activeLangs) throws RepositoryException {
