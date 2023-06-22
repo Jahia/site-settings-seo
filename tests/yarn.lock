@@ -91,10 +91,15 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jahia/cypress@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-2.0.0.tgz#19cfd880e765b43648ccafc9704abf4a93f738cc"
-  integrity sha512-e0PDRRWitQDnBYktE4q0+aOaEMHuK950Dm93auUqJTkqD20CMxQBfwxfdclXN/CkDYX0PXk3HRM4zdpjaPvr5g==
+"@jahia/content-editor-cypress@4.2.0-tests.9":
+  version "4.2.0-tests.9"
+  resolved "https://registry.yarnpkg.com/@jahia/content-editor-cypress/-/content-editor-cypress-4.2.0-tests.9.tgz#1d899ce2a78638e7847eccf5c13c242681be1eb7"
+  integrity sha512-aJN0Z62EPs82AbiCU9wqEgmzxrZdu3nWm06GpTvMh05FYdv6DeF86bml2IldehGBn8NJCIIy26vA88GL6OJQKw==
+
+"@jahia/cypress@^3.7.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.12.0.tgz#73976ecb5599b7ea814d75b5745469aed300b3db"
+  integrity sha512-zvmbsNjR+LAXxLRVQFOUMCFIbKwetsi5qgY3GFZcRa0nmmFXCn9WGIPznNZht5NP3/RewIz0sPjfLQXrlszEAQ==
   dependencies:
     "@apollo/client" "^3.4.9"
     graphql "^15.5.0"
@@ -996,6 +1001,13 @@ cypress-multi-reporters@^1.6.0:
     debug "^4.1.1"
     lodash "^4.17.15"
 
+cypress-recurse@^1.31.2:
+  version "1.35.2"
+  resolved "https://registry.yarnpkg.com/cypress-recurse/-/cypress-recurse-1.35.2.tgz#3f49db173beb117196cad82c5484e638e2dc3478"
+  integrity sha512-G6HfxP90xa7phw8oeOX4uabxcI9gE1ktkKHShcA3nCByrkMLs56+GIJVn0A+ws1tI0PGRKBz6+V9DHS5WnZX4A==
+  dependencies:
+    humanize-duration "^3.27.3"
+
 cypress-terminal-report@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/cypress-terminal-report/-/cypress-terminal-report-3.5.2.tgz#fa4fbc6eca78d4f3db0a3dfc441fd1b98dcc110f"
@@ -1848,6 +1860,11 @@ human-signals@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
+
+humanize-duration@^3.27.3:
+  version "3.28.0"
+  resolved "https://registry.yarnpkg.com/humanize-duration/-/humanize-duration-3.28.0.tgz#f79770c0bec34d3bfd4899338cc40643bc04df72"
+  integrity sha512-jMAxraOOmHuPbffLVDKkEKi/NeG8dMqP8lGRd6Tbf7JgAeG33jjgPWDbXXU7ypCI0o+oNKJFgbSB9FKVdWNI2A==
 
 hyperlinker@^1.0.0:
   version "1.0.0"
