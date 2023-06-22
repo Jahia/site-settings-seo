@@ -100,7 +100,7 @@ public class SeoUrlFilter extends AbstractFilter {
 
                 // Generate the links based on all active languages and available precalculated vanities
                 String finalOutPutLink = langs.stream()
-                        .map(ThrowingFunction.unchecked(lang -> getLinkForLang(node, vanities, lang, renderContext)))
+                        .map(ThrowingFunction.unchecked(lang -> getLinkForLang(node, vanities, lang, renderContext, langs)))
                         .collect(Collectors.joining("\n"));
 
                 StartTag et = rootHeadList.getStartTag();
@@ -118,17 +118,21 @@ public class SeoUrlFilter extends AbstractFilter {
         }
     }
 
-    private String getLinkForLang(JCRNodeWrapper node, Map<String, String> vanities, String lang, RenderContext renderContext) throws URISyntaxException {
+    private String getLinkForLang(JCRNodeWrapper node, Map<String, String> vanities, String lang, RenderContext renderContext, Set<String> langs) throws URISyntaxException {
         String url = vanities.containsKey(lang) ?
                 vanities.get(lang) :
                 renderContext.getURLGenerator().buildURL(node, lang, null, "html");
         String href = buildHref(url, renderContext);
 
-        // In case it's current lang build a canonical
-        String links = String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", getDashFormatLanguage(lang), href);
-        return node.getLanguage().equals(lang) ?
-                String.format("<link rel=\"canonical\" href=\"%s\" />", href) + links:
-                links;
+        // We only want alternate for multilingual site and in case it's current lang we want to build a canonical
+        if (langs.size() == 1 && langs.contains(lang)) {
+            return String.format("<link rel=\"canonical\" href=\"%s\" />", href);
+        } else {
+            String links = String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", getDashFormatLanguage(lang), href);
+            return node.getLanguage().equals(lang) ?
+                    String.format("<link rel=\"canonical\" href=\"%s\" />", href) + links:
+                    links;
+        }
     }
 
     private Map<String, String> getActiveVanityUrls(JCRNodeWrapper node, Set<String> activeLangs) throws RepositoryException {
