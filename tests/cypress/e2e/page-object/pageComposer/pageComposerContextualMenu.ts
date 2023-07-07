@@ -1,5 +1,6 @@
 import { BasePage } from '@jahia/cypress'
 import IframeOptions = Cypress.IframeOptions
+import {ContentEditor} from "../ContentEditor";
 
 export enum ExportType {
     XML = 'Export XML',
@@ -25,6 +26,11 @@ export class PageComposerContextualMenu extends BasePage {
 
     paste(): Cypress.Chainable {
         return this.execute('Paste')
+    }
+
+    edit() {
+        this.execute('Edit')
+        return new ContentEditor()
     }
 
     execute(action: string): Cypress.Chainable {
