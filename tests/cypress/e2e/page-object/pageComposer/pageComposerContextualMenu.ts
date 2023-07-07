@@ -1,12 +1,13 @@
 import { BasePage } from '@jahia/cypress'
+import { ContentEditor } from '../ContentEditor'
 import IframeOptions = Cypress.IframeOptions
-import {ContentEditor} from "../ContentEditor";
 
 export enum ExportType {
     XML = 'Export XML',
     ZIP = 'Export Zip',
     ZIP_LIVE = 'Export Zip with live content',
 }
+
 export class PageComposerContextualMenu extends BasePage {
     iFrameOptions: IframeOptions
     contextMenuId: string
