@@ -9,7 +9,10 @@ export class VanityUrlUi extends BasePage {
         super()
     }
 
-    addFirstVanityUr(vanityValue: string, canonical = false) {
+    addVanityUr(vanityValue: string, canonical = false) {
+        // eslint-disable-next-line
+        cy.wait(500)
+
         cy.get('div[data-sel-role="manage-vanity-url-dialog"]').find('button[aria-label="add"]').click()
         cy.get('input[data-sel-role="vanity-input-text"]').type(vanityValue)
 
@@ -25,6 +28,6 @@ export class VanityUrlUi extends BasePage {
     }
 
     getVanityUrlRow(vanityValue: string) {
-        return cy.get('tr[data-vud-url="' + vanityValue + '"]')
+        return cy.get('tr[data-vud-url="' + vanityValue + '"]', { timeout: 3000 })
     }
 }
