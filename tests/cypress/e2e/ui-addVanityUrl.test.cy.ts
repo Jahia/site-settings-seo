@@ -20,6 +20,34 @@ describe("Basic tests of the module's seo filter", () => {
         })
     }
 
+    const checkVanityUrlByAPI = (
+        vanityUrlPath: string,
+        vanityUrlName: string,
+        language: string,
+        workspace: 'EDIT' | 'LIVE' = 'EDIT',
+        isCanonical: string,
+    ) => {
+        getNodeByPath(vanityUrlPath, ['j:default'], language, [], workspace).then((result) => {
+            expect(result?.data).not.eq(undefined)
+            expect(result?.data?.jcr.nodeByPath.name).eq(vanityUrlName)
+            expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
+            expect(result?.data?.jcr.nodeByPath.properties[0].value).eq(isCanonical)
+        })
+    }
+
+    const checkVanityUrlDoNotExistByAPI = (
+        vanityUrlPath: string,
+        language: string,
+        workspace: 'EDIT' | 'LIVE' = 'EDIT',
+    ) => {
+        // eslint-disable-next-line
+        cy.wait(500)
+
+        getNodeByPath(vanityUrlPath, [], language, [], workspace).then((result) => {
+            expect(result?.data).eq(undefined)
+        })
+    }
+
     before('create test data', function () {
         createPage(homePath, pageVanityUrl1, 'home')
         createPage(homePath, pageVanityUrl2, 'home')
@@ -40,36 +68,21 @@ describe("Basic tests of the module's seo filter", () => {
         const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
         const contentEditor = contextMenu.edit()
         const vanityUrlUi = contentEditor.openVanityUrlUi()
-        vanityUrlUi.addVanityUr('vanity1')
+        vanityUrlUi.addVanityUrl('vanity1')
 
-        // eslint-disable-next-line
-        cy.wait(500)
-        // Check the vanity url is not published by default
-        getNodeByPath(
-            homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1',
-            ['j:default'],
-            'en',
-            [],
-            'LIVE',
-        ).then((result) => {
-            expect(result?.data).eq(undefined)
-        })
+        // Check the vanity url is not published by default (it does not exists in LIVE)
+        checkVanityUrlDoNotExistByAPI(homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1', 'en', 'LIVE')
         // Check it is not canonical by default
         vanityUrlUi.getVanityUrlRow('/vanity1').then((result) => {
             expect(result.text()).not.contains('Canonical')
         })
-        getNodeByPath(
+        checkVanityUrlByAPI(
             homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1',
-            ['j:default'],
+            'vanity1',
             'en',
-            [],
             'EDIT',
-        ).then((result) => {
-            expect(result?.data).not.eq(undefined)
-            expect(result?.data?.jcr.nodeByPath.name).eq('vanity1')
-            expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
-            expect(result?.data?.jcr.nodeByPath.properties[0].value).eq('false')
-        })
+            'false',
+        )
     })
 
     it('Add a second canonical vanity URL and published vanity URL from the UI', function () {
@@ -79,82 +92,54 @@ describe("Basic tests of the module's seo filter", () => {
         const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl2)
         const contentEditor = contextMenu.edit()
         const vanityUrlUi = contentEditor.openVanityUrlUi()
-        vanityUrlUi.addVanityUr('vanity2', true)
+        vanityUrlUi.addVanityUrl('vanity2', true)
 
-        // eslint-disable-next-line
-        cy.wait(500)
+        // Check the vanity url is not published by default (= does not exists in LIVE)
+        checkVanityUrlDoNotExistByAPI(homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2', 'en', 'LIVE')
 
-        // Check the vanity url is not published by default
-        getNodeByPath(
-            homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2',
-            ['j:default'],
-            'en',
-            [],
-            'LIVE',
-        ).then((result) => {
-            expect(result?.data).eq(undefined)
-        })
         // Check it is canonical
         vanityUrlUi.getVanityUrlRow('/vanity2').then((result) => {
             expect(result.text()).contains('Canonical')
         })
-        getNodeByPath(
+
+        checkVanityUrlByAPI(
             homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2',
-            ['j:default'],
+            'vanity2',
             'en',
-            [],
             'EDIT',
-        ).then((result) => {
-            expect(result?.data).not.eq(undefined)
-            expect(result?.data?.jcr.nodeByPath.name).eq('vanity2')
-            expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
-            expect(result?.data?.jcr.nodeByPath.properties[0].value).eq('true')
-        })
+            'true',
+        )
+
         // Check first vanity url is not canonical
         vanityUrlUi.getVanityUrlRow('/existingVanity').then((result) => {
             expect(result.text()).not.contains('Canonical')
         })
-        getNodeByPath(
+        checkVanityUrlByAPI(
             homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/existingVanity',
-            ['j:default'],
+            'existingVanity',
             'en',
-            [],
             'EDIT',
-        ).then((result) => {
-            expect(result?.data).not.eq(undefined)
-            expect(result?.data?.jcr.nodeByPath.name).eq('existingVanity')
-            expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
-            expect(result?.data?.jcr.nodeByPath.properties[0].value).eq('false')
-        })
+            'false',
+        )
 
         // Publish the vanity url
         vanityUrlUi.publishAllVanityUrls()
 
         // Check the vanity url is now published and still canonical
-        getNodeByPath(
+        checkVanityUrlByAPI(
             homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2',
-            ['j:default'],
+            'vanity2',
             'en',
-            [],
             'LIVE',
-        ).then((result) => {
-            expect(result?.data).not.eq(undefined)
-            expect(result?.data?.jcr.nodeByPath.name).eq('vanity2')
-            expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
-            expect(result?.data?.jcr.nodeByPath.properties[0].value).eq('true')
-        })
+            'true',
+        )
         // Check first vanity url is not canonical
-        getNodeByPath(
+        checkVanityUrlByAPI(
             homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/existingVanity',
-            ['j:default'],
+            'existingVanity',
             'en',
-            [],
             'LIVE',
-        ).then((result) => {
-            expect(result?.data).not.eq(undefined)
-            expect(result?.data?.jcr.nodeByPath.name).eq('existingVanity')
-            expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
-            expect(result?.data?.jcr.nodeByPath.properties[0].value).eq('false')
-        })
+            'false',
+        )
     })
 })

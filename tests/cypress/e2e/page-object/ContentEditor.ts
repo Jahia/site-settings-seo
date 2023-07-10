@@ -1,11 +1,7 @@
-import { BasePage } from '@jahia/cypress'
+import { ContentEditor } from '@jahia/content-editor-cypress/dist/page-object/contentEditor'
 import { VanityUrlUi } from './VanityUrlUi'
-import IframeOptions = Cypress.IframeOptions
 
-export class ContentEditor extends BasePage {
-    iFrameOptions: IframeOptions
-    contextMenuId: string
-
+export class ContentEditorSEO extends ContentEditor {
     constructor() {
         super()
     }

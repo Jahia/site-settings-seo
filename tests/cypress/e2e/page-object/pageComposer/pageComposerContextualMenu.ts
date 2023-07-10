@@ -1,5 +1,5 @@
 import { BasePage } from '@jahia/cypress'
-import { ContentEditor } from '../ContentEditor'
+import { ContentEditorSEO } from '../ContentEditor'
 import IframeOptions = Cypress.IframeOptions
 
 export enum ExportType {
@@ -31,7 +31,7 @@ export class PageComposerContextualMenu extends BasePage {
 
     edit() {
         this.execute('Edit')
-        return new ContentEditor()
+        return new ContentEditorSEO()
     }
 
     execute(action: string): Cypress.Chainable {

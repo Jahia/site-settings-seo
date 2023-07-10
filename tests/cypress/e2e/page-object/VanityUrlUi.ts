@@ -9,7 +9,7 @@ export class VanityUrlUi extends BasePage {
         super()
     }
 
-    addVanityUr(vanityValue: string, canonical = false) {
+    addVanityUrl(vanityValue: string, canonical = false) {
         // eslint-disable-next-line
         cy.wait(500)
 
