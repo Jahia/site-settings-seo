@@ -1,5 +1,6 @@
 import { publishAndWaitJobEnding, deleteNode, getNodeByPath, addVanityUrl } from '@jahia/cypress'
 import { CustomPageComposer } from './page-object/pageComposerOverride'
+import { addSimplePage } from '../utils/Utils'
 
 describe("Basic tests of the module's seo filter", () => {
     const siteKey = 'digitall'
@@ -7,18 +8,6 @@ describe("Basic tests of the module's seo filter", () => {
     const homePath = sitePath + '/home'
     const pageVanityUrl1 = 'page1'
     const pageVanityUrl2 = 'page2'
-
-    const createPage = (parent: string, name: string, template: string) => {
-        cy.apollo({
-            variables: {
-                parentPathOrId: parent,
-                name: name,
-                template: template,
-                language: 'en',
-            },
-            mutationFile: 'graphql/jcrAddPage.graphql',
-        })
-    }
 
     const checkVanityUrlByAPI = (
         vanityUrlPath: string,
@@ -49,8 +38,8 @@ describe("Basic tests of the module's seo filter", () => {
     }
 
     before('create test data', function () {
-        createPage(homePath, pageVanityUrl1, 'home')
-        createPage(homePath, pageVanityUrl2, 'home')
+        addSimplePage(homePath, pageVanityUrl1, pageVanityUrl1, 'en')
+        addSimplePage(homePath, pageVanityUrl2, pageVanityUrl2, 'en')
         addVanityUrl('/sites/digitall/home/' + pageVanityUrl2, 'en', '/existingVanity')
         publishAndWaitJobEnding(homePath)
     })
