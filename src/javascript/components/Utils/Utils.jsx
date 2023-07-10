@@ -34,7 +34,7 @@ export const atLeastOneNotPublished = urls => {
 };
 
 export const buildTableQueryVariablesOneNode = props => {
-    return buildTableQueryVariables({query: `/jcr:root${encodePathForJCR(props.path)}`, ...props});
+    return buildTableQueryVariables(props);
 };
 
 export const buildTableQueryVariablesAllVanity = props => {
@@ -68,6 +68,7 @@ const encodePathForJCR = path => path
     .replaceAll(/\/(\d)/g, (_, s) => '/_x00' + s.charCodeAt(0).toString(16).slice(-4) + '_');
 
 const buildTableQueryVariables = props => ({
+    path: props.path,
     lang: props.lang,
     languages: props.selectedLanguageCodes,
     offset: (props.currentPage * props.pageSize),
