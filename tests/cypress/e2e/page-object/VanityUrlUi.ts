@@ -1,10 +1,6 @@
 import { BasePage } from '@jahia/cypress'
-import IframeOptions = Cypress.IframeOptions
 
 export class VanityUrlUi extends BasePage {
-    iFrameOptions: IframeOptions
-    contextMenuId: string
-
     constructor() {
         super()
     }
