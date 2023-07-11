@@ -27,7 +27,7 @@ export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, c
     let rows = [];
     let nodes = [];
     if (data?.jcr) {
-        if (data.jcr.nodeByPath) {
+        if (data.jcr.nodeByPath && (data.jcr.nodeByPath.vanityUrls?.length || data.jcr.nodeByPath?.liveNode?.vanityUrls?.length)) {
             nodes.push(data.jcr.nodeByPath);
         } else if (data.jcr.nodesByQuery?.nodes) {
             nodes = data.jcr.nodesByQuery.nodes;

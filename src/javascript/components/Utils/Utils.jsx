@@ -1,22 +1,5 @@
 import {keyBy, merge, values, sortBy, map} from 'lodash';
 
-export const hasMixin = (node, mixin) => {
-    if (node.mixinTypes) {
-        return node.mixinTypes.find(mixinType => mixinType.name === mixin) !== undefined;
-    }
-
-    let mixinTypesProperty = node.properties.find(property => property.name === 'jcr:mixinTypes');
-    if (mixinTypesProperty) {
-        return mixinTypesProperty.values.includes(mixin);
-    }
-
-    return false;
-};
-
-export const isMarkedForDeletion = url => {
-    return hasMixin(url, 'jmix:markedForDeletion');
-};
-
 export const atLeastOneMarkedForDeletion = urls => {
     return urls.some(url => url.default.publicationInfo.publicationStatus === 'MARKED_FOR_DELETION' || url.default.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion'));
 };
@@ -61,11 +44,6 @@ export const gqlContentNodeToVanityUrlPairs = (gqlContentNode, vanityUrlsFieldNa
     urlPairs = sortBy(urlPairs, urlPair => (urlPair.default ? urlPair.default.language : urlPair.live.language));
     return values(urlPairs);
 };
-
-// See https://stackoverflow.com/questions/23388485/xpath-whitespace-encoding for details
-const encodePathForJCR = path => path
-    .replaceAll(' ', '_x0020_')
-    .replaceAll(/\/(\d)/g, (_, s) => '/_x00' + s.charCodeAt(0).toString(16).slice(-4) + '_');
 
 const buildTableQueryVariables = props => ({
     path: props.path,
