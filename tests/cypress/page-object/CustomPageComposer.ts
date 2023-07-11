@@ -42,24 +42,4 @@ export class CustomPageComposer extends PageComposer {
         })
         return new PageComposerContextualMenu('.pagesContextMenuAnthracite')
     }
-
-    openContextualMenuOnLeftTreeUntil(entry: string, action: string) {
-        cy.log('Open contextual manu on ' + entry + ' entry')
-
-        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
-            recurse(
-                () => cy.get('#JahiaGxtPagesTab').contains(entry).rightclick({ force: true }),
-                () => {
-                    const elements = Cypress.$('#page-composer-frame')
-                        .contents()
-                        .find(`span[class *= "x-menu-item"]:contains("${action}"):not(:contains("${action} ")):visible`)
-                    if (elements.length > 0) {
-                        return true
-                    }
-                    return false
-                },
-            )
-        })
-        return new PageComposerContextualMenu('.pagesContextMenuAnthracite')
-    }
 }
