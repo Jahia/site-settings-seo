@@ -1,7 +1,7 @@
-import {CustomPageComposer} from '../../page-object/CustomPageComposer'
-import {addVanityUrl, deleteNode} from '@jahia/cypress'
-import {addSimplePage} from '../../utils/Utils'
-import {ContentEditorSEO} from '../../page-object/ContentEditorSEO'
+import { CustomPageComposer } from '../../page-object/CustomPageComposer'
+import { addVanityUrl, deleteNode } from '@jahia/cypress'
+import { addSimplePage } from '../../utils/Utils'
+import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 
 describe('Add or edit vanity Urls', () => {
     it('Should display vanity url UI event if parent have special characters', () => {

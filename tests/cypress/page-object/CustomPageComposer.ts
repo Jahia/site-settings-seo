@@ -1,7 +1,6 @@
 import { PageComposer } from '@jahia/content-editor-cypress/dist/page-object/pageComposer'
 import { PageComposerContextualMenu } from './pageComposer/pageComposerContextualMenu'
 import 'cypress-wait-until'
-import { recurse } from 'cypress-recurse'
 
 export class CustomPageComposer extends PageComposer {
     openContextualMenuOnContent(selector: string | number | symbol) {
