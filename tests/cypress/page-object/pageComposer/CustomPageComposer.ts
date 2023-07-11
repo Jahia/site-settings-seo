@@ -1,5 +1,5 @@
 import { PageComposer } from '@jahia/content-editor-cypress/dist/page-object/pageComposer'
-import { PageComposerContextualMenu } from './pageComposer/pageComposerContextualMenu'
+import { PageComposerContextualMenu } from './PageComposerContextualMenu'
 import 'cypress-wait-until'
 
 export class CustomPageComposer extends PageComposer {
