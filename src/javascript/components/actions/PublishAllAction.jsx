@@ -17,6 +17,7 @@ const PublishAllActionCmp = ({render: Render, loading: Loading, label, nodeData,
     const {data, loading, error} = useQuery(ContentEditorTableQuery, {
         fetchPolicy: 'network-only',
         variables: buildTableQueryVariablesOneNode({
+            path: nodeData.path,
             lang: window.contextJsParameters.lang,
             selectedLanguageCodes: vanityUrlContext.languages.map(language => language.language), ...nodeData
         })
@@ -30,7 +31,7 @@ const PublishAllActionCmp = ({render: Render, loading: Loading, label, nodeData,
         return <>error</>;
     }
 
-    const unpublishedVanityUrlIds = data?.jcr?.nodesByQuery?.nodes[0]?.vanityUrls
+    const unpublishedVanityUrlIds = data?.jcr?.nodeByPath?.vanityUrls
         .filter(vanityUrl => vanityUrl.publicationInfo.publicationStatus !== 'PUBLISHED')
         .map(vanityUrl => vanityUrl.uuid);
 
@@ -53,7 +54,7 @@ const PublishAllActionCmp = ({render: Render, loading: Loading, label, nodeData,
 
 export const PublishAllAction = compose(withNotifications())(PublishAllActionCmp);
 
-PublishAllAction.propTypes = {
+PublishAllActionCmp.propTypes = {
     render: PropTypes.elementType.isRequired,
     loading: PropTypes.object,
     nodeData: PropTypes.object,
