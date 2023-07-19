@@ -1,4 +1,4 @@
-import { publishAndWaitJobEnding } from '@jahia/cypress'
+import { editSite, publishAndWaitJobEnding, deleteNode } from '@jahia/cypress'
 import { addVanityUrl } from '@jahia/cypress'
 
 describe('Basic test of vanity url access', () => {
@@ -21,6 +21,7 @@ describe('Basic test of vanity url access', () => {
     }
 
     before('create test data', function () {
+        editSite('digitall', { serverName: 'jahia' })
         cy.login()
         createPage(homePath, pageName, 'home')
         addVanityUrl(pagePath, 'en', '/page1seo1')
@@ -30,7 +31,8 @@ describe('Basic test of vanity url access', () => {
     })
 
     after('clear test data', function () {
-        // deleteNode(pagePath)
+        editSite('digitall', { serverName: 'localhost' })
+        deleteNode(pagePath)
         publishAndWaitJobEnding(homePath)
     })
 
