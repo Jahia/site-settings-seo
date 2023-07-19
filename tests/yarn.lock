@@ -96,10 +96,10 @@
   resolved "https://registry.yarnpkg.com/@jahia/content-editor-cypress/-/content-editor-cypress-4.2.0-tests.9.tgz#1d899ce2a78638e7847eccf5c13c242681be1eb7"
   integrity sha512-aJN0Z62EPs82AbiCU9wqEgmzxrZdu3nWm06GpTvMh05FYdv6DeF86bml2IldehGBn8NJCIIy26vA88GL6OJQKw==
 
-"@jahia/cypress@^3.7.0":
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.12.0.tgz#73976ecb5599b7ea814d75b5745469aed300b3db"
-  integrity sha512-zvmbsNjR+LAXxLRVQFOUMCFIbKwetsi5qgY3GFZcRa0nmmFXCn9WGIPznNZht5NP3/RewIz0sPjfLQXrlszEAQ==
+"@jahia/cypress@^3.14.8":
+  version "3.14.8"
+  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.14.8.tgz#c700be8d7d6af11190a34511f5d4448bf820f7a4"
+  integrity sha512-3aQcCiTEp3ddG76/7AuycshexbOgAMCwXCH7y+HIJNnK9gmKCuCr7gYwyedDSFo+a7EADvX63VJDmvyEm9+d9g==
   dependencies:
     "@apollo/client" "^3.4.9"
     graphql "^15.5.0"
