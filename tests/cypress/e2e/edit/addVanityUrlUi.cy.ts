@@ -135,13 +135,15 @@ describe('Add or edit vanity Urls', () => {
 
     it('Should display vanity url UI event if parent have special characters', () => {
         cy.login()
-        addSimplePage('/sites/digitall/home', 'Chocolate, sweets, cakes', 'Chocolate, sweets, cakes', 'en').then(() => {
-            addVanityUrl(
-                '/sites/digitall/home/Chocolate, sweets, cakes',
-                'en',
-                '/test-vanity-url-page-special-character',
-            )
-        })
+        addSimplePage('/sites/digitall/home', '(Chocolate, sweets, cakes)', 'Chocolate, sweets, cakes', 'en').then(
+            () => {
+                addVanityUrl(
+                    '/sites/digitall/home/(Chocolate, sweets, cakes)',
+                    'en',
+                    '/test-vanity-url-page-special-character',
+                )
+            },
+        )
 
         CustomPageComposer.visit('digitall', 'en', 'home.html')
         const composer = new CustomPageComposer()
@@ -151,7 +153,7 @@ describe('Add or edit vanity Urls', () => {
         vanityUrlsUi.getVanityUrlRow('/test-vanity-url-page-special-character').then((value) => {
             expect(value.text()).to.contains('/test-vanity-url-page-special-character')
         })
-        deleteNode('/sites/digitall/home/Chocolate, sweets, cakes')
+        deleteNode('/sites/digitall/home/(Chocolate, sweets, cakes)')
         cy.logout()
     })
 })
