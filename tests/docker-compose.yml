@@ -137,6 +137,8 @@ services:
         resources:
           limits:
             memory: 4gb
+      depends_on:
+        - jahia
       environment:
         # Uses variable substitution: https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
         MANIFEST: ${MANIFEST:-provisioning-manifest-build.yml}

@@ -1,5 +1,6 @@
 import { editSite, publishAndWaitJobEnding, deleteNode } from '@jahia/cypress'
 import { addVanityUrl } from '@jahia/cypress'
+import { addSimplePage } from '../utils/Utils'
 
 describe('Basic test of vanity url access', () => {
     const siteKey = 'digitall'
@@ -8,22 +9,10 @@ describe('Basic test of vanity url access', () => {
     const pageName = 'pageurlrewrite'
     const pagePath = homePath + '/' + pageName
 
-    const createPage = (parent: string, name: string, template: string) => {
-        cy.apollo({
-            variables: {
-                parentPathOrId: parent,
-                name: name,
-                template: template,
-                language: 'en',
-            },
-            mutationFile: 'graphql/jcrAddPage.graphql',
-        })
-    }
-
     before('create test data', function () {
         editSite('digitall', { serverName: 'jahia' })
         cy.login()
-        createPage(homePath, pageName, 'home')
+        addSimplePage(homePath, pageName, pageName, 'en')
         addVanityUrl(pagePath, 'en', '/page1seo1')
         addVanityUrl(pagePath, 'en', '/page1-seo2')
         addVanityUrl(pagePath, 'en', '/page1seo3')
