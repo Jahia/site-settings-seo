@@ -26,18 +26,16 @@ const DashboardTableQuery = gql`
 `;
 
 const ContentEditorTableQuery = gql`
-    query NodesQuery($query: String!, $lang: String!, $filterText: String = "", $doFilter: Boolean!, $languages: [String!], $queryFilter: InputFieldFiltersInput) {
+    query NodeByPath($path: String!, $lang: String!, $filterText: String = "", $doFilter: Boolean!, $languages: [String!]) {
         jcr {
-            nodesByQuery(query: $query, queryLanguage: XPATH, fieldFilter: $queryFilter) {
-                nodes {
-                    ...NodeCacheRequiredFields
-                   mixinTypes{
-                        name
-                    }
-                    displayName(language: $lang)
-                    ...DefaultVanityUrls
-                    ...LiveVanityUrls
+            nodeByPath(path: $path) {
+                ...NodeCacheRequiredFields
+               mixinTypes{
+                    name
                 }
+                displayName(language: $lang)
+                ...DefaultVanityUrls
+                ...LiveVanityUrls
             }
         }
     }

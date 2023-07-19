@@ -1,4 +1,4 @@
-import { CustomPageComposer } from './page-object/pageComposerOverride'
+import { CustomPageComposer } from '../page-object/pageComposer/CustomPageComposer'
 import { addVanityUrl, removeVanityUrl, getVanityUrl, deleteNode, moveNode } from '@jahia/cypress'
 
 describe('Copy Cut and Paste tests with Vanity Urls', () => {
