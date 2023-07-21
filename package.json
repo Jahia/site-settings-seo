@@ -1,6 +1,6 @@
 {
   "name": "@jahia/site-settings-seo",
-  "version": "4.0.0",
+  "version": "4.3.0-SNAPSHOT",
   "scripts": {
     "build:simple": "yarn webpack --mode=production",
     "build": "yarn lint && yarn test && yarn webpack",
@@ -67,6 +67,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
+    "@cyclonedx/webpack-plugin": "^3.6.1",
     "@jahia/eslint-config": "^1.1.0",
     "@jahia/stylelint-config": "^0.0.3",
     "@jahia/test-framework": "^1.2.0",
