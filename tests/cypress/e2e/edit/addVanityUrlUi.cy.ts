@@ -1,4 +1,4 @@
-import {publishAndWaitJobEnding, deleteNode, getNodeByPath, addVanityUrl, setNodeProperty} from '@jahia/cypress'
+import { publishAndWaitJobEnding, deleteNode, getNodeByPath, addVanityUrl, setNodeProperty } from '@jahia/cypress'
 import { CustomPageComposer } from '../../page-object/pageComposer/CustomPageComposer'
 import { addSimplePage } from '../../utils/Utils'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
@@ -38,18 +38,18 @@ describe('Add or edit vanity Urls', () => {
         })
     }
 
-    before('create test data', function () {
+    beforeEach('create test data', function () {
         addSimplePage(homePath, pageVanityUrl1, pageVanityUrl1, 'en')
-        setNodeProperty(homePath + "/" + pageVanityUrl1, 'jcr:title', pageVanityUrl1+'-fr', 'fr')
+        setNodeProperty(homePath + '/' + pageVanityUrl1, 'jcr:title', pageVanityUrl1 + '-fr', 'fr')
         addSimplePage(homePath, pageVanityUrl2, pageVanityUrl2, 'en')
         addVanityUrl('/sites/digitall/home/' + pageVanityUrl2, 'en', '/existingVanity')
-        publishAndWaitJobEnding(homePath, ['en','fr'])
+        publishAndWaitJobEnding(homePath, ['en', 'fr'])
     })
 
-    after('clear test data', function () {
+    afterEach('clear test data', function () {
         deleteNode(homePath + '/' + pageVanityUrl1)
         deleteNode(homePath + '/' + pageVanityUrl2)
-        publishAndWaitJobEnding(homePath)
+        publishAndWaitJobEnding(homePath, ['en', 'fr'])
     })
 
     it('Add a first basic vanity URL from the UI', function () {
@@ -165,8 +165,30 @@ describe('Add or edit vanity Urls', () => {
         const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
         const contentEditor = contextMenu.edit()
         const vanityUrlUi = contentEditor.openVanityUrlUi()
-        vanityUrlUi.addVanityUrl('vanity1',false,'fr')
+        vanityUrlUi.addVanityUrl('vanity1fr', false, 'fr')
 
+        checkVanityUrlByAPI(
+            homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1fr',
+            'vanity1fr',
+            'fr',
+            'EDIT',
+            'false',
+        )
+    })
 
+    it('Already existing vanity url', function () {
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+        vanityUrlUi.addVanityUrl('existingVanity', false, 'fr')
+
+        vanityUrlUi.getErrorRow().then((result) => {
+            vanityUrlUi.getNewVanityUrlRow().then(() => {
+                expect(result.text()).contains('Already in use')
+            })
+        })
     })
 })
