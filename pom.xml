@@ -43,6 +43,7 @@
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <yarn.arguments>build:simple</yarn.arguments>
         <jahia-module-signature>MCwCFFs3MhHgAM7LZYosPx6/LMy7jca7AhR7YViZF4CDqwEjIRlZU5Wbsc4LqA==</jahia-module-signature>
+        <sonar.sources>src/javascript,src/main/resources/javascript</sonar.sources>
     </properties>
 
     <scm>
@@ -150,7 +151,34 @@
                     <preparationGoals>clean verify frontend:yarn@sync-pom scm:checkin@package-json</preparationGoals>
                     <completionGoals>frontend:yarn@sync-pom scm:checkin@package-json</completionGoals>
                 </configuration>
-            </plugin> 
+            </plugin>
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <version>2.7.9</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>makeAggregateBom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <projectType>library</projectType>
+                    <schemaVersion>1.4</schemaVersion>
+                    <includeBomSerialNumber>true</includeBomSerialNumber>
+                    <includeCompileScope>true</includeCompileScope>
+                    <includeProvidedScope>false</includeProvidedScope>
+                    <includeRuntimeScope>true</includeRuntimeScope>
+                    <includeSystemScope>false</includeSystemScope>
+                    <includeTestScope>false</includeTestScope>
+                    <includeLicenseText>false</includeLicenseText>
+                    <outputReactorProjects>true</outputReactorProjects>
+                    <outputFormat>json</outputFormat>
+                    <outputName>java-bom.cdx</outputName>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
