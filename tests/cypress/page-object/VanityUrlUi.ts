@@ -5,7 +5,7 @@ export class VanityUrlUi extends BasePage {
         super()
     }
 
-    addVanityUrl(vanityValue: string, canonical = false) {
+    addVanityUrl(vanityValue: string, canonical = false, language = 'en') {
         // eslint-disable-next-line
         cy.wait(500)
 
@@ -15,6 +15,12 @@ export class VanityUrlUi extends BasePage {
         if (canonical) {
             cy.get('span[data-vud-role="default"]').find('input').click()
         }
+
+        if ('en' != language) {
+            cy.get('div[data-sel-role="vanity-language-menu"]').click()
+            cy.get('li[data-sel-value="'+language+'"]').click()
+        }
+
 
         cy.get('div[data-sel-role="manage-vanity-url-dialog"]').find('button[data-vud-role="button-primary"]').click()
     }

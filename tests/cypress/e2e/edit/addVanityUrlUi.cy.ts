@@ -1,4 +1,4 @@
-import { publishAndWaitJobEnding, deleteNode, getNodeByPath, addVanityUrl } from '@jahia/cypress'
+import {publishAndWaitJobEnding, deleteNode, getNodeByPath, addVanityUrl, setNodeProperty} from '@jahia/cypress'
 import { CustomPageComposer } from '../../page-object/pageComposer/CustomPageComposer'
 import { addSimplePage } from '../../utils/Utils'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
@@ -40,9 +40,10 @@ describe('Add or edit vanity Urls', () => {
 
     before('create test data', function () {
         addSimplePage(homePath, pageVanityUrl1, pageVanityUrl1, 'en')
+        setNodeProperty(homePath + "/" + pageVanityUrl1, 'jcr:title', pageVanityUrl1+'-fr', 'fr')
         addSimplePage(homePath, pageVanityUrl2, pageVanityUrl2, 'en')
         addVanityUrl('/sites/digitall/home/' + pageVanityUrl2, 'en', '/existingVanity')
-        publishAndWaitJobEnding(homePath)
+        publishAndWaitJobEnding(homePath, ['en','fr'])
     })
 
     after('clear test data', function () {
@@ -155,5 +156,17 @@ describe('Add or edit vanity Urls', () => {
         })
         deleteNode('/sites/digitall/home/(Chocolate, sweets, cakes)')
         cy.logout()
+    })
+
+    it('Add a vanity URL on non default language', function () {
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+        vanityUrlUi.addVanityUrl('vanity1',false,'fr')
+
+
     })
 })
