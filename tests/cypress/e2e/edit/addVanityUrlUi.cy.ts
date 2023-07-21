@@ -17,12 +17,21 @@ describe('Add or edit vanity Urls', () => {
         workspace: 'EDIT' | 'LIVE' = 'EDIT',
         isCanonical: string,
     ) => {
-        getNodeByPath(vanityUrlPath, ['j:default'], language, [], workspace).then((result) => {
-            expect(result?.data).not.eq(undefined)
-            expect(result?.data?.jcr.nodeByPath.name).eq(vanityUrlName)
-            expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
-            expect(result?.data?.jcr.nodeByPath.properties[0].value).eq(isCanonical)
-        })
+        cy.waitUntil(
+            () => {
+                return getNodeByPath(vanityUrlPath, ['j:default'], language, [], workspace).then((result) => {
+                    expect(result?.data).not.eq(undefined)
+                    expect(result?.data?.jcr.nodeByPath.name).eq(vanityUrlName)
+                    expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
+                    expect(result?.data?.jcr.nodeByPath.properties[0].value).eq(isCanonical)
+                })
+            },
+            {
+                errorMsg: 'Menu not opened in required time',
+                timeout: 10000,
+                interval: 1000,
+            },
+        )
     }
 
     const checkVanityUrlDoNotExistByAPI = (
