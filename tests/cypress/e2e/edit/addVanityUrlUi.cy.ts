@@ -27,9 +27,9 @@ describe('Add or edit vanity Urls', () => {
                 })
             },
             {
-                errorMsg: 'Menu not opened in required time',
+                errorMsg: 'Vanity url not available in time',
                 timeout: 10000,
-                interval: 1000,
+                interval: 500,
             },
         )
     }
@@ -174,7 +174,15 @@ describe('Add or edit vanity Urls', () => {
         const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
         const contentEditor = contextMenu.edit()
         const vanityUrlUi = contentEditor.openVanityUrlUi()
-        vanityUrlUi.addVanityUrl('vanity1fr', false, 'fr')
+
+        vanityUrlUi.startAddvanityUrl()
+
+        cy.get('div[data-sel-role="vanity-language-menu"]').then((row) => {
+            expect(row.text()).to.contains('en')
+            expect(row.text()).not.to.contains('fr')
+        })
+
+        vanityUrlUi.enterVanityUrlValues('vanity1fr', false, 'fr')
 
         checkVanityUrlByAPI(
             homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1fr',
@@ -195,9 +203,7 @@ describe('Add or edit vanity Urls', () => {
         vanityUrlUi.addVanityUrl('existingVanity', false, 'fr')
 
         vanityUrlUi.getErrorRow().then((result) => {
-            vanityUrlUi.getNewVanityUrlRow().then(() => {
-                expect(result.text()).contains('Already in use')
-            })
+            expect(result.text()).contains('Already in use')
         })
     })
 })
