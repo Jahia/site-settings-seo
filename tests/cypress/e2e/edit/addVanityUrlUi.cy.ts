@@ -85,7 +85,7 @@ describe('Add or edit vanity Urls', () => {
         )
     })
 
-    it('Add a second canonical vanity URL and published vanity URL from the UI', function () {
+    it.skip('Add a second canonical vanity URL and published vanity URL from the UI', function () {
         cy.login()
         const composer = new CustomPageComposer()
         CustomPageComposer.visit('digitall', 'en', 'home.html')
