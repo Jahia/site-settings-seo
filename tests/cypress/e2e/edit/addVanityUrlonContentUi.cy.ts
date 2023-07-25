@@ -13,6 +13,16 @@ describe('Add or edit vanity Urls', () => {
     const newsname = 'Some-interresting-news'
     const newspath = '/sites/digitall/home/' + pageVanityUrl1 + '/area-main/' + newsname
 
+    const visitAndCheck = (url, selector, expectedText) => {
+        cy.visit(Cypress.env('JAHIA_URL') + url, { failOnStatusCode: false })
+        cy.url().should('include', url).should('not.include', '.html')
+        cy.get(selector)
+            .invoke('text')
+            .then((text) => {
+                expect(text).contains(expectedText)
+            })
+    }
+
     before('set server test data', function () {
         editSite('digitall', { serverName: 'jahia' })
     })
@@ -61,13 +71,7 @@ describe('Add or edit vanity Urls', () => {
 
         publishAndWaitJobEnding(homePath + '/' + pageVanityUrl1)
 
-        cy.visit(Cypress.env('JAHIA_URL') + '/vanityNews1')
-        cy.url().should('include', 'vanityNews1').should('not.include', '.html')
-        cy.get('h2')
-            .invoke('text')
-            .then((text) => {
-                expect(text).contains('Some interresting news')
-            })
+        visitAndCheck('/vanityNews1', 'h2', 'Some interresting news')
     })
 
     it('Edit a vanity URL on a content', function () {
@@ -86,21 +90,9 @@ describe('Add or edit vanity Urls', () => {
 
         publishAndWaitJobEnding(newspath)
 
-        cy.visit(Cypress.env('JAHIA_URL') + '/vanityEdited')
-        cy.url().should('include', 'vanityEdited').should('not.include', '.html')
-        cy.get('h2')
-            .invoke('text')
-            .then((text) => {
-                expect(text).contains('Some interresting news')
-            })
+        visitAndCheck('/vanityEdited', 'h2', 'Some interresting news')
 
-        cy.visit(Cypress.env('JAHIA_URL') + '/vanityToEdit', { failOnStatusCode: false })
-        cy.url().should('include', 'vanityToEdit').should('not.include', '.html')
-        cy.get('h1')
-            .invoke('text')
-            .then((text) => {
-                expect(text).contains('400')
-            })
+        visitAndCheck('/vanityToEdit', 'h1', '400')
     })
 
     it('Remove a vanity URL on a content', function () {
@@ -119,18 +111,8 @@ describe('Add or edit vanity Urls', () => {
 
         publishAndWaitJobEnding(newspath)
 
-        cy.visit(Cypress.env('JAHIA_URL') + '/news/une-nouvelle-interessante')
-        cy.get('h2')
-            .invoke('text')
-            .then((text) => {
-                expect(text).contains('Une nouvelle intéressante')
-            })
+        visitAndCheck('/news/une-nouvelle-interessante', 'h2', 'Une nouvelle intéressante')
 
-        cy.visit(Cypress.env('JAHIA_URL') + '/news/some-interresting-news', { failOnStatusCode: false })
-        cy.get('h1')
-            .invoke('text')
-            .then((text) => {
-                expect(text).contains('400')
-            })
+        visitAndCheck('/news/some-interresting-news', 'h1', '400')
     })
 })
