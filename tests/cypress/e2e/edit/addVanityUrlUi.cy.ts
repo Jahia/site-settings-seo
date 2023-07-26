@@ -175,14 +175,14 @@ describe('Add or edit vanity Urls', () => {
         const contentEditor = contextMenu.edit()
         const vanityUrlUi = contentEditor.openVanityUrlUi()
 
-        vanityUrlUi.startAddvanityUrl()
+        vanityUrlUi.clickOnAddVanityUrl()
 
         cy.get('div[data-sel-role="vanity-language-menu"]').then((row) => {
             expect(row.text()).to.contains('en')
             expect(row.text()).not.to.contains('fr')
         })
 
-        vanityUrlUi.enterVanityUrlValues('vanity1fr', false, 'fr')
+        vanityUrlUi.fillVanityValues('vanity1fr', false, 'fr')
 
         checkVanityUrlByAPI(
             homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1fr',

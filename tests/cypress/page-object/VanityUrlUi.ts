@@ -12,14 +12,14 @@ export class VanityUrlUi extends BasePage {
         return cy.get('tr[data-sel-role="new-vanity-url"]', { timeout: 500 })
     }
 
-    startAddvanityUrl() {
+    clickOnAddVanityUrl() {
         // eslint-disable-next-line
         cy.wait(500)
 
         cy.get('div[data-sel-role="manage-vanity-url-dialog"]').find('button[aria-label="add"]').click()
     }
 
-    enterVanityUrlValues(vanityValue: string, canonical = false, language = 'en') {
+    fillVanityValues(vanityValue: string, canonical = false, language = 'en') {
         cy.get('input[data-sel-role="vanity-input-text"]').type(vanityValue)
 
         if (canonical) {
@@ -35,8 +35,8 @@ export class VanityUrlUi extends BasePage {
     }
 
     addVanityUrl(vanityValue: string, canonical = false, language = 'en') {
-        this.startAddvanityUrl()
-        this.enterVanityUrlValues(vanityValue, canonical, language)
+        this.clickOnAddVanityUrl()
+        this.fillVanityValues(vanityValue, canonical, language)
     }
 
     editVanityUrl(originalVanityValue: string, newVanityValue: string) {
