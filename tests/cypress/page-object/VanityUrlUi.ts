@@ -19,6 +19,18 @@ export class VanityUrlUi extends BasePage {
         cy.get('div[data-sel-role="manage-vanity-url-dialog"]').find('button[data-vud-role="button-primary"]').click()
     }
 
+    editVanityUrl(originalVanityValue: string, newVanityValue: string) {
+        this.getVanityUrlRow(originalVanityValue).click()
+
+        cy.get('input[data-sel-role="vanity-input-text"]').clear().type(newVanityValue).type('{enter}')
+    }
+
+    deleteVanityUrl(vanityToDelete: string) {
+        this.getVanityUrlRow(vanityToDelete).find('button[data-sel-role="vanityListMenu"]').click()
+        cy.get('menu[data-sel-role="jcontent-vanityListMenu"]').find('li[data-sel-role="delete"]').click()
+        cy.get('button[data-sel-role="delete-mark-button"]').click()
+    }
+
     publishAllVanityUrls() {
         cy.get('button[data-sel-role*="publish-all-vanitys"]').click()
     }
