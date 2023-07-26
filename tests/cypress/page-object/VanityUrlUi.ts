@@ -37,6 +37,18 @@ export class VanityUrlUi extends BasePage {
     addVanityUrl(vanityValue: string, canonical = false, language = 'en') {
         this.startAddvanityUrl()
         this.enterVanityUrlValues(vanityValue, canonical, language)
+    }  
+
+    editVanityUrl(originalVanityValue: string, newVanityValue: string) {
+        this.getVanityUrlRow(originalVanityValue).click()
+
+        cy.get('input[data-sel-role="vanity-input-text"]').clear().type(newVanityValue).type('{enter}')
+    }
+
+    deleteVanityUrl(vanityToDelete: string) {
+        this.getVanityUrlRow(vanityToDelete).find('button[data-sel-role="vanityListMenu"]').click()
+        cy.get('menu[data-sel-role="jcontent-vanityListMenu"]').find('li[data-sel-role="delete"]').click()
+        cy.get('button[data-sel-role="delete-mark-button"]').click()
     }
 
     publishAllVanityUrls() {

@@ -16,6 +16,7 @@
     "@jahia/cypress": "^3.14.8",
     "@jahia/jahia-reporter": "^1.0.30",
     "@jahia/content-editor-cypress": "4.2.0-tests.9",
+    "@jahia/jcontent-cypress": "2.10.0-tests.6",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "cypress": "12.4.1",
