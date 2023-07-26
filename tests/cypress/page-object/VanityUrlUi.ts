@@ -37,7 +37,7 @@ export class VanityUrlUi extends BasePage {
     addVanityUrl(vanityValue: string, canonical = false, language = 'en') {
         this.startAddvanityUrl()
         this.enterVanityUrlValues(vanityValue, canonical, language)
-    }  
+    }
 
     editVanityUrl(originalVanityValue: string, newVanityValue: string) {
         this.getVanityUrlRow(originalVanityValue).click()
