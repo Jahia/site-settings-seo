@@ -1,4 +1,4 @@
-import { publishAndWaitJobEnding, deleteNode, getNodeByPath, addVanityUrl } from '@jahia/cypress'
+import { publishAndWaitJobEnding, deleteNode, getNodeByPath, addVanityUrl, setNodeProperty } from '@jahia/cypress'
 import { CustomPageComposer } from '../../page-object/pageComposer/CustomPageComposer'
 import { addSimplePage } from '../../utils/Utils'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
@@ -17,12 +17,21 @@ describe('Add or edit vanity Urls', () => {
         workspace: 'EDIT' | 'LIVE' = 'EDIT',
         isCanonical: string,
     ) => {
-        getNodeByPath(vanityUrlPath, ['j:default'], language, [], workspace).then((result) => {
-            expect(result?.data).not.eq(undefined)
-            expect(result?.data?.jcr.nodeByPath.name).eq(vanityUrlName)
-            expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
-            expect(result?.data?.jcr.nodeByPath.properties[0].value).eq(isCanonical)
-        })
+        cy.waitUntil(
+            () => {
+                return getNodeByPath(vanityUrlPath, ['j:default'], language, [], workspace).then((result) => {
+                    expect(result?.data).not.eq(undefined)
+                    expect(result?.data?.jcr.nodeByPath.name).eq(vanityUrlName)
+                    expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
+                    expect(result?.data?.jcr.nodeByPath.properties[0].value).eq(isCanonical)
+                })
+            },
+            {
+                errorMsg: 'Vanity url not available in time',
+                timeout: 10000,
+                interval: 500,
+            },
+        )
     }
 
     const checkVanityUrlDoNotExistByAPI = (
@@ -38,17 +47,18 @@ describe('Add or edit vanity Urls', () => {
         })
     }
 
-    before('create test data', function () {
+    beforeEach('create test data', function () {
         addSimplePage(homePath, pageVanityUrl1, pageVanityUrl1, 'en')
+        setNodeProperty(homePath + '/' + pageVanityUrl1, 'jcr:title', pageVanityUrl1 + '-fr', 'fr')
         addSimplePage(homePath, pageVanityUrl2, pageVanityUrl2, 'en')
         addVanityUrl('/sites/digitall/home/' + pageVanityUrl2, 'en', '/existingVanity')
-        publishAndWaitJobEnding(homePath)
+        publishAndWaitJobEnding(homePath, ['en', 'fr'])
     })
 
-    after('clear test data', function () {
+    afterEach('clear test data', function () {
         deleteNode(homePath + '/' + pageVanityUrl1)
         deleteNode(homePath + '/' + pageVanityUrl2)
-        publishAndWaitJobEnding(homePath)
+        publishAndWaitJobEnding(homePath, ['en', 'fr'])
     })
 
     it('Add a first basic vanity URL from the UI', function () {
@@ -155,5 +165,45 @@ describe('Add or edit vanity Urls', () => {
         })
         deleteNode('/sites/digitall/home/(Chocolate, sweets, cakes)')
         cy.logout()
+    })
+
+    it('Add a vanity URL on non default language', function () {
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+
+        vanityUrlUi.clickOnAddVanityUrl()
+
+        cy.get('div[data-sel-role="vanity-language-menu"]').then((row) => {
+            expect(row.text()).to.contains('en')
+            expect(row.text()).not.to.contains('fr')
+        })
+
+        vanityUrlUi.fillVanityValues('vanity1fr', false, 'fr')
+
+        checkVanityUrlByAPI(
+            homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1fr',
+            'vanity1fr',
+            'fr',
+            'EDIT',
+            'false',
+        )
+    })
+
+    it('Already existing vanity url', function () {
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+        vanityUrlUi.addVanityUrl('existingVanity', false, 'fr')
+
+        vanityUrlUi.getErrorRow().then((result) => {
+            expect(result.text()).contains('Already in use')
+        })
     })
 })
