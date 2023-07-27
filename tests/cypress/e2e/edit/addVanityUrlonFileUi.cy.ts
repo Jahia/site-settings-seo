@@ -23,7 +23,7 @@ describe('Add or edit vanity Urls', () => {
 
         JContent.visit('digitall', 'en', jcontentFilePath)
 
-        switchView('list')
+        new JContent().switchView('list')
         new JContent().editComponentByText(fileName)
 
         const contentEditor = new ContentEditorSEO()
