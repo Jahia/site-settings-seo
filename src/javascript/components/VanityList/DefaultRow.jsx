@@ -8,7 +8,7 @@ import {LanguageMenu} from '../LanguageMenu';
 import {DisplayAction} from '@jahia/ui-extender';
 
 let ButtonRendererNoLabel;
-import('@jahia/content-editor').then(v => {
+import('@jahia/jcontent').then(v => {
     ButtonRendererNoLabel = v.ButtonRendererNoLabel;
 }).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
 import {ButtonRendererNoLabel as LocalButtonRendererNoLabel} from '../Renderer/getButtonRenderer';

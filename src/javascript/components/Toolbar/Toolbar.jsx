@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import {DisplayActions} from '@jahia/ui-extender';
 
 let ButtonRenderer;
-import('@jahia/content-editor').then(v => {
+import('@jahia/jcontent').then(v => {
     ButtonRenderer = v.ButtonRenderer;
 }).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
 import {ButtonRenderer as LocalButtonRenderer} from '../Renderer/getButtonRenderer';

@@ -32,17 +32,17 @@
         <version>8.1.0.0</version>
     </parent>
     <artifactId>site-settings-seo</artifactId>
-    <version>4.3.0-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Site Settings - SEO Project</name>
     <description>This is the custom module (Site Settings - SEO) for running on a Digital Experience Manager server.</description>
     <properties>
         <jahia.plugin.version>6.6</jahia.plugin.version>
-        <jahia-depends>graphql-dxm-provider, jcontent, seo,app-shell=2.6</jahia-depends>
+        <jahia-depends>graphql-dxm-provider, jcontent=3, seo,app-shell=2.6</jahia-depends>
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <yarn.arguments>build:simple</yarn.arguments>
-        <jahia-module-signature>MCwCFFs3MhHgAM7LZYosPx6/LMy7jca7AhR7YViZF4CDqwEjIRlZU5Wbsc4LqA==</jahia-module-signature>
+        <jahia-module-signature>MCwCFA92U494hs6aR505F3JZCI/FZsb3AhRhrWN2TicOgC5qtWwgGv38ObWMIA==</jahia-module-signature>
         <sonar.sources>src/javascript,src/main/resources/javascript</sonar.sources>
     </properties>
 
@@ -125,7 +125,7 @@
                         <configuration>
                             <arguments>sync-pom</arguments>
                         </configuration>
-                    </execution> 
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -143,7 +143,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin> 
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>

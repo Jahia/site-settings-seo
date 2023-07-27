@@ -8,7 +8,7 @@ import {DisplayAction} from '@jahia/ui-extender';
 import {useVanityUrlContext} from '../../Context/VanityUrl.context';
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
 let ButtonRenderer;
-import('@jahia/content-editor').then(v => {
+import('@jahia/jcontent').then(v => {
     ButtonRenderer = v.ButtonRenderer;
 }).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
 
