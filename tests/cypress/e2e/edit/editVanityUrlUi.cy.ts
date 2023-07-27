@@ -18,31 +18,6 @@ describe('Edit vanity Urls', () => {
         addVanityUrl(pageVanityUrl2Path, 'en', '/existingVanity2en')
         addVanityUrl(pageVanityUrl2Path, 'fr', '/existingVanity2fr')
 
-        const variablesLinkList = {
-            parentPathOrId: pageVanityUrl1 + '/area-main',
-            primaryNodeType: 'jnt:linkList',
-            name: 'linkList',
-            properties: [
-                { name: 'j:nodename', value: 'linkList', language: 'en' },
-                { name: 'j:nodename', value: 'linkList', language: 'fr' },
-            ],
-        }
-        addNode(variablesLinkList)
-        const variablesLink = {
-            parentPathOrId: pageVanityUrl1 + '/area-main/linkList',
-            primaryNodeType: 'jnt:nodeLink',
-            name: 'LinkPage2',
-            properties: [
-                { name: 'j:nodename', value: 'link to page 2', language: 'en' },
-                { name: 'j:target', value: '_self', language: 'en' },
-                { name: 'j:node', type: 'WEAKREFERENCE', value: pageVanityUrl2Path, language: 'en' },
-                { name: 'j:nodename', value: 'link to page 2', language: 'fr' },
-                { name: 'j:target', value: '_self', language: 'fr' },
-                { name: 'j:node', type: 'WEAKREFERENCE', value: pageVanityUrl2Path, language: 'fr' },
-            ],
-        }
-        addNode(variablesLink)
-
         publishAndWaitJobEnding(homePath, ['en', 'fr'])
     })
 
