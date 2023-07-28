@@ -1,51 +1,14 @@
-import { publishAndWaitJobEnding, deleteNode, getNodeByPath, addVanityUrl, setNodeProperty } from '@jahia/cypress'
+import { publishAndWaitJobEnding, deleteNode, addVanityUrl, setNodeProperty } from '@jahia/cypress'
 import { CustomPageComposer } from '../../page-object/pageComposer/CustomPageComposer'
-import { addSimplePage } from '../../utils/Utils'
+import { addSimplePage, checkVanityUrlByAPI, checkVanityUrlDoNotExistByAPI } from '../../utils/Utils'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 
-describe('Add or edit vanity Urls', () => {
+describe('Add vanity Urls', () => {
     const siteKey = 'digitall'
     const sitePath = '/sites/' + siteKey
     const homePath = sitePath + '/home'
     const pageVanityUrl1 = 'page1'
     const pageVanityUrl2 = 'page2'
-
-    const checkVanityUrlByAPI = (
-        vanityUrlPath: string,
-        vanityUrlName: string,
-        language: string,
-        workspace: 'EDIT' | 'LIVE' = 'EDIT',
-        isCanonical: string,
-    ) => {
-        cy.waitUntil(
-            () => {
-                return getNodeByPath(vanityUrlPath, ['j:default'], language, [], workspace).then((result) => {
-                    expect(result?.data).not.eq(undefined)
-                    expect(result?.data?.jcr.nodeByPath.name).eq(vanityUrlName)
-                    expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
-                    expect(result?.data?.jcr.nodeByPath.properties[0].value).eq(isCanonical)
-                })
-            },
-            {
-                errorMsg: 'Vanity url not available in time',
-                timeout: 10000,
-                interval: 500,
-            },
-        )
-    }
-
-    const checkVanityUrlDoNotExistByAPI = (
-        vanityUrlPath: string,
-        language: string,
-        workspace: 'EDIT' | 'LIVE' = 'EDIT',
-    ) => {
-        // eslint-disable-next-line
-        cy.wait(500)
-
-        getNodeByPath(vanityUrlPath, [], language, [], workspace).then((result) => {
-            expect(result?.data).eq(undefined)
-        })
-    }
 
     beforeEach('create test data', function () {
         addSimplePage(homePath, pageVanityUrl1, pageVanityUrl1, 'en')

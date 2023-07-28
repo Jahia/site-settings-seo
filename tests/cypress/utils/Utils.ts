@@ -1,4 +1,4 @@
-import { addNode } from '@jahia/cypress'
+import { addNode, getNodeByPath } from '@jahia/cypress'
 
 export const addSimplePage = (
     parentPathOrId: string,
@@ -32,4 +32,41 @@ export const addSimplePage = (
         ],
     }
     return addNode(variables)
+}
+
+export const checkVanityUrlByAPI = (
+    vanityUrlPath: string,
+    vanityUrlName: string,
+    language: string,
+    workspace: 'EDIT' | 'LIVE' = 'EDIT',
+    isCanonical: string,
+) => {
+    cy.waitUntil(
+        () => {
+            return getNodeByPath(vanityUrlPath, ['j:default'], language, [], workspace).then((result) => {
+                expect(result?.data).not.eq(undefined)
+                expect(result?.data?.jcr.nodeByPath.name).eq(vanityUrlName)
+                expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
+                expect(result?.data?.jcr.nodeByPath.properties[0].value).eq(isCanonical)
+            })
+        },
+        {
+            errorMsg: 'Vanity url not available in time',
+            timeout: 10000,
+            interval: 500,
+        },
+    )
+}
+
+export const checkVanityUrlDoNotExistByAPI = (
+    vanityUrlPath: string,
+    language: string,
+    workspace: 'EDIT' | 'LIVE' = 'EDIT',
+) => {
+    // eslint-disable-next-line
+    cy.wait(500)
+
+    getNodeByPath(vanityUrlPath, [], language, [], workspace).then((result) => {
+        expect(result?.data).eq(undefined)
+    })
 }
