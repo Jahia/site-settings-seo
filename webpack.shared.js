@@ -49,7 +49,8 @@ const singletonDeps = [
 
 const notImported = [
     '@jahia/react-material',
-    '@jahia/moonstone'
+    '@jahia/moonstone',
+    '@jahia/data-helper'
 ];
 
 const shared = sharedDeps.filter(item => deps[item]).reduce((acc, item) => ({
