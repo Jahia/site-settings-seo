@@ -5,7 +5,7 @@ import {SiteSettingsSeoCardEntry} from '../contentEditor/SiteSettingsSeo/SiteSet
 import * as PropTypes from 'prop-types';
 
 let useContentEditorContext;
-import('@jahia/content-editor').then(v => {
+import('@jahia/jcontent').then(v => {
     useContentEditorContext = v.useContentEditorContext;
 }).catch(e => console.warn('Error loading context from content-editor', e));
 
