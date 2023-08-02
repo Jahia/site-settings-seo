@@ -3,6 +3,7 @@ import { addVanityUrl, removeVanityUrl, getVanityUrl, deleteNode, moveNode } fro
 
 describe('Copy Cut and Paste tests with Vanity Urls', () => {
     before('Set vanityUrl', () => {
+        cy.apollo({ mutationFile: 'graphql/enableLegacyPageComposer.graphql' })
         cy.login()
         addVanityUrl('/sites/digitall/home/about', 'en', '/about')
         cy.logout()

@@ -1,4 +1,4 @@
-import { publishAndWaitJobEnding, deleteNode, addVanityUrl, setNodeProperty, addNode } from '@jahia/cypress'
+import { publishAndWaitJobEnding, deleteNode, addVanityUrl, setNodeProperty } from '@jahia/cypress'
 import { addSimplePage, checkVanityUrlByAPI, checkVanityUrlDoNotExistByAPI } from '../../utils/Utils'
 import { CustomPageComposer } from '../../page-object/pageComposer/CustomPageComposer'
 describe('Edit vanity Urls', () => {
@@ -9,6 +9,10 @@ describe('Edit vanity Urls', () => {
     const pageVanityUrl2 = 'page2'
     const pageVanityUrl1Path = homePath + '/' + pageVanityUrl2
     const pageVanityUrl2Path = homePath + '/' + pageVanityUrl2
+
+    before('init', function () {
+        cy.apollo({ mutationFile: 'graphql/enableLegacyPageComposer.graphql' })
+    })
 
     beforeEach('create test data', function () {
         addSimplePage(homePath, pageVanityUrl1, pageVanityUrl1, 'en')

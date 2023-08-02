@@ -10,6 +10,10 @@ describe('Add vanity Urls', () => {
     const pageVanityUrl1 = 'page1'
     const pageVanityUrl2 = 'page2'
 
+    before('init', function () {
+        cy.apollo({ mutationFile: 'graphql/enableLegacyPageComposer.graphql' })
+    })
+
     beforeEach('create test data', function () {
         addSimplePage(homePath, pageVanityUrl1, pageVanityUrl1, 'en')
         setNodeProperty(homePath + '/' + pageVanityUrl1, 'jcr:title', pageVanityUrl1 + '-fr', 'fr')
