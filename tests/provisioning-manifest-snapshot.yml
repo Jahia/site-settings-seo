@@ -3,8 +3,11 @@
   username: ${env:NEXUS_USERNAME}
   password: ${env:NEXUS_PASSWORD}
 
-- uninstallBundle:
-    - 'mvn:org.jahia.modules/content-editor/3.6.0'
+# uninstall only if it exists, otherwise it throws an error
+# need to hardcode version for uninstall
+- if: org.jahia.osgi.BundleUtils.getBundleBySymbolicName('content-editor',null) != null
+  do:
+    - uninstallBundle: 'mvn:org.jahia.modules/content-editor/3.6.0'
 
 - installBundle:
     - 'mvn:org.jahia.modules/jcontent'
