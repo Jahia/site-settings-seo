@@ -8,7 +8,7 @@
 
 - installBundle:
     - 'mvn:org.jahia.modules/jcontent'
-    - 'mvn:org.jahia.modules/event'
+    - 'mvn:org.jahia.modules/event/4.0.0-SNAPSHOT'
     - 'mvn:org.jahia.modules/site-settings-seo'
     - 'mvn:org.jahia.modules/press/3.0.0'
     - 'mvn:org.jahia.modules/person/3.1.0'
@@ -24,7 +24,7 @@
     - 'mvn:org.jahia.modules/dx-base-demo-core/2.2.0'
     - 'mvn:org.jahia.modules/dx-base-demo-templates/3.1.0'
     - 'mvn:org.jahia.modules/dx-base-demo-components/2.1.0'
-    - 'mvn:org.jahia.modules/digitall/2.0.0'
+    - 'mvn:org.jahia.modules/digitall/2.3.0'
   autoStart: true
   uninstallPreviousVersion: true
 
