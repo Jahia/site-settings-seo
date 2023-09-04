@@ -119,6 +119,8 @@ CYPRESS_CONFIG="cypress.config.ts"
 echo "$(date +'%d %B %Y - %k:%M') == Run tests with config: ${CYPRESS_CONFIG} =="
 if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
   echo "$(date +'%d %B %Y - %k:%M') == Run ALL specs with cluster enabled =="
+  echo "$(date +'%d %B %Y - %k:%M') == Sleep 60 seconds to let servers starting correctly =="
+  sleep 60
   yarn e2e:ci --config-file ${CYPRESS_CONFIG}
 else
   echo "$(date +'%d %B %Y - %k:%M') == Run REDUCED specs with cluster disabled =="
