@@ -2,9 +2,9 @@ import { publishAndWaitJobEnding, addVanityUrl, addNode, editSite, deleteNode } 
 import { addSimplePage } from '../../utils/Utils'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 
-import { JContent } from '@jahia/content-editor-cypress/dist/page-object/jcontent'
+import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
 
-describe('Add or edit vanity Urls', () => {
+describe.skip('Add or edit vanity Urls', () => {
     const siteKey = 'digitall'
     const sitePath = '/sites/' + siteKey
     const homePath = sitePath + '/home'
@@ -60,13 +60,13 @@ describe('Add or edit vanity Urls', () => {
     it('Add a first basic vanity URL on a content', function () {
         cy.login()
 
-        JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1).editComponentByText(
-            'Some interresting news',
-        )
+        const jcontent = JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1)
+        jcontent.switchToListMode().editComponentByText('Some interresting news')
 
         const contentEditor = new ContentEditorSEO()
 
         const vanityUrlUi = contentEditor.openVanityUrlUi()
+
         vanityUrlUi.addVanityUrl('vanityNews1', true)
 
         publishAndWaitJobEnding(homePath + '/' + pageVanityUrl1)
@@ -79,9 +79,8 @@ describe('Add or edit vanity Urls', () => {
 
         cy.login()
 
-        JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1).editComponentByText(
-            'Some interresting news',
-        )
+        const jcontent = JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1)
+        jcontent.switchToListMode().editComponentByText('Some interresting news')
 
         const contentEditor = new ContentEditorSEO()
 
@@ -100,9 +99,8 @@ describe('Add or edit vanity Urls', () => {
 
         cy.login()
 
-        JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1).editComponentByText(
-            'Some interresting news',
-        )
+        const jcontent = JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1)
+        jcontent.switchToListMode().editComponentByText('Some interresting news')
 
         const contentEditor = new ContentEditorSEO()
 

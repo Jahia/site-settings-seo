@@ -1,4 +1,4 @@
-import { ContentEditor } from '@jahia/content-editor-cypress/dist/page-object/contentEditor'
+import { ContentEditor } from '@jahia/jcontent-cypress/dist/page-object/contentEditor'
 import { VanityUrlUi } from './VanityUrlUi'
 
 export class ContentEditorSEO extends ContentEditor {
