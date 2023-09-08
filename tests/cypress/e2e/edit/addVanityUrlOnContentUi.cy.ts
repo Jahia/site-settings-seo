@@ -4,7 +4,7 @@ import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 
 import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
 
-describe.skip('Add or edit vanity Urls', () => {
+describe('Add or edit vanity Urls', () => {
     const siteKey = 'digitall'
     const sitePath = '/sites/' + siteKey
     const homePath = sitePath + '/home'

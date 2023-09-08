@@ -15,7 +15,7 @@
   "devDependencies": {
     "@jahia/cypress": "^3.15.0",
     "@jahia/jahia-reporter": "^1.0.30",
-    "@jahia/jcontent-cypress": "2.10.0-tests.6",
+    "@jahia/jcontent-cypress": "^3.0.0-tests.1",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "cypress": "12.4.1",
