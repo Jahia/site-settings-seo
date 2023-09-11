@@ -31,9 +31,6 @@ if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
     echo "$(date +'%d %B %Y - %k:%M') == Sleep 60 seconds to let Jahia to be started correctly =="
     sleep 60
     docker-compose up -d --renew-anon-volumes jahia-browsing-a jahia-browsing-b
-else
-    echo "$(date +'%d %B %Y - %k:%M') [JAHIA_CLUSTER_ENABLED] == Starting a single processing node (no cluster) =="
-    docker-compose up -d --renew-anon-volumes mariadb jahia
 fi
 
 if [[ $1 != "notests" ]]; then
