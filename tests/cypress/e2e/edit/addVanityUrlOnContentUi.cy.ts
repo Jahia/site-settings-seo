@@ -2,7 +2,7 @@ import { publishAndWaitJobEnding, addVanityUrl, addNode, editSite, deleteNode } 
 import { addSimplePage } from '../../utils/Utils'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 
-import { JContent } from '@jahia/content-editor-cypress/dist/page-object/jcontent'
+import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
 
 describe('Add or edit vanity Urls', () => {
     const siteKey = 'digitall'
@@ -10,7 +10,7 @@ describe('Add or edit vanity Urls', () => {
     const homePath = sitePath + '/home'
     const jcontentHomePath = 'pages/home'
     const pageVanityUrl1 = 'page1withNews'
-    const newsname = 'Some-interresting-news'
+    const newsname = 'Some-interesting-news'
     const newspath = '/sites/digitall/home/' + pageVanityUrl1 + '/area-main/' + newsname
 
     const visitAndCheck = (url, selector, expectedText) => {
@@ -35,9 +35,9 @@ describe('Add or edit vanity Urls', () => {
             primaryNodeType: 'jnt:news',
             name: newsname,
             properties: [
-                { name: 'jcr:title', value: 'Some interresting news', language: 'en' },
+                { name: 'jcr:title', value: 'Some interesting news', language: 'en' },
                 { name: 'jcr:title', value: 'Une nouvelle intéressante"', language: 'fr' },
-                { name: 'desc', value: 'Something interresting just happened', language: 'en' },
+                { name: 'desc', value: 'Something interesting just happened', language: 'en' },
                 { name: 'desc', value: "Quelque chose d'intéressant s'est passé", language: 'fr' },
             ],
         }
@@ -60,18 +60,18 @@ describe('Add or edit vanity Urls', () => {
     it('Add a first basic vanity URL on a content', function () {
         cy.login()
 
-        JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1).editComponentByText(
-            'Some interresting news',
-        )
+        const jcontent = JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1)
+        jcontent.switchToListMode().editComponentByText('Some interesting news')
 
         const contentEditor = new ContentEditorSEO()
 
         const vanityUrlUi = contentEditor.openVanityUrlUi()
+
         vanityUrlUi.addVanityUrl('vanityNews1', true)
 
         publishAndWaitJobEnding(homePath + '/' + pageVanityUrl1)
 
-        visitAndCheck('/vanityNews1', 'h2', 'Some interresting news')
+        visitAndCheck('/vanityNews1', 'h2', 'Some interesting news')
     })
 
     it('Edit a vanity URL on a content', function () {
@@ -79,9 +79,8 @@ describe('Add or edit vanity Urls', () => {
 
         cy.login()
 
-        JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1).editComponentByText(
-            'Some interresting news',
-        )
+        const jcontent = JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1)
+        jcontent.switchToListMode().editComponentByText('Some interesting news')
 
         const contentEditor = new ContentEditorSEO()
 
@@ -90,7 +89,7 @@ describe('Add or edit vanity Urls', () => {
 
         publishAndWaitJobEnding(newspath)
 
-        visitAndCheck('/vanityEdited', 'h2', 'Some interresting news')
+        visitAndCheck('/vanityEdited', 'h2', 'Some interesting news')
 
         visitAndCheck('/vanityToEdit', 'h1', '400')
     })
@@ -100,19 +99,18 @@ describe('Add or edit vanity Urls', () => {
 
         cy.login()
 
-        JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1).editComponentByText(
-            'Some interresting news',
-        )
+        const jcontent = JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1)
+        jcontent.switchToListMode().editComponentByText('Some interesting news')
 
         const contentEditor = new ContentEditorSEO()
 
         const vanityUrlUi = contentEditor.openVanityUrlUi()
-        vanityUrlUi.deleteVanityUrl('/news/some-interresting-news')
+        vanityUrlUi.deleteVanityUrl('/news/some-interesting-news')
 
         publishAndWaitJobEnding(newspath)
 
         visitAndCheck('/news/une-nouvelle-interessante', 'h2', 'Une nouvelle intéressante')
 
-        visitAndCheck('/news/some-interresting-news', 'h1', '400')
+        visitAndCheck('/news/some-interesting-news', 'h1', '400')
     })
 })
