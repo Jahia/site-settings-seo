@@ -3,26 +3,32 @@ import { addVanityUrl, getVanityUrl, deleteNode, getNodeByPath } from '@jahia/cy
 import { addSimplePage } from '../utils/Utils'
 
 describe('Cut and Paste tests with Vanity Urls', () => {
-    let pageToCopyPath
-    before('Enable legacy page composer', () => {
+    let pageToCutPath
+    before('Enable legacy page composer, add test page', () => {
         cy.apollo({ mutationFile: 'graphql/enableLegacyPageComposer.graphql' })
+
+        cy.login()
+        addSimplePage('/sites/digitall/home', 'to-cut-paste', 'To cut paste', 'en')
+            .its('data.jcr.addNode.node.name')
+            .then((name) => {
+                pageToCutPath = `/sites/digitall/home/${name}`
+                addVanityUrl(pageToCutPath, 'en', '/my-vanity')
+            })
+        cy.logout()
     })
 
     it('Check for cut and paste', () => {
         cy.login()
-        addSimplePage('/sites/digitall/home', 'to-copy-paste', 'To copy paste', 'en').then((page) => {
-            pageToCopyPath = `/sites/digitall/home/${page.name}`
-            addVanityUrl(pageToCopyPath, 'en', '/my-vanity')
-        })
+
         const composer = new CustomPageComposer()
         CustomPageComposer.visit('digitall', 'en', 'home.html')
-        let contextMenu = composer.openContextualMenuOnLeftTree('To copy paste')
+        let contextMenu = composer.openContextualMenuOnLeftTree('To cut paste')
         contextMenu.cut()
         contextMenu = composer.openContextualMenuOnLeftTree('Newsroom')
         contextMenu.paste()
         cy.waitUntil(
             () => {
-                return getNodeByPath('/sites/digitall/home/newsroom/to-copy-paste-1').then((result) => {
+                return getNodeByPath('/sites/digitall/home/newsroom/to-cut-paste').then((result) => {
                     if (result?.data) {
                         return result?.data
                     }
@@ -35,11 +41,11 @@ describe('Cut and Paste tests with Vanity Urls', () => {
                 interval: 500,
             },
         ).then(() => {
-            getVanityUrl('/sites/digitall/home/newsroom/to-copy-paste-1', ['en']).then((result) => {
-                expect(result?.data?.jcr?.nodeByPath?.vanityUrls).deep.eq([])
+            getVanityUrl('/sites/digitall/home/newsroom/to-cut-paste', ['en']).then((result) => {
+                expect(result?.data?.jcr?.nodeByPath?.vanityUrls[0].url).to.eq('/my-vanity')
             })
         })
-        deleteNode('/sites/digitall/home/newsroom/to-copy-paste-1')
+        deleteNode('/sites/digitall/home/newsroom/to-cut-paste')
         cy.logout()
     })
 })

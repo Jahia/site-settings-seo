@@ -10,8 +10,10 @@ describe('Copy and Paste tests with Vanity Urls', () => {
 
     beforeEach('Add page and vanity', () => {
         cy.login()
-        addSimplePage('/sites/digitall/home', 'to-copy-paste', 'To copy paste', 'en').then((page) => {
-            pageToCopyPath = `/sites/digitall/home/${page.name}`
+        addSimplePage('/sites/digitall/home', 'to-copy-paste', 'To copy paste', 'en')
+            .its('data.jcr.addNode.node.name')
+            .then((name) => {
+            pageToCopyPath = `/sites/digitall/home/${name}`
             addVanityUrl(pageToCopyPath, 'en', '/my-vanity')
         })
         cy.logout()
@@ -60,7 +62,7 @@ describe('Copy and Paste tests with Vanity Urls', () => {
         contextMenu.paste()
         cy.waitUntil(
             () => {
-                return getNodeByPath('/sites/digitall/home/newsroom/to-copy-paste-1').then((result) => {
+                return getNodeByPath('/sites/digitall/home/newsroom/to-copy-paste').then((result) => {
                     if (result?.data) {
                         return result?.data
                     }
@@ -73,11 +75,11 @@ describe('Copy and Paste tests with Vanity Urls', () => {
                 interval: 500,
             },
         ).then(() => {
-            getVanityUrl('/sites/digitall/home/newsroom/to-copy-paste-1', ['en']).then((result) => {
+            getVanityUrl('/sites/digitall/home/newsroom/to-copy-paste', ['en']).then((result) => {
                 expect(result?.data?.jcr?.nodeByPath?.vanityUrls).deep.eq([])
             })
         })
-        deleteNode('/sites/digitall/home/newsroom/to-copy-paste-1')
+        deleteNode('/sites/digitall/home/newsroom/to-copy-paste')
         cy.logout()
     })
 
