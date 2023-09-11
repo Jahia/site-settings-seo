@@ -13,9 +13,9 @@ describe('Copy and Paste tests with Vanity Urls', () => {
         addSimplePage('/sites/digitall/home', 'to-copy-paste', 'To copy paste', 'en')
             .its('data.jcr.addNode.node.name')
             .then((name) => {
-            pageToCopyPath = `/sites/digitall/home/${name}`
-            addVanityUrl(pageToCopyPath, 'en', '/my-vanity')
-        })
+                pageToCopyPath = `/sites/digitall/home/${name}`
+                addVanityUrl(pageToCopyPath, 'en', '/my-vanity')
+            })
         cy.logout()
     })
 
