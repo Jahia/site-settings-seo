@@ -24,7 +24,7 @@ describe('Cut and Paste tests with Vanity Urls', () => {
         CustomPageComposer.visit('digitall', 'en', 'home.html')
         let contextMenu = composer.openContextualMenuOnLeftTree('To cut paste')
         contextMenu.cut()
-        contextMenu = composer.openContextualMenuOnLeftTree('Newsroom')
+        contextMenu = composer.openContextualMenuOnLeftTreeUntil('Newsroom', 'Paste')
         contextMenu.paste()
         cy.waitUntil(
             () => {
@@ -38,7 +38,7 @@ describe('Cut and Paste tests with Vanity Urls', () => {
             {
                 errorMsg: 'Node not available in time',
                 timeout: 10000,
-                interval: 500,
+                interval: 1000,
             },
         ).then(() => {
             getVanityUrl('/sites/digitall/home/newsroom/to-cut-paste', ['en']).then((result) => {

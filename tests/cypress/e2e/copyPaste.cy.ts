@@ -25,7 +25,7 @@ describe('Copy and Paste tests with Vanity Urls', () => {
         CustomPageComposer.visit('digitall', 'en', 'home.html')
         let contextMenu = composer.openContextualMenuOnLeftTree('To copy paste')
         contextMenu.copy()
-        contextMenu = composer.openContextualMenuOnLeftTree('Home')
+        contextMenu = composer.openContextualMenuOnLeftTreeUntil('Home', 'Paste')
         contextMenu.paste()
 
         cy.waitUntil(
@@ -58,7 +58,7 @@ describe('Copy and Paste tests with Vanity Urls', () => {
         CustomPageComposer.visit('digitall', 'en', 'home.html')
         let contextMenu = composer.openContextualMenuOnLeftTree('To copy paste')
         contextMenu.copy()
-        contextMenu = composer.openContextualMenuOnLeftTree('Newsroom')
+        contextMenu = composer.openContextualMenuOnLeftTreeUntil('Newsroom', 'Paste')
         contextMenu.paste()
         cy.waitUntil(
             () => {
