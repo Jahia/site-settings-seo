@@ -88,7 +88,9 @@ jobs:
           module_id: site-settings-seo
           testrail_project: Site Settings SEO Module
           tests_manifest: provisioning-manifest-build.yml
-          jahia_image: jahia/jahia-ee:8
+          #TODO TECH-1408 reactive the test on released version
+          #jahia_image: jahia/jahia-ee-dev:8
+          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           jahia_cluster_enabled: false
           should_use_build_artifacts: true
           should_skip_testrail: false
