@@ -45,6 +45,7 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
                         return action.key !== 'updateVanity';
                     }}
                     onChangeSelection={onChangeSelection}
+                    onDeleted={onChangeSelection}
                 />
             </div>
         </Paper>
