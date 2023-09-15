@@ -13,19 +13,21 @@ describe('Check toolbar comportment from Vanity Urls page UI', () => {
         addVanityUrl(homePath, 'fr', vanityUrl2)
     })
 
-    it('Check toolbar comportment on delete permanently vanities', function () {
+    it("Verify that the toolbar is closed after permanently deleting a page's list of vanity URLs.", function () {
         cy.login()
         const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
         vanityUrlsPage.openPageVanityUrlsList('Home')
-        vanityUrlsPage.selectAllVanityUrls()
-        vanityUrlsPage.clickOnToolbarTargetButton('delete')
-        vanityUrlsPage.clickOnDeleteDialogTargetButton('delete-mark-button')
-        // Need to wait refresh render react component
+        vanityUrlsPage.triggerAllCheckbox('Home')
+        vanityUrlsPage.deleteFromToolbar()
+        vanityUrlsPage.clickOnDeleteFromDialog()
+        // We need to wait for the React component to render the list of vanity urls of the previously opened page
+        // TODO remove the wait when ticket QA-14972 closed
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000)
-        vanityUrlsPage.selectAllVanityUrls()
-        vanityUrlsPage.clickOnToolbarTargetButton('deletePermanently')
-        vanityUrlsPage.clickOnDeletePermanentlyDialogTargetButton('delete-permanently-button')
-        vanityUrlsPage.toolbarShouldBeOpen(false)
+        vanityUrlsPage.triggerAllCheckbox('Home')
+        vanityUrlsPage.deletePermanentlyFromToolbar()
+        vanityUrlsPage.clickOnDeletePermanentlyFromDialog()
+        vanityUrlsPage.verifyToolbarStatus(false)
+        cy.logout()
     })
 })

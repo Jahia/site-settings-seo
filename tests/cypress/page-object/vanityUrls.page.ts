@@ -13,37 +13,43 @@ export class VanityUrlsPage {
         return new VanityUrlsPage()
     }
 
-    openPageVanityUrlsList(page) {
-        cy.get(this.elements.pageRowVanityUrls).contains(page).click()
+    findPageRow(page: string) {
+        return cy.get(this.elements.pageRowVanityUrls).contains(page)
     }
 
-    selectAllVanityUrls() {
-        cy.get(this.elements.allCheckbox).eq(0).check()
+    openPageVanityUrlsList(page: string) {
+        this.findPageRow(page).click()
     }
 
-    clickOnToolbarTargetButton(buttonRole) {
-        cy.get(this.elements.toolBar)
+    triggerAllCheckbox(page: string) {
+        this.findPageRow(page).parent().parent().parent().find(this.elements.allCheckbox).eq(0).check()
+    }
+
+    deleteFromToolbar() {
+        this.clickOnButton(this.elements.toolBar, 'delete')
+    }
+
+    deletePermanentlyFromToolbar() {
+        this.clickOnButton(this.elements.toolBar, 'deletePermanently')
+    }
+
+    clickOnDeleteFromDialog() {
+        this.clickOnButton(this.elements.deleteDialog, 'delete-mark-button')
+    }
+
+    clickOnDeletePermanentlyFromDialog() {
+        this.clickOnButton(this.elements.deletePermanentlyDialog, 'delete-permanently-button')
+    }
+
+    clickOnButton(toolBarButtonSelector: string, buttonRole: string) {
+        cy.get(toolBarButtonSelector)
             .eq(0)
             .find('button[data-sel-role=' + buttonRole + ']')
             .click()
     }
 
-    clickOnDeleteDialogTargetButton(buttonRole) {
-        cy.get(this.elements.deleteDialog)
-            .eq(0)
-            .find('button[data-sel-role=' + buttonRole + ']')
-            .click()
-    }
-
-    clickOnDeletePermanentlyDialogTargetButton(buttonRole) {
-        cy.get(this.elements.deletePermanentlyDialog)
-            .eq(0)
-            .find('button[data-sel-role=' + buttonRole + ']')
-            .click()
-    }
-
-    toolbarShouldBeOpen(check = true) {
-        if (check) {
+    verifyToolbarStatus(shouldBeOpen = true) {
+        if (shouldBeOpen) {
             cy.get(this.elements.toolBar).should(($el) => {
                 const isVisible = $el.is('visible')
                 expect(isVisible, 'is visible').to.be.true
