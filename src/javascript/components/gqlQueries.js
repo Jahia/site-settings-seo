@@ -11,6 +11,7 @@ const DashboardTableQuery = gql`
                 }
                 nodes {
                     ...NodeCacheRequiredFields
+                    hasWritePermission: hasPermission(permissionName: "jcr:write")
                     mixinTypes{
                         name
                     }
@@ -34,6 +35,7 @@ const ContentEditorTableQuery = gql`
                     name
                 }
                 displayName(language: $lang)
+                hasWritePermission: hasPermission(permissionName: "jcr:write")
                 ...DefaultVanityUrls
                 ...LiveVanityUrls
             }

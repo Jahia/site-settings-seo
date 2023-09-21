@@ -9,11 +9,7 @@ import {flowRight as compose} from 'lodash';
 import AddVanityUrl from './AddVanityUrl';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {DisplayAction} from '@jahia/ui-extender';
-let ButtonRenderer;
-import('@jahia/jcontent').then(v => {
-    ButtonRenderer = v.ButtonRenderer;
-}).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
-import {ButtonRenderer as LocalButtonRenderer} from './Renderer/getButtonRenderer';
+import {ButtonRenderer} from '@jahia/jcontent';
 
 const styles = theme => ({
     root: {
@@ -131,8 +127,10 @@ class VanityUrlEnabledContent extends React.Component {
                                       secondary={content.path}
                                       className={classes.vanityUrlListHeaderText}
                                       data-vud-role="content-title"/>
-                        {this.state.expanded &&
-                            <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer || LocalButtonRenderer} nodeData={content}/>}
+                        {this.state.expanded && content.hasWritePermission &&
+                            <DisplayAction actionKey="publishAllVanity"
+                                           render={ButtonRenderer}
+                                           nodeData={content}/>}
 
                         {filterMatchInfo}
                         {localFilterSwitch}
@@ -150,6 +148,7 @@ class VanityUrlEnabledContent extends React.Component {
                                                       languages={languages}
                                                       contentUuid={content.uuid}
                                                       isOpenCardMode={openCardMode}
+                                                      hasWritePermission={content.hasWritePermission}
                                                       onChangeSelection={onChangeSelection}/>
                             </Grid>}
                         {(isLive || isBoth) &&
@@ -162,7 +161,7 @@ class VanityUrlEnabledContent extends React.Component {
                             </Grid>}
                         {(isStaging || isBoth) &&
                             <Grid item xs={12}>
-                                <AddVanityUrl path={content.path} lang={lang}/>
+                                <AddVanityUrl path={content.path} lang={lang} hasWritePermission={content.hasWritePermission}/>
                             </Grid>}
                     </Grid>
                 </Collapse>
@@ -171,6 +170,7 @@ class VanityUrlEnabledContent extends React.Component {
     }
 }
 
+// eslint-disable-next-line no-class-assign
 VanityUrlEnabledContent = compose(
     withStyles(styles),
     withTranslation('site-settings-seo'))

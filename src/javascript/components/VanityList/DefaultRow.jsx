@@ -1,9 +1,9 @@
 import React from 'react';
 import * as _ from 'lodash';
-import {Checkbox, Switch, TableCell, TableRow} from '@material-ui/core';
+import {Switch, TableCell, TableRow} from '@material-ui/core';
 import {Editable} from '../Editable';
 import classes from './DefaultRow.scss';
-import {Chip, Loader, Lock, Typography} from '@jahia/moonstone';
+import {Chip, Loader, Lock, Typography, Checkbox} from '@jahia/moonstone';
 import {LanguageMenu} from '../LanguageMenu';
 import {DisplayAction} from '@jahia/ui-extender';
 
@@ -17,6 +17,7 @@ import * as PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 export const DefaultRow = ({
+    hasWritePermission,
     urlPair,
     isCheckboxesDisplayed,
     onChangeSelection,
@@ -58,16 +59,14 @@ export const DefaultRow = ({
                     className={(isCheckboxesDisplayed ? (isExpanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}
                     width="3%"
                 >
-                    {!isOpenCardMode && <Checkbox checked={selected}
-                                                  onClick={event => {
-                                                      event.stopPropagation();
-                                                  }}
-                                                  onChange={(event, checked) => onChangeSelection(checked, [urlPair])}/>}
+                    {!isOpenCardMode && <Checkbox isDisabled={!hasWritePermission}
+                                                  checked={selected}
+                                                  onChange={event => onChangeSelection(event.currentTarget.checked, [urlPair])}/>}
                 </TableCell>
                 <TableCell width="55px">
                     <Switch classes={{switchBase: classes.switchBase, checked: classes.switchChecked}}
                             checked={url.active}
-                            disabled={Boolean(isMarkedForDeletion)}
+                            disabled={Boolean(isMarkedForDeletion) || Boolean(!hasWritePermission)}
                             data-vud-role="action-active"
                             onClick={event => {
                                 event.stopPropagation();
@@ -75,14 +74,14 @@ export const DefaultRow = ({
                             onChange={event => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)}/>
                 </TableCell>
                 <TableCell className={clsx(classes.tableCellTextInput, {[classes.inactive]: !url.active})} width="100%">
-                    {isMarkedForDeletion &&
+                    {(isMarkedForDeletion || !hasWritePermission) &&
                         <Typography data-vud-role="url"
-                                    className={classes.deletedUrl}
+                                    className={isMarkedForDeletion ? classes.deletedUrl : ''}
                         >
                             {url.url}
                         </Typography>}
-                    {!isMarkedForDeletion && <Editable value={url.url}
-                                                       onChange={onMappingChanged}/>}
+                    {!isMarkedForDeletion && hasWritePermission && <Editable value={url.url}
+                                                                             onChange={onMappingChanged}/>}
                 </TableCell>
                 <TableCell width="120px">
                     <div className={classes.chipContainer}>
@@ -91,7 +90,7 @@ export const DefaultRow = ({
                     </div>
                 </TableCell>
                 <TableCell className={clsx(classes.languageContainer, {[classes.inactive]: !url.active})} width="90px">
-                    <LanguageMenu isDisabled={Boolean(isMarkedForDeletion)}
+                    <LanguageMenu isDisabled={Boolean(isMarkedForDeletion) || Boolean(!hasWritePermission)}
                                   languageCode={urlPair.default.language}
                                   onLanguageSelected={languageCode => actions.updateVanity.call({
                                       urlPair: urlPair,
@@ -101,6 +100,7 @@ export const DefaultRow = ({
                 <TableCell width="40px" align="center" padding="none">
                     <span>
                         <DisplayAction
+                            disabled={!hasWritePermission}
                             path={urlPair.default.path}
                             urlPair={urlPair}
                             urlPairs={[urlPair]}
@@ -130,6 +130,7 @@ export const DefaultRow = ({
 };
 
 DefaultRow.propTypes = {
+    hasWritePermission: PropTypes.bool.isRequired,
     urlPair: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     isCheckboxesDisplayed: PropTypes.bool.isRequired,
