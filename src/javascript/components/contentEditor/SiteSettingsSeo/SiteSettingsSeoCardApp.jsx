@@ -1,5 +1,5 @@
 import React from 'react';
-import InfoButton from '../../InfoButton';
+import {InfoDialog} from '../../VanityList/live/InfoDialog';
 import Publication from '../../Publication';
 import Move from '../../Move';
 import {VanityUrlTableData} from '~/components/VanityUrlTableData';
@@ -21,7 +21,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
     render() {
         let {path, t, lang, siteInfo} = this.props;
         let polling = !(this.state.publication.open ||
-            this.state.move.open || this.state.infoButton.open);
+            this.state.move.open || this.state.infoButton.isOpen);
         let variables = buildTableQueryVariablesOneNode({selectedLanguageCodes: this.props.languages, path: path, lang: lang, ...this.state.loadParams});
 
         return (
@@ -71,7 +71,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                     onClose={this.closeMove}
                                 />}
 
-                                {this.state.infoButton.open && <InfoButton
+                                {this.state.infoButton.isOpen && <InfoDialog
                                     {...this.state.infoButton}
                                     onClose={this.closeInfoButton}
                                 />}
