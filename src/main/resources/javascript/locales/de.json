@@ -108,6 +108,7 @@
     },
     "title": "Vanity URLs",
     "manage": "Vanity URLs verwalten",
-    "close": "Schließen"
+    "close": "Schließen",
+    "readOnly": "Schreibgeschützt"
   }
 }

@@ -3,7 +3,7 @@ import {withTranslation} from 'react-i18next';
 import {VanityUrlListLive} from './VanityUrlList';
 import {VanityUrlListDefault} from './VanityList/VanityUrlListDefault';
 import {Collapse, Grid, ListItem, ListItemText, withStyles} from '@material-ui/core';
-import {ChevronDown, ChevronRight} from '@jahia/moonstone';
+import {ChevronDown, ChevronRight, Chip, Lock, Visibility} from '@jahia/moonstone';
 import {Typography, Button} from '@jahia/moonstone';
 import {flowRight as compose} from 'lodash';
 import AddVanityUrl from './AddVanityUrl';
@@ -127,6 +127,11 @@ class VanityUrlEnabledContent extends React.Component {
                                       secondary={content.path}
                                       className={classes.vanityUrlListHeaderText}
                                       data-vud-role="content-title"/>
+                        {content.hasWritePermission ? null : <Chip data-sel-role="read-only-badge"
+                                                             label={t('label.readOnly')}
+                                                             icon={<Visibility/>}
+                                                             color="warning"
+                        />}
                         {this.state.expanded && content.hasWritePermission &&
                             <DisplayAction actionKey="publishAllVanity"
                                            render={ButtonRenderer}

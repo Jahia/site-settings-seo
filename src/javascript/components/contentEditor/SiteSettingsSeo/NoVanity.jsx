@@ -17,7 +17,7 @@ export const NoVanity = ({path}) => {
     );
     return (
         <div className={classes.noVanity}>
-            {loading && loadingPermission ?
+            {loading || loadingPermission ?
                 <Loader size="big"/> :
                 <AddVanityUrl path={path}
                               lang={lang}
