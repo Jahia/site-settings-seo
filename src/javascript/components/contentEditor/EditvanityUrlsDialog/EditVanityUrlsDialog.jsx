@@ -7,12 +7,7 @@ import classes from './EditVanityUrlsDialog.scss';
 import {DisplayAction} from '@jahia/ui-extender';
 import {useVanityUrlContext} from '../../Context/VanityUrl.context';
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
-let ButtonRenderer;
-import('@jahia/jcontent').then(v => {
-    ButtonRenderer = v.ButtonRenderer;
-}).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
-
-import {ButtonRenderer as LocalButtonRenderer} from '../../Renderer/getButtonRenderer';
+import {ButtonRenderer} from '@jahia/jcontent';
 import clsx from 'clsx';
 
 export const EditVanityUrlsDialog = ({
@@ -40,7 +35,7 @@ export const EditVanityUrlsDialog = ({
                         {nodeData.displayableNode.path}
                     </Typography>
                 </DialogTitle>
-                <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer || LocalButtonRenderer} nodeData={nodeData}/>
+                <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer} nodeData={nodeData}/>
             </div>
             <DialogContent className={classes.dialogContent}>
                 <SiteSettingsSeoCard path={nodeData.path}
