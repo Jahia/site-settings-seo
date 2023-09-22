@@ -4,8 +4,9 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-const shared = require("./webpack.shared");
 const moonstone = require("@jahia/moonstone/dist/rulesconfig-wp");
+const getModuleFederationConfig = require('@jahia/webpack-config/getModuleFederationConfig');
+const packageJson = require('./package.json');
 const {CycloneDxWebpackPlugin} = require('@cyclonedx/webpack-plugin');
 
 /** @type {import('@cyclonedx/webpack-plugin').CycloneDxWebpackPluginOptions} */
@@ -111,10 +112,7 @@ module.exports = (env, argv) => {
             ]
         },
         plugins: [
-            new ModuleFederationPlugin({
-                name: "siteSettingsSeo",
-                library: { type: "assign", name: "appShell.remotes.siteSettingsSeo" },
-                filename: "remoteEntry.js",
+            new ModuleFederationPlugin(getModuleFederationConfig(packageJson, {
                 exposes: {
                     './init': './src/javascript/init'
                 },
@@ -122,8 +120,7 @@ module.exports = (env, argv) => {
                     '@jahia/app-shell': 'appShellRemote',
                     '@jahia/jcontent': 'appShell.remotes.jcontent'
                 },
-                shared
-            }),
+            }, Object.keys(packageJson.dependencies))),
             new CleanWebpackPlugin(path.resolve(__dirname, 'src/main/resources/javascript/apps/'), {verbose: false}),
             new CopyWebpackPlugin([{from: './package.json', to: ''}]),
             new CaseSensitivePathsPlugin(),
