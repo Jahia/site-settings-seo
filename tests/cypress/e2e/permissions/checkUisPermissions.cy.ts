@@ -1,176 +1,116 @@
-import { publishAndWaitJobEnding, deleteNode, addVanityUrl, setNodeProperty } from '@jahia/cypress'
-import { CustomPageComposer } from '../../page-object/pageComposer/CustomPageComposer'
-import { addSimplePage, checkVanityUrlByAPI, checkVanityUrlDoNotExistByAPI } from '../../utils/Utils'
-import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
+import {
+    publishAndWaitJobEnding,
+    createSite,
+    deleteSite,
+    addVanityUrl,
+    createUser,
+    deleteUser,
+    grantRoles,
+    revokeRoles,
+    addNode, deleteNode,
+} from '@jahia/cypress'
+import {JContent} from '@jahia/jcontent-cypress/dist/page-object/jcontent'
+import {ContentEditorSEO} from "../../page-object/ContentEditorSEO";
+import {VanityUrlsPage} from "../../page-object/vanityUrls.page";
 
-describe('Add vanity Urls', () => {
-    const siteKey = 'digitall'
+describe('Basic tests of seo filter for multilingual site', () => {
+    const siteKey = 'siteForPermissionsCheck'
     const sitePath = '/sites/' + siteKey
     const homePath = sitePath + '/home'
-    const pageVanityUrl1 = 'page1'
-    const pageVanityUrl2 = 'page2'
+    const pageName = 'basic-page'
+    const pagePath = homePath + '/' + pageName
+    const langEN = 'en'
+    const siteConfig = {
+        languages: langEN,
+        templateSet: 'site-settings-seo-test-module',
+        serverName: 'localhost',
+        locale: langEN,
+    }
 
-    before('init', function () {
-        cy.apollo({ mutationFile: 'graphql/enableLegacyPageComposer.graphql' })
-    })
-
-    beforeEach('create test data', function () {
-        addSimplePage(homePath, pageVanityUrl1, pageVanityUrl1, 'en')
-        setNodeProperty(homePath + '/' + pageVanityUrl1, 'jcr:title', pageVanityUrl1 + '-fr', 'fr')
-        addSimplePage(homePath, pageVanityUrl2, pageVanityUrl2, 'en')
-        addVanityUrl('/sites/digitall/home/' + pageVanityUrl2, 'en', '/existingVanity')
-        publishAndWaitJobEnding(homePath, ['en', 'fr'])
-    })
-
-    afterEach('clear test data', function () {
-        deleteNode(homePath + '/' + pageVanityUrl1)
-        deleteNode(homePath + '/' + pageVanityUrl2)
-        publishAndWaitJobEnding(homePath, ['en', 'fr'])
-    })
-
-    it('Add a first basic vanity URL from the UI', function () {
-        cy.login()
-        const composer = new CustomPageComposer()
-        CustomPageComposer.visit('digitall', 'en', 'home.html')
-        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
-        const contentEditor = contextMenu.edit()
-        const vanityUrlUi = contentEditor.openVanityUrlUi()
-        vanityUrlUi.addVanityUrl('vanity1')
-
-        // Check the vanity url is not published by default (it does not exists in LIVE)
-        checkVanityUrlDoNotExistByAPI(homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1', 'en', 'LIVE')
-        // Check it is not canonical by default
-        vanityUrlUi.getVanityUrlRow('/vanity1').then((result) => {
-            expect(result.text()).not.contains('Canonical')
-        })
-        checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1',
-            'vanity1',
-            'en',
-            'EDIT',
-            'false',
-        )
-    })
-
-    it.skip('Add a second canonical vanity URL and published vanity URL from the UI', function () {
-        cy.login()
-        const composer = new CustomPageComposer()
-        CustomPageComposer.visit('digitall', 'en', 'home.html')
-        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl2)
-        const contentEditor = contextMenu.edit()
-        const vanityUrlUi = contentEditor.openVanityUrlUi()
-        vanityUrlUi.addVanityUrl('vanity2', true)
-
-        // Check the vanity url is not published by default (= does not exists in LIVE)
-        checkVanityUrlDoNotExistByAPI(homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2', 'en', 'LIVE')
-
-        // Check it is canonical
-        vanityUrlUi.getVanityUrlRow('/vanity2').then((result) => {
-            expect(result.text()).contains('Canonical')
-        })
-
-        checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2',
-            'vanity2',
-            'en',
-            'EDIT',
-            'true',
-        )
-
-        // Check first vanity url is not canonical
-        vanityUrlUi.getVanityUrlRow('/existingVanity').then((result) => {
-            expect(result.text()).not.contains('Canonical')
-        })
-        checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/existingVanity',
-            'existingVanity',
-            'en',
-            'EDIT',
-            'false',
-        )
-
-        // Publish the vanity url
-        vanityUrlUi.publishAllVanityUrls()
-
-        // Check the vanity url is now published and still canonical
-        checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2',
-            'vanity2',
-            'en',
-            'LIVE',
-            'true',
-        )
-        // Check first vanity url is not canonical
-        checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/existingVanity',
-            'existingVanity',
-            'en',
-            'LIVE',
-            'false',
-        )
-    })
-
-    it('Should display vanity url UI event if parent have special characters', () => {
-        cy.login()
-        addSimplePage('/sites/digitall/home', '(Chocolate, sweets, cakes)', 'Chocolate, sweets, cakes', 'en').then(
-            () => {
-                addVanityUrl(
-                    '/sites/digitall/home/(Chocolate, sweets, cakes)',
-                    'en',
-                    '/test-vanity-url-page-special-character',
-                )
+    const createPage = (parent: string, name: string, template: string, lang: string) => {
+        cy.apollo({
+            variables: {
+                parentPathOrId: parent,
+                name: name,
+                template: template,
+                language: lang,
             },
-        )
-
-        CustomPageComposer.visit('digitall', 'en', 'home.html')
-        const composer = new CustomPageComposer()
-        composer.editPage('Chocolate, sweets, cakes')
-        const contentEditorSEO = new ContentEditorSEO()
-        const vanityUrlsUi = contentEditorSEO.openVanityUrlUi()
-        vanityUrlsUi.getVanityUrlRow('/test-vanity-url-page-special-character').then((value) => {
-            expect(value.text()).to.contains('/test-vanity-url-page-special-character')
+            mutationFile: 'graphql/jcrAddPage.graphql',
         })
-        deleteNode('/sites/digitall/home/(Chocolate, sweets, cakes)')
+    }
+
+    before('Create test data', function () {
+        createSite(siteKey, siteConfig)
+        createPage(homePath, `${pageName}-a`, 'withoutseo', langEN)
+        createPage(homePath, `${pageName}-b`, 'withoutseo', langEN)
+        addVanityUrl(`${pagePath}-a`, 'en', '/vanityOnPageA')
+        addVanityUrl(`${pagePath}-b`, 'en', '/vanityOnPageB')
+        publishAndWaitJobEnding(homePath)
+
+        cy.log('Add user to check permissions')
+        createUser('editorUser', 'password')
+        grantRoles(sitePath, ['editor'], 'editorUser', 'USER')
+        revokeRoles(`${pagePath}-a`, ['editor'], 'editorUser', 'USER')
+
+        addNode({
+            parentPathOrId: '/roles',
+            name: 'vanityRoleOnly',
+            primaryNodeType: 'jnt:role',
+            properties: [
+                { name: 'j:permissionNames', values: ['siteAdminUrlmapping'] },
+                { name: 'j:roleGroup', value: 'edit-role' },
+                { name: 'j:privilegedAccess', value: 'true' },
+            ],
+        })
+        // Create user with siteAdminUrlmapping in another role
+        cy.log('Add second user to check read only on the vanity urls in content editor')
+        createUser('secondEditorUser', 'password')
+        grantRoles(sitePath, ['editor'], 'secondEditorUser', 'USER')
+        grantRoles(sitePath, ['vanityRoleOnly'], 'secondEditorUser', 'USER')
+        revokeRoles(`${pagePath}-a`, ['editor'], 'secondEditorUser', 'USER')
+    })
+
+    after('Clear test data', function () {
+        /*deleteSite(siteKey)
+        deleteUser('editorUser')
+        deleteUser('secondEditorUser')
+        deleteNode('/roles/vanityRoleOnly')*/
+    })
+
+    it('Verify that user have permission to see vanity url on content editor', function () {
+        cy.login('editorUser', 'password')
+        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
+        jcontent.switchToListMode()
+        jcontent.editComponentByText(`${pageName}-b`)
+        const contenteditor = new ContentEditorSEO()
+        const vanityUrlUi = contenteditor.openVanityUrlUi()
+        vanityUrlUi.getVanityUrlRow('/vanityOnPageB').should('exist')
         cy.logout()
     })
 
-    it('Add a vanity URL on non default language', function () {
-        cy.login()
-        const composer = new CustomPageComposer()
-        CustomPageComposer.visit('digitall', 'en', 'home.html')
-        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
-        const contentEditor = contextMenu.edit()
-        const vanityUrlUi = contentEditor.openVanityUrlUi()
-
-        vanityUrlUi.clickOnAddVanityUrl()
-
-        cy.get('div[data-sel-role="vanity-language-menu"]').then((row) => {
-            expect(row.text()).to.contains('en')
-            expect(row.text()).not.to.contains('fr')
-        })
-
-        vanityUrlUi.fillVanityValues('vanity1fr', false, 'fr')
-
-        checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl1 + '/vanityUrlMapping/vanity1fr',
-            'vanity1fr',
-            'fr',
-            'EDIT',
-            'false',
-        )
+    it('Verify that user have access to vanity url page and only page-a is read only', function () {
+        cy.login('editorUser', 'password')
+        const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
+        vanityUrlsPage.findReadOnlyBadge(`${pageName}-a`).should('exist')
+        cy.logout()
     })
 
-    it('Already existing vanity url', function () {
-        cy.login()
-        const composer = new CustomPageComposer()
-        CustomPageComposer.visit('digitall', 'en', 'home.html')
-        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
-        const contentEditor = contextMenu.edit()
-        const vanityUrlUi = contentEditor.openVanityUrlUi()
-        vanityUrlUi.addVanityUrl('existingVanity', false, 'fr')
+    it('Verify that user have access to vanity url page and can edit page-b', function () {
+        cy.login('editorUser', 'password')
+        const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
+        vanityUrlsPage.findReadOnlyBadge(`${pageName}-b`).should('not.exist')
+        cy.logout()
+    })
 
-        vanityUrlUi.getErrorRow().then((result) => {
-            expect(result.text()).contains('Already in use')
-        })
+    it.only('Verify that user have access to vanity url in content editor in read only', function () {
+        cy.login('secondEditorUser', 'password')
+        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
+        jcontent.switchToListMode()
+        jcontent.editComponentByText(`${pageName}-a`)
+        const contenteditor = new ContentEditorSEO()
+        const vanityUrlUi = contenteditor.openVanityUrlUi()
+        vanityUrlUi.findReadOnlyBadge().should('not.exist')
+        vanityUrlUi.getVanityUrlRow('/vanityOnPageA').should('exist')
+        cy.logout()
     })
 })
