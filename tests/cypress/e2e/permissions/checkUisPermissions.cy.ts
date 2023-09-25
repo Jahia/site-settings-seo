@@ -14,7 +14,7 @@ import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 
-describe('Basic tests of seo filter for multilingual site', () => {
+describe('Test UIs permissions', () => {
     const siteKey = 'siteForPermissionsCheck'
     const sitePath = '/sites/' + siteKey
     const homePath = sitePath + '/home'
@@ -110,7 +110,7 @@ describe('Basic tests of seo filter for multilingual site', () => {
         jcontent.editComponentByText(`${pageName}-a`)
         const contenteditor = new ContentEditorSEO()
         const vanityUrlUi = contenteditor.openVanityUrlUi()
-        vanityUrlUi.findReadOnlyBadge().should('not.exist')
+        vanityUrlUi.findReadOnlyBadge().should('exist')
         vanityUrlUi.getVanityUrlRow('/vanityOnPageA').should('exist')
         cy.logout()
     })
