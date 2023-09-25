@@ -1,6 +1,6 @@
 import React from 'react';
 import SiteSettingsSeoCard from '../SiteSettingsSeo/SiteSettingsSeoCardApp';
-import {Button, Typography} from '@jahia/moonstone';
+import {Button, Chip, Typography, Visibility} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import classes from './EditVanityUrlsDialog.scss';
@@ -40,7 +40,12 @@ export const EditVanityUrlsDialog = ({
                         {nodeData.displayableNode.path}
                     </Typography>
                 </DialogTitle>
-                <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer || LocalButtonRenderer} nodeData={nodeData}/>
+                {nodeData.hasWritePermission ? <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer || LocalButtonRenderer} nodeData={nodeData}/> :
+                <Chip data-sel-role="read-only-badge"
+                      label={t('label.readOnly')}
+                      icon={<Visibility/>}
+                      color="warning"
+                />}
             </div>
             <DialogContent className={classes.dialogContent}>
                 <SiteSettingsSeoCard path={nodeData.path}
@@ -63,5 +68,3 @@ EditVanityUrlsDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };
-
-export default EditVanityUrlsDialog;

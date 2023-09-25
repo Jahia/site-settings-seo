@@ -47,6 +47,7 @@ export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, c
                 path: node.path,
                 uuid: node.uuid,
                 displayName: node.displayName,
+                hasWritePermission: node.hasWritePermission,
                 urls: urlPairs,
                 allUrls: allUrlPairs
             };

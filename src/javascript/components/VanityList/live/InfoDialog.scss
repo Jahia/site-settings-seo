@@ -1,0 +1,33 @@
+.dialogActionsContainer {
+  justify-content: flex-end;
+}
+
+.dialogTitle {
+  margin: var(--spacing-medium) 10px;
+
+  color: #373c42;
+}
+
+.container {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: start;
+  align-items: center;
+
+  padding-left: var(--spacing-medium);
+}
+
+.label {
+  font-weight: lighter;
+}
+
+.dialogContent {
+  padding: 40px 0 !important;
+
+  border-top: 1px solid #e0e6ea;
+  border-bottom: 1px solid #e0e6ea;
+}
+
+.dialogRoot {
+  z-index: 2010;
+}

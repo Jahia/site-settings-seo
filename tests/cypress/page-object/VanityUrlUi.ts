@@ -26,4 +26,8 @@ export class VanityUrlUi extends BasePage {
     getVanityUrlRow(vanityValue: string) {
         return cy.get('tr[data-vud-url="' + vanityValue + '"]', { timeout: 3000 })
     }
+
+    findReadOnlyBadge() {
+        return cy.get('div[data-sel-role="read-only-badge"]')
+    }
 }

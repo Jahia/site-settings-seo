@@ -319,14 +319,15 @@ class AddVanityUrlComponent extends React.Component {
     };
 
     render() {
-        const {t, classes} = this.props;
+        const {t, classes, hasWritePermission} = this.props;
         const {errors, mappings} = this.state;
 
         if (!this.state.showInputField) {
             return (
                 <>
                     {this.props.children && this.props.children(this.state.showInputField)}
-                    <Button className={classes.addVanityButton}
+                    <Button isDisabled={!hasWritePermission}
+                            className={classes.addVanityButton}
                             aria-label="add"
                             label={t('label.buttons.addVanity')}
                             icon={<Add/>}

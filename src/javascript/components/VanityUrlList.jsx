@@ -18,6 +18,7 @@ import {
     TableHead
 } from '@jahia/moonstone';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
+import {OpenInfoDialogButton} from './VanityList/live/OpenInfoDialogButton';
 
 const styles = theme => ({
     vanityUrl: {
@@ -188,6 +189,15 @@ class VanityUrlListLive extends React.Component {
                                     if (url) {
                                         const classInactive = (url.active ? '' : classes.inactive);
                                         const defaultWithMissingCounterpart = urlPair.default && !_.includes(defaultNotPublished, url);
+                                        let infoMessage;
+                                        if (url.editNode) {
+                                            if (url.editNode.path !== url.path && url.editNode.targetNode.path) {
+                                                infoMessage = t('label.dialogs.infoButton.moveAction', {pagePath: url.editNode.targetNode.path});
+                                            } else if (_.includes(defaultNotPublished, url)) {
+                                                infoMessage = t('label.dialogs.infoButton.notPublished', {pagePath: url.editNode.targetNode.path});
+                                            }
+                                        }
+
                                         return (
                                             <TableRow key={urlPair.uuid}
                                                       hover={false}
@@ -206,15 +216,7 @@ class VanityUrlListLive extends React.Component {
                                                     {url.language}
                                                 </TableCell>
                                                 <TableCell className={classInactive + ' ' + classes.actionButton} width="50px" align="center">
-                                                    {url.editNode ?
-                                                        (url.editNode.path !== url.path ?
-                                                            <ActionButton action={actions.infoButton}
-                                                                          data={url.editNode.targetNode.path ? (
-                                                                              t('label.dialogs.infoButton.moveAction', {pagePath: url.editNode.targetNode.path})
-                                                                          ) : ('')}/> :
-                                                            _.includes(defaultNotPublished, url) ? <ActionButton action={actions.infoButton}
-                                                                                                                 data={t('label.dialogs.infoButton.notPublished', {pagePath: url.editNode.targetNode.path})}/> :
-                                                                '') : ''}
+                                                    {infoMessage && <OpenInfoDialogButton message={infoMessage}/>}
                                                 </TableCell>
                                             </TableRow>
                                         );

@@ -1,6 +1,6 @@
 <permissions xmlns:jcr="http://www.jcp.org/jcr/1.0">
-    <site-admin jcr:primaryType="jnt:permission" >
-        <siteAdminUrlmapping jcr:primaryType="jnt:permission" />
+    <site-admin jcr:primaryType="jnt:permission">
+        <siteAdminUrlmapping jcr:primaryType="jnt:permission"/>
     </site-admin>
     <jContent jcr:primaryType="jnt:permission">
         <engineTabs jcr:primaryType="jnt:permission">
