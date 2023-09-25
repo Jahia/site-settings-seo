@@ -5,7 +5,7 @@ import classes from './SiteSettingsSeoCardApp.scss';
 import {useTranslation} from 'react-i18next';
 import {useVanityUrlContext} from '../../Context/VanityUrl.context';
 import * as PropTypes from 'prop-types';
-import {useNodeChecks} from "@jahia/data-helper";
+import {useNodeChecks} from '@jahia/data-helper';
 
 export const NoVanity = ({path}) => {
     const {t} = useTranslation('site-settings-seo');

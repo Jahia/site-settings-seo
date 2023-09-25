@@ -21,7 +21,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
     render() {
         let {path, t, lang, siteInfo} = this.props;
         let polling = !(this.state.publication.open ||
-            this.state.move.open || this.state.infoButton.isOpen);
+            this.state.move.open);
         let variables = buildTableQueryVariablesOneNode({selectedLanguageCodes: this.props.languages, path: path, lang: lang, ...this.state.loadParams});
 
         return (
@@ -69,11 +69,6 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                     path={siteInfo.path}
                                     lang={lang}
                                     onClose={this.closeMove}
-                                />}
-
-                                {this.state.infoButton.isOpen && <InfoDialog
-                                    {...this.state.infoButton}
-                                    onClose={this.closeInfoButton}
                                 />}
 
                                 {this.state.publication.open && <Publication
