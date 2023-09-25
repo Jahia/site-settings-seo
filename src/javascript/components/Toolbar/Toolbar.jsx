@@ -6,12 +6,7 @@ import * as PropTypes from 'prop-types';
 import {Paper} from '@material-ui/core';
 import clsx from 'clsx';
 import {DisplayActions} from '@jahia/ui-extender';
-
-let ButtonRenderer;
-import('@jahia/jcontent').then(v => {
-    ButtonRenderer = v.ButtonRenderer;
-}).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
-import {ButtonRenderer as LocalButtonRenderer} from '../Renderer/getButtonRenderer';
+import {ButtonRenderer} from '@jahia/jcontent';
 
 export const Toolbar = ({selection, onChangeSelection, actions}) => {
     const {t} = useTranslation('site-settings-seo');
@@ -40,7 +35,7 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
                     urlPairs={selection}
                     paths={paths}
                     actions={actions}
-                    render={ButtonRenderer || LocalButtonRenderer}
+                    render={ButtonRenderer}
                     filter={action => {
                         return action.key !== 'updateVanity';
                     }}

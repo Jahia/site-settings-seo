@@ -6,7 +6,7 @@ import LanguageSelector from './LanguageSelector';
 import {withTranslation} from 'react-i18next';
 import {Information, SwapHoriz, Publish, Dropdown, Header} from '@jahia/moonstone';
 import * as _ from 'lodash';
-import InfoButton from './InfoButton';
+import {InfoDialog} from './VanityList/live/InfoDialog';
 import Publication from './Publication';
 import Move from './Move';
 import {withVanityMutationContext} from './VanityMutationsProvider';
@@ -79,10 +79,6 @@ class SiteSettingsSeoApp extends React.Component {
                 open: false,
                 urlPairs: []
             },
-            infoButton: {
-                open: false,
-                message: ''
-            },
             workspace: {
                 key: SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].key,
                 value: SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value
@@ -96,9 +92,6 @@ class SiteSettingsSeoApp extends React.Component {
         this.onSearchFocus = this.onSearchFocus.bind(this);
         this.onSearchBlur = this.onSearchBlur.bind(this);
         this.onSelectedLanguagesChanged = this.onSelectedLanguagesChanged.bind(this);
-
-        this.openInfoButton = this.openInfoButton.bind(this);
-        this.closeInfoButton = this.closeInfoButton.bind(this);
 
         this.openMove = this.openMove.bind(this);
         this.closeMove = this.closeMove.bind(this);
@@ -122,11 +115,6 @@ class SiteSettingsSeoApp extends React.Component {
                 className: 'move',
                 key: 'moveAction',
                 call: this.openMove
-            },
-            infoButton: {
-                buttonIcon: <Information/>,
-                className: 'move',
-                call: this.openInfoButton
             },
             updateVanity: {
                 call: (data, onSuccess, onError) => {
@@ -173,24 +161,6 @@ class SiteSettingsSeoApp extends React.Component {
         }
 
         onError(err, mess);
-    }
-
-    openInfoButton = message => {
-        this.setState({
-            infoButton: {
-                open: true,
-                message: message
-            }
-        });
-    };
-
-    closeInfoButton() {
-        this.setState({
-            infoButton: {
-                open: false,
-                message: ''
-            }
-        });
     }
 
     openMove = urlPairs => {
@@ -325,7 +295,7 @@ class SiteSettingsSeoApp extends React.Component {
 
     render() {
         let {siteInfo, t, classes, lang, polling: globalPolling} = this.props;
-        let polling = !(this.state.publication.open || this.state.move.open || this.state.infoButton.open);
+        let polling = !(this.state.publication.open || this.state.move.open);
         let variables = buildTableQueryVariablesAllVanity({selectedLanguageCodes: this.state.loadParams.selectedLanguageCodes, path: siteInfo.path, lang: lang, ...this.state.loadParams});
 
         return (
@@ -391,11 +361,6 @@ class SiteSettingsSeoApp extends React.Component {
                                     path={siteInfo.path}
                                     lang={lang}
                                     onClose={this.closeMove}
-                                />}
-
-                                {this.state.infoButton.open && <InfoButton
-                                    {...this.state.infoButton}
-                                    onClose={this.closeInfoButton}
                                 />}
 
                                 {this.state.publication.open && <Publication

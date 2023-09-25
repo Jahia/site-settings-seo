@@ -6,6 +6,7 @@ export class VanityUrlsPage {
         toolBar: "div[class*='src-javascript-components-Toolbar-Toolbar__buttonsBar']",
         deleteDialog: "div[data-sel-role='delete-mark-dialog']",
         deletePermanentlyDialog: "div[data-sel-role='delete-permanently-dialog']",
+        readOnlyBadge: 'div[data-sel-role="read-only-badge"]',
     }
 
     static visit(siteKey = 'mySite', lang = 'en') {
@@ -15,6 +16,15 @@ export class VanityUrlsPage {
 
     findPageRow(page: string) {
         return cy.get(this.elements.pageRowVanityUrls).contains(page)
+    }
+
+    findReadOnlyBadge(page: string) {
+        return cy
+            .get(this.elements.pageRowVanityUrls)
+            .contains(page)
+            .parent()
+            .parent()
+            .find(this.elements.readOnlyBadge)
     }
 
     openPageVanityUrlsList(page: string) {

@@ -1,18 +1,13 @@
 import React from 'react';
 import SiteSettingsSeoCard from '../SiteSettingsSeo/SiteSettingsSeoCardApp';
-import {Button, Typography} from '@jahia/moonstone';
+import {Button, Chip, Typography, Visibility} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import classes from './EditVanityUrlsDialog.scss';
 import {DisplayAction} from '@jahia/ui-extender';
 import {useVanityUrlContext} from '../../Context/VanityUrl.context';
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
-let ButtonRenderer;
-import('@jahia/jcontent').then(v => {
-    ButtonRenderer = v.ButtonRenderer;
-}).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
-
-import {ButtonRenderer as LocalButtonRenderer} from '../../Renderer/getButtonRenderer';
+import {ButtonRenderer} from '@jahia/jcontent';
 import clsx from 'clsx';
 
 export const EditVanityUrlsDialog = ({
@@ -40,7 +35,12 @@ export const EditVanityUrlsDialog = ({
                         {nodeData.displayableNode.path}
                     </Typography>
                 </DialogTitle>
-                <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer || LocalButtonRenderer} nodeData={nodeData}/>
+                {nodeData.hasWritePermission ? <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer} nodeData={nodeData}/> :
+                <Chip data-sel-role="read-only-badge"
+                      label={t('label.readOnly')}
+                      icon={<Visibility/>}
+                      color="warning"
+                />}
             </div>
             <DialogContent className={classes.dialogContent}>
                 <SiteSettingsSeoCard path={nodeData.path}
@@ -63,5 +63,3 @@ EditVanityUrlsDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };
-
-export default EditVanityUrlsDialog;

@@ -15,7 +15,8 @@ export const VanityUrlListDefault = ({
     isExpanded,
     actions,
     contentUuid,
-    isOpenCardMode
+    isOpenCardMode,
+    hasWritePermission
 }) => {
     const {t} = useTranslation('site-settings-seo');
     const {languages} = useVanityUrlContext();
@@ -28,13 +29,14 @@ export const VanityUrlListDefault = ({
         allCheckboxIndeterminate = !allCheckboxChecked && _.intersectionBy(urlPairs, selection, 'uuid').length > 0;
     }
 
-    let checkboxesDisplayed = (allCheckboxChecked || allCheckboxIndeterminate);
+    let checkboxesDisplayed = (allCheckboxChecked || allCheckboxIndeterminate) && hasWritePermission;
 
     return (
         <div>
             {!isOpenCardMode && urlPairs.length > 0 ? (
                 <div className={classes.allCheckbox}>
                     <Checkbox
+                        disabled={!hasWritePermission}
                         className={(checkboxesDisplayed ? (isExpanded ? '' : classes.hidden) : (classes.hiddenOnHover))}
                         checked={allCheckboxChecked}
                         indeterminate={allCheckboxIndeterminate}
@@ -61,6 +63,7 @@ export const VanityUrlListDefault = ({
                     <TableBody data-vud-table-body-default={contentUuid}>
                         {vanityUrls.map(urlPair => (
                             <DefaultRow key={urlPair.uuid}
+                                        hasWritePermission={hasWritePermission}
                                         classes={classes}
                                         urlPair={urlPair}
                                         isOpenCardMode={isOpenCardMode}
@@ -79,6 +82,7 @@ export const VanityUrlListDefault = ({
 };
 
 VanityUrlListDefault.propTypes = {
+    hasWritePermission: PropTypes.bool.isRequired,
     vanityUrls: PropTypes.array.isRequired,
     contentUuid: PropTypes.string.isRequired,
     actions: PropTypes.object.isRequired,
