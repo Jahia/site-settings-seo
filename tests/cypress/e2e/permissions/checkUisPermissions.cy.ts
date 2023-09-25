@@ -7,11 +7,12 @@ import {
     deleteUser,
     grantRoles,
     revokeRoles,
-    addNode, deleteNode,
+    addNode,
+    deleteNode,
 } from '@jahia/cypress'
-import {JContent} from '@jahia/jcontent-cypress/dist/page-object/jcontent'
-import {ContentEditorSEO} from "../../page-object/ContentEditorSEO";
-import {VanityUrlsPage} from "../../page-object/vanityUrls.page";
+import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
+import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
+import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 
 describe('Basic tests of seo filter for multilingual site', () => {
     const siteKey = 'siteForPermissionsCheck'
@@ -71,10 +72,10 @@ describe('Basic tests of seo filter for multilingual site', () => {
     })
 
     after('Clear test data', function () {
-        /*deleteSite(siteKey)
+        deleteSite(siteKey)
         deleteUser('editorUser')
         deleteUser('secondEditorUser')
-        deleteNode('/roles/vanityRoleOnly')*/
+        deleteNode('/roles/vanityRoleOnly')
     })
 
     it('Verify that user have permission to see vanity url on content editor', function () {
@@ -102,7 +103,7 @@ describe('Basic tests of seo filter for multilingual site', () => {
         cy.logout()
     })
 
-    it.only('Verify that user have access to vanity url in content editor in read only', function () {
+    it('Verify that user have access to vanity url in content editor in read only', function () {
         cy.login('secondEditorUser', 'password')
         const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
         jcontent.switchToListMode()

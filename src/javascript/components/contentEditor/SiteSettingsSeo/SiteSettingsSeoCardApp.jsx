@@ -1,5 +1,4 @@
 import React from 'react';
-import {InfoDialog} from '../../VanityList/live/InfoDialog';
 import Publication from '../../Publication';
 import Move from '../../Move';
 import {VanityUrlTableData} from '~/components/VanityUrlTableData';
