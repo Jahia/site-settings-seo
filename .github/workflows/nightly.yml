@@ -11,10 +11,11 @@ jobs:
     runs-on: self-hosted
     strategy:
       fail-fast: false
-      matrix:
-        jahia_image: ["jahia/jahia-ee-dev:8-SNAPSHOT"]
-        #TODO TECH-1408 reactive the test on released version
-        #jahia_image: ["jahia/jahia-ee:8", "jahia/jahia-ee-dev:8-SNAPSHOT"]
+      # matrix:
+      # TODO TECH-1408 reactive the test on released version
+      # When doing so, please split pagerduty reporting beween Jahia SN and Jahia RL
+      # instead of using a matrix
+      # jahia_image: ["jahia/jahia-ee:8", "jahia/jahia-ee-dev:8-SNAPSHOT"]
 
     timeout-minutes: 45
     steps:
@@ -29,7 +30,8 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: site-settings-seo
-          jahia_image: ${{ matrix.jahia_image }}
+          incident_service: site-settings-seo-JahiaSN
+          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           testrail_project: Site Settings SEO Module
           tests_manifest: provisioning-manifest-snapshot.yml
           should_use_build_artifacts: false
