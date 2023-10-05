@@ -4,6 +4,15 @@
        xmlns:j="http://www.jahia.org/jahia/1.0"
        xmlns:jnt="http://www.jahia.org/jahia/nt/1.0">
     <editor j:hidden="false"
+            jcr:primaryType="jnt:role"
             j:permissionNames="siteAdminUrlmapping"
-            jcr:primaryType="jnt:role"/>
+            j:privilegedAccess="true">
+        <currentSite-access j:path="currentSite"
+                            j:permissionNames="viewVanityUrlModal"
+                            jcr:primaryType="jnt:externalPermissions"/>
+        <editor-in-chief jcr:primaryType="jnt:role"
+                         j:permissionNames="siteAdminUrlmapping"
+                         j:privilegedAccess="true"
+        />
+    </editor>
 </roles>

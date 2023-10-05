@@ -2,4 +2,9 @@
     <site-admin jcr:primaryType="jnt:permission">
         <siteAdminUrlmapping jcr:primaryType="jnt:permission"/>
     </site-admin>
+    <jContent jcr:primaryType="jnt:permission">
+        <engineTabs jcr:primaryType="jnt:permission">
+            <viewVanityUrlModal jcr:primaryType="jnt:permission"/>
+        </engineTabs>
+    </jContent>
 </permissions>
