@@ -8,7 +8,7 @@ export const registerActions = () => {
     registry.add('action', 'vanityUrls', {
         component: VanityAction,
         targets: ['content-editor/header/3dots:3'],
-        requiredPermission: 'siteAdminUrlmapping',
+        requiredPermission: 'viewVanityUrlModal',
         showOnNodeTypes: ['jmix:vanityUrlMapped', 'jnt:page', 'jnt:file', 'jmix:mainResource', 'jmix:canHaveVanityUrls'],
         label: 'site-settings-seo:label.manage',
         dataSelRole: 'vanityUrls'
