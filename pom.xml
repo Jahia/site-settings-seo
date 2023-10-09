@@ -32,7 +32,7 @@
         <version>8.1.0.0</version>
     </parent>
     <artifactId>site-settings-seo</artifactId>
-    <version>4.2.0</version>
+    <version>4.3.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Site Settings - SEO Project</name>
     <description>This is the custom module (Site Settings - SEO) for running on a Digital Experience Manager server.</description>
@@ -42,14 +42,14 @@
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <yarn.arguments>build:simple</yarn.arguments>
-        <jahia-module-signature>MCwCFEkpRbsFYbi/oyt201bmG5Xx8w7vAhRlLd6nMd/25vJiPWsY/D2AxfFb6w==</jahia-module-signature>
+        <jahia-module-signature>MCwCFBx3JeanxLiYQQ3PLyJ2CdDgH1jeAhRZXLdkCotRcuAb4xosW5w3dbyzhA==</jahia-module-signature>
     </properties>
 
     <scm>
         <connection>scm:git:git@github.com:Jahia/site-settings-seo.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/site-settings-seo.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/site-settings-seo.git</url>
-      <tag>4_2_0</tag>
+      <tag>HEAD</tag>
     </scm>
 
     <repositories>
