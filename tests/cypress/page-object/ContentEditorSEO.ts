@@ -7,8 +7,16 @@ export class ContentEditorSEO extends ContentEditor {
     }
 
     openVanityUrlUi() {
-        cy.get('button[data-sel-role="3dotsMenuAction"]').click()
+        this.open3dotsMenu()
         cy.get('li[data-sel-role="vanityUrls"]').click()
         return new VanityUrlUi()
+    }
+
+    open3dotsMenu() {
+        cy.get('button[data-sel-role="3dotsMenuAction"]').click()
+    }
+
+    getVanityUrlAction() {
+        return cy.get('button[data-sel-role="3dotsMenuAction"]', { timeout: 3000 })
     }
 }

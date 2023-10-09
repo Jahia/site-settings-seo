@@ -44,6 +44,7 @@ describe('Test UIs permissions', () => {
         createSite(siteKey, siteConfig)
         createPage(homePath, `${pageName}-a`, 'withoutseo', langEN)
         createPage(homePath, `${pageName}-b`, 'withoutseo', langEN)
+        createPage(homePath, `${pageName}-c`, 'withoutseo', langEN)
         addVanityUrl(`${pagePath}-a`, 'en', '/vanityOnPageA')
         addVanityUrl(`${pagePath}-b`, 'en', '/vanityOnPageB')
         publishAndWaitJobEnding(homePath)
@@ -69,13 +70,34 @@ describe('Test UIs permissions', () => {
         grantRoles(sitePath, ['editor'], 'secondEditorUser', 'USER')
         grantRoles(sitePath, ['vanityRoleOnly'], 'secondEditorUser', 'USER')
         revokeRoles(`${pagePath}-a`, ['editor'], 'secondEditorUser', 'USER')
+
+        // Create user without viewVanityUrlModal in another role
+        addNode({
+            parentPathOrId: '/roles',
+            name: 'viewVanityUrlModalRole',
+            primaryNodeType: 'jnt:role',
+            properties: [
+                {
+                    name: 'j:permissionNames',
+                    values: ['viewVanityUrlModal'],
+                },
+                { name: 'j:roleGroup', value: 'edit-role' },
+                { name: 'j:privilegedAccess', value: 'true' },
+            ],
+        })
+        cy.log('Add third user without viewVanityUrlModal to check access to vanity urls in content editor')
+        createUser('thirdEditorUser', 'password')
+        grantRoles(`${pagePath}-a`, ['editor'], 'thirdEditorUser', 'USER')
+        grantRoles(`${pagePath}-b`, ['viewVanityUrlModalRole'], 'thirdEditorUser', 'USER')
     })
 
     after('Clear test data', function () {
         deleteSite(siteKey)
         deleteUser('editorUser')
         deleteUser('secondEditorUser')
+        deleteUser('thirdEditorUser')
         deleteNode('/roles/vanityRoleOnly')
+        deleteNode('/roles/viewVanityUrlModalRole')
     })
 
     it('Verify that user have permission to see vanity url on content editor', function () {
@@ -112,6 +134,28 @@ describe('Test UIs permissions', () => {
         const vanityUrlUi = contenteditor.openVanityUrlUi()
         vanityUrlUi.findReadOnlyBadge().should('exist')
         vanityUrlUi.getVanityUrlRow('/vanityOnPageA').should('exist')
+        cy.logout()
+    })
+
+    it('Verify that user having access to vanity url modale can see the vanity url menu', function () {
+        cy.login('thirdEditorUser', 'password')
+        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
+        jcontent.switchToListMode()
+        jcontent.editComponentByText(`${pageName}-b`)
+        const contenteditor = new ContentEditorSEO()
+        contenteditor.open3dotsMenu()
+        contenteditor.getVanityUrlAction().should('exist')
+        cy.logout()
+    })
+
+    it('Verify that user not having access to vanity url modale cannot see the vanity url menu', function () {
+        cy.login('thirdEditorUser', 'password')
+        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
+        jcontent.switchToListMode()
+        jcontent.editComponentByText(`${pageName}-c`)
+        const contenteditor = new ContentEditorSEO()
+        contenteditor.open3dotsMenu()
+        contenteditor.getVanityUrlAction().should('not.exist')
         cy.logout()
     })
 })
