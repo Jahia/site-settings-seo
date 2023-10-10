@@ -34,7 +34,6 @@ describe('Add or edit vanity Urls', () => {
         publishAndWaitJobEnding(sitePath + filePath + fileName)
 
         cy.request(Cypress.env('JAHIA_URL') + '/vanityFile1').then((response) => {
-            // expect(response.body).to.have.length(500)
             const mime = response.headers['content-type']
             expect(mime).to.contains('image/jpeg')
             const length = response.headers['content-length']

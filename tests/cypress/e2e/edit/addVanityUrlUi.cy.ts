@@ -1,4 +1,4 @@
-import { publishAndWaitJobEnding, deleteNode, addVanityUrl, setNodeProperty, setNodeProperty } from '@jahia/cypress'
+import { publishAndWaitJobEnding, deleteNode, addVanityUrl, setNodeProperty } from '@jahia/cypress'
 import { CustomPageComposer } from '../../page-object/pageComposer/CustomPageComposer'
 import { addSimplePage, checkVanityUrlByAPI, checkVanityUrlDoNotExistByAPI } from '../../utils/Utils'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
