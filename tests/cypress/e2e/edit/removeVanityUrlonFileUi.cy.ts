@@ -1,6 +1,7 @@
 import { publishAndWaitJobEnding, editSite, addVanityUrl } from '@jahia/cypress'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
+import { checkVanityUrlDoNotExistByAPI } from '../../utils/Utils'
 
 describe('Remove vanity Urls from a file', () => {
     const siteKey = 'digitall'
@@ -19,7 +20,7 @@ describe('Remove vanity Urls from a file', () => {
         editSite('digitall', { serverName: 'localhost' })
     })
 
-    it('Add a first basic vanity URL on a file', function () {
+    it('Remove a vanity URL from a file', function () {
         // vanity url is created, a direct access allows to download the file
         cy.request(Cypress.env('JAHIA_URL') + '/vanityFileToRemove').then((response) => {
             expect(response.status).to.eq(200)
@@ -31,17 +32,23 @@ describe('Remove vanity Urls from a file', () => {
 
         cy.login()
 
-        JContent.visit('digitall', 'en', jcontentFilePath)
+        const jContent = JContent.visit('digitall', 'en', jcontentFilePath)
 
-        new JContent().switchToListMode()
-        new JContent().editComponentByText(fileName)
+        jContent.switchToListMode()
+        jContent.editComponentByText(fileName)
 
         const contentEditor = new ContentEditorSEO()
 
         const vanityUrlUi = contentEditor.openVanityUrlUi()
         vanityUrlUi.deleteVanityUrl('/vanityFileToRemove')
 
-        publishAndWaitJobEnding(sitePath + filePath + fileName)
+        // Publish the vanity url
+        vanityUrlUi.publishAllVanityUrls()
+        checkVanityUrlDoNotExistByAPI(
+            sitePath + filePath + fileName + '/vanityUrlMapping/vanityFileToRemove',
+            'en',
+            'LIVE',
+        )
 
         // vanity url is deleted, a direct access should triggers a 404 error
         cy.request({
