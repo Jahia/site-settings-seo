@@ -1,5 +1,4 @@
 import React from 'react';
-import InfoButton from '../../InfoButton';
 import Publication from '../../Publication';
 import Move from '../../Move';
 import {VanityUrlTableData} from '~/components/VanityUrlTableData';
@@ -21,7 +20,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
     render() {
         let {path, t, lang, siteInfo} = this.props;
         let polling = !(this.state.publication.open ||
-            this.state.move.open || this.state.infoButton.open);
+            this.state.move.open);
         let variables = buildTableQueryVariablesOneNode({selectedLanguageCodes: this.props.languages, path: path, lang: lang, ...this.state.loadParams});
 
         return (
@@ -69,11 +68,6 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                     path={siteInfo.path}
                                     lang={lang}
                                     onClose={this.closeMove}
-                                />}
-
-                                {this.state.infoButton.open && <InfoButton
-                                    {...this.state.infoButton}
-                                    onClose={this.closeInfoButton}
                                 />}
 
                                 {this.state.publication.open && <Publication

@@ -25,13 +25,17 @@ export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, c
 
     let numberOfPages = 0;
     let rows = [];
-    if (data && data.jcr && data.jcr.nodesByQuery) {
-        if (data.jcr.nodesByQuery.pageInfo) {
+    let nodes = [];
+    if (data?.jcr) {
+        if (data.jcr.nodeByPath && (data.jcr.nodeByPath.vanityUrls?.length || data.jcr.nodeByPath?.liveNode?.vanityUrls?.length)) {
+            nodes.push(data.jcr.nodeByPath);
+        } else if (data.jcr.nodesByQuery?.nodes) {
+            nodes = data.jcr.nodesByQuery.nodes;
             totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
-            numberOfPages = (data.jcr.nodesByQuery.pageInfo.totalCount / pageSize);
+            numberOfPages = totalCount / pageSize;
         }
 
-        rows = data.jcr.nodesByQuery.nodes.map(node => {
+        rows = nodes.map(node => {
             let urlPairs = gqlContentNodeToVanityUrlPairs(node, 'vanityUrls');
             let allUrlPairs;
             if (filterText) {
@@ -43,6 +47,7 @@ export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, c
                 path: node.path,
                 uuid: node.uuid,
                 displayName: node.displayName,
+                hasWritePermission: node.hasWritePermission,
                 urls: urlPairs,
                 allUrls: allUrlPairs
             };
@@ -59,7 +64,7 @@ export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, c
 
 export const VanityUrlTableData = compose(withNotifications())(VanityUrlTableDataCmp);
 
-VanityUrlTableData.propTypes = {
+VanityUrlTableDataCmp.propTypes = {
     tableQuery: PropTypes.object,
     variables: PropTypes.object,
     filterText: PropTypes.string,

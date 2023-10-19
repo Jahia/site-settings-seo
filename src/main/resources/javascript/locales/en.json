@@ -114,6 +114,7 @@
       "staging": "Staging vanity URLs",
       "both": "Staging and live"
     },
-    "noPublishedVanityUrl": "No published vanity URL"
+    "noPublishedVanityUrl": "No published vanity URL",
+    "readOnly": "Read only"
   }
 }
