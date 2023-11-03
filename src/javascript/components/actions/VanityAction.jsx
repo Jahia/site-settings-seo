@@ -35,7 +35,7 @@ export const VanityAction = ({render: Render, loading: Loading, label, requiredP
     return (
         <>
             <Render
-                enabled={mode !== 'create' && requiredPermission && nodeData.hasWritePermission}
+                enabled={mode !== 'create' && nodeData.hasWritePermission}
                 {...otherProps}
                 mode={mode}
                 buttonLabel={label}

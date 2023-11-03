@@ -103,15 +103,14 @@ describe('Test UIs permissions', () => {
         cy.logout()
     })
 
-    it('Verify that user have access to vanity url in content editor in read only', function () {
+    it('Verify that user have no access to vanity url modal in content editor in read only', function () {
         cy.login('secondEditorUser', 'password')
         const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
         jcontent.switchToListMode()
         jcontent.editComponentByText(`${pageName}-a`)
         const contenteditor = new ContentEditorSEO()
-        const vanityUrlUi = contenteditor.openVanityUrlUi()
-        vanityUrlUi.findReadOnlyBadge().should('exist')
-        vanityUrlUi.getVanityUrlRow('/vanityOnPageA').should('exist')
+        contenteditor.checkVanityUrlAccessibility('false')
+        cy.get('div[data-sel-role="read-only-badge"]').should('exist')
         cy.logout()
     })
 })
