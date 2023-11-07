@@ -61,27 +61,29 @@ describe('Test UIs permissions', () => {
                 { name: 'j:roleGroup', value: 'edit-role' },
                 { name: 'j:privilegedAccess', value: 'true' },
             ],
-        })
-        addNode({
-            parentPathOrId: '/roles/vanityRole',
-            name: 'currentSite-access',
-            primaryNodeType: 'jnt:externalPermissions',
-            properties: [
+            children: [
                 {
-                    name: 'j:permissionNames',
-                    values: [
-                        'viewContentTab',
-                        'jContentAccess',
-                        'jContentAccordions',
-                        'jContentActions',
-                        'pageComposerAccess',
-                        'components',
-                        'templates',
+                    name: 'currentSite-access',
+                    primaryNodeType: 'jnt:externalPermissions',
+                    properties: [
+                        {
+                            name: 'j:permissionNames',
+                            values: [
+                                'viewContentTab',
+                                'jContentAccess',
+                                'jContentAccordions',
+                                'jContentActions',
+                                'pageComposerAccess',
+                                'components',
+                                'templates',
+                            ],
+                        },
+                        { name: 'j:path', value: 'currentSite' },
                     ],
                 },
-                { name: 'j:path', value: 'currentSite' },
             ],
         })
+
         addNode({
             parentPathOrId: '/roles',
             name: 'noVanityRole',
@@ -95,25 +97,26 @@ describe('Test UIs permissions', () => {
                 { name: 'j:roleGroup', value: 'edit-role' },
                 { name: 'j:privilegedAccess', value: 'true' },
             ],
-        })
-        addNode({
-            parentPathOrId: '/roles/noVanityRole',
-            name: 'currentSite-access',
-            primaryNodeType: 'jnt:externalPermissions',
-            properties: [
+            children: [
                 {
-                    name: 'j:permissionNames',
-                    values: [
-                        'viewContentTab',
-                        'jContentAccess',
-                        'jContentAccordions',
-                        'jContentActions',
-                        'pageComposerAccess',
-                        'components',
-                        'templates',
+                    name: 'currentSite-access',
+                    primaryNodeType: 'jnt:externalPermissions',
+                    properties: [
+                        {
+                            name: 'j:permissionNames',
+                            values: [
+                                'viewContentTab',
+                                'jContentAccess',
+                                'jContentAccordions',
+                                'jContentActions',
+                                'pageComposerAccess',
+                                'components',
+                                'templates',
+                            ],
+                        },
+                        { name: 'j:path', value: 'currentSite' },
                     ],
                 },
-                { name: 'j:path', value: 'currentSite' },
             ],
         })
 
@@ -130,16 +133,25 @@ describe('Test UIs permissions', () => {
         deleteNode('/roles/noVanityRole')
     })
 
+    it('Verify that user having permission can see the vanity url modal button', function () {
+        cy.login('user1', 'password')
+        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
+        jcontent.switchToListMode()
+        jcontent.editComponentByText(pageNameA)
+        const contenteditor = new ContentEditorSEO()
+        contenteditor.checkVanityUrlVisibility(true)
+
+        cy.logout()
+    })
+
     it('Verify that user having permission can see and edit some data in the vanity url modal', function () {
         cy.login('user1', 'password')
         const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
         jcontent.switchToListMode()
         jcontent.editComponentByText(pageNameA)
         const contenteditor = new ContentEditorSEO()
-        contenteditor.checkVanityUrlAccess(false)
         const vanityUrlUi = contenteditor.openVanityUrlUi()
         vanityUrlUi.addVanityUrl('vanityurl-test-modalAccess')
-
         // Check vanity url was created as expected
         checkVanityUrlByAPI(
             pagePathA + '/vanityUrlMapping/vanityurl-test-modalAccess',
@@ -148,6 +160,7 @@ describe('Test UIs permissions', () => {
             'EDIT',
             'false',
         )
+        vanityUrlUi.getVanityUrlRow('/vanityurl-test-modalAccess')
 
         cy.logout()
     })
@@ -158,7 +171,7 @@ describe('Test UIs permissions', () => {
         jcontent.switchToListMode()
         jcontent.editComponentByText(pageNameB)
         const contenteditor = new ContentEditorSEO()
-        contenteditor.checkVanityUrlAccess(false)
+        contenteditor.checkVanityUrlVisibility(false)
 
         cy.logout()
     })

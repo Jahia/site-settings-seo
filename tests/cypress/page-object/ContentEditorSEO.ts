@@ -17,12 +17,8 @@ export class ContentEditorSEO extends ContentEditor {
         cy.get('li[data-sel-role="vanityUrls"]').should('have.attr', 'aria-disabled', enabled)
     }
 
-    checkVanityUrlAccess(isVisible) {
+    checkVanityUrlVisibility(isVisible) {
         cy.get('button[data-sel-role="3dotsMenuAction"]').click()
-        if (isVisible) {
-            cy.get('li[data-sel-role="vanityUrls"]').should('be.visible')
-        } else {
-            cy.get('li[data-sel-role="vanityUrls"]').should('not.be.visible')
-        }
+        cy.get('li[data-sel-role="vanityUrls"]').should(isVisible ? 'be.visible' : 'not.be.visible')
     }
 }
