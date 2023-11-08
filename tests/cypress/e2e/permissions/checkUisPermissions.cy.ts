@@ -10,7 +10,6 @@ import {
     addNode,
     deleteNode,
 } from '@jahia/cypress'
-import { JContent } from '@jahia/content-editor-cypress/dist/page-object/jcontent'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 import { PageComposer } from '@jahia/content-editor-cypress/dist/page-object/pageComposer'
