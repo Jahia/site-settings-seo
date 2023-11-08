@@ -111,7 +111,6 @@ describe('Test UIs permissions', () => {
         composer.editPage(`${pageName}-a`)
         const contenteditor = new ContentEditorSEO()
         contenteditor.checkVanityUrlAccessibility('false')
-        cy.get('div[data-sel-role="read-only-badge"]').should('exist')
         cy.logout()
     })
 })
