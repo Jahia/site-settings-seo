@@ -169,7 +169,7 @@ describe('Test UIs permissions', () => {
         cy.login('user1', 'password')
         const composer = new PageComposer()
         PageComposer.visit(siteKey, 'en', 'home.html')
-        composer.editPage(pageNameA)
+        composer.editPage(pageNameB)
         const contenteditor = new ContentEditorSEO()
         contenteditor.checkVanityUrlVisibility(false)
 
