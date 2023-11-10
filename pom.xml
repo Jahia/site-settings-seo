@@ -32,7 +32,7 @@
         <version>8.1.3.0</version>
     </parent>
     <artifactId>site-settings-seo</artifactId>
-    <version>4.3.0-SNAPSHOT</version>
+    <version>4.3.0</version>
     <packaging>bundle</packaging>
     <name>Site Settings - SEO Project</name>
     <description>This is the custom module (Site Settings - SEO) for running on a Digital Experience Manager server.</description>
@@ -49,7 +49,7 @@
         <connection>scm:git:git@github.com:Jahia/site-settings-seo.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/site-settings-seo.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/site-settings-seo.git</url>
-      <tag>HEAD</tag>
+      <tag>4_3_0</tag>
     </scm>
 
     <repositories>
