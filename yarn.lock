@@ -1245,10 +1245,10 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
-"@jahia/data-helper@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@jahia/data-helper/-/data-helper-1.1.4.tgz#06bffb42160c775065f7ac36c9227181031a0a14"
-  integrity sha512-k2HFD/ZhORzBuZvkt8XHcVQg2vy2Rn1n+VTBBZ6ghmUgiOSrUAaxl/3Iv23hrl1BnIygF49aTSVMqlyoDM46kg==
+"@jahia/data-helper@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@jahia/data-helper/-/data-helper-1.1.6.tgz#fe8e976cc75b0473c6e395d7db2998baf46bfc15"
+  integrity sha512-Tzu9S7y7vC/ZHyxzWGEU0Ck+ZzSS7LH7Zi6Sg7cEgz1FYLsotb1Son35NNRFFXC6mnH7qGAgSMf4Y/HtpYfIWg==
   dependencies:
     "@apollo/client" "^3.7.14"
     "@apollo/react-components" "^4.0.0"

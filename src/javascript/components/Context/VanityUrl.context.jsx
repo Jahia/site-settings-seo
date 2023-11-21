@@ -6,7 +6,11 @@ export const VanityUrlContext = React.createContext({});
 export const useVanityUrlContext = () => useContext(VanityUrlContext);
 
 export const VanityUrlContextProvider = ({siteKey, children}) => {
-    const {data, loading, error} = useSiteInfo({siteKey: siteKey, displayLanguage: window.contextJsParameters.lang});
+    const {data, loading, error} = useSiteInfo({
+        siteKey: siteKey,
+        displayLanguage: window.contextJsParameters.lang,
+        uiLanguage: window.contextJsParameters.uilang
+    });
 
     if (error) {
         return <>{error.message}</>;
