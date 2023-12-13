@@ -358,7 +358,13 @@ class AddVanityUrlComponent extends React.Component {
                                             <Editable isCreateMode
                                                       onEdit={() => {
                                                 }}
-                                                      onChange={value => this.handleFieldChange('url', index, value ? value.trim() : '')}/>
+                                                      onChange={(value, onSuccess, onError) => {
+                                                          if (/[:*?"<>|%]/.test(value) || value.endsWith('.do')) {
+                                                              onError(t('label.errors.GqlConstraintViolationException.notAllowed'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
+                                                          } else {
+                                                              this.handleFieldChange('url', index, value ? value.trim() : '')
+                                                          }
+                                                      }}/>
                                             {errorForRow && <FormHelperText className={classes.errorMessage}>
                                                 <error><label>{errorForRow.label}</label>
                                                     <message>{errorForRow.message}</message>
