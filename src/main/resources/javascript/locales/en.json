@@ -48,7 +48,7 @@
       "Error": "An unexpected error has occurred",
       "GqlConstraintViolationException": {
         "notAllowed": "Not allowed",
-        "notAllowedChars": "Characters :*?\"<>|%+ are ot allowed",
+        "notAllowedChars": "Characters :*?\"<>|%+ are not allowed",
         "notAllowedDotDo": "URL cannot ends with .do",
         "notAllowed_message": "{{urlMapping}} is not allowed in a vanity url",
         "used": "Already in use",
