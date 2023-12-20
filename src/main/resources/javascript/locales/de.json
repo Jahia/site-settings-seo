@@ -48,6 +48,7 @@
       "Error": "Ein unerwarteter Fehler ist aufgetreten.",
       "GqlConstraintViolationException": {
         "notAllowed": "URL Mapping ist nicht erlaubt.",
+        "notAllowedChars": "Die Zeichen :*?\"<>|%+ sind nicht erlaubt.",
         "notAllowed_message": "{{existingNodePath}}  ist in URL Mapping nicht erlaubt.",
         "used": "URL Mapping wird bereits verwendet.",
         "used_message": "URL Mapping wird bereits für {{param}} verwendet."

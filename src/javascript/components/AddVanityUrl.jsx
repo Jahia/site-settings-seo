@@ -364,7 +364,7 @@ class AddVanityUrlComponent extends React.Component {
                                                                   errors: [
                                                                       {
                                                                           url: entry.url,
-                                                                          label: t('label.errors.GqlConstraintViolationException.notAllowed'),
+                                                                          label: t('label.errors.GqlConstraintViolationException.notAllowedChars'),
                                                                           message: t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value})
                                                                       }
                                                                   ]

@@ -25,7 +25,7 @@ export const DefaultRow = ({
 
     const onMappingChanged = (value, onSuccess, onError) => {
         if (/[:*?"<>|%+]/.test(value) || value.endsWith('.do')) {
-            onError(t('label.errors.GqlConstraintViolationException.notAllowed'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
+            onError(t('label.errors.GqlConstraintViolationException.notAllowedChars'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
         } else {
             actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
         }

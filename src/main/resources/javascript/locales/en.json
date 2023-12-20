@@ -48,6 +48,7 @@
       "Error": "An unexpected error has occurred",
       "GqlConstraintViolationException": {
         "notAllowed": "Not allowed",
+        "notAllowedChars": "Characters :*?\"<>|%+ are ot allowed",
         "notAllowed_message": "{{urlMapping}} is not allowed in a vanity url",
         "used": "Already in use",
         "used_message": "This vanity URL already points to {{existingNodePath}}"

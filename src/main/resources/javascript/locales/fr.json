@@ -45,6 +45,7 @@
       "Error": "Une erreur imprévue s'est produite",
       "GqlConstraintViolationException": {
         "notAllowed": "Non autorisé",
+        "notAllowedChars": "Les caractères :*?\"<>|%+ ne sont pas autorisés",
         "notAllowed_message": "{{urlMapping}} n'est pas autorisé comme URL",
         "used": "Cette URL est déjà utilisée",
         "used_message": "Cette URL est déjà utilisée par {{existingNodePath}}"
