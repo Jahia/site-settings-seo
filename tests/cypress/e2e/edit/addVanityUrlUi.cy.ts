@@ -173,4 +173,32 @@ describe('Add vanity Urls', () => {
             expect(result.text()).contains('Already in use')
         })
     })
+
+    it('Invalid chars in vanity url', function () {
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+        vanityUrlUi.addVanityUrl('bad-url/*', false, 'fr', true)
+
+        vanityUrlUi.getErrorRow().then((result) => {
+            expect(result.text()).contains('Characters :*?"<>|%+ are not allowed')
+        })
+    })
+
+    it('Invalid vanity url with .do', function () {
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+        vanityUrlUi.addVanityUrl('bad-url.do', false, 'fr', true)
+
+        vanityUrlUi.getErrorRow().then((result) => {
+            expect(result.text()).contains('URL cannot ends with .do')
+        })
+    })
 })
