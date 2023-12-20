@@ -5,12 +5,12 @@ import {SiteSettingsSeoCardEntry} from '../contentEditor/SiteSettingsSeo/SiteSet
 import * as PropTypes from 'prop-types';
 import {useContentEditorContext} from '@jahia/jcontent';
 
-export const VanityAction = ({render: Render, loading: Loading, label, requiredPermission, showOnNodeTypes, ...otherProps}) => {
+export const VanityAction = ({render: Render, loading: Loading, label, requiredPermission, showOnNodeTypes, hideOnExternal, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {mode, nodeData, lang, language} = useContentEditorContext();
     const {loading, checksResult} = useNodeChecks(
         {path: nodeData.path, language: lang | language},
-        {requiredPermission: requiredPermission, showOnNodeTypes: showOnNodeTypes}
+        {requiredPermission: requiredPermission, showOnNodeTypes: showOnNodeTypes, hideOnExternal: hideOnExternal}
     );
 
     if (loading) {
@@ -50,5 +50,7 @@ VanityAction.propTypes = {
     loading: PropTypes.elementType.isRequired,
     label: PropTypes.string.isRequired,
     requiredPermission: PropTypes.string.isRequired,
-    showOnNodeTypes: PropTypes.array.isRequired
+    showOnNodeTypes: PropTypes.array.isRequired,
+    // eslint-disable-next-line react/boolean-prop-naming
+    hideOnExternal: PropTypes.bool.isRequired
 };

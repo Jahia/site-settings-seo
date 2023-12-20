@@ -10,6 +10,7 @@ export const registerActions = () => {
         targets: ['content-editor/header/3dots:3'],
         requiredPermission: 'viewVanityUrlModal',
         showOnNodeTypes: ['jmix:vanityUrlMapped', 'jnt:page', 'jnt:file', 'jmix:mainResource', 'jmix:canHaveVanityUrls'],
+        hideOnExternal: true,
         label: 'site-settings-seo:label.manage',
         dataSelRole: 'vanityUrls'
     });
