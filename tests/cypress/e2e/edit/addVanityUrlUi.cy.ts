@@ -184,7 +184,7 @@ describe('Add vanity Urls', () => {
         vanityUrlUi.addVanityUrl('bad-url/*', false, 'fr', true)
 
         vanityUrlUi.getErrorRow().then((result) => {
-            expect(result.text()).contains('Characters :*?\"<>|%+ are not allowed')
+            expect(result.text()).contains('Characters :*?"<>|%+ are not allowed')
         })
     })
 

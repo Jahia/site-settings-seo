@@ -32,9 +32,13 @@ export class VanityUrlUi extends BasePage {
             .click()
 
         if (disabled) {
-            cy.get('div[data-sel-role="manage-vanity-url-dialog"]').find('button[data-vud-role="button-primary"]').should('be.disabled');
+            cy.get('div[data-sel-role="manage-vanity-url-dialog"]')
+                .find('button[data-vud-role="button-primary"]')
+                .should('be.disabled')
         } else {
-            cy.get('div[data-sel-role="manage-vanity-url-dialog"]').find('button[data-vud-role="button-primary"]').click()
+            cy.get('div[data-sel-role="manage-vanity-url-dialog"]')
+                .find('button[data-vud-role="button-primary"]')
+                .click()
         }
     }
 
