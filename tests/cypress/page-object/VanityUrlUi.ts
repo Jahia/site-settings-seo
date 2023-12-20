@@ -19,7 +19,7 @@ export class VanityUrlUi extends BasePage {
         cy.get('div[data-sel-role="manage-vanity-url-dialog"]').find('button[aria-label="add"]').click()
     }
 
-    fillVanityValues(vanityValue: string, canonical = false, language = 'en') {
+    fillVanityValues(vanityValue: string, canonical = false, language = 'en', disabled = false) {
         cy.get('input[data-sel-role="vanity-input-text"]').type(vanityValue)
 
         if (canonical) {
@@ -31,12 +31,20 @@ export class VanityUrlUi extends BasePage {
             .find('li[data-sel-value="' + language + '"]')
             .click()
 
-        cy.get('div[data-sel-role="manage-vanity-url-dialog"]').find('button[data-vud-role="button-primary"]').click()
+        if (disabled) {
+            cy.get('div[data-sel-role="manage-vanity-url-dialog"]')
+                .find('button[data-vud-role="button-primary"]')
+                .should('be.disabled')
+        } else {
+            cy.get('div[data-sel-role="manage-vanity-url-dialog"]')
+                .find('button[data-vud-role="button-primary"]')
+                .click()
+        }
     }
 
-    addVanityUrl(vanityValue: string, canonical = false, language = 'en') {
+    addVanityUrl(vanityValue: string, canonical = false, language = 'en', disabled = false) {
         this.clickOnAddVanityUrl()
-        this.fillVanityValues(vanityValue, canonical, language)
+        this.fillVanityValues(vanityValue, canonical, language, disabled)
     }
 
     editVanityUrl(originalVanityValue: string, newVanityValue: string) {
