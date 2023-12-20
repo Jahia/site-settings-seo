@@ -49,6 +49,7 @@
       "GqlConstraintViolationException": {
         "notAllowed": "Not allowed",
         "notAllowedChars": "Characters :*?\"<>|%+ are ot allowed",
+        "notAllowedDotDo": "URL cannot ends with .do",
         "notAllowed_message": "{{urlMapping}} is not allowed in a vanity url",
         "used": "Already in use",
         "used_message": "This vanity URL already points to {{existingNodePath}}"

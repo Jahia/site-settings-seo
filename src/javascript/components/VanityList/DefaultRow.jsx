@@ -24,8 +24,10 @@ export const DefaultRow = ({
     const {t} = useTranslation('site-settings-seo');
 
     const onMappingChanged = (value, onSuccess, onError) => {
-        if (/[:*?"<>|%+]/.test(value) || value.endsWith('.do')) {
+        if (/[:*?"<>|%+]/.test(value)) {
             onError(t('label.errors.GqlConstraintViolationException.notAllowedChars'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
+        } else if (value.endsWith('.do')) {
+            onError(t('label.errors.GqlConstraintViolationException.notAllowedDotDo'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
         } else {
             actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
         }

@@ -49,6 +49,7 @@
       "GqlConstraintViolationException": {
         "notAllowed": "URL Mapping ist nicht erlaubt.",
         "notAllowedChars": "Die Zeichen :*?\"<>|%+ sind nicht erlaubt.",
+        "notAllowedDotDo": "URL darf nicht mit .do beenden",
         "notAllowed_message": "{{existingNodePath}}  ist in URL Mapping nicht erlaubt.",
         "used": "URL Mapping wird bereits verwendet.",
         "used_message": "URL Mapping wird bereits für {{param}} verwendet."

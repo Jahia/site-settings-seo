@@ -359,12 +359,23 @@ class AddVanityUrlComponent extends React.Component {
                                                       onEdit={() => {
                                                 }}
                                                       onChange={(value, onSuccess, onError) => {
-                                                          if (/[:*?"<>|%+]/.test(value) || value.endsWith('.do')) {
+                                                          if (/[:*?"<>|%+]/.test(value)) {
                                                               this.setState({
                                                                   errors: [
                                                                       {
                                                                           url: entry.url,
                                                                           label: t('label.errors.GqlConstraintViolationException.notAllowedChars'),
+                                                                          message: t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value})
+                                                                      }
+                                                                  ]
+                                                              });
+                                                              onError();
+                                                          } else if (value.endsWith('.do')) {
+                                                              this.setState({
+                                                                  errors: [
+                                                                      {
+                                                                          url: entry.url,
+                                                                          label: t('label.errors.GqlConstraintViolationException.notAllowedDotDo'),
                                                                           message: t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value})
                                                                       }
                                                                   ]
