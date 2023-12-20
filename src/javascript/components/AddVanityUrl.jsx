@@ -359,7 +359,7 @@ class AddVanityUrlComponent extends React.Component {
                                                       onEdit={() => {
                                                 }}
                                                       onChange={(value, onSuccess, onError) => {
-                                                          if (/[:*?"<>|%]/.test(value) || value.endsWith('.do')) {
+                                                          if (/[:*?"<>|%+]/.test(value) || value.endsWith('.do')) {
                                                               this.setState({
                                                                   errors: [
                                                                       {
