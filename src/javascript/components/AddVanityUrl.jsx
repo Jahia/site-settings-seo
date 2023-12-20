@@ -360,9 +360,19 @@ class AddVanityUrlComponent extends React.Component {
                                                 }}
                                                       onChange={(value, onSuccess, onError) => {
                                                           if (/[:*?"<>|%]/.test(value) || value.endsWith('.do')) {
-                                                              onError(t('label.errors.GqlConstraintViolationException.notAllowed'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
+                                                              this.setState({
+                                                                  errors: [
+                                                                      {
+                                                                          url: entry.url,
+                                                                          label : t('label.errors.GqlConstraintViolationException.notAllowed'),
+                                                                          message: t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value})
+                                                                      }
+                                                                  ]
+                                                              });
+                                                              onError();
                                                           } else {
-                                                              this.handleFieldChange('url', index, value ? value.trim() : '')
+                                                              this.handleFieldChange('url', index, value ? value.trim() : '');
+                                                              onSuccess();
                                                           }
                                                       }}/>
                                             {errorForRow && <FormHelperText className={classes.errorMessage}>
@@ -396,6 +406,7 @@ class AddVanityUrlComponent extends React.Component {
                                         <div className={classes.actionButton}>
                                             <Button color="accent"
                                                     data-vud-role="button-primary"
+                                                    isDisabled={Boolean(errorForRow)}
                                                     label={t('label.dialogs.add.save')}
                                                     onClick={this.handleSave}/>
                                         </div>
