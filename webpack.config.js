@@ -113,14 +113,10 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new ModuleFederationPlugin(getModuleFederationConfig(packageJson, {
-                exposes: {
-                    './init': './src/javascript/init'
-                },
                 remotes: {
-                    '@jahia/app-shell': 'appShellRemote',
                     '@jahia/content-editor': 'appShell.remotes.contentEditor'
-                },
-            }, Object.keys(packageJson.dependencies))),
+                }
+            })),
             new CleanWebpackPlugin(path.resolve(__dirname, 'src/main/resources/javascript/apps/'), {verbose: false}),
             new CopyWebpackPlugin([{from: './package.json', to: ''}]),
             new CaseSensitivePathsPlugin(),
