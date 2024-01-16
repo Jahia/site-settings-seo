@@ -122,9 +122,7 @@ const MoveCmp = props => {
 
     if (!loading && !error && data && data.jcr && data.jcr.nodeByPath.inPicker) {
         setTimeout(() => {
-            if (picker.current) {
-                picker.current.openPaths(data.jcr.nodeByPath.path.substr(0, data.jcr.nodeByPath.path.lastIndexOf('/')));
-            }
+            picker?.current?.openPaths(data.jcr.nodeByPath.path.substr(0, data.jcr.nodeByPath.path.lastIndexOf('/')));
         });
     }
 
