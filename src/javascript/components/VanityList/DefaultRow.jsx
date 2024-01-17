@@ -41,7 +41,8 @@ export const DefaultRow = ({
             {key: 'PUBLISHED', value: classes.isPublished},
             {key: 'MODIFIED', value: classes.toBePublished},
             {key: 'CONFLICT', value: classes.notPublished},
-            {key: 'NOT_PUBLISHED', value: classes.notPublished}
+            {key: 'NOT_PUBLISHED', value: classes.notPublished},
+            {key: 'UNPUBLISHED', value: classes.notPublished}
         ];
 
         const isMarkedForDeletion = url.publicationInfo.publicationStatus === 'MARKED_FOR_DELETION' || url.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion');
@@ -51,7 +52,7 @@ export const DefaultRow = ({
                       className={clsx(classes.tableRow, {[classes.inactive]: !url.active})}
                       classes={{
                           root: classes.vanityUrl,
-                          hover: (isMarkedForDeletion ? classes.isMarkedForDeletion : statuses.find(status => status.key === url.publicationInfo.publicationStatus).value)
+                          hover: (isMarkedForDeletion ? classes.isMarkedForDeletion : statuses.find(status => status.key === url.publicationInfo.publicationStatus)?.value)
                       }}
                       data-vud-url={url.url}
                       data-sel-marked-for-deletion={isMarkedForDeletion}
