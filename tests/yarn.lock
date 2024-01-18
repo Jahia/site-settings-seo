@@ -92,12 +92,13 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jahia/cypress@^3.17.0":
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.17.0.tgz#c4a4a0a889137d7fca5a160596e99941089384bd"
-  integrity sha512-3UEBHcUoWSAJwplb48V5EifWInn528xVN5vLJmrU/VWZ0zLew9sAly26JV+yMMpRkNDF5k7QEiYPtD192CpUtA==
+"@jahia/cypress@^3.17.5":
+  version "3.17.7"
+  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.17.7.tgz#8edd21d73baba29e86ef9fd54895bb15002c2aa3"
+  integrity sha512-1Go5PwBSUyJ9YpZDnBCpaUiuAJPqXFusyTiTHTUtW3cZbHsUIEVrItREhww/k/a2YgTms7azpyuQdRwqUsxgrA==
   dependencies:
     "@apollo/client" "^3.4.9"
+    cypress-real-events "^1.11.0"
     graphql "^15.5.0"
     graphql-tag "^2.11.0"
 
@@ -133,10 +134,10 @@
     uuid "^8.3.1"
     xml-js "^1.6.11"
 
-"@jahia/jcontent-cypress@^3.0.0-tests.2":
-  version "3.0.0-tests.2"
-  resolved "https://registry.yarnpkg.com/@jahia/jcontent-cypress/-/jcontent-cypress-3.0.0-tests.2.tgz#3ca8af0fe650765fc7730f890c02d9af28a249ca"
-  integrity sha512-flR2qavITEYXrNKhrTOLXpOXycdDfoAavAdQtdZktHkufpADIYrrD3QVhvRT7i5jaFtz2rNQRaFZfUWgXYVS3g==
+"@jahia/jcontent-cypress@^3.0.0-tests.8":
+  version "3.0.0-tests.8"
+  resolved "https://registry.yarnpkg.com/@jahia/jcontent-cypress/-/jcontent-cypress-3.0.0-tests.8.tgz#c71139838f933ba0650d9356ba2c75e6ac7e9af6"
+  integrity sha512-yEs2NNMDKgxQ9bygPRw2a/T8dV1jGG3qnm5B/K2p/IplrpfIo7UzsHOR92TJ7fpBdMBWbf4lXxTWiAsZ1tjcxg==
   dependencies:
     cypress-real-events "^1.7.6"
 
@@ -1003,6 +1004,11 @@ cypress-multi-reporters@^1.6.0:
   dependencies:
     debug "^4.1.1"
     lodash "^4.17.15"
+
+cypress-real-events@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/cypress-real-events/-/cypress-real-events-1.11.0.tgz#292fe5281c5b6e955524e766ab7fec46930c7763"
+  integrity sha512-4LXVRsyq+xBh5TmlEyO1ojtBXtN7xw720Pwb9rEE9rkJuXmeH3VyoR1GGayMGr+Itqf11eEjfDewtDmcx6PWPQ==
 
 cypress-real-events@^1.7.6:
   version "1.10.1"

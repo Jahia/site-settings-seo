@@ -9,6 +9,7 @@ mutation ($parentPathOrId: String!, $name: String!, $template: String!, $languag
                 { name: "jcr:title", type: STRING, value: $name, language: $language }
             ]
         ) {
+            uuid
             addChild(name: "area-main", primaryNodeType: "jnt:contentList") {
                 addChild(
                     name: "text"
