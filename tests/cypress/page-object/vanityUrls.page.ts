@@ -18,6 +18,10 @@ export class VanityUrlsPage {
         return cy.get(this.elements.pageRowVanityUrls).contains(page)
     }
 
+    findVanityUrlsTable(contentId: string) {
+        return cy.get(`tbody[data-vud-table-body-default="${contentId}"]`)
+    }
+
     findReadOnlyBadge(page: string) {
         return cy
             .get(this.elements.pageRowVanityUrls)
