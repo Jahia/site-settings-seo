@@ -82,21 +82,21 @@ const MoveCmp = props => {
             vanityMutationsContext.move(_.map(urlPairs, 'uuid'), targetPath, props)
                 .then(() => {
                     handleClose();
-                    notificationContext.notify(t('label.notifications.moveConfirmed'));
+                    notificationContext.notify(t('label.notifications.moveConfirmed'), ['closeAfter5s']);
                 })
                 .catch(errors => {
                     if (errors.graphQLErrors) {
                         _.each(errors.graphQLErrors, error => {
-                            notificationContext.notify(error.message);
+                            notificationContext.notify(error.message, ['closeButton', 'noAutomaticClose']);
                         });
                     } else {
-                        notificationContext.notify(t('label.errors.Error'));
+                        notificationContext.notify(t('label.errors.Error'), ['closeButton', 'noAutomaticClose']);
                     }
 
                     console.log(errors);
                 });
         } catch (e) {
-            notificationContext.notify(t('label.errors.' + (e.name ? e.name : 'Error')));
+            notificationContext.notify(t('label.errors.' + (e.name ? e.name : 'Error')), ['closeButton', 'noAutomaticClose']);
         }
     };
 

@@ -218,15 +218,15 @@ class AddVanityUrlComponent extends React.Component {
                 if (this.state.doPublish) {
                     vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then(result => {
                         this.handleClose(event);
-                        notificationContext.notify(t('label.notifications.newMappingCreatedAndPublished'));
+                        notificationContext.notify(t('label.notifications.newMappingCreatedAndPublished'), ['closeAfter5s']);
                     }, error => {
-                        notificationContext.notify(t('label.errors.Error'));
+                        notificationContext.notify(t('label.errors.Error'), ['closeButton', 'noAutomaticClose']);
                         console.log(error);
                     });
                 } else {
                     setParentLoading && setParentLoading(true);
                     this.handleClose(event);
-                    notificationContext.notify(t('label.notifications.newMappingCreated'));
+                    notificationContext.notify(t('label.notifications.newMappingCreated'), ['closeAfter5s']);
                 }
             }, error => {
                 if (error.graphQLErrors && error.graphQLErrors[0].extensions) {
@@ -247,7 +247,7 @@ class AddVanityUrlComponent extends React.Component {
                         })
                     });
                 } else {
-                    notificationContext.notify(t('label.errors.Error'));
+                    notificationContext.notify(t('label.errors.Error'), ['closeButton', 'noAutomaticClose']);
                     console.log(error);
                 }
             });
@@ -263,7 +263,7 @@ class AddVanityUrlComponent extends React.Component {
                     })
                 });
             } else {
-                notificationContext.notify(t('label.errors.' + (e.name ? e.name : 'Error')));
+                notificationContext.notify(t('label.errors.' + (e.name ? e.name : 'Error')), ['closeButton', 'noAutomaticClose']);
             }
         }
     };
