@@ -37,7 +37,7 @@ const PublishAllActionCmp = ({render: Render, loading: Loading, label, nodeData,
 
     const publish = () => {
         client.mutate({mutation: PublishMutation, variables: {pathsOrIds: unpublishedVanityUrlIds, publishSubNodes: false}}).then(() => {
-            notificationContext.notify(t('label.notifications.publicationStarted'));
+            notificationContext.notify(t('label.notifications.publicationStarted'), ['closeAfter5s']);
         });
     };
 
