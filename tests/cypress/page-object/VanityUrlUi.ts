@@ -20,8 +20,9 @@ export class VanityUrlUi extends BasePage {
     }
 
     fillVanityValues(vanityValue: string, canonical = false, language = 'en', disabled = false) {
-        cy.get('input[data-sel-role="vanity-input-text"]').type(vanityValue)
-
+        if (vanityValue) {
+            cy.get('input[data-sel-role="vanity-input-text"]').type(vanityValue)
+        }
         if (canonical) {
             cy.get('span[data-vud-role="default"]').find('input').click()
         }

@@ -174,6 +174,20 @@ describe('Add vanity Urls', () => {
         })
     })
 
+    it('Add empty vanity url', function () {
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+        vanityUrlUi.addVanityUrl('', false, 'fr', true)
+
+        vanityUrlUi.getErrorRow().then((result) => {
+            expect(result.text()).contains('Invalid URL')
+        })
+    })
+
     it('Invalid chars in vanity url', function () {
         cy.login()
         const composer = new CustomPageComposer()

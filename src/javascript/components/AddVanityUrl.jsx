@@ -359,7 +359,18 @@ class AddVanityUrlComponent extends React.Component {
                                                       onEdit={() => {
                                                 }}
                                                       onChange={(value, onSuccess, onError) => {
-                                                          if (/[:*?"<>|%+]/.test(value)) {
+                                                          if (!value) {
+                                                              this.setState({
+                                                                  errors: [
+                                                                      {
+                                                                          url: entry.url,
+                                                                          label: t('label.errors.InvalidMappingError'),
+                                                                          message: t('label.errors.InvalidMappingError_message', {urlMapping: value})
+                                                                      }
+                                                                  ]
+                                                              });
+                                                              onError();
+                                                          } else if (/[:*?"<>|%+]/.test(value)) {
                                                               this.setState({
                                                                   errors: [
                                                                       {
