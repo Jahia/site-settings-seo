@@ -1,6 +1,6 @@
 {
   "name": "@jahia/site-settings-seo",
-  "version": "5.0.0-SNAPSHOT",
+  "version": "5.0.0",
   "scripts": {
     "build:simple": "yarn webpack --mode=production",
     "build": "yarn lint && yarn test && yarn webpack",
