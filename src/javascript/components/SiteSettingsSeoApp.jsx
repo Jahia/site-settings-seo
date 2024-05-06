@@ -333,9 +333,10 @@ class SiteSettingsSeoApp extends React.Component {
                                      onChangeSelection={this.onChangeSelection}/>
 
                             <div className={classes.layout}>
-                                <List>
+                                <List data-sel-role="pages-with-vanity">
                                     {rows.map(row => (
-                                        <div key={row.uuid} className={classes.root} data-vud-content-uuid={row.uuid}>
+                                        <div key={row.uuid} className={classes.root} data-vud-content-uuid={row.uuid}
+                                             data-sel-role="page-card">
                                             <Paper elevation={1}>
                                                 <VanityUrlEnabledContent key={row.uuid}
                                                                          openCardMode={false}

@@ -42,7 +42,7 @@
         <jahia-module-type>system</jahia-module-type>
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <yarn.arguments>build:simple</yarn.arguments>
-        <jahia-module-signature>MCwCFA92U494hs6aR505F3JZCI/FZsb3AhRhrWN2TicOgC5qtWwgGv38ObWMIA==</jahia-module-signature>
+        <jahia-module-signature>MCwCFE3aGmG93bfqBdU3BjI8q6VZXkpyAhRwIMR6JwFFCKf8glyX1AKBPWWJNw==</jahia-module-signature>
         <sonar.sources>src/javascript,src/main/resources/javascript</sonar.sources>
     </properties>
 

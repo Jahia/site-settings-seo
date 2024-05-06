@@ -11,11 +11,15 @@ export const useVanityTableDataUrlContext = () => useContext(VanityUrlTableDataC
 
 export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, children, tableQuery, variables, notificationContext}) => {
     const {t} = useTranslation('site-settings-seo');
-    const {data, error} = useQuery(tableQuery, {
+    const {data, error, loading} = useQuery(tableQuery, {
         fetchPolicy: 'network-only',
         variables: variables,
         pollInterval: poll
     });
+
+    if (loading) {
+        return <></>;
+    }
 
     if (error) {
         console.log('Error when fetching data: ' + error);
