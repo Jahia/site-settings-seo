@@ -1,21 +1,14 @@
-name: Nightly Test run
+name: Nightly Test run (Jahia Snapshot)
 
 on:
   workflow_dispatch:
   schedule:
-    - cron:  '0 3 * * *'
+    - cron:  '0 2 * * *'
 
 jobs:
-  integration-tests-standalone:
-    name: Integration Tests (Standalone)
+  integration-tests:
+    name: Integration Tests
     runs-on: self-hosted
-    strategy:
-      fail-fast: false
-      # matrix:
-      # TODO TECH-1408 reactive the test on released version
-      # When doing so, please split pagerduty reporting beween Jahia SN and Jahia RL
-      # instead of using a matrix
-      # jahia_image: ["jahia/jahia-ee:8", "jahia/jahia-ee-dev:8-SNAPSHOT"]
 
     timeout-minutes: 45
     steps:
@@ -39,7 +32,8 @@ jobs:
           should_skip_notifications: true
           should_skip_testrail: false
           should_skip_zencrepes: true
-          github_artifact_name: sseo-artifacts-${{ matrix.jahia_image }}-${{ github.run_number }}
+          github_artifact_name: sseo-artifacts-${{ github.run_number }}
+          jahia_artifact_name: sseo-artifacts-${{ github.run_number }}
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
           docker_username: ${{ secrets.DOCKERHUB_USERNAME }}

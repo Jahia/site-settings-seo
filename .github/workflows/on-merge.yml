@@ -94,7 +94,8 @@ jobs:
           jahia_cluster_enabled: false
           should_use_build_artifacts: true
           should_skip_testrail: false
-          github_artifact_name: ssseo-artifacts-${{ github.run_number }}
+          github_artifact_name: sseo-artifacts-${{ github.run_number }}
+          jahia_artifact_name: sseo-artifacts-${{ github.run_number }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
           docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
           docker_password: ${{ secrets.DOCKERHUB_PASSWORD }}
