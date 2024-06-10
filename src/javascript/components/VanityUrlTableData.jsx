@@ -33,9 +33,9 @@ export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, c
     if (data?.jcr) {
         if (data.jcr.nodeByPath && (data.jcr.nodeByPath.vanityUrls?.length || data.jcr.nodeByPath?.liveNode?.vanityUrls?.length)) {
             nodes.push(data.jcr.nodeByPath);
-        } else if (data.jcr.nodesByQuery?.nodes) {
-            nodes = data.jcr.nodesByQuery.nodes;
-            totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
+        } else if (data.jcr.nodesByCriteria?.nodes) {
+            nodes = data.jcr.nodesByCriteria.nodes;
+            totalCount = data.jcr.nodesByCriteria.pageInfo.totalCount;
             numberOfPages = totalCount / pageSize;
         }
 
