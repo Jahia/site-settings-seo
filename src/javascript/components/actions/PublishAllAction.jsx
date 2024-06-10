@@ -4,12 +4,12 @@ import {ContentEditorTableQuery} from '~/components/gqlQueries';
 import {PublishMutation} from '../gqlMutations';
 import * as PropTypes from 'prop-types';
 import {useVanityUrlContext} from '../Context/VanityUrl.context';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {buildTableQueryVariablesOneNode} from '../Utils/Utils';
-import {flowRight as compose} from 'lodash';
 
-const PublishAllActionCmp = ({render: Render, loading: Loading, label, nodeData, notificationContext, ...otherProps}) => {
+export const PublishAllAction = ({render: Render, loading: Loading, label, nodeData, ...otherProps}) => {
+    const notificationContext = useNotifications();
     const vanityUrlContext = useVanityUrlContext();
     const client = useApolloClient();
     const {t} = useTranslation('site-settings-seo');
@@ -52,12 +52,9 @@ const PublishAllActionCmp = ({render: Render, loading: Loading, label, nodeData,
     );
 };
 
-export const PublishAllAction = compose(withNotifications())(PublishAllActionCmp);
-
-PublishAllActionCmp.propTypes = {
+PublishAllAction.propTypes = {
     render: PropTypes.elementType.isRequired,
     loading: PropTypes.object,
     nodeData: PropTypes.object,
-    label: PropTypes.string.isRequired,
-    notificationContext: PropTypes.func
+    label: PropTypes.string.isRequired
 };
