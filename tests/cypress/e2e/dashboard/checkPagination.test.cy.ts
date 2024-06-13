@@ -55,6 +55,6 @@ describe('Checks the pagination of vanity url in dashboard', () => {
         pagination.get().contains('11-11 of 11')
 
         // Check the page row is correctly displayed in a paginated list
-        vanityUrlsPage.findPageRow('testPage-10')
+        vanityUrlsPage.findPageRow('testPage-9')
     })
 })
