@@ -24,7 +24,7 @@ private static Query getVanitysQuery(JCRSessionWrapper session) {
     return vanityUrlsQuery
 }
 
-private static boolean needRestoreNodeToDefault(JCRNodeWrapper node, JCRSessionWrapper defaultSession, Logger logger) {
+private static boolean checkIfVanityNeedRestoreToDefault(JCRNodeWrapper node, JCRSessionWrapper defaultSession, Logger logger) {
     try {
         defaultSession.getNodeByIdentifier(node.getIdentifier())
     } catch (RepositoryException e) {
@@ -35,17 +35,16 @@ private static boolean needRestoreNodeToDefault(JCRNodeWrapper node, JCRSessionW
     return false
 }
 
-private static boolean restoreNodeToDefault(JCRNodeWrapper node, JCRSessionWrapper defaultSession, Logger logger) {
-    boolean updated = false
+private static boolean restoreVanityToDefault(JCRNodeWrapper node, JCRSessionWrapper defaultSession, Logger logger) {
     try {
         defaultSession.getWorkspace().clone(Constants.LIVE_WORKSPACE, node.getPath(), node.getPath(), true)
         defaultSession.getNodeByIdentifier(node.getIdentifier()).markForDeletion("")
-        updated = true
         logger.debug("Cloned node {} to default workspace", node.getPath())
+        return true
     } catch (RepositoryException ex) {
         logger.error("Failed to copy the vanity to the default workspace: ", ex)
     }
-    return updated
+    return false
 }
 
 private static int handleVanitysInLive(JCRSessionWrapper session, QueryResult stepResult, Logger logger) throws
@@ -67,7 +66,7 @@ private static int handleVanitysInLive(JCRSessionWrapper session, QueryResult st
                     if (recalculateVanitySystemName(node, session, logger)) {
                         numberUpdated += 1
                     }
-                    if (needRestoreNodeToDefault(node, defaultSession, logger)) {
+                    if (checkIfVanityNeedRestoreToDefault(node, defaultSession, logger)) {
                         nodesToRestore.add(node)
                     }
                 }
@@ -77,7 +76,7 @@ private static int handleVanitysInLive(JCRSessionWrapper session, QueryResult st
                 // Restore default vanitys
                 if (!nodesToRestore.isEmpty()) {
                     nodesToRestore.forEach(node -> {
-                        numberUpdated += restoreNodeToDefault(node, defaultSession, logger) ? 1 : 0
+                        numberUpdated += restoreVanityToDefault(node, defaultSession, logger) ? 1 : 0
                     })
                     defaultSession.refresh(false)
                 }
