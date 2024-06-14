@@ -24,21 +24,26 @@ private static Query getVanitysQuery(JCRSessionWrapper session) {
     return vanityUrlsQuery
 }
 
-private static boolean restoreNodeToDefaultIfNecessary(JCRNodeWrapper node, JCRSessionWrapper defaultSession, Logger logger) {
-    boolean updated = false
+private static boolean needRestoreNodeToDefault(JCRNodeWrapper node, JCRSessionWrapper defaultSession, Logger logger) {
     try {
         defaultSession.getNodeByIdentifier(node.getIdentifier())
     } catch (RepositoryException e) {
-        try {
-            if (e instanceof ItemNotFoundException) {
-                defaultSession.getWorkspace().clone(Constants.LIVE_WORKSPACE, node.getPath(), node.getPath(), true)
-                defaultSession.getNodeByIdentifier(node.getIdentifier()).markForDeletion("")
-                updated = true
-                logger.debug("Cloned node {} to default workspace", node.getPath())
-            }
-        } catch (RepositoryException ex) {
-            logger.error("Failed to copy the vanity to the default workspace: ", ex)
+        if (e instanceof ItemNotFoundException) {
+            return true
         }
+    }
+    return false
+}
+
+private static boolean restoreNodeToDefault(JCRNodeWrapper node, JCRSessionWrapper defaultSession, Logger logger) {
+    boolean updated = false
+    try {
+        defaultSession.getWorkspace().clone(Constants.LIVE_WORKSPACE, node.getPath(), node.getPath(), true)
+        defaultSession.getNodeByIdentifier(node.getIdentifier()).markForDeletion("")
+        updated = true
+        logger.debug("Cloned node {} to default workspace", node.getPath())
+    } catch (RepositoryException ex) {
+        logger.error("Failed to copy the vanity to the default workspace: ", ex)
     }
     return updated
 }
@@ -54,13 +59,28 @@ private static int handleVanitysInLive(JCRSessionWrapper session, QueryResult st
             .doExecuteWithSystemSessionAsUser(JahiaUserManagerService.getInstance().lookupRootUser().getJahiaUser(),
                     Constants.EDIT_WORKSPACE, null, defaultSession -> {
                 NodeIterator nodeIterator = stepResult.getNodes()
+
+                // Process live vanitys
+                List<JCRNodeWrapper> nodesToRestore = new ArrayList<>();
                 while (nodeIterator.hasNext()) {
                     JCRNodeWrapper node = (JCRNodeWrapper) nodeIterator.nextNode()
                     if (recalculateVanitySystemName(node, session, logger)) {
                         numberUpdated += 1
-                        session.save()
                     }
-                    numberUpdated += restoreNodeToDefaultIfNecessary(node, defaultSession, logger) ? 1 : 0
+                    if (needRestoreNodeToDefault(node, defaultSession, logger)) {
+                        nodesToRestore.add(node)
+                    }
+                }
+                session.save()
+                session.refresh(false)
+
+                // Restore default vanitys
+                if (!nodesToRestore.isEmpty()) {
+                    nodesToRestore.forEach(node -> {
+                        numberUpdated += restoreNodeToDefault(node, defaultSession, logger) ? 1 : 0
+                    })
+                    defaultSession.save()
+                    defaultSession.refresh(false)
                 }
             })
     logger.info("Took {}ms to update {} vanitys", System.currentTimeMillis() - timer, numberUpdated)
@@ -101,6 +121,7 @@ private static int handleVanitysInDefault(JCRSessionWrapper session, QueryResult
         numberUpdated += recalculateVanitySystemName(node, session, logger) ? 1 : 0
     }
     session.save()
+    session.refresh(false)
 
     logger.info("Took {}ms to update {} vanitys", System.currentTimeMillis() - timer, numberUpdated)
     return numberUpdated
