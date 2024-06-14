@@ -79,7 +79,6 @@ private static int handleVanitysInLive(JCRSessionWrapper session, QueryResult st
                     nodesToRestore.forEach(node -> {
                         numberUpdated += restoreNodeToDefault(node, defaultSession, logger) ? 1 : 0
                     })
-                    defaultSession.save()
                     defaultSession.refresh(false)
                 }
             })
