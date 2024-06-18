@@ -15,7 +15,7 @@ import {
 import {LanguageMenu} from './LanguageMenu';
 import {withTranslation} from 'react-i18next';
 import {withVanityMutationContext} from './VanityMutationsProvider';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {flowRight as compose} from 'lodash';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
@@ -445,14 +445,14 @@ class AddVanityUrlComponent extends React.Component {
 
 AddVanityUrlComponent = compose(
     withVanityMutationContext(),
-    withNotifications(),
     withStyles(styles),
     withTranslation('site-settings-seo')
 )(AddVanityUrlComponent);
 
 const AddVanityUrl = props => {
     const {rows} = useVanityTableDataUrlContext();
-    return (<AddVanityUrlComponent rows={rows} {...props}/>);
+    const notificationContext = useNotifications();
+    return (<AddVanityUrlComponent rows={rows} notificationContext={notificationContext} {...props}/>);
 };
 
 export default AddVanityUrl;

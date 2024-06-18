@@ -1,5 +1,5 @@
 import React from 'react';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {
     Dialog,
@@ -22,7 +22,7 @@ let styles = theme => ({
     }
 });
 
-class Publication extends React.Component {
+class PublicationClass extends React.Component {
     constructor(props) {
         super(props);
         let {vanityMutationsContext, notificationContext, t} = this.props;
@@ -74,11 +74,15 @@ class Publication extends React.Component {
     }
 }
 
-Publication = _.flowRight(
+const PublicationWithHOC = _.flowRight(
     withStyles(styles),
     withVanityMutationContext(),
-    withNotifications(),
     withTranslation('site-settings-seo')
-)(Publication);
+)(PublicationClass);
+
+const Publication = props => {
+    const {notificationContext} = useNotifications();
+    return (<PublicationWithHOC notificationContext={notificationContext} {...props}/>);
+};
 
 export default Publication;

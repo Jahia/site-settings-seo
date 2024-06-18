@@ -21,7 +21,15 @@ export const buildTableQueryVariablesOneNode = props => {
 };
 
 export const buildTableQueryVariablesAllVanity = props => {
-    return buildTableQueryVariables({query: 'select * from [jmix:vanityUrlMapped] as content where isDescendantNode(\'' + props.path + '\') order by [j:fullpath]', ...props});
+    return buildTableQueryVariables({
+        criteria: {
+            paths: props.path,
+            nodeType: 'jmix:vanityUrlMapped'
+        }, fieldSorter: {
+            fieldName: 'displayName',
+            sortType: 'ASC'
+        }, ...props
+    });
 };
 
 export const getRowUrlsFromPath = (rows, path) => {
@@ -51,11 +59,15 @@ const buildTableQueryVariables = props => ({
     languages: props.selectedLanguageCodes,
     offset: (props.currentPage * props.pageSize),
     limit: props.pageSize,
-    query: props.query,
+    criteria: props.criteria,
     filterText: props.filterText ? props.filterText : '',
+    fieldSorter: props.fieldSorter ? props.fieldSorter : null,
     doFilter: Boolean(props.filterText),
     queryFilter: {
         multi: 'ANY',
-        filters: [{fieldName: 'vanityUrls', evaluation: 'NOT_EMPTY'}, {fieldName: 'liveNode.vanityUrls', evaluation: 'NOT_EMPTY'}]
+        filters: [{fieldName: 'vanityUrls', evaluation: 'NOT_EMPTY'}, {
+            fieldName: 'liveNode.vanityUrls',
+            evaluation: 'NOT_EMPTY'
+        }]
     }
 });

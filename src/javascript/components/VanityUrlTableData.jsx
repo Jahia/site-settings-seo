@@ -1,15 +1,15 @@
 import React, {useContext} from 'react';
 import {useQuery} from '@apollo/client';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from "@jahia/react-material";
 import {useTranslation} from 'react-i18next';
 import {gqlContentNodeToVanityUrlPairs} from './Utils/Utils';
 import * as PropTypes from 'prop-types';
-import {flowRight as compose} from 'lodash';
 
 export const VanityUrlTableDataContext = React.createContext({});
 export const useVanityTableDataUrlContext = () => useContext(VanityUrlTableDataContext);
 
-export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, children, tableQuery, variables, notificationContext}) => {
+export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, children, tableQuery, variables}) => {
+    const notificationContext = useNotifications();
     const {t} = useTranslation('site-settings-seo');
     const {data, error, loading} = useQuery(tableQuery, {
         fetchPolicy: 'network-only',
@@ -33,9 +33,9 @@ export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, c
     if (data?.jcr) {
         if (data.jcr.nodeByPath && (data.jcr.nodeByPath.vanityUrls?.length || data.jcr.nodeByPath?.liveNode?.vanityUrls?.length)) {
             nodes.push(data.jcr.nodeByPath);
-        } else if (data.jcr.nodesByQuery?.nodes) {
-            nodes = data.jcr.nodesByQuery.nodes;
-            totalCount = data.jcr.nodesByQuery.pageInfo.totalCount;
+        } else if (data.jcr.nodesByCriteria?.nodes) {
+            nodes = data.jcr.nodesByCriteria.nodes;
+            totalCount = data.jcr.nodesByCriteria.pageInfo.totalCount;
             numberOfPages = totalCount / pageSize;
         }
 
@@ -66,15 +66,12 @@ export const VanityUrlTableDataCmp = ({filterText, totalCount, pageSize, poll, c
     );
 };
 
-export const VanityUrlTableData = compose(withNotifications())(VanityUrlTableDataCmp);
-
-VanityUrlTableDataCmp.propTypes = {
+VanityUrlTableData.propTypes = {
     tableQuery: PropTypes.object,
     variables: PropTypes.object,
     filterText: PropTypes.string,
     totalCount: PropTypes.number,
     pageSize: PropTypes.number,
     poll: PropTypes.number,
-    children: PropTypes.elementType,
-    notificationContext: PropTypes.func
+    children: PropTypes.elementType
 };
