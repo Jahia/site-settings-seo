@@ -13,7 +13,8 @@ describe('Checks the sort of pages in dashboard', () => {
         serverName: 'localhost',
         locale: langEN,
     }
-    const letterList = ['a', 'b', 'c', 'v', 'e', 'f', 'p', 'h', 'x', 'j']
+    const letterList = ['a', 'b', 'c', 'v', 'e', 'f', 'p', 'h', 'x', 'j', '1',
+        'B']
 
     const createPage = (parent: string, name: string, template: string, lang: string) => {
         cy.apollo({
