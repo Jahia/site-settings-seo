@@ -13,7 +13,8 @@ describe('Checks the sort of pages in dashboard', () => {
         serverName: 'localhost',
         locale: langEN,
     }
-    const letterList = ['a', 'b', 'c', 'v', 'e', 'f', 'p', 'h', 'x', 'j', '1', 'B', '2']
+    const letterList = ['a', 'b', 'c', 'v', 'e', 'f', 'p', 'h', 'x', '2', 'j', 'B', '1']
+    const sortedLetterList = ['1', '2', 'a', 'b', 'B', 'c', 'e', 'f', 'h', 'j', 'p', 'x', 'v']
 
     const createPage = (parent: string, name: string, template: string, lang: string) => {
         cy.apollo({
@@ -49,9 +50,9 @@ describe('Checks the sort of pages in dashboard', () => {
 
         pagesWithVanityUrl.should('have.length', 10)
 
-        const sortedLetters = letterList.sort()
         pagesWithVanityUrl.each((page, index) => {
-            cy.wrap(page).should('contain', `testPage-${sortedLetters[index]}`)
+            cy.log('test : ' + cy.wrap(page))
+            cy.wrap(page).should('contain', `testPage-${sortedLetterList[index]}`)
         })
     })
 })
