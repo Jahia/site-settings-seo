@@ -1320,7 +1320,7 @@
     re-resizable "^6.9.9"
     to-px "^1.1.0"
 
-"@jahia/react-material@^3.0.5":
+"@jahia/react-material@^3.0.6":
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/@jahia/react-material/-/react-material-3.0.6.tgz#aa55b8a95ae35ca0cc9f6a8740171dd4488798fd"
   integrity sha512-AnluDT2SBRGzjYVFNg4UPoZ4eLwTB2lA+olvOQn7TqpK+eZBtTIMkuXtF7SZ+HOYt7PLTOH+Z4+RmUjSdmRBJQ==

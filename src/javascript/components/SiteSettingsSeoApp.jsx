@@ -1,12 +1,11 @@
 import React from 'react';
 import {List, Paper, withStyles} from '@material-ui/core';
-import {legacyTheme, Pagination, withNotifications} from '@jahia/react-material';
+import {legacyTheme, Pagination} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import LanguageSelector from './LanguageSelector';
 import {withTranslation} from 'react-i18next';
-import {Information, SwapHoriz, Publish, Dropdown, Header} from '@jahia/moonstone';
+import {SwapHoriz, Publish, Dropdown, Header} from '@jahia/moonstone';
 import * as _ from 'lodash';
-import {InfoDialog} from './VanityList/live/InfoDialog';
 import Publication from './Publication';
 import Move from './Move';
 import {withVanityMutationContext} from './VanityMutationsProvider';
@@ -294,7 +293,7 @@ class SiteSettingsSeoApp extends React.Component {
     }
 
     render() {
-        let {siteInfo, t, classes, lang, polling: globalPolling} = this.props;
+        let {siteInfo, t, classes, lang} = this.props;
         let polling = !(this.state.publication.open || this.state.move.open);
         let variables = buildTableQueryVariablesAllVanity({selectedLanguageCodes: this.state.loadParams.selectedLanguageCodes, path: siteInfo.path, lang: lang, ...this.state.loadParams});
 
@@ -379,7 +378,6 @@ class SiteSettingsSeoApp extends React.Component {
 
 const assembleWithHoc = function (component) {
     return _.flowRight(
-        withNotifications(),
         withStyles(styles),
         withVanityMutationContext(),
         withTranslation('site-settings-seo')

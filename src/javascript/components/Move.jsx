@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import {useTranslation} from 'react-i18next';
 import {Picker} from '@jahia/data-helper';
-import {PickerViewMaterial, withNotifications} from '@jahia/react-material';
+import {PickerViewMaterial, useNotifications} from '@jahia/react-material';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {GetNodeQuery} from './gqlQueries';
 import {useQuery} from '@apollo/client';
@@ -70,7 +70,8 @@ let styles = () => ({
 });
 
 const MoveCmp = props => {
-    const {classes, lang, path, urlPairs, vanityMutationsContext, notificationContext, open, onClose} = props;
+    const {classes, lang, path, urlPairs, vanityMutationsContext, open, onClose} = props;
+    const {notificationContext} = useNotifications();
     const {t} = useTranslation('site-settings-seo');
     const [targetPath, setTargetPath] = useState('');
     const [saveDisabled, setSaveDisabled] = useState(true);
@@ -211,8 +212,7 @@ const MoveCmp = props => {
 
 const Move = _.flowRight(
     withStyles(styles),
-    withVanityMutationContext(),
-    withNotifications()
+    withVanityMutationContext()
 )(MoveCmp);
 
 export default Move;
