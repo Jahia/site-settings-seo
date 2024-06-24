@@ -51,7 +51,6 @@ describe('Checks the sort of pages in dashboard', () => {
         pagesWithVanityUrl.should('have.length', 10)
 
         pagesWithVanityUrl.each((page, index) => {
-            cy.log('test : ' + cy.wrap(page))
             cy.wrap(page).should('contain', `testPage-${sortedLetterList[index]}`)
         })
     })
