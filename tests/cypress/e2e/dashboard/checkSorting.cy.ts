@@ -13,7 +13,7 @@ describe('Checks the sort of pages in dashboard', () => {
         serverName: 'localhost',
         locale: langEN,
     }
-    const letterList = ['a', 'b', 'c', 'v', 'e', 'f', 'p', 'h', 'x', '2', 'j', 'B', '1']
+
     const sortedLetterList = ['1', '2', 'a', 'b', 'B', 'c', 'e', 'f', 'h', 'j', 'p', 'x', 'v']
 
     const createPage = (parent: string, name: string, template: string, lang: string) => {
@@ -30,6 +30,7 @@ describe('Checks the sort of pages in dashboard', () => {
 
     before('create test data', function () {
         createSite(siteKey, siteConfig)
+        const letterList = sortedLetterList.slice().reverse()
         letterList.forEach((letter) => {
             const pageName = `${prefixPageName}-${letter}`
             const pagePath = homePath + '/' + pageName
