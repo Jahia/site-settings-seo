@@ -23,6 +23,9 @@
  */
 package org.jahia.modules.sitesettingsseo.utils;
 
+import org.jahia.modules.sitesettingsseo.service.VanityUrlService;
+import org.jahia.osgi.BundleUtils;
+import org.jahia.services.content.JCRNodeWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +37,6 @@ import java.net.URISyntaxException;
  * General utility class
  */
 public class Utils {
-
-    private static final Logger logger = LoggerFactory.getLogger(Utils.class);
 
     /**
      *
@@ -62,6 +63,10 @@ public class Utils {
                 return String.format("%s://%s:%d", protocol, host, port);
             }
         }
+    }
+
+    public static void unpublishVanityUrlInLanguage(JCRNodeWrapper node, String language) {
+        BundleUtils.getOsgiService(VanityUrlService.class, null).unpublishVanityUrlInLanguage(node, language);
     }
 }
 
