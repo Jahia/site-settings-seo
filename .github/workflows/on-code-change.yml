@@ -74,7 +74,7 @@ jobs:
         with:
           node-version: 'lts/*'
       - uses: actions/checkout@v3
-      - uses: jahia/jahia-modules-action/integration-tests@v2
+      - uses: jahia/jahia-modules-action/integration-tests@TECH-1639d
         with:
           module_id: site-settings-seo
           testrail_project: Site Settings SEO Module
