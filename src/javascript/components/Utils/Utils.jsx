@@ -16,6 +16,10 @@ export const atLeastOneNotPublished = urls => {
     return urls.some(url => url.default.publicationInfo.publicationStatus !== 'PUBLISHED');
 };
 
+export  const contentIsVisibleInLive = publicationInfo => {
+    return publicationInfo.existsInLive && publicationInfo.publicationStatus !== 'UNPUBLISHED';
+};
+
 export const buildTableQueryVariablesOneNode = props => {
     return buildTableQueryVariables(props);
 };

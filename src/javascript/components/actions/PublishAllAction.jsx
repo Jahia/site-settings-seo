@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useQuery, useApolloClient} from '@apollo/client';
-import {ContentEditorTableQuery} from '~/components/gqlQueries';
+import {ContentEditorTableQuery, GetPublicationStatus} from '~/components/gqlQueries';
 import {PublishMutation} from '../gqlMutations';
 import * as PropTypes from 'prop-types';
 import {useVanityUrlContext} from '../Context/VanityUrl.context';
 import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
-import {buildTableQueryVariablesOneNode} from '../Utils/Utils';
+import {buildTableQueryVariablesOneNode, contentIsVisibleInLive} from '../Utils/Utils';
+import {Chip, Information} from '@jahia/moonstone';
+import classes from './PublishAllAction.scss';
 
 export const PublishAllAction = ({render: Render, loading: Loading, label, nodeData, ...otherProps}) => {
     const notificationContext = useNotifications();
@@ -23,6 +25,25 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
         })
     });
 
+    const [isVisibleInLive, setIsVisibleInLive] = useState(false);
+    useEffect(() => {
+        const fetchPublicationData = async () => {
+            const data = await Promise.all(
+                nodeData.urls.map(async urlPair => {
+                    const {data} = await client.query({
+                        query: GetPublicationStatus,
+                        variables: {path: urlPair.default.targetNode.path, language: urlPair.default.language}
+                    });
+                    console.debug(data);
+                    return data.jcr.nodeByPath.aggregatedPublicationInfo;
+                })
+            );
+            setIsVisibleInLive(data.every(contentIsVisibleInLive));
+        };
+
+        fetchPublicationData();
+    }, [client, nodeData, nodeData.urls]);
+
     if (loading) {
         return (Loading && <Loading buttonLabel={label} {...otherProps}/>) || <></>;
     }
@@ -36,18 +57,29 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
         .map(vanityUrl => vanityUrl.uuid);
 
     const publish = () => {
-        client.mutate({mutation: PublishMutation, variables: {pathsOrIds: unpublishedVanityUrlIds, publishSubNodes: false}}).then(() => {
+        client.mutate({
+            mutation: PublishMutation,
+            variables: {pathsOrIds: unpublishedVanityUrlIds, publishSubNodes: false}
+        }).then(() => {
             notificationContext.notify(t('label.notifications.publicationStarted'), ['closeAfter5s']);
         });
     };
 
     return (
         <>
-            {unpublishedVanityUrlIds && <Render
-                {...otherProps}
-                disabled={unpublishedVanityUrlIds.length === 0}
-                buttonLabel={label}
-                onClick={publish}/>}
+            <div className={classes.container}>
+                {unpublishedVanityUrlIds && <Render
+                    {...otherProps}
+                    disabled={unpublishedVanityUrlIds.length === 0 || !isVisibleInLive}
+                    buttonLabel={label}
+                    onClick={publish}/>}
+                {!isVisibleInLive &&
+                    <Chip icon={<Information size="default"/>}
+                          className={classes.chipInfo}
+                          label={t('label.messages.canNotPublishAll')}
+                          title={t('label.messages.atLeastOneLanguageNotPublished')}
+                          color="warning"/>}
+            </div>
         </>
     );
 };

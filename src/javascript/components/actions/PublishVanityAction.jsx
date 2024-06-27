@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import * as PropTypes from 'prop-types';
-import {allNotPublishedAndMarkedForDeletion, atLeastOneNotPublished} from '../Utils/Utils';
+import {allNotPublishedAndMarkedForDeletion, atLeastOneNotPublished, contentIsVisibleInLive} from '../Utils/Utils';
 import {useApolloClient} from '@apollo/client';
 import {GetPublicationStatus} from '~/components/gqlQueries';
-
-const contentIsVisibleInLive = publicationInfo => {
-    return publicationInfo.existsInLive && publicationInfo.publicationStatus !== 'UNPUBLISHED';
-};
 
 export const PublishVanityAction = ({render: Render, actions, urlPairs, ...otherProps}) => {
     const onClick = e => {
@@ -24,10 +20,10 @@ export const PublishVanityAction = ({render: Render, actions, urlPairs, ...other
                         query: GetPublicationStatus,
                         variables: {path: urlPair.default.targetNode.path, language: urlPair.default.language}
                     });
+                    console.debug(data);
                     return data.jcr.nodeByPath.aggregatedPublicationInfo;
                 })
             );
-            console.log(data);
             setIsVisibleInLive(data.every(contentIsVisibleInLive));
         };
 

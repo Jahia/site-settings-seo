@@ -96,7 +96,9 @@
       "publicationStarted": "Die Veröffentlichung wurde als Hintergrundjob gestartet."
     },
     "messages": {
-      "noVanityUrl": "Keine vanity URL"
+      "noVanityUrl": "Keine vanity URL",
+      "canNotPublishAll": "The page isn't published in all languages.",
+      "atLeastOneLanguageNotPublished": "Please publish vanity URLs individually."
     },
     "okGotIt": "OK, ich habe es verstanden.",
     "selection": {
