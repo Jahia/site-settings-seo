@@ -50,8 +50,9 @@ export class VanityUrlUi extends BasePage {
 
     editVanityUrl(originalVanityValue: string, newVanityValue: string) {
         this.getVanityUrlRow(originalVanityValue).click()
-
-        cy.get('input[data-sel-role="vanity-input-text"]').clear().type(newVanityValue).type('{enter}')
+        const selector = 'input[data-sel-role="vanity-input-text"]'
+        cy.get(selector).clear()
+        cy.get(selector).type(`${newVanityValue}{enter}`)
     }
 
     deleteVanityUrl(vanityToDelete: string) {
