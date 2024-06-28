@@ -92,13 +92,12 @@
     "notifications": {
       "moveConfirmed": "Verschieben bestätigt.",
       "newMappingCreated": "Neue(s) Mapping(s) hinzugefügt.",
-      "newMappingCreatedAndPublished": "Neue(s) Mapping(s) hinzugefügt, die Veröffentlichung wurde als Hintergrundjob gestartet.",
       "publicationStarted": "Die Veröffentlichung wurde als Hintergrundjob gestartet."
     },
     "messages": {
       "noVanityUrl": "Keine vanity URL",
-      "canNotPublishAll": "The page isn't published in all languages.",
-      "atLeastOneLanguageNotPublished": "Please publish vanity URLs individually."
+      "canNotPublishAll": "Die Seite ist nicht in allen Sprachen veröffentlicht.",
+      "atLeastOneLanguageNotPublished": "Bitte Vanity-URLs einzeln veröffentlichen."
     },
     "okGotIt": "OK, ich habe es verstanden.",
     "selection": {

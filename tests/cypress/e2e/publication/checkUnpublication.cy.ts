@@ -62,7 +62,6 @@ describe('Checks the publication of the vanity urls', () => {
         vanityUrls.forEach((vanity) => {
             cy.waitUntil(() =>
                 getNodeByPath(`${pagePath}/vanityUrlMapping/${vanity.name}`, ['j:published']).then(({ data }) => {
-                    console.log('data', data)
                     return vanity.expectedPublished === data.jcr.nodeByPath.properties[0].value
                 }),
             )

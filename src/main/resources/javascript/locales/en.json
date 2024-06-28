@@ -92,7 +92,6 @@
     "notifications": {
       "moveConfirmed": "Moved",
       "newMappingCreated": "New vanity URL(s) created",
-      "newMappingCreatedAndPublished": "New vanity URL(s) added, publication job started in background",
       "publicationStarted": "Publication job started in background"
     },
     "messages": {

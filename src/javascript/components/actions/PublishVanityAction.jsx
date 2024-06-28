@@ -1,12 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {allNotPublishedAndMarkedForDeletion, atLeastOneNotPublished, contentIsVisibleInLive} from '../Utils/Utils';
 import {useApolloClient} from '@apollo/client';
 import {GetPublicationStatus} from '~/components/gqlQueries';
+import {Publication} from '~/components/Publication/Publication';
 
-export const PublishVanityAction = ({render: Render, actions, urlPairs, ...otherProps}) => {
-    const onClick = e => {
-        actions.publishAction.call(urlPairs, e);
+export const PublishVanityAction = ({render: Render, urlPairs, ...otherProps}) => {
+    const componentRenderer = useContext(ComponentRendererContext);
+
+    const closeDialog = () => {
+        componentRenderer.destroy('PublishVanityDialog');
+    };
+
+    const openModal = () => {
+        componentRenderer.render(
+            'PublishVanityDialog',
+            Publication,
+            {
+                ...otherProps,
+                urlPairs: urlPairs,
+                isOpen: true,
+                onClose: closeDialog
+            });
     };
 
     const [isVisibleInLive, setIsVisibleInLive] = useState(false);
@@ -36,13 +52,12 @@ export const PublishVanityAction = ({render: Render, actions, urlPairs, ...other
             <Render
                 {...otherProps}
                 isVisible={shouldBeVisible}
-                onClick={onClick}/>
+                onClick={openModal}/>
         </>
     );
 };
 
 PublishVanityAction.propTypes = {
     render: PropTypes.elementType.isRequired,
-    actions: PropTypes.object,
     urlPairs: PropTypes.array.isRequired
 };

@@ -89,7 +89,6 @@
     "notifications": {
       "moveConfirmed": "Déplacé",
       "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)",
-      "newMappingCreatedAndPublished": "Nouvelle(s) URL(s) ajoutée(s), job de publication lancé en arrière plan",
       "publicationStarted": "Job de publication lancé en arrière plan"
     },
     "messages": {

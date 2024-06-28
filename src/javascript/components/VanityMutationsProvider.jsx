@@ -24,7 +24,7 @@ class VanityMutationsProvider extends Component {
     }
 
     addMutations() {
-        const {vanityMutationsContext, moveMutation, updateMutation, publishMutation, addMutation} = this.props;
+        const {vanityMutationsContext, moveMutation, updateMutation, addMutation} = this.props;
 
         const isSitesUrl = url => {
             const isString = (typeof url === 'string') || url instanceof String;
@@ -56,13 +56,6 @@ class VanityMutationsProvider extends Component {
                 }]
             });
         };
-
-        vanityMutationsContext.publish = (pathsOrIds, nodeOnly) => publishMutation({
-            variables: {
-                pathsOrIds: pathsOrIds,
-                publishSubNodes: !nodeOnly
-            }
-        });
 
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
             if (isBlankUrl(url)) {
@@ -164,7 +157,6 @@ VanityMutationsProvider.childContextTypes = {
 
 VanityMutationsProvider = compose(
     graphql(gqlMutations.MoveMutation, {name: 'moveMutation'}),
-    graphql(gqlMutations.PublishMutation, {name: 'publishMutation'}),
     graphql(gqlMutations.UpdateVanityMutation, {name: 'updateMutation'}),
     graphql(gqlMutations.AddVanityMutation, {name: 'addMutation'})
 )(VanityMutationsProvider);

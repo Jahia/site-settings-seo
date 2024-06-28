@@ -27,22 +27,32 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
 
     const [isVisibleInLive, setIsVisibleInLive] = useState(false);
     useEffect(() => {
-        const fetchPublicationData = async () => {
-            const data = await Promise.all(
-                nodeData.urls.map(async urlPair => {
-                    const {data} = await client.query({
+        const fetchPublicationData = async urls => {
+            const publicationData = await Promise.all(
+                urls.map(async urlPair => {
+                    const {data: currentData} = await client.query({
                         query: GetPublicationStatus,
-                        variables: {path: urlPair.default.targetNode.path, language: urlPair.default.language}
+                        variables: {path: urlPair.targetNodePath, language: urlPair.vanityLanguage}
                     });
-                    console.debug(data);
-                    return data.jcr.nodeByPath.aggregatedPublicationInfo;
+                    console.debug(currentData);
+                    return currentData.jcr.nodeByPath.aggregatedPublicationInfo;
                 })
             );
-            setIsVisibleInLive(data.every(contentIsVisibleInLive));
+            setIsVisibleInLive(publicationData.every(contentIsVisibleInLive));
         };
 
-        fetchPublicationData();
-    }, [client, nodeData, nodeData.urls]);
+        if (nodeData.urls) {
+            fetchPublicationData(nodeData.urls.map(url => {
+                return {targetNodePath: url.default.targetNode.path, vanityLanguage: url.default.language};
+            }));
+        } else if (data) {
+            fetchPublicationData(data.jcr.nodeByPath.vanityUrls.map(url => {
+                return {targetNodePath: url.targetNode.path, vanityLanguage: url.language};
+            }));
+        }
+    },
+    [client, nodeData, nodeData.urls, data]
+    );
 
     if (loading) {
         return (Loading && <Loading buttonLabel={label} {...otherProps}/>) || <></>;
