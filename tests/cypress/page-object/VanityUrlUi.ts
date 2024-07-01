@@ -5,13 +5,22 @@ export class VanityUrlUi extends BasePage {
         super()
     }
 
-    addVanityUrl(vanityValue: string, canonical = false) {
+    clickOnAddVanityUrl() {
         // eslint-disable-next-line
         cy.wait(500)
 
         cy.get('div[data-sel-role="manage-vanity-url-dialog"]').find('button[aria-label="add"]').click()
-        cy.get('input[data-sel-role="vanity-input-text"]').type(vanityValue)
+    }
 
+    addVanityUrl(vanityValue: string, canonical = false, language = 'en', disabled = false) {
+        this.clickOnAddVanityUrl()
+        this.fillVanityValues(vanityValue, canonical, language, disabled)
+    }
+
+    fillVanityValues(vanityValue: string, canonical = false, language = 'en', disabled = false) {
+        if (vanityValue) {
+            cy.get('input[data-sel-role="vanity-input-text"]').type(vanityValue)
+        }
         if (canonical) {
             cy.get('span[data-vud-role="default"]').find('input').click()
         }
@@ -30,11 +39,6 @@ export class VanityUrlUi extends BasePage {
                 .find('button[data-vud-role="button-primary"]')
                 .click()
         }
-    }
-
-    addVanityUrl(vanityValue: string, canonical = false, language = 'en', disabled = false) {
-        this.clickOnAddVanityUrl()
-        this.fillVanityValues(vanityValue, canonical, language, disabled)
     }
 
     editVanityUrl(originalVanityValue: string, newVanityValue: string) {
