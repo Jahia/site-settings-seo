@@ -8,7 +8,7 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  update-signature:
+  update-signature: 
     name: Update module signature
     runs-on: ubuntu-latest
     steps:
@@ -74,7 +74,7 @@ jobs:
         with:
           node-version: 'lts/*'
       - uses: actions/checkout@v3
-      - uses: jahia/jahia-modules-action/integration-tests@v2
+      - uses: jahia/jahia-modules-action/integration-tests@TECH-1639d
         with:
           module_id: site-settings-seo
           testrail_project: SEO Module
