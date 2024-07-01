@@ -1,0 +1,27 @@
+package org.jahia.modules.sitesettingsseo.rules
+
+// list any import classes here.
+import java.util.List
+import org.jahia.services.content.rules.*
+import org.jahia.services.content.JCRNodeWrapper
+import org.jahia.services.content.JCRContentUtils
+import org.slf4j.Logger
+import org.jahia.modules.sitesettingsseo.utils.Utils
+
+expander rules.dsl
+
+// declare any global variables here
+global User user
+global Service service
+global Logger logger
+
+rule "Unpublished vanity url in the language of the unpublished node"
+    when
+    	A translation is unpublished
+    	    - the node has the type jmix:vanityUrlMapped
+
+    then
+>       logger.info("Unpublish the vanity urls in the language of the unpublished node" + node.getNode().getPrimaryNodeTypeName());
+>       Utils.unpublishVanityUrlInLanguage(node.getNode(), node.getLanguage());
+
+end

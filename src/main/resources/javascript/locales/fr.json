@@ -89,11 +89,12 @@
     "notifications": {
       "moveConfirmed": "Déplacé",
       "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)",
-      "newMappingCreatedAndPublished": "Nouvelle(s) URL(s) ajoutée(s), job de publication lancé en arrière plan",
       "publicationStarted": "Job de publication lancé en arrière plan"
     },
     "messages": {
-      "noVanityUrl": "Pas d'URL personnalisée"
+      "noVanityUrl": "Pas d'URL personnalisée",
+      "canNotPublishAll": "La page n'est pas publiée dans toutes les langues",
+      "atLeastOneLanguageNotPublished": "Merci de publier les URLs personnalisées individuellement"
     },
     "okGotIt": "OK, j'ai compris",
     "selection": {
