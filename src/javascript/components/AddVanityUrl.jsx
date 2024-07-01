@@ -156,14 +156,12 @@ class AddVanityUrlComponent extends React.Component {
             rows: this.props.rows,
             mappings: this._resetMap(),
             errors: [],
-            doPublish: false,
             showInputField: false
         };
 
         this.handleSave = this.handleSave.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
-        this.handlePublishCheckboxChange = this.handlePublishCheckboxChange.bind(this);
         this.handleDialogEntered = this.handleDialogEntered.bind(this);
         this.resetInput = this.resetInput.bind(this);
     }
@@ -214,20 +212,10 @@ class AddVanityUrlComponent extends React.Component {
         }
 
         try {
-            vanityMutationsContext.add(path, mappings, this.props).then(result => {
-                if (this.state.doPublish) {
-                    vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then(result => {
-                        this.handleClose(event);
-                        notificationContext.notify(t('label.notifications.newMappingCreatedAndPublished'));
-                    }, error => {
-                        notificationContext.notify(t('label.errors.Error'));
-                        console.log(error);
-                    });
-                } else {
-                    setParentLoading && setParentLoading(true);
-                    this.handleClose(event);
-                    notificationContext.notify(t('label.notifications.newMappingCreated'));
-                }
+            vanityMutationsContext.add(path, mappings, this.props).then(() => {
+                setParentLoading && setParentLoading(true);
+                this.handleClose(event);
+                notificationContext.notify(t('label.notifications.newMappingCreated'), ['closeAfter5s']);
             }, error => {
                 if (error.graphQLErrors && error.graphQLErrors[0].extensions) {
                     this.setState({
@@ -272,7 +260,6 @@ class AddVanityUrlComponent extends React.Component {
         this.setState({
             mappings: this._resetMap(),
             errors: [],
-            doPublish: false,
             showInputField: false
         });
     };
@@ -299,12 +286,6 @@ class AddVanityUrlComponent extends React.Component {
             previous.mappings[index][field] = value;
 
             return {mappings: previous.mappings, errors: previous.errors};
-        });
-    };
-
-    handlePublishCheckboxChange = checked => {
-        this.setState({
-            doPublish: checked
         });
     };
 

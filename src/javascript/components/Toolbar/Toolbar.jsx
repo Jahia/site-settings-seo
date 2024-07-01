@@ -33,21 +33,22 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
                     </Typography>
                 </div>
             </div>
-
-            <div className={classes.buttonsBar}>
-                <DisplayActions
-                    target="site-settings-seo/vanity-list-menu"
-                    urlPairs={selection}
-                    paths={paths}
-                    actions={actions}
-                    render={ButtonRenderer || LocalButtonRenderer}
-                    filter={action => {
-                        return action.key !== 'updateVanity';
-                    }}
-                    onChangeSelection={onChangeSelection}
-                    onDeleted={onChangeSelection}
-                />
-            </div>
+            {selection.length &&
+                <div className={classes.buttonsBar}>
+                    <DisplayActions
+                        target="site-settings-seo/vanity-list-menu"
+                        urlPairs={selection}
+                        paths={paths}
+                        actions={actions}
+                        render={ButtonRenderer}
+                        filter={action => {
+                            return action.key !== 'updateVanity';
+                        }}
+                        onChangeSelection={onChangeSelection}
+                        onDeleted={onChangeSelection}
+                    />
+                </div>
+            }
         </Paper>
     );
 };
