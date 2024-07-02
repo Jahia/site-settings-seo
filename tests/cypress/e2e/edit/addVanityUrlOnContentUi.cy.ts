@@ -1,14 +1,12 @@
 import { publishAndWaitJobEnding, addVanityUrl, addNode, editSite, deleteNode } from '@jahia/cypress'
+import { CustomPageComposer } from '../../page-object/pageComposer/CustomPageComposer'
 import { addSimplePage } from '../../utils/Utils'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
-
-import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
 
 describe('Add or edit vanity Urls', () => {
     const siteKey = 'digitall'
     const sitePath = '/sites/' + siteKey
     const homePath = sitePath + '/home'
-    const jcontentHomePath = 'pages/home'
     const pageVanityUrl1 = 'page1withNews'
     const newsname = 'Some-interesting-news'
     const newspath = '/sites/digitall/home/' + pageVanityUrl1 + '/area-main/' + newsname
@@ -60,10 +58,10 @@ describe('Add or edit vanity Urls', () => {
     it('Add a first basic vanity URL on a content', function () {
         cy.login()
 
-        const jcontent = JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1)
-        jcontent.switchToListMode().editComponentByText('Some interesting news')
-
-        const contentEditor = new ContentEditorSEO()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
 
         const vanityUrlUi = contentEditor.openVanityUrlUi()
 
@@ -79,8 +77,9 @@ describe('Add or edit vanity Urls', () => {
 
         cy.login()
 
-        const jcontent = JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1)
-        jcontent.switchToListMode().editComponentByText('Some interesting news')
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        composer.openContextualMenuOnLeftTree(pageVanityUrl1)
 
         const contentEditor = new ContentEditorSEO()
 
@@ -99,8 +98,9 @@ describe('Add or edit vanity Urls', () => {
 
         cy.login()
 
-        const jcontent = JContent.visit('digitall', 'en', jcontentHomePath + '/' + pageVanityUrl1)
-        jcontent.switchToListMode().editComponentByText('Some interesting news')
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        composer.openContextualMenuOnLeftTree(pageVanityUrl1)
 
         const contentEditor = new ContentEditorSEO()
 
