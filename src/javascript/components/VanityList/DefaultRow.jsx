@@ -6,10 +6,15 @@ import classes from './DefaultRow.scss';
 import {Chip, Loader, Lock, Typography, Checkbox} from '@jahia/moonstone';
 import {LanguageMenu} from '../LanguageMenu';
 import {DisplayAction} from '@jahia/ui-extender';
-import {ButtonRendererNoLabel} from '@jahia/jcontent';
 import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import clsx from 'clsx';
+
+let ButtonRendererNoLabel;
+import('@jahia/content-editor').then(v => {
+    ButtonRendererNoLabel = v.ButtonRendererNoLabel;
+}).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
+import {ButtonRendererNoLabel as LocalButtonRendererNoLabel} from '../Renderer/getButtonRenderer';
 
 export const DefaultRow = ({
     hasWritePermission,
@@ -114,7 +119,7 @@ export const DefaultRow = ({
                             actions={actions}
                             isDefaultMapping={url.default}
                             actionKey="vanityListMenu"
-                            render={ButtonRendererNoLabel}
+                            render={ButtonRendererNoLabel || LocalButtonRendererNoLabel}
                             loading={() => (<Loader size="small"/>)}
                             buttonProps={{variant: 'ghost', size: 'big'}}/>
                     </span>

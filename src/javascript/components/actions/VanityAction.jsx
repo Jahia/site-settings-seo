@@ -3,11 +3,15 @@ import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useNodeChecks} from '@jahia/data-helper';
 import {SiteSettingsSeoCardEntry} from '../contentEditor/SiteSettingsSeo/SiteSettingsSeoCardEntry';
 import * as PropTypes from 'prop-types';
-import {useContentEditorContext} from '@jahia/jcontent';
+
+let useContentEditorContext;
+import('@jahia/content-editor').then(v => {
+    useContentEditorContext = v.useContentEditorContext;
+}).catch(e => console.warn('Error loading context from content-editor', e));
 
 export const VanityAction = ({render: Render, loading: Loading, label, requiredPermission, showOnNodeTypes, hideOnExternal, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
-    const {mode, nodeData, lang, language} = useContentEditorContext();
+    const {mode, nodeData, lang, language} = useContentEditorContext ? useContentEditorContext() : otherProps;
     const {loading, checksResult} = useNodeChecks(
         {path: nodeData.path, language: lang | language},
         {requiredPermission: requiredPermission, showOnNodeTypes: showOnNodeTypes, hideOnExternal: hideOnExternal}
