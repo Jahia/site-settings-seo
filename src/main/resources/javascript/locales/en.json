@@ -90,11 +90,12 @@
     "notifications": {
       "moveConfirmed": "Moved",
       "newMappingCreated": "New vanity URL(s) created",
-      "newMappingCreatedAndPublished": "New vanity URL(s) added, publication job started in background",
       "publicationStarted": "Publication job started in background"
     },
     "messages": {
-      "noVanityUrl": "No vanity URL"
+      "noVanityUrl": "No vanity URL",
+      "canNotPublishAll": "The page isn't published in all languages.",
+      "atLeastOneLanguageNotPublished": "Please publish vanity URLs individually."
     },
     "okGotIt": "OK",
     "selection": {

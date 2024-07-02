@@ -60,6 +60,21 @@ const VanityUrlsByPath = gql`
     ${LiveVanityUrls}
 `;
 
+const GetPublicationStatus = gql`
+    query getNodePublicationInfos($path: String!, $language: String!) {
+        jcr {
+            nodeByPath(path: $path) {
+                ...NodeCacheRequiredFields
+                aggregatedPublicationInfo(language: $language) {
+                    publicationStatus
+                    existsInLive
+                }
+            }
+        }
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+`;
+
 const VanityUrlsByPathVariables = (paths, props) => ({
     lang: props.lang,
     languages: props.selectedLanguageCodes,
@@ -80,4 +95,4 @@ const GetNodeQuery = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-export {DashboardTableQuery, ContentEditorTableQuery, GetNodeQuery, VanityUrlsByPath, VanityUrlsByPathVariables};
+export {DashboardTableQuery, ContentEditorTableQuery, GetNodeQuery, VanityUrlsByPath, GetPublicationStatus, VanityUrlsByPathVariables};

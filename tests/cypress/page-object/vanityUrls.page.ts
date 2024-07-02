@@ -1,3 +1,6 @@
+import {PageWithVanityUrlList} from "./dashboard/PageWithVanityUrlList";
+import {getComponent} from "@jahia/cypress";
+
 export class VanityUrlsPage {
     elements = {
         pageRowVanityUrls: "div[data-vud-role='content-title'] span",
@@ -74,5 +77,9 @@ export class VanityUrlsPage {
                 expect(isNotVisible, 'is not visible').to.be.true
             })
         }
+    }
+
+    getPagesWithVanityUrl(): PageWithVanityUrlList {
+        return getComponent(PageWithVanityUrlList)
     }
 }

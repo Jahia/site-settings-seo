@@ -49,7 +49,7 @@ export const VanityUrlListDefault = ({
                 {t('label.mappings.default')}
             </Typography>
             <Paper elevation={2} className={classes.vanityGroupPaper}>
-                <Table className={classes.table}>
+                <Table className={classes.table} data-sel-role="vanity-url-list">
                     <TableHead>
                         <TableRow className={classes.theadRow}>
                             <TableHeadCell/>

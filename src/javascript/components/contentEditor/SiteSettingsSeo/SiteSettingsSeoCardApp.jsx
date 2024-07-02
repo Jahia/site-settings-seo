@@ -1,5 +1,5 @@
 import React from 'react';
-import Publication from '../../Publication';
+import Publication from '../../Publication/Publication';
 import Move from '../../Move';
 import {VanityUrlTableData} from '~/components/VanityUrlTableData';
 import {assembleWithHoc, SiteSettingsSeoApp} from '../../SiteSettingsSeoApp';
@@ -19,8 +19,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
     // Override
     render() {
         let {path, t, lang, siteInfo} = this.props;
-        let polling = !(this.state.publication.open ||
-            this.state.move.open);
+        let polling = !(this.state.move.open);
         let variables = buildTableQueryVariablesOneNode({selectedLanguageCodes: this.props.languages, path: path, lang: lang, ...this.state.loadParams});
 
         return (
@@ -68,11 +67,6 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                     path={siteInfo.path}
                                     lang={lang}
                                     onClose={this.closeMove}
-                                />}
-
-                                {this.state.publication.open && <Publication
-                                    {...this.state.publication}
-                                    onClose={this.closePublication}
                                 />}
                             </>
                         );
