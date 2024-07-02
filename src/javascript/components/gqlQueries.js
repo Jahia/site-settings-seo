@@ -3,9 +3,9 @@ import {PredefinedFragments} from '@jahia/data-helper';
 import gql from 'graphql-tag';
 
 const DashboardTableQuery = gql`
-    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $query: String!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput, $languages: [String!]) {
+    query NodesQuery($lang: String!, $offset: Int, $limit: Int, $criteria: InputGqlJcrNodeCriteriaInput!, $filterText: String, $doFilter: Boolean!, $queryFilter: InputFieldFiltersInput, $languages: [String!], $fieldSorter: InputFieldSorterInput) {
         jcr {
-            nodesByQuery(query: $query, limit: $limit, offset: $offset, fieldFilter: $queryFilter) {
+            nodesByCriteria(criteria: $criteria, limit: $limit, offset: $offset, fieldFilter: $queryFilter, fieldSorter: $fieldSorter) {
                 pageInfo {
                     totalCount
                 }
@@ -60,6 +60,21 @@ const VanityUrlsByPath = gql`
     ${LiveVanityUrls}
 `;
 
+const GetPublicationStatus = gql`
+    query getNodePublicationInfos($path: String!, $language: String!) {
+        jcr {
+            nodeByPath(path: $path) {
+                ...NodeCacheRequiredFields
+                aggregatedPublicationInfo(language: $language) {
+                    publicationStatus
+                    existsInLive
+                }
+            }
+        }
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+`;
+
 const VanityUrlsByPathVariables = (paths, props) => ({
     lang: props.lang,
     languages: props.selectedLanguageCodes,
@@ -80,4 +95,4 @@ const GetNodeQuery = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-export {DashboardTableQuery, ContentEditorTableQuery, GetNodeQuery, VanityUrlsByPath, VanityUrlsByPathVariables};
+export {DashboardTableQuery, ContentEditorTableQuery, GetNodeQuery, VanityUrlsByPath, GetPublicationStatus, VanityUrlsByPathVariables};

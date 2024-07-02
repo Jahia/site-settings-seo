@@ -15,7 +15,7 @@ import {
 import {LanguageMenu} from './LanguageMenu';
 import {withTranslation} from 'react-i18next';
 import {withVanityMutationContext} from './VanityMutationsProvider';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import * as _ from 'lodash';
 import {flowRight as compose} from 'lodash';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
@@ -156,14 +156,12 @@ class AddVanityUrlComponent extends React.Component {
             rows: this.props.rows,
             mappings: this._resetMap(),
             errors: [],
-            doPublish: false,
             showInputField: false
         };
 
         this.handleSave = this.handleSave.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
-        this.handlePublishCheckboxChange = this.handlePublishCheckboxChange.bind(this);
         this.handleDialogEntered = this.handleDialogEntered.bind(this);
         this.resetInput = this.resetInput.bind(this);
     }
@@ -214,20 +212,10 @@ class AddVanityUrlComponent extends React.Component {
         }
 
         try {
-            vanityMutationsContext.add(path, mappings, this.props).then(result => {
-                if (this.state.doPublish) {
-                    vanityMutationsContext.publish(result.data.jcr.modifiedNodes.map(entry => entry.uuid)).then(result => {
-                        this.handleClose(event);
-                        notificationContext.notify(t('label.notifications.newMappingCreatedAndPublished'));
-                    }, error => {
-                        notificationContext.notify(t('label.errors.Error'));
-                        console.log(error);
-                    });
-                } else {
-                    setParentLoading && setParentLoading(true);
-                    this.handleClose(event);
-                    notificationContext.notify(t('label.notifications.newMappingCreated'));
-                }
+            vanityMutationsContext.add(path, mappings, this.props).then(() => {
+                setParentLoading && setParentLoading(true);
+                this.handleClose(event);
+                notificationContext.notify(t('label.notifications.newMappingCreated'), ['closeAfter5s']);
             }, error => {
                 if (error.graphQLErrors && error.graphQLErrors[0].extensions) {
                     this.setState({
@@ -247,7 +235,7 @@ class AddVanityUrlComponent extends React.Component {
                         })
                     });
                 } else {
-                    notificationContext.notify(t('label.errors.Error'));
+                    notificationContext.notify(t('label.errors.Error'), ['closeButton', 'noAutomaticClose']);
                     console.log(error);
                 }
             });
@@ -263,7 +251,7 @@ class AddVanityUrlComponent extends React.Component {
                     })
                 });
             } else {
-                notificationContext.notify(t('label.errors.' + (e.name ? e.name : 'Error')));
+                notificationContext.notify(t('label.errors.' + (e.name ? e.name : 'Error')), ['closeButton', 'noAutomaticClose']);
             }
         }
     };
@@ -272,7 +260,6 @@ class AddVanityUrlComponent extends React.Component {
         this.setState({
             mappings: this._resetMap(),
             errors: [],
-            doPublish: false,
             showInputField: false
         });
     };
@@ -299,12 +286,6 @@ class AddVanityUrlComponent extends React.Component {
             previous.mappings[index][field] = value;
 
             return {mappings: previous.mappings, errors: previous.errors};
-        });
-    };
-
-    handlePublishCheckboxChange = checked => {
-        this.setState({
-            doPublish: checked
         });
     };
 
@@ -358,7 +339,45 @@ class AddVanityUrlComponent extends React.Component {
                                             <Editable isCreateMode
                                                       onEdit={() => {
                                                 }}
-                                                      onChange={value => this.handleFieldChange('url', index, value ? value.trim() : '')}/>
+                                                      onChange={(value, onSuccess, onError) => {
+                                                          if (!value) {
+                                                              this.setState({
+                                                                  errors: [
+                                                                      {
+                                                                          url: entry.url,
+                                                                          label: t('label.errors.InvalidMappingError'),
+                                                                          message: t('label.errors.InvalidMappingError_message', {urlMapping: value})
+                                                                      }
+                                                                  ]
+                                                              });
+                                                              onError();
+                                                          } else if (/[:*?"<>|%+]/.test(value)) {
+                                                              this.setState({
+                                                                  errors: [
+                                                                      {
+                                                                          url: entry.url,
+                                                                          label: t('label.errors.GqlConstraintViolationException.notAllowedChars'),
+                                                                          message: t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value})
+                                                                      }
+                                                                  ]
+                                                              });
+                                                              onError();
+                                                          } else if (value.endsWith('.do')) {
+                                                              this.setState({
+                                                                  errors: [
+                                                                      {
+                                                                          url: entry.url,
+                                                                          label: t('label.errors.GqlConstraintViolationException.notAllowedDotDo'),
+                                                                          message: t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value})
+                                                                      }
+                                                                  ]
+                                                              });
+                                                              onError();
+                                                          } else {
+                                                              this.handleFieldChange('url', index, value ? value.trim() : '');
+                                                              onSuccess();
+                                                          }
+                                                      }}/>
                                             {errorForRow && <FormHelperText className={classes.errorMessage}>
                                                 <error><label>{errorForRow.label}</label>
                                                     <message>{errorForRow.message}</message>
@@ -390,6 +409,7 @@ class AddVanityUrlComponent extends React.Component {
                                         <div className={classes.actionButton}>
                                             <Button color="accent"
                                                     data-vud-role="button-primary"
+                                                    isDisabled={Boolean(errorForRow)}
                                                     label={t('label.dialogs.add.save')}
                                                     onClick={this.handleSave}/>
                                         </div>
@@ -406,14 +426,14 @@ class AddVanityUrlComponent extends React.Component {
 
 AddVanityUrlComponent = compose(
     withVanityMutationContext(),
-    withNotifications(),
     withStyles(styles),
     withTranslation('site-settings-seo')
 )(AddVanityUrlComponent);
 
 const AddVanityUrl = props => {
     const {rows} = useVanityTableDataUrlContext();
-    return (<AddVanityUrlComponent rows={rows} {...props}/>);
+    const notificationContext = useNotifications();
+    return (<AddVanityUrlComponent rows={rows} notificationContext={notificationContext} {...props}/>);
 };
 
 export default AddVanityUrl;

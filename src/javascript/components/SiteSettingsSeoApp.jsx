@@ -1,13 +1,11 @@
 import React from 'react';
 import {List, Paper, withStyles} from '@material-ui/core';
-import {legacyTheme, Pagination, withNotifications} from '@jahia/react-material';
+import {legacyTheme, Pagination} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import LanguageSelector from './LanguageSelector';
 import {withTranslation} from 'react-i18next';
-import {Information, SwapHoriz, Publish, Dropdown, Header} from '@jahia/moonstone';
+import {SwapHoriz, Dropdown, Header} from '@jahia/moonstone';
 import * as _ from 'lodash';
-import {InfoDialog} from './VanityList/live/InfoDialog';
-import Publication from './Publication';
 import Move from './Move';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlTableData} from './VanityUrlTableData';
@@ -71,10 +69,6 @@ class SiteSettingsSeoApp extends React.Component {
                 labels: {labelRowsPerPage: props.t('label.pagination.rowsPerPage'), of: props.t('label.pagination.of')}
             },
             selection: [],
-            publication: {
-                open: false,
-                urlPairs: []
-            },
             move: {
                 open: false,
                 urlPairs: []
@@ -96,18 +90,7 @@ class SiteSettingsSeoApp extends React.Component {
         this.openMove = this.openMove.bind(this);
         this.closeMove = this.closeMove.bind(this);
 
-        this.openPublication = this.openPublication.bind(this);
-        this.closePublication = this.closePublication.bind(this);
-
         this.actions = {
-            publishAction: {
-                priority: 3,
-                buttonLabel: t('label.actions.publish'),
-                buttonIcon: <Publish/>,
-                className: 'publish',
-                key: 'publishAction',
-                call: this.openPublication
-            },
             moveAction: {
                 priority: 2,
                 buttonLabel: t('label.actions.move'),
@@ -175,25 +158,6 @@ class SiteSettingsSeoApp extends React.Component {
     closeMove() {
         this.setState({
             move: {
-                open: false,
-                urlPairs: []
-            },
-            selection: []
-        });
-    }
-
-    openPublication = urlPairs => {
-        this.setState({
-            publication: {
-                open: true,
-                urlPairs: urlPairs
-            }
-        });
-    };
-
-    closePublication() {
-        this.setState({
-            publication: {
                 open: false,
                 urlPairs: []
             },
@@ -294,8 +258,8 @@ class SiteSettingsSeoApp extends React.Component {
     }
 
     render() {
-        let {siteInfo, t, classes, lang, polling: globalPolling} = this.props;
-        let polling = !(this.state.publication.open || this.state.move.open);
+        let {siteInfo, t, classes, lang} = this.props;
+        let polling = !(this.state.move.open);
         let variables = buildTableQueryVariablesAllVanity({selectedLanguageCodes: this.state.loadParams.selectedLanguageCodes, path: siteInfo.path, lang: lang, ...this.state.loadParams});
 
         return (
@@ -333,9 +297,10 @@ class SiteSettingsSeoApp extends React.Component {
                                      onChangeSelection={this.onChangeSelection}/>
 
                             <div className={classes.layout}>
-                                <List>
+                                <List data-sel-role="pages-with-vanity">
                                     {rows.map(row => (
-                                        <div key={row.uuid} className={classes.root} data-vud-content-uuid={row.uuid}>
+                                        <div key={row.uuid} className={classes.root} data-vud-content-uuid={row.uuid}
+                                             data-sel-role="page-card">
                                             <Paper elevation={1}>
                                                 <VanityUrlEnabledContent key={row.uuid}
                                                                          openCardMode={false}
@@ -362,11 +327,6 @@ class SiteSettingsSeoApp extends React.Component {
                                     lang={lang}
                                     onClose={this.closeMove}
                                 />}
-
-                                {this.state.publication.open && <Publication
-                                    {...this.state.publication}
-                                    onClose={this.closePublication}
-                                />}
                             </div>
                         </>
                     )}
@@ -378,7 +338,6 @@ class SiteSettingsSeoApp extends React.Component {
 
 const assembleWithHoc = function (component) {
     return _.flowRight(
-        withNotifications(),
         withStyles(styles),
         withVanityMutationContext(),
         withTranslation('site-settings-seo')

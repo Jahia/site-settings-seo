@@ -14,7 +14,7 @@ export const LanguageMenu = ({languageCode, onLanguageSelected, isDisabled}) => 
             isDisabled={isDisabled}
             size="small"
             data-sel-role="vanity-language-menu"
-            data={languages.map(lang => ({label: `${lang.displayName} (${lang.language})`, value: lang.language, attributes: {'data-sel-value': lang.language}}))}
+            data={languages.map(lang => ({label: `${lang.uiLanguageDisplayName} (${lang.language})`, value: lang.language, attributes: {'data-sel-value': lang.language}}))}
             onChange={(e, item) => onLanguageSelected(item.value)}
         />
     );

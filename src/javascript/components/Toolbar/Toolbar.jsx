@@ -6,7 +6,6 @@ import * as PropTypes from 'prop-types';
 import {Paper} from '@material-ui/core';
 import clsx from 'clsx';
 import {DisplayActions} from '@jahia/ui-extender';
-
 let ButtonRenderer;
 import('@jahia/content-editor').then(v => {
     ButtonRenderer = v.ButtonRenderer;
@@ -33,21 +32,22 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
                     </Typography>
                 </div>
             </div>
-
-            <div className={classes.buttonsBar}>
-                <DisplayActions
-                    target="site-settings-seo/vanity-list-menu"
-                    urlPairs={selection}
-                    paths={paths}
-                    actions={actions}
-                    render={ButtonRenderer || LocalButtonRenderer}
-                    filter={action => {
-                        return action.key !== 'updateVanity';
-                    }}
-                    onChangeSelection={onChangeSelection}
-                    onDeleted={onChangeSelection}
-                />
-            </div>
+            {selection.length &&
+                <div className={classes.buttonsBar}>
+                    <DisplayActions
+                        target="site-settings-seo/vanity-list-menu"
+                        urlPairs={selection}
+                        paths={paths}
+                        actions={actions}
+                        render={ButtonRenderer || LocalButtonRenderer}
+                        filter={action => {
+                            return action.key !== 'updateVanity';
+                        }}
+                        onChangeSelection={onChangeSelection}
+                        onDeleted={onChangeSelection}
+                    />
+                </div>
+            }
         </Paper>
     );
 };

@@ -13,6 +13,7 @@ export default defineConfig({
     viewportWidth: 1366,
     viewportHeight: 768,
     redirectionLimit: 60,
+    watchForFileChanges: false,
     downloadsFolder: '/tmp',
     e2e: {
         // We've imported your old cypress plugins here.

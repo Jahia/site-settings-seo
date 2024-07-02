@@ -74,4 +74,3 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
 
 export const ButtonRenderer = getButtonRenderer();
 export const ButtonRendererNoLabel = getButtonRenderer({labelStyle: 'none'});
-

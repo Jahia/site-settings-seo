@@ -6,15 +6,15 @@ import classes from './DefaultRow.scss';
 import {Chip, Loader, Lock, Typography, Checkbox} from '@jahia/moonstone';
 import {LanguageMenu} from '../LanguageMenu';
 import {DisplayAction} from '@jahia/ui-extender';
+import {useTranslation} from 'react-i18next';
+import * as PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 let ButtonRendererNoLabel;
 import('@jahia/content-editor').then(v => {
     ButtonRendererNoLabel = v.ButtonRendererNoLabel;
 }).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
 import {ButtonRendererNoLabel as LocalButtonRendererNoLabel} from '../Renderer/getButtonRenderer';
-import {useTranslation} from 'react-i18next';
-import * as PropTypes from 'prop-types';
-import clsx from 'clsx';
 
 export const DefaultRow = ({
     hasWritePermission,
@@ -29,7 +29,13 @@ export const DefaultRow = ({
     const {t} = useTranslation('site-settings-seo');
 
     const onMappingChanged = (value, onSuccess, onError) => {
-        actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
+        if (/[:*?"<>|%+]/.test(value)) {
+            onError(t('label.errors.GqlConstraintViolationException.notAllowedChars'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
+        } else if (value.endsWith('.do')) {
+            onError(t('label.errors.GqlConstraintViolationException.notAllowedDotDo'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
+        } else {
+            actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
+        }
     };
 
     const url = urlPair.default;
@@ -72,7 +78,10 @@ export const DefaultRow = ({
                             onClick={event => {
                                 event.stopPropagation();
                             }}
-                            onChange={event => actions.updateVanity.call({urlPair: urlPair, active: event.target.checked}, event)}/>
+                            onChange={event => actions.updateVanity.call({
+                                urlPair: urlPair,
+                                active: event.target.checked
+                            }, event)}/>
                 </TableCell>
                 <TableCell className={clsx(classes.tableCellTextInput, {[classes.inactive]: !url.active})} width="100%">
                     {(isMarkedForDeletion || !hasWritePermission) &&
@@ -86,7 +95,9 @@ export const DefaultRow = ({
                 </TableCell>
                 <TableCell width="120px">
                     <div className={classes.chipContainer}>
-                        {url.default ? <Chip color="accent" label="Canonical" className={clsx({[classes.chipWithMargin]: isMarkedForDeletion})}/> : null}
+                        {url.default ? <Chip color="accent"
+                                             label="Canonical"
+                                             className={clsx({[classes.chipWithMargin]: isMarkedForDeletion})}/> : null}
                         {isMarkedForDeletion ? <Chip color="danger" icon={<Lock/>}/> : null}
                     </div>
                 </TableCell>

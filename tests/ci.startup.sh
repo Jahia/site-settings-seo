@@ -24,22 +24,16 @@ if [[ -z ${JAHIA_LICENSE} ]]; then
     fi
 fi
 
+docker-compose up -d --renew-anon-volumes mariadb jahia
 echo "$(date +'%d %B %Y - %k:%M') [JAHIA_CLUSTER_ENABLED] == Value: ${JAHIA_CLUSTER_ENABLED} =="
 if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
     echo "$(date +'%d %B %Y - %k:%M') [JAHIA_CLUSTER_ENABLED] == Starting a cluster of one processing and two browsing =="
-    if [[ $1 == "notests" ]]; then
-        docker-compose up -d --renew-anon-volumes mariadb jahia jahia-browsing-a jahia-browsing-b
-    else
-        docker-compose up --abort-on-container-exit --renew-anon-volumes cypress mariadb jahia jahia-browsing-a jahia-browsing-b
-    fi
-else
-    echo "$(date +'%d %B %Y - %k:%M') [JAHIA_CLUSTER_ENABLED] == Starting a single processing node (no cluster) =="
-    if [[ $1 == "notests" ]]; then
-        docker-compose up -d --renew-anon-volumes mariadb jahia
-    else
-        docker-compose up --renew-anon-volumes -d mariadb jahia
-        docker ps -a
-        docker stats --no-stream
-        docker-compose up --abort-on-container-exit cypress
-    fi
+    echo "$(date +'%d %B %Y - %k:%M') == Sleep 60 seconds to let Jahia to be started correctly =="
+    sleep 60
+    docker-compose up -d --renew-anon-volumes jahia-browsing-a jahia-browsing-b
+fi
+
+if [[ $1 != "notests" ]]; then
+    echo "$(date +'%d %B %Y - %k:%M') [TESTS] == Starting cypress tests =="
+    docker-compose up --abort-on-container-exit cypress
 fi

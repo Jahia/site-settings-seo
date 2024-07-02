@@ -34,19 +34,6 @@ export const addSimplePage = (
     return addNode(variables)
 }
 
-export const checkVanityUrlDoNotExistByAPI = (
-    vanityUrlPath: string,
-    language: string,
-    workspace: 'EDIT' | 'LIVE' = 'EDIT',
-) => {
-    // eslint-disable-next-line
-    cy.wait(500)
-
-    getNodeByPath(vanityUrlPath, [], language, [], workspace).then((result) => {
-        expect(result?.data).eq(undefined)
-    })
-}
-
 export const checkVanityUrlByAPI = (
     vanityUrlPath: string,
     vanityUrlName: string,
@@ -69,4 +56,17 @@ export const checkVanityUrlByAPI = (
             interval: 500,
         },
     )
+}
+
+export const checkVanityUrlDoNotExistByAPI = (
+    vanityUrlPath: string,
+    language: string,
+    workspace: 'EDIT' | 'LIVE' = 'EDIT',
+) => {
+    // eslint-disable-next-line
+    cy.wait(500)
+
+    getNodeByPath(vanityUrlPath, [], language, [], workspace).then((result) => {
+        expect(result?.data).eq(undefined)
+    })
 }
