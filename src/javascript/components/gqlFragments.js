@@ -11,6 +11,10 @@ const DefaultVanityUrlFields = gql`fragment DefaultVanityUrlFields on VanityUrl 
             name
         }
         targetNode {
+            aggregatedPublicationInfo(language: $lang) {
+                publicationStatus
+                existsInLive
+            }
             ...NodeCacheRequiredFields
         }
         liveNode: nodeInWorkspace(workspace: LIVE) {
