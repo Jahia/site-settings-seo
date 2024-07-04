@@ -1,12 +1,12 @@
 # This workflow is triggered every time a change is pushed to any branches
 # Github actions command reference: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
-name: On merge to master
+name: On merge to 4_x
 
 # The workflow could also be triggered on PRs
 on:
   push:
     branches:
-      - 'master'
+      - '4_x'
     tags-ignore:
       - '**'
 
@@ -27,7 +27,7 @@ jobs:
     needs: update-signature
     runs-on: ubuntu-latest
     container:
-      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_11.0.20-node
+      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -39,26 +39,13 @@ jobs:
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
           module_id: site-settings-seo
 
-  sbom:
-    name: SBOM processing
-    needs: build
-    runs-on: ubuntu-latest
-    container:
-      image: cyclonedx/cyclonedx-cli:0.24.2
-    steps:
-      - uses: jahia/jahia-modules-action/sbom-processing@v2
-        with:
-          dependencytrack_hostname: ${{ vars.DEPENDENCYTRACK_HOSTNAME }}
-          dependencytrack_apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          sbom_artifacts: 'build-artifacts'
-
   publish:
     name: Publish module
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/4_x'
     runs-on: ubuntu-latest
     container:
-      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_11.0.20-node
+      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -86,23 +73,20 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: site-settings-seo
-          testrail_project: SEO Module
+          timeout_minutes: 40
+          testrail_project: Site Settings SEO Module
           tests_manifest: provisioning-manifest-build.yml
-          #TODO TECH-1408 reactive the test on released version
-          #jahia_image: jahia/jahia-ee-dev:8
-          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
+          jahia_image: jahia/jahia-ee-dev:8.1-SNAPSHOT
           jahia_cluster_enabled: false
           should_use_build_artifacts: true
           should_skip_testrail: false
-          github_artifact_name: sseo-artifacts-${{ github.run_number }}
-          jahia_artifact_name: sseo-artifacts-${{ github.run_number }}
-          bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
+          github_artifact_name: ssseo-artifacts-${{ github.run_number }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
           docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
           docker_password: ${{ secrets.DOCKERHUB_PASSWORD }}
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-          tests_report_name: Test report (Standalone)
+          tests_report_name: Test report (Cluster)
           testrail_username: ${{ secrets.TESTRAIL_USERNAME }}
           testrail_password: ${{ secrets.TESTRAIL_PASSWORD }}
           incident_pagerduty_api_key: ${{ secrets.INCIDENT_PAGERDUTY_API_KEY }}
@@ -116,7 +100,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Tests Report
+          name: Tests Report (Cluster)
           path: tests/artifacts/results/xml_reports/**/*.xml
           reporter: java-junit
           fail-on-error: 'false'

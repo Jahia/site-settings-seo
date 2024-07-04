@@ -1,0 +1,12 @@
+{
+  "name": "jmix:description",
+  "priority": 1.0,
+  "fields": [{
+    "name": "jcr:description",
+    "target": {
+      "sectionName": "seo",
+      "fieldSetName": "jmix:description",
+      "rank": 0
+    }
+  }]
+}

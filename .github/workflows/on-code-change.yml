@@ -27,7 +27,7 @@ jobs:
       - uses: Jahia/jahia-modules-action/static-analysis@v2
         with:
           skip_lint_modules: true
-          node_version: 14
+          node_version: 18
           auditci_level: critical
 
   build:
@@ -35,7 +35,7 @@ jobs:
     needs: update-signature
     runs-on: ubuntu-latest
     container:
-      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_11.0.20-node
+      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -55,7 +55,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: jahia/jahia-modules-action/sonar-analysis@v2
         with:
-          primary_release_branch: master
+          primary_release_branch: 4_x
           github_pr_id: ${{github.event.number}}
           sonar_url: ${{ secrets.SONAR_URL }}
           sonar_token: ${{ secrets.SONAR_TOKEN }}
@@ -77,14 +77,15 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: site-settings-seo
+          timeout_minutes: 40
           testrail_project: SEO Module
           tests_manifest: provisioning-manifest-build.yml
-          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
+          jahia_image: jahia/jahia-ee-dev:8.1-SNAPSHOT
           jahia_cluster_enabled: true
           should_use_build_artifacts: true
           should_skip_testrail: true
-          github_artifact_name: sseo-artifacts-${{ github.run_number }}
-          jahia_artifact_name: sseo-artifacts-${{ github.run_number }}
+          github_artifact_name: sseo-artifacts-4x-${{ github.run_number }}
+          jahia_artifact_name: sseo-artifacts-4x-${{ github.run_number }}
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
           docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -105,7 +106,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Tests Report
+          name: Tests Report (Cluster)
           path: tests/artifacts/results/xml_reports/**/*.xml
           reporter: java-junit
           fail-on-error: 'false'

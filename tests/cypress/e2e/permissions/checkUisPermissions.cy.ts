@@ -10,9 +10,9 @@ import {
     addNode,
     deleteNode,
 } from '@jahia/cypress'
-import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
+import { PageComposer } from '@jahia/content-editor-cypress/dist/page-object/pageComposer'
 
 describe('Test UIs permissions', () => {
     const siteKey = 'siteForPermissionsCheck'
@@ -80,9 +80,9 @@ describe('Test UIs permissions', () => {
 
     it('Verify that user have permission to see vanity url on content editor', function () {
         cy.login('editorUser', 'password')
-        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
-        jcontent.switchToListMode()
-        jcontent.editComponentByText(`${pageName}-b`)
+        const composer = new PageComposer()
+        PageComposer.visit(siteKey, 'en', 'home.html')
+        composer.editPage(`${pageName}-b`)
         const contenteditor = new ContentEditorSEO()
         const vanityUrlUi = contenteditor.openVanityUrlUi()
         vanityUrlUi.getVanityUrlRow('/vanityOnPageB').should('exist')
@@ -105,12 +105,11 @@ describe('Test UIs permissions', () => {
 
     it('Verify that user have no access to vanity url modal in content editor in read only', function () {
         cy.login('secondEditorUser', 'password')
-        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
-        jcontent.switchToListMode()
-        jcontent.editComponentByText(`${pageName}-a`)
+        const composer = new PageComposer()
+        PageComposer.visit(siteKey, 'en', 'home.html')
+        composer.editPage(`${pageName}-a`)
         const contenteditor = new ContentEditorSEO()
         contenteditor.checkVanityUrlAccessibility('false')
-        cy.get('div[data-sel-role="read-only-badge"]').should('exist')
         cy.logout()
     })
 })

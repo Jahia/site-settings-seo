@@ -7,7 +7,12 @@ import classes from './EditVanityUrlsDialog.scss';
 import {DisplayAction} from '@jahia/ui-extender';
 import {useVanityUrlContext} from '../../Context/VanityUrl.context';
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
-import {ButtonRenderer} from '@jahia/jcontent';
+let ButtonRenderer;
+import('@jahia/content-editor').then(v => {
+    ButtonRenderer = v.ButtonRenderer;
+}).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
+
+import {ButtonRenderer as LocalButtonRenderer} from '../../Renderer/getButtonRenderer';
 import clsx from 'clsx';
 
 export const EditVanityUrlsDialog = ({
@@ -35,7 +40,7 @@ export const EditVanityUrlsDialog = ({
                         {nodeData.displayableNode.path}
                     </Typography>
                 </DialogTitle>
-                {nodeData.hasWritePermission ? <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer} nodeData={nodeData}/> :
+                {nodeData.hasWritePermission ? <DisplayAction actionKey="publishAllVanity" render={ButtonRenderer || LocalButtonRenderer} nodeData={nodeData}/> :
                 <Chip data-sel-role="read-only-badge"
                       label={t('label.readOnly')}
                       icon={<Visibility/>}

@@ -8,9 +8,9 @@ import {
     addNode,
     deleteNode,
 } from '@jahia/cypress'
-import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
 import { checkVanityUrlByAPI } from '../../utils/Utils'
+import { PageComposer } from '@jahia/content-editor-cypress/dist/page-object/pageComposer'
 
 describe('Test UIs permissions', () => {
     const siteKey = 'siteForPermissionsCheck'
@@ -135,9 +135,9 @@ describe('Test UIs permissions', () => {
 
     it('Verify that user having permission can see the vanity url modal button', function () {
         cy.login('user1', 'password')
-        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
-        jcontent.switchToListMode()
-        jcontent.editComponentByText(pageNameA)
+        const composer = new PageComposer()
+        PageComposer.visit(siteKey, 'en', 'home.html')
+        composer.editPage(pageNameA)
         const contenteditor = new ContentEditorSEO()
         contenteditor.checkVanityUrlVisibility(true)
 
@@ -146,9 +146,9 @@ describe('Test UIs permissions', () => {
 
     it('Verify that user having permission can see and edit some data in the vanity url modal', function () {
         cy.login('user1', 'password')
-        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
-        jcontent.switchToListMode()
-        jcontent.editComponentByText(pageNameA)
+        const composer = new PageComposer()
+        PageComposer.visit(siteKey, 'en', 'home.html')
+        composer.editPage(pageNameA)
         const contenteditor = new ContentEditorSEO()
         const vanityUrlUi = contenteditor.openVanityUrlUi()
         vanityUrlUi.addVanityUrl('vanityurl-test-modalAccess')
@@ -167,9 +167,9 @@ describe('Test UIs permissions', () => {
 
     it('Verify that user without permission cannot see the vanity url modal', function () {
         cy.login('user1', 'password')
-        const jcontent = JContent.visit(siteKey, 'en', 'pages/home')
-        jcontent.switchToListMode()
-        jcontent.editComponentByText(pageNameB)
+        const composer = new PageComposer()
+        PageComposer.visit(siteKey, 'en', 'home.html')
+        composer.editPage(pageNameB)
         const contenteditor = new ContentEditorSEO()
         contenteditor.checkVanityUrlVisibility(false)
 

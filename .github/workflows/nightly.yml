@@ -1,15 +1,18 @@
-name: Nightly Test run (Jahia Snapshot)
+name: Nightly Test run
 
 on:
   workflow_dispatch:
   schedule:
-    - cron:  '0 2 * * *'
+    - cron:  '0 3 * * *'
 
 jobs:
-  integration-tests:
-    name: Integration Tests
+  integration-tests-standalone:
+    name: Integration Tests (Standalone)
     runs-on: self-hosted
-
+    strategy:
+      fail-fast: false
+      matrix:
+        jahia_image: ["jahia/jahia-ee:8.1", "jahia/jahia-ee-dev:8.1-SNAPSHOT"]
     timeout-minutes: 45
     steps:
       - uses: jahia/jahia-modules-action/helper@v2
@@ -23,17 +26,15 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: site-settings-seo
-          incident_service: site-settings-seo-JahiaSN
-          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
-          testrail_project: SEO Module
+          jahia_image: ${{ matrix.jahia_image }}
+          testrail_project: Site Settings SEO Module
           tests_manifest: provisioning-manifest-snapshot.yml
           should_use_build_artifacts: false
           should_skip_artifacts: true
           should_skip_notifications: true
           should_skip_testrail: false
           should_skip_zencrepes: true
-          github_artifact_name: sseo-artifacts-${{ github.run_number }}
-          jahia_artifact_name: sseo-artifacts-${{ github.run_number }}
+          github_artifact_name: sseo-artifacts-${{ matrix.jahia_image }}-${{ github.run_number }}
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
           docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -54,7 +55,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Tests Report
+          name: Tests Report (Standalone)
           path: tests/artifacts/results/xml_reports/**/*.xml
           reporter: java-junit
           fail-on-error: 'false'

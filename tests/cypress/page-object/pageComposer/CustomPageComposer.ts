@@ -1,4 +1,4 @@
-import { PageComposer } from '@jahia/jcontent-cypress/dist/page-object/pageComposer'
+import { PageComposer } from '@jahia/content-editor-cypress/dist/page-object/pageComposer'
 import { PageComposerContextualMenu } from './PageComposerContextualMenu'
 import 'cypress-wait-until'
 import { recurse } from 'cypress-recurse'
@@ -25,7 +25,7 @@ export class CustomPageComposer extends PageComposer {
     }
 
     openContextualMenuOnLeftTree(entry: string) {
-        cy.log('Open contextual menu on ' + entry + ' entry')
+        cy.log('Open contextual manu on ' + entry + ' entry')
 
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.waitUntil(

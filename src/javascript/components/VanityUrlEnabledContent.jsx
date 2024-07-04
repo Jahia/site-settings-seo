@@ -9,7 +9,11 @@ import {flowRight as compose} from 'lodash';
 import AddVanityUrl from './AddVanityUrl';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {DisplayAction} from '@jahia/ui-extender';
-import {ButtonRenderer} from '@jahia/jcontent';
+let ButtonRenderer;
+import('@jahia/content-editor').then(v => {
+    ButtonRenderer = v.ButtonRenderer;
+}).catch(e => console.warn('Error loading ButtonRenderer from content-editor', e));
+import {ButtonRenderer as LocalButtonRenderer} from './Renderer/getButtonRenderer';
 
 const styles = theme => ({
     root: {
@@ -134,7 +138,7 @@ class VanityUrlEnabledContent extends React.Component {
                         />}
                         {this.state.expanded && content.hasWritePermission &&
                             <DisplayAction actionKey="publishAllVanity"
-                                           render={ButtonRenderer}
+                                           render={ButtonRenderer || LocalButtonRenderer}
                                            nodeData={content}/>}
 
                         {filterMatchInfo}
