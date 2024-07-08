@@ -45,7 +45,7 @@ class LanguageSelector extends React.Component {
             return this.props.t('label.languageSelector.allLanguages');
         }
 
-        let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => this.props.languages.find(language => language.language === selectedLanguageCode)?.uiLanguageDisplayName);
+        let selectedLanguageNames = selectedLanguageCodes.map(selectedLanguageCode => this.props.languages.find(language => language.language === selectedLanguageCode)?.displayName);
         selectedLanguageNames = getNotNullLanguages(selectedLanguageNames).sort();
         if (selectedLanguageNames.length > MAX_SELECTED_LANGUAGE_NAMES_DISPLAYED) {
             // (Too) many languages selected: will display a part of them, plus "N more languages".
@@ -115,7 +115,7 @@ class LanguageSelector extends React.Component {
                             classes={{selected: scssStyles.selected}}
                         >
                             <Checkbox checked={checked}/>
-                            <ListItemText primary={language.uiLanguageDisplayName + ' (' + language.language + ')'} data-vud-role="language-selector-item-label"/>
+                            <ListItemText primary={language.displayName + ' (' + language.language + ')'} data-vud-role="language-selector-item-label"/>
                         </MenuItem>
                     );
                 })}
