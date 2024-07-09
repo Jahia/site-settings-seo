@@ -6,7 +6,7 @@ import * as PropTypes from 'prop-types';
 import {useVanityUrlContext} from '../Context/VanityUrl.context';
 import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
-import {buildTableQueryVariablesOneNode, contentIsVisibleInLive} from '../Utils/Utils';
+import {atLeastOneLockedForValidation, buildTableQueryVariablesOneNode, contentIsVisibleInLive} from '../Utils/Utils';
 import {Chip, Information} from '@jahia/moonstone';
 import classes from './PublishAllAction.scss';
 
@@ -66,6 +66,15 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
         .filter(vanityUrl => vanityUrl.publicationInfo.publicationStatus !== 'PUBLISHED')
         .map(vanityUrl => vanityUrl.uuid);
 
+    const openPublicationWorkflow = () => {
+        window.authoringApi.openPublicationWorkflow(
+            unpublishedVanityUrlIds,
+            false, // Not publishing all subNodes (AKA sub pages)
+            false, // Not publishing all language
+            false // Not unpublish action
+        );
+    };
+
     const publish = () => {
         client.mutate({
             mutation: PublishMutation,
@@ -75,14 +84,22 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
         });
     };
 
+    let requestPublicationLabel = null;
+    let action = publish;
+    if (!data.jcr.nodeByPath.hasPublishPermission && data.jcr.nodeByPath.hasPublicationStartPermission) {
+        requestPublicationLabel = 'site-settings-seo:label.actions.requestPublication';
+        action = openPublicationWorkflow;
+    }
+
+    const isLockedForValidation = atLeastOneLockedForValidation(data.jcr.nodeByPath.vanityUrls);
     return (
         <>
             <div className={classes.container}>
                 {unpublishedVanityUrlIds && <Render
                     {...otherProps}
-                    disabled={unpublishedVanityUrlIds.length === 0 || !isVisibleInLive}
-                    buttonLabel={label}
-                    onClick={publish}/>}
+                    disabled={unpublishedVanityUrlIds.length === 0 || !isVisibleInLive || isLockedForValidation}
+                    buttonLabel={requestPublicationLabel || label}
+                    onClick={action}/>}
                 {!isVisibleInLive &&
                     <Chip icon={<Information size="default"/>}
                           className={classes.chipInfo}

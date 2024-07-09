@@ -1,7 +1,11 @@
 import {keyBy, merge, values, sortBy, map} from 'lodash';
 
-export const atLeastOneMarkedForDeletion = urls => {
-    return urls.some(url => url.default.publicationInfo.publicationStatus === 'MARKED_FOR_DELETION' || url.default.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion'));
+export const atLeastOneLockedAndCanNotBeEdited = urls => {
+    return urls.some(url => url.default.lockedAndCannotBeEdited);
+};
+
+export const atLeastOneLockedForValidation = urls => {
+    return urls.some(url => url.default.lockedAndCannotBeEdited && url.default.lockInfo.details.some(detail => detail.type === 'validation'));
 };
 
 export const atLeastOneCanonicalLockedForLang = (urls, lang) => {
