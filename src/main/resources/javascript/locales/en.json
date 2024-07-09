@@ -8,6 +8,7 @@
       "move": "Move",
       "publish": "Publish",
       "publishVanityUrl": "Publish vanity URLs",
+      "requestPublication": "Request publication",
       "canonical": {
         "set": "Set as canonical (default URL)",
         "unset": "Unset as canonical (default URL)"
@@ -106,8 +107,8 @@
       "count_plural": "{{count}} vanity URL selected"
     },
     "pagination": {
-        "rowsPerPage": "Rows per page",
-        "of": "of"
+      "rowsPerPage": "Rows per page",
+      "of": "of"
     },
     "title": "Vanity URLs",
     "manage": "Manage Vanity URLs",
@@ -118,6 +119,10 @@
       "both": "Staging and live"
     },
     "noPublishedVanityUrl": "No published vanity URL",
-    "readOnly": "Read only"
+    "readOnly": "Read only",
+    "status": {
+      "validation": "Locked by a publication workflow",
+      "deletion": "Marked for deletion"
+    }
   }
 }

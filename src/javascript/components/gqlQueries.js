@@ -31,11 +31,13 @@ const ContentEditorTableQuery = gql`
         jcr {
             nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
-               mixinTypes{
+                mixinTypes{
                     name
                 }
                 displayName(language: $lang)
                 hasWritePermission: hasPermission(permissionName: "jcr:write")
+                hasPublishPermission: hasPermission(permissionName: "publish")
+                hasPublicationStartPermission:  hasPermission(permissionName: "publication-start")
                 ...DefaultVanityUrls
                 ...LiveVanityUrls
             }
@@ -95,4 +97,25 @@ const GetNodeQuery = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-export {DashboardTableQuery, ContentEditorTableQuery, GetNodeQuery, VanityUrlsByPath, GetPublicationStatus, VanityUrlsByPathVariables};
+const CheckPublishPermissions = gql`
+    query checkPublishPermissions($path:String!) {
+        jcr {
+            nodeByPath(path: $path) {
+                ...NodeCacheRequiredFields
+                hasPublishPermission: hasPermission(permissionName: "publish")
+                hasPublicationStartPermission:  hasPermission(permissionName: "publication-start")
+            }
+        }
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+`;
+
+export {
+    DashboardTableQuery,
+    ContentEditorTableQuery,
+    GetNodeQuery,
+    VanityUrlsByPath,
+    GetPublicationStatus,
+    VanityUrlsByPathVariables,
+    CheckPublishPermissions
+};
