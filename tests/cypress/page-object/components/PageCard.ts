@@ -12,6 +12,10 @@ export class PageCard extends BaseComponent {
         return this.get().find('[data-sel-role="publish-all-vanitys"]')
     }
 
+    getRequestAllPublicationButton() {
+        return this.get().find('[data-sel-role="request-all-publication"]')
+    }
+
     getStagingVanityUrls() {
         return getComponent(StagingVanityUrlList, this)
     }

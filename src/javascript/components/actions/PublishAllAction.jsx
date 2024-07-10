@@ -86,9 +86,11 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
 
     let requestPublicationLabel = null;
     let action = publish;
+    let dataSelRole = 'publish-all-vanitys';
     if (!data.jcr.nodeByPath.hasPublishPermission && data.jcr.nodeByPath.hasPublicationStartPermission) {
         requestPublicationLabel = 'site-settings-seo:label.actions.requestPublication';
         action = openPublicationWorkflow;
+        dataSelRole = 'request-all-publication';
     }
 
     const isLockedForValidation = atLeastOneLockedForValidation(data.jcr.nodeByPath.vanityUrls);
@@ -99,6 +101,7 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
                     {...otherProps}
                     disabled={unpublishedVanityUrlIds.length === 0 || !isVisibleInLive || isLockedForValidation}
                     buttonLabel={requestPublicationLabel || label}
+                    dataSelRole={dataSelRole}
                     onClick={action}/>}
                 {!isVisibleInLive &&
                     <Chip icon={<Information size="default"/>}

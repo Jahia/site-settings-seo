@@ -37,7 +37,6 @@ export const registerActions = () => {
 
     registry.add('action', 'publishVanity', {
         targets: ['site-settings-seo/vanity-list-menu:0.3'],
-        dataSelRole: 'publishVanity',
         buttonIcon: <Publish/>,
         buttonLabel: 'site-settings-seo:label.actions.publish',
         component: PublishVanityAction
@@ -60,7 +59,6 @@ export const registerActions = () => {
         targets: ['vanity-url/header'],
         buttonIcon: <CloudUpload/>,
         buttonProps: {color: 'accent'},
-        label: 'site-settings-seo:label.actions.publishVanityUrl',
-        dataSelRole: 'publish-all-vanitys'
+        label: 'site-settings-seo:label.actions.publishVanityUrl'
     });
 };
