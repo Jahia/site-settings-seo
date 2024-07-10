@@ -6,4 +6,14 @@ export class VanityUrlRow extends BaseComponent {
         this.get().find('button[data-sel-role="vanityListMenu"]').click()
         return getComponent(Menu)
     }
+
+    edit(value: string) {
+        const selector = 'input[data-sel-role="vanity-input-text"]'
+        this.get().find(selector).clear()
+        this.get().find(selector).type(`${value}{enter}`)
+    }
+
+    clickToEdit() {
+        this.get().find('p[data-vud-role="url"]').click()
+    }
 }
