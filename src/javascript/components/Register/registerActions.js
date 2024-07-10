@@ -61,4 +61,8 @@ export const registerActions = () => {
         buttonProps: {color: 'accent'},
         label: 'site-settings-seo:label.actions.publishVanityUrl'
     });
+
+    registry.addOrReplace('action', 'unpublish', registry.get('action', 'unpublish'), {
+        targets: ['site-settings-seo/vanity-list-menu:0.6']
+    });
 };

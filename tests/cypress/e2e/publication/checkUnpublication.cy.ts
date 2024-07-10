@@ -8,7 +8,7 @@ import {
     unpublishNode,
 } from '@jahia/cypress'
 
-describe('Checks the publication of the vanity urls', () => {
+describe('Checks the unpublication of the vanity urls', () => {
     const siteKey = 'testPublishVanityUrls'
     const sitePath = '/sites/' + siteKey
     const homePath = sitePath + '/home'

@@ -37,13 +37,12 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
                         actions={actions}
                         render={ButtonRenderer}
                         filter={action => {
-                            return action.key !== 'updateVanity';
+                            return !['updateVanity', 'unpublish'].includes(action.key);
                         }}
                         onChangeSelection={onChangeSelection}
                         onDeleted={onChangeSelection}
                     />
-                </div>
-            }
+                </div>}
         </Paper>
     );
 };
