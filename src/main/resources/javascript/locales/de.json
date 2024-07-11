@@ -76,10 +76,8 @@
     "languageSelector": {
       "noLanguages": "Sprache auswählen",
       "allLanguages": "Alle Sprachen",
-      "languages": "{{names}} & {{lastName}}",
       "moreLanguages": "{{count}} weitere Sprache",
-      "moreLanguages_plural": "{{count}} weitere Sprachen",
-      "partialLanguages": "{{names}}, {{nextName}}"
+      "moreLanguages_plural": "{{count}} weitere Sprachen"
     },
     "localFilter": {
       "switchOff": "Alle anzeigen",

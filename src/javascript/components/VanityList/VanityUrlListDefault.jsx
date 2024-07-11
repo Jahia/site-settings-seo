@@ -1,5 +1,4 @@
 import React from 'react';
-import * as _ from 'lodash';
 import {Checkbox, Paper, Table, TableBody, TableRow} from '@material-ui/core';
 import {TableHead, TableHeadCell, Typography} from '@jahia/moonstone';
 import classes from './VanityUrlListDefault.scss';
@@ -25,8 +24,9 @@ export const VanityUrlListDefault = ({
     let allCheckboxChecked = false;
     let allCheckboxIndeterminate = false;
     if (urlPairs.length > 0) {
-        allCheckboxChecked = _.differenceBy(urlPairs, selection, 'uuid').length === 0;
-        allCheckboxIndeterminate = !allCheckboxChecked && _.intersectionBy(urlPairs, selection, 'uuid').length > 0;
+        const uuids = selection.map(selected => selected.uuid);
+        allCheckboxChecked = urlPairs.filter(urlPair => !uuids.includes(urlPair.uuid)).length === 0;
+        allCheckboxIndeterminate = !allCheckboxChecked && urlPairs.some(urlPair => uuids.includes(urlPair.uuid));
     }
 
     let checkboxesDisplayed = (allCheckboxChecked || allCheckboxIndeterminate) && hasWritePermission;

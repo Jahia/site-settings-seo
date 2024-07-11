@@ -73,10 +73,8 @@
     "languageSelector": {
       "noLanguages": "Sélectionner une langue",
       "allLanguages": "Toutes les langues",
-      "languages": "{{names}} & {{lastName}}",
       "moreLanguages": "{{count}} langue supplémentaire",
-      "moreLanguages_plural": "{{count}} langues supplémentaires",
-      "partialLanguages": "{{names}}, {{nextName}}"
+      "moreLanguages_plural": "{{count}} langues supplémentaires"
     },
     "localFilter": {
       "switchOff": "Afficher tout",
