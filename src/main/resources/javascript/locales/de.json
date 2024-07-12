@@ -90,8 +90,7 @@
     },
     "notifications": {
       "moveConfirmed": "Verschieben bestätigt.",
-      "newMappingCreated": "Neue(s) Mapping(s) hinzugefügt.",
-      "publicationStarted": "Die Veröffentlichung wurde als Hintergrundjob gestartet."
+      "newMappingCreated": "Neue(s) Mapping(s) hinzugefügt."
     },
     "messages": {
       "noVanityUrl": "Keine vanity URL",

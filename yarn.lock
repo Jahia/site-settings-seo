@@ -1283,17 +1283,6 @@
     react "^16.12.0"
     rfdc "^1.3.0"
 
-"@jahia/design-system-kit@^1.1.12":
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/@jahia/design-system-kit/-/design-system-kit-1.1.12.tgz#59d3427f75b9d52c0ec4fdf51be2bcc0315b2941"
-  integrity sha512-tA/0D1i7gcDQZipwgfy14XmqWUwg8spnegE3C967fC/OHG+cL7JmZb8XmJJKjWht83DvyIs7QDUcl4maAPqrBA==
-  dependencies:
-    "@material-ui/core" "^3.9.3"
-    classnames "^2.2.6"
-    lodash "^4.17.13"
-    prop-types "^15.6.2"
-    react-number-format "^4.2.0"
-
 "@jahia/eslint-config@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@jahia/eslint-config/-/eslint-config-1.1.0.tgz#d3ecf515b8cdc4e5e782ae5423e2f1ad6345300e"
@@ -3097,7 +3086,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5, classnames@^2.2.6:
+classnames@^2.2.5:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
@@ -7769,13 +7758,6 @@ react-loadable@^5.5.0:
   integrity sha512-C8Aui0ZpMd4KokxRdVAm2bQtI03k2RMRNzOB+IipV3yxFTSVICv7WoUr5L9ALB5BmKO1iHgZtWM8EvYG83otdg==
   dependencies:
     prop-types "^15.5.0"
-
-react-number-format@^4.2.0:
-  version "4.9.4"
-  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.9.4.tgz#013ae526000e676e491763ce14da66fb330a9bd8"
-  integrity sha512-Gq20Z3ugqPLFgeaidnx5on9cNpbQZntPN3QgNAL/WJrNNlQnNznY0LCx7g8xtssmRBw0/hw+SCqw6zAcajooiA==
-  dependencies:
-    prop-types "^15.7.2"
 
 react-redux@^7.2.0:
   version "7.2.9"

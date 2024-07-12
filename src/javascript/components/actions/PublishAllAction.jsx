@@ -4,14 +4,12 @@ import {ContentEditorTableQuery, GetPublicationStatus} from '~/components/gqlQue
 import {PublishMutation} from '../gqlMutations';
 import * as PropTypes from 'prop-types';
 import {useVanityUrlContext} from '../Context/VanityUrl.context';
-import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {atLeastOneLockedForValidation, buildTableQueryVariablesOneNode, contentIsVisibleInLive} from '../Utils/Utils';
 import {Chip, Information} from '@jahia/moonstone';
 import classes from './PublishAllAction.scss';
 
 export const PublishAllAction = ({render: Render, loading: Loading, label, nodeData, ...otherProps}) => {
-    const notificationContext = useNotifications();
     const vanityUrlContext = useVanityUrlContext();
     const client = useApolloClient();
     const {t} = useTranslation('site-settings-seo');
@@ -79,8 +77,6 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
         client.mutate({
             mutation: PublishMutation,
             variables: {pathsOrIds: unpublishedVanityUrlIds, publishSubNodes: false}
-        }).then(() => {
-            notificationContext.notify(t('label.notifications.publicationStarted'), ['closeAfter5s']);
         });
     };
 

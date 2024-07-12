@@ -87,8 +87,7 @@
     },
     "notifications": {
       "moveConfirmed": "Déplacé",
-      "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)",
-      "publicationStarted": "Job de publication lancé en arrière plan"
+      "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)"
     },
     "messages": {
       "noVanityUrl": "Pas d'URL personnalisée",

@@ -36,7 +36,6 @@
     "@apollo/react-components": "^4.0.0",
     "@apollo/react-hoc": "^4.0.0",
     "@jahia/data-helper": "^1.1.10",
-    "@jahia/design-system-kit": "^1.1.12",
     "@jahia/moonstone": "^2.5.1",
     "@jahia/react-material": "^3.0.6",
     "@jahia/ui-extender": "^1.0.0",

@@ -90,8 +90,7 @@
     },
     "notifications": {
       "moveConfirmed": "Moved",
-      "newMappingCreated": "New vanity URL(s) created",
-      "publicationStarted": "Publication job started in background"
+      "newMappingCreated": "New vanity URL(s) created"
     },
     "messages": {
       "noVanityUrl": "No vanity URL",
