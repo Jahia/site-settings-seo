@@ -33,6 +33,20 @@ export const DefaultRow = ({
         }
     };
 
+    const getLockedDetails = node => {
+        const LOCK_TYPE_VALIDATION = 'validation';
+        const LOCK_TYPE_DELETION = 'deletion';
+
+        if (node.lockInfo) {
+            let lockInfoDetails = node.lockInfo.details.find(detail => detail.type === LOCK_TYPE_VALIDATION || detail.type === LOCK_TYPE_DELETION);
+            if (lockInfoDetails) {
+                return t(`site-settings-seo:label.status.${lockInfoDetails.type}`);
+            }
+        }
+
+        return null;
+    };
+
     const url = urlPair.default;
     const selected = Boolean(_.find(selection, p => p.uuid === urlPair.uuid));
 
@@ -46,6 +60,8 @@ export const DefaultRow = ({
         ];
 
         const isMarkedForDeletion = url.publicationInfo.publicationStatus === 'MARKED_FOR_DELETION' || url.mixinTypes.find(mixin => mixin.name === 'jmix:markedForDeletion');
+        const isLockedAndCannotBeEdited = url.lockedAndCannotBeEdited;
+        const lockedDetails = getLockedDetails(url);
         return (
             <TableRow key={urlPair.uuid}
                       hover
@@ -56,6 +72,7 @@ export const DefaultRow = ({
                       }}
                       data-vud-url={url.url}
                       data-sel-marked-for-deletion={isMarkedForDeletion}
+                      data-sel-locked-and-can-not-be-edited={isLockedAndCannotBeEdited}
             >
                 <TableCell
                     className={(isCheckboxesDisplayed ? (isExpanded ? '' : classes.hidden) : (classes.hiddenOnHover)) + ' ' + classes.checkboxLeft}
@@ -68,7 +85,7 @@ export const DefaultRow = ({
                 <TableCell width="55px">
                     <Switch classes={{switchBase: classes.switchBase, checked: classes.switchChecked}}
                             checked={url.active}
-                            disabled={Boolean(isMarkedForDeletion) || Boolean(!hasWritePermission)}
+                            disabled={Boolean(isMarkedForDeletion) || Boolean(!hasWritePermission) || Boolean(isLockedAndCannotBeEdited)}
                             data-vud-role="action-active"
                             onClick={event => {
                                 event.stopPropagation();
@@ -79,25 +96,25 @@ export const DefaultRow = ({
                             }, event)}/>
                 </TableCell>
                 <TableCell className={clsx(classes.tableCellTextInput, {[classes.inactive]: !url.active})} width="100%">
-                    {(isMarkedForDeletion || !hasWritePermission) &&
+                    {(isMarkedForDeletion || !hasWritePermission || isLockedAndCannotBeEdited) &&
                         <Typography data-vud-role="url"
                                     className={isMarkedForDeletion ? classes.deletedUrl : ''}
                         >
                             {url.url}
                         </Typography>}
-                    {!isMarkedForDeletion && hasWritePermission && <Editable value={url.url}
-                                                                             onChange={onMappingChanged}/>}
+                    {!isMarkedForDeletion && hasWritePermission && !isLockedAndCannotBeEdited && <Editable value={url.url}
+                                                                                                           onChange={onMappingChanged}/>}
                 </TableCell>
                 <TableCell width="120px">
                     <div className={classes.chipContainer}>
                         {url.default ? <Chip color="accent"
                                              label="Canonical"
-                                             className={clsx({[classes.chipWithMargin]: isMarkedForDeletion})}/> : null}
-                        {isMarkedForDeletion ? <Chip color="danger" icon={<Lock/>}/> : null}
+                                             className={clsx({[classes.chipWithMargin]: isMarkedForDeletion || isLockedAndCannotBeEdited})}/> : null}
+                        {isMarkedForDeletion || isLockedAndCannotBeEdited ? <Chip color="danger" title={lockedDetails} icon={<Lock/>}/> : null}
                     </div>
                 </TableCell>
                 <TableCell className={clsx(classes.languageContainer, {[classes.inactive]: !url.active})} width="90px">
-                    <LanguageMenu isDisabled={Boolean(isMarkedForDeletion) || Boolean(!hasWritePermission)}
+                    <LanguageMenu isDisabled={Boolean(isMarkedForDeletion) || Boolean(!hasWritePermission) || Boolean(isLockedAndCannotBeEdited)}
                                   languageCode={urlPair.default.language}
                                   onLanguageSelected={languageCode => actions.updateVanity.call({
                                       urlPair: urlPair,

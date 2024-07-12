@@ -1,5 +1,4 @@
 import React from 'react';
-import Publication from '../../Publication/Publication';
 import Move from '../../Move';
 import {VanityUrlTableData} from '~/components/VanityUrlTableData';
 import {assembleWithHoc, SiteSettingsSeoApp} from '../../SiteSettingsSeoApp';

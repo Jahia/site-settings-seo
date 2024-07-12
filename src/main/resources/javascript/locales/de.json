@@ -8,6 +8,7 @@
       "move": "Verschieben",
       "publish": "Veröffentlichen",
       "publishVanityUrl": "Veröffentlichen Sie Vanity-URLs",
+      "requestPublication": "Veröffentlichung anfordern",
       "canonical": {
         "set": "Als canonical setzen",
         "unset": "Nicht canonical setzen"
@@ -106,8 +107,8 @@
       "count_plural": "{{count}} Mappings ausgewählt"
     },
     "pagination": {
-        "rowsPerPage": "Zeilen pro Seite",
-        "of": "von"
+      "rowsPerPage": "Zeilen pro Seite",
+      "of": "von"
     },
     "title": "Vanity URLs",
     "manage": "Vanity URLs verwalten",
@@ -119,5 +120,9 @@
     },
     "noPublishedVanityUrl": "No published vanity URL",
     "readOnly": "Schreibgeschützt"
+  },
+  "status": {
+    "validation": "Gesperrt von einem Veröffentlichungsprozess",
+    "deletion": "Gesperrt: zur Löschung markiert"
   }
 }
