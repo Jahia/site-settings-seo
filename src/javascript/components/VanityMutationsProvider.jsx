@@ -5,17 +5,15 @@ import {graphql} from '@apollo/react-hoc';
 import {flowRight as compose} from 'lodash';
 import * as gqlMutations from './gqlMutations';
 import * as _ from 'lodash';
-import {DashboardTableQuery, VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
+import {VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {
     InvalidMappingError,
     InvalidCharError,
-    MoveSiteError,
     DuplicateMappingError,
     AddMappingsError,
     SitesMappingError
 } from './Errors';
-import {buildTableQueryVariablesAllVanity} from './Utils/Utils';
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -24,7 +22,7 @@ class VanityMutationsProvider extends Component {
     }
 
     addMutations() {
-        const {vanityMutationsContext, moveMutation, updateMutation, addMutation} = this.props;
+        const {vanityMutationsContext, updateMutation, addMutation} = this.props;
 
         const isSitesUrl = url => {
             const isString = (typeof url === 'string') || url instanceof String;
@@ -39,22 +37,6 @@ class VanityMutationsProvider extends Component {
         const containsInvalidChars = url => {
             const isString = (typeof url === 'string') || url instanceof String;
             return (isString && SiteSettingsSeoConstants.INVALID_CHARS_REG_EXP.test(url.trim()));
-        };
-
-        vanityMutationsContext.move = (pathsOrIds, target, props) => {
-            if (!_.startsWith(target, props.path)) {
-                throw new MoveSiteError('Moving vanity mapping in an other site is not allowed');
-            }
-
-            return moveMutation({
-                variables: {
-                    pathsOrIds: pathsOrIds,
-                    target: target
-                }, refetchQueries: [{
-                    query: DashboardTableQuery,
-                    variables: buildTableQueryVariablesAllVanity(props)
-                }]
-            });
         };
 
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
@@ -156,7 +138,6 @@ VanityMutationsProvider.childContextTypes = {
 };
 
 VanityMutationsProvider = compose(
-    graphql(gqlMutations.MoveMutation, {name: 'moveMutation'}),
     graphql(gqlMutations.UpdateVanityMutation, {name: 'updateMutation'}),
     graphql(gqlMutations.AddVanityMutation, {name: 'addMutation'})
 )(VanityMutationsProvider);

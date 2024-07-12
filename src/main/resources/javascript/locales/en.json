@@ -64,7 +64,7 @@
       "SitesMappingError": "Invalid URL",
       "SitesMappingError_message": "Vanity URL should not contain /sites as it is used by the system",
       "MoveInvalidTarget_message": "Sorry, this path is invalid.",
-      "MoveSiteError": "Vanity URLs cannot be assigned to different sites",
+      "moveSiteError": "Vanity URLs cannot be assigned to different sites",
       "loadingSiteLanguages": "Error loading site languages",
       "loadingVanityUrl": "Error loading vanity URLs",
       "MoveInvalidTarget": "Invalid path"

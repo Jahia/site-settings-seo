@@ -43,17 +43,9 @@ class AddMappingsError extends Error {
     }
 }
 
-class MoveSiteError extends Error {
-    constructor(...params) {
-        super(...params);
-        this.name = 'MoveSiteError';
-    }
-}
-
 export {
     InvalidMappingError,
     SitesMappingError,
-    MoveSiteError,
     DuplicateMappingError,
     AddMappingsError,
     InvalidCharError

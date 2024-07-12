@@ -1,5 +1,4 @@
 import React from 'react';
-import Move from '../../Move';
 import {VanityUrlTableData} from '~/components/VanityUrlTableData';
 import {assembleWithHoc, SiteSettingsSeoApp} from '../../SiteSettingsSeoApp';
 import {VanityUrlEnabledContent} from '../../VanityUrlEnabledContent';
@@ -17,8 +16,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
 
     // Override
     render() {
-        let {path, t, lang, siteInfo} = this.props;
-        let polling = !(this.state.move.open);
+        let {path, t, lang} = this.props;
         let variables = buildTableQueryVariablesOneNode({selectedLanguageCodes: this.props.languages, path: path, lang: lang, ...this.state.loadParams});
 
         return (
@@ -27,7 +25,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                     {...this.state.loadParams}
                     tableQuery={ContentEditorTableQuery}
                     variables={variables}
-                    poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
+                    poll={SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL}
                 >
                     {rows => {
                         const isEmpty = !rows[0];
@@ -59,14 +57,6 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                             </Paper>
                                         </div>}
                                 </div>
-
-                                {this.state.move.open && <Move
-                                    {...this.state.move}
-                                    {...this.state.loadParams}
-                                    path={siteInfo.path}
-                                    lang={lang}
-                                    onClose={this.closeMove}
-                                />}
                             </>
                         );
                     }}

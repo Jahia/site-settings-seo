@@ -15,7 +15,7 @@ import {useApolloClient} from '@apollo/client';
 import {PublishMutation} from '~/components/gqlMutations';
 
 export const Publication = ({isOpen, urlPairs, onClose}) => {
-    const {notificationContext} = useNotifications();
+    const notificationContext = useNotifications();
     const {t} = useTranslation('site-settings-seo');
 
     const client = useApolloClient();

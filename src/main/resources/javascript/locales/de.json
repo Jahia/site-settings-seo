@@ -64,7 +64,7 @@
       "SitesMappingError": "Die Vanity URL ist ungültig.",
       "SitesMappingError_message": "SEO Url sollte nicht enthalten / Websites, wie es von dem System verwendet wird.",
       "MoveInvalidTarget_message": "Bitte überprüfen Sie den Pfad erneut, er ist ungültig.",
-      "MoveSiteError": "Das Verschieben von Vanity Mappings in eine andere Site ist nicht erlaubt.",
+      "moveSiteError": "Das Verschieben von Vanity Mappings in eine andere Site ist nicht erlaubt.",
       "loadingSiteLanguages": "Fehler beim Laden der Site-Sprachen.",
       "loadingVanityUrl": "Fehler beim Laden der Vanity URLs.",
       "MoveInvalidTarget": "Ungültigen Pfad."

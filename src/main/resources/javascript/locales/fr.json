@@ -61,7 +61,7 @@
       "SitesMappingError": "L'URL est invalide",
       "SitesMappingError_message": "Les URLs personnalisées ne doivent pas contenir /sites.",
       "MoveInvalidTarget_message": "Désolé, ce chemin est invalide.",
-      "MoveSiteError": "Les URLs ne peuvent être assignées à un autre site.",
+      "moveSiteError": "Les URLs ne peuvent être assignées à un autre site.",
       "loadingSiteLanguages": "Erreur lors du chargement des langues du site",
       "loadingVanityUrl": "Erreur lors du chargement des URLs personnalisées",
       "MoveInvalidTarget": "Chemin invalide"
