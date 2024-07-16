@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {atLeastOneMarkedForDeletion} from '../Utils/Utils';
+import {atLeastOneLockedAndCanNotBeEdited} from '../Utils/Utils';
 
 export const MoveVanityAction = ({render: Render, actions, urlPairs, ...otherProps}) => {
     const onClick = e => {
@@ -11,7 +11,7 @@ export const MoveVanityAction = ({render: Render, actions, urlPairs, ...otherPro
         <>
             <Render
                 {...otherProps}
-                isVisible={!atLeastOneMarkedForDeletion(urlPairs)}
+                isVisible={!atLeastOneLockedAndCanNotBeEdited(urlPairs)}
                 onClick={onClick}/>
         </>
     );

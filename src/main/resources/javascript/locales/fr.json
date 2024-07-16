@@ -5,6 +5,7 @@
       "move": "Réaffecter",
       "publish": "Publier",
       "publishVanityUrl": "Publier les URLs personnalisées",
+      "requestPublication": "Demander une publication",
       "canonical": {
         "set": "URL canonique (URL par défaut)",
         "unset": "Ne pas définir comme canonique (URL par défaut)"
@@ -51,8 +52,8 @@
         "used": "Cette URL est déjà utilisée",
         "used_message": "Cette URL est déjà utilisée par {{existingNodePath}}"
       },
-      "CanonicalMappingError" : "Une URL canonique est verrouillée pour suppression",
-      "CanonicalMappingError_message" : "{{urlMapping}} ne peut pas être définie comme canonique",
+      "CanonicalMappingError": "Une URL canonique est verrouillée pour suppression",
+      "CanonicalMappingError_message": "{{urlMapping}} ne peut pas être définie comme canonique",
       "InvalidMappingError": "L'URL est invalide",
       "InvalidMappingError_message": "Une URL ne peut pas être vide",
       "InvalidCharError": "L'URL est invalide",
@@ -103,8 +104,8 @@
       "count_plural": "{{count}} URLs sélectionnées"
     },
     "pagination": {
-        "rowsPerPage": "Lignes par page",
-        "of": "sur"
+      "rowsPerPage": "Lignes par page",
+      "of": "sur"
     },
     "title": "URLs personnalisées",
     "manage": "Gérer les URLs personnalisées",
@@ -116,5 +117,9 @@
     },
     "noPublishedVanityUrl": "Aucune URL personnalisée n'est publiée",
     "readOnly": "Lecture seule"
+  },
+  "status": {
+    "validation": "Verrouiller par un workflow de publication",
+    "deletion": "Verrouillé: Contenu marqué pour suppression"
   }
 }

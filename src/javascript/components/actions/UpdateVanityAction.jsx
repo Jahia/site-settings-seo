@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {
     atLeastOneCanonicalLockedForLang,
-    atLeastOneMarkedForDeletion, getRowUrlsFromPath
+    getRowUrlsFromPath
 } from '../Utils/Utils';
 import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
 
@@ -23,7 +23,7 @@ export const UpdateVanityAction = ({render: Render, actions, urlPair, isDefaultM
             <Render
                 {...otherProps}
                 enabled={!atLeastOneCanonicalLockedForLang(urls, urlPair.default.language)}
-                isVisible={!atLeastOneMarkedForDeletion([urlPair])}
+                isVisible={!urlPair.default.lockedAndCannotBeEdited}
                 buttonLabel={label}
                 onClick={onClick}/>
         </>

@@ -7,6 +7,12 @@ const DefaultVanityUrlFields = gql`fragment DefaultVanityUrlFields on VanityUrl 
         default
         url
         language
+        lockedAndCannotBeEdited
+        lockInfo {
+            details{
+                type
+            }
+        }
         mixinTypes{
             name
         }
