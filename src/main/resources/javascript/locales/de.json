@@ -31,10 +31,9 @@
         "notPublished": "Bis zur Veröffentlichung von {{pagePath}} werden mehrere Mappings als Standard gesetzt"
       },
       "move": {
-        "confirm": "Ich verstehe, dass diese Operation unwideruflich ist",
-        "content": "Bitte geben Sie den Pfad ein, wohin die URL verschoben werden soll:",
+        "content": "Sind Sie sicher, dass Sie die ausgewählten Vanity-URLs nach {{targetPath}} verschieben möchten?",
+        "warningMessage": "Diese Aktion kann nicht rückgängig gemacht werden",
         "move": "Verschieben",
-        "target": "Pfad des Ziel-Knotens",
         "title": "Mapping verschieben"
       },
       "publish": {
@@ -64,7 +63,6 @@
       "SitesMappingError": "Die Vanity URL ist ungültig.",
       "SitesMappingError_message": "SEO Url sollte nicht enthalten / Websites, wie es von dem System verwendet wird.",
       "MoveInvalidTarget_message": "Bitte überprüfen Sie den Pfad erneut, er ist ungültig.",
-      "moveSiteError": "Das Verschieben von Vanity Mappings in eine andere Site ist nicht erlaubt.",
       "loadingSiteLanguages": "Fehler beim Laden der Site-Sprachen.",
       "loadingVanityUrl": "Fehler beim Laden der Vanity URLs.",
       "MoveInvalidTarget": "Ungültigen Pfad."

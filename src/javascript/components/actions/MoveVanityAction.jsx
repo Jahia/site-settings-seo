@@ -3,28 +3,34 @@ import * as PropTypes from 'prop-types';
 import {atLeastOneLockedAndCanNotBeEdited} from '../Utils/Utils';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useVanityUrlContext} from '~/components/Context/VanityUrl.context';
-import {Move} from '~/components/Move/Move';
+import {MoveValidationDialog} from '~/components/Move/MoveValidationDialog';
 
 export const MoveVanityAction = ({render: Render, actions, urlPairs, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {siteInfo, lang} = useVanityUrlContext();
-
     const closeDialog = () => {
         componentRenderer.destroy('MoveDialog');
     };
 
     const onClick = () => {
-        componentRenderer.render(
-            'MoveDialog',
-            Move,
-            {
-                ...otherProps,
-                urlPairs: urlPairs,
-                isOpen: true,
-                path: siteInfo.path,
-                lang: lang,
-                onClose: closeDialog
-            });
+        window.CE_API.openPicker({
+            type: 'targetOnMoveVanity',
+            value: '',
+            setValue: pickerResult => {
+                componentRenderer.render(
+                    'MoveDialog',
+                    MoveValidationDialog,
+                    {
+                        ...otherProps,
+                        urlPairs: urlPairs,
+                        isOpen: true,
+                        targetPath: pickerResult[0].path,
+                        onClose: closeDialog
+                    });
+            },
+            site: siteInfo.siteKey,
+            lang
+        });
     };
 
     return (

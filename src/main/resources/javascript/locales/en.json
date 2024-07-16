@@ -31,10 +31,9 @@
         "notPublished": "Several vanity URLs will be defined as canonical until publication of {{pagePath}}"
       },
       "move": {
-        "confirm": "I understand that this action cannot be undone",
-        "content": "Please select a page or enter a path directly",
+        "content": "Are you sure you want to move the selected vanity URL(s) to {{targetPath}}?",
+        "warningMessage": "This action cannot be undone.",
         "move": "Move",
-        "target": "Target node path",
         "title": "Move Vanity URL"
       },
       "publish": {
@@ -64,7 +63,6 @@
       "SitesMappingError": "Invalid URL",
       "SitesMappingError_message": "Vanity URL should not contain /sites as it is used by the system",
       "MoveInvalidTarget_message": "Sorry, this path is invalid.",
-      "moveSiteError": "Vanity URLs cannot be assigned to different sites",
       "loadingSiteLanguages": "Error loading site languages",
       "loadingVanityUrl": "Error loading vanity URLs",
       "MoveInvalidTarget": "Invalid path"

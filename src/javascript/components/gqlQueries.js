@@ -85,18 +85,6 @@ const VanityUrlsByPathVariables = (paths, props) => ({
     paths: paths
 });
 
-const GetNodeQuery = gql`
-    query GetNodeQuery($path:String!, $types: [String]!) {
-        jcr {
-            nodeByPath(path:$path) {
-                ...NodeCacheRequiredFields
-                inPicker : isNodeType(type: {types:$types})
-            }
-        }
-    }
-    ${PredefinedFragments.nodeCacheRequiredFields.gql}
-`;
-
 const CheckPublishPermissions = gql`
     query checkPublishPermissions($paths:[String!]!) {
         jcr {
@@ -113,7 +101,6 @@ const CheckPublishPermissions = gql`
 export {
     DashboardTableQuery,
     ContentEditorTableQuery,
-    GetNodeQuery,
     VanityUrlsByPath,
     GetPublicationStatus,
     VanityUrlsByPathVariables,

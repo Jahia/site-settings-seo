@@ -28,10 +28,9 @@
         "notPublished": "Plusieurs URLs seront considérées par défaut jusqu'à publication du contenu {{pagePath}}"
       },
       "move": {
-        "confirm": "Cette opération ne peut être annulée.",
-        "content": "Entrez le chemin du contenu de destination.",
+        "content": "Êtes-vous sûr de vouloir publier les URLs sélectionnées vers {{targetPath}}?",
+        "warningMessage": "Cette opération ne peut être annulée.",
         "move": "Déplacer",
-        "target": "Chemin du contenu de destination",
         "title": "Déplacer URL"
       },
       "publish": {
@@ -61,7 +60,6 @@
       "SitesMappingError": "L'URL est invalide",
       "SitesMappingError_message": "Les URLs personnalisées ne doivent pas contenir /sites.",
       "MoveInvalidTarget_message": "Désolé, ce chemin est invalide.",
-      "moveSiteError": "Les URLs ne peuvent être assignées à un autre site.",
       "loadingSiteLanguages": "Erreur lors du chargement des langues du site",
       "loadingVanityUrl": "Erreur lors du chargement des URLs personnalisées",
       "MoveInvalidTarget": "Chemin invalide"
