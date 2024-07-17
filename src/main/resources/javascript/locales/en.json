@@ -31,10 +31,12 @@
         "notPublished": "Several vanity URLs will be defined as canonical until publication of {{pagePath}}"
       },
       "move": {
-        "content": "Are you sure you want to move the selected vanity URL(s) to {{targetPath}}?",
-        "warningMessage": "This action cannot be undone.",
+        "contentStart": "You are about to move the Vanity URL(s):",
+        "contentTo": "to {{targetPath}}",
+        "warningMessage": "You'll need to publish {{targetPath}} to complete the operation.",
         "move": "Move",
-        "title": "Move Vanity URL"
+        "title": "Move Vanity URL",
+        "vanityDetails": "{{path}} from {{source}}"
       },
       "publish": {
         "content": "Are you sure you want to publish the selected vanity URL(s)? Publication will be started as a background job.",

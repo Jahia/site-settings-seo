@@ -31,10 +31,12 @@
         "notPublished": "Bis zur Veröffentlichung von {{pagePath}} werden mehrere Mappings als Standard gesetzt"
       },
       "move": {
-        "content": "Sind Sie sicher, dass Sie die ausgewählten Vanity-URLs nach {{targetPath}} verschieben möchten?",
-        "warningMessage": "Diese Aktion kann nicht rückgängig gemacht werden",
+        "contentStart": "Sie sind dabei, die Vanity-URL(s) zu verschieben:",
+        "contentTo": "zu {{targetPath}}",
+        "warningMessage": "Sie müssen {{targetPath}} veröffentlichen, um den Vorgang abzuschließen.",
         "move": "Verschieben",
-        "title": "Mapping verschieben"
+        "title": "Mapping verschieben",
+        "vanityDetails": "{{path}} von {{source}}"
       },
       "publish": {
         "content": "Sind Sie sicher, dass Sie die ausgewählten Vanity URLs veröffentlichen wollen? Die Veröffentlichung wird als Hintergrundjob gestartet.",

@@ -28,10 +28,12 @@
         "notPublished": "Plusieurs URLs seront considérées par défaut jusqu'à publication du contenu {{pagePath}}"
       },
       "move": {
-        "content": "Êtes-vous sûr de vouloir publier les URLs sélectionnées vers {{targetPath}}?",
-        "warningMessage": "Cette opération ne peut être annulée.",
+        "contentStart": "Vous êtes sur le point de déplacer la ou les URL personnalisées :",
+        "contentTo": "vers {{targetPath}}",
+        "warningMessage": "Vous devrez publier {{targetPath}} pour terminer l'opération.",
         "move": "Déplacer",
-        "title": "Déplacer URL"
+        "title": "Déplacer URL",
+        "vanityDetails": "{{path}} de {{source}}"
       },
       "publish": {
         "content": "Êtes-vous sûr de vouloir publier les URLs sélectionnées ? La publication sera démarrée en tâche de fond.",

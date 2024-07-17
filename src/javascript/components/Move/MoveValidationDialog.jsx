@@ -39,10 +39,28 @@ export const MoveValidationDialog = ({isOpen, targetPath, urlPairs, onClose}) =>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         <Typography>
-                            {t('label.dialogs.move.content', {targetPath: targetPath})}
+                            {t('label.dialogs.move.contentStart')}
+
+                        </Typography>
+                        {urlPairs.map(urlPair => {
+                            return (
+                                <Typography key={urlPair.uuid}>
+                                    {
+                                        t('label.dialogs.move.vanityDetails', {
+                                            path: urlPair.default.url,
+                                            source: urlPair.default.targetNode.path
+                                        })
+                                    }
+                                </Typography>
+                            );
+                        })}
+                        <Typography>
+                            {t('label.dialogs.move.contentTo', {
+                                targetPath: targetPath
+                            })}
                         </Typography>
                         <Typography>
-                            {t('label.dialogs.move.warningMessage')}
+                            {t('label.dialogs.move.warningMessage', {targetPath: targetPath})}
                         </Typography>
                     </DialogContentText>
                 </DialogContent>
