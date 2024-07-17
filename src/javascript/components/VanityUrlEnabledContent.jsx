@@ -6,7 +6,7 @@ import {Collapse, Grid, ListItem, ListItemText, withStyles} from '@material-ui/c
 import {ChevronDown, ChevronRight, Chip, Visibility} from '@jahia/moonstone';
 import {Typography, Button} from '@jahia/moonstone';
 import {flowRight as compose} from 'lodash';
-import AddVanityUrl from './AddVanityUrl';
+import {AddVanityUrl} from './AddVanityUrl/AddVanityUrl';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {DisplayAction} from '@jahia/ui-extender';
 import {ButtonRenderer} from '@jahia/jcontent';

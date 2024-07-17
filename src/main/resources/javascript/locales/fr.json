@@ -40,8 +40,6 @@
       }
     },
     "errors": {
-      "DuplicateMappingError": "URL Dupliquée",
-      "DuplicateMappingError_message": "URL Dupliquée",
       "Error": "Une erreur imprévue s'est produite",
       "GqlConstraintViolationException": {
         "notAllowed": "Non autorisé",

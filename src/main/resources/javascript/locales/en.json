@@ -43,8 +43,6 @@
       }
     },
     "errors": {
-      "DuplicateMappingError": "Duplicate vanity URLs",
-      "DuplicateMappingError_message": "Duplicate vanity URLs",
       "Error": "An unexpected error has occurred",
       "GqlConstraintViolationException": {
         "notAllowed": "Not allowed",

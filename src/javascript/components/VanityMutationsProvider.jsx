@@ -4,16 +4,12 @@ import {Component, Children} from 'react';
 import {graphql} from '@apollo/react-hoc';
 import {flowRight as compose} from 'lodash';
 import * as gqlMutations from './gqlMutations';
-import * as _ from 'lodash';
-import {VanityUrlsByPath, VanityUrlsByPathVariables} from './gqlQueries';
-import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {
     InvalidMappingError,
     InvalidCharError,
-    DuplicateMappingError,
-    AddMappingsError,
     SitesMappingError
 } from './Errors';
+import {containsInvalidChars, isBlankUrl, isSitesUrl} from '~/components/Utils/Utils';
 
 class VanityMutationsProvider extends Component {
     constructor(props) {
@@ -22,22 +18,8 @@ class VanityMutationsProvider extends Component {
     }
 
     addMutations() {
-        const {vanityMutationsContext, updateMutation, addMutation} = this.props;
+        const {vanityMutationsContext, updateMutation} = this.props;
 
-        const isSitesUrl = url => {
-            const isString = (typeof url === 'string') || url instanceof String;
-            return (isString && SiteSettingsSeoConstants.SITES_REG_EXP.test(url.trim()));
-        };
-
-        const isBlankUrl = url => {
-            const isString = (typeof url === 'string') || url instanceof String;
-            return (isString && !url.trim());
-        };
-
-        const containsInvalidChars = url => {
-            const isString = (typeof url === 'string') || url instanceof String;
-            return (isString && SiteSettingsSeoConstants.INVALID_CHARS_REG_EXP.test(url.trim()));
-        };
 
         vanityMutationsContext.update = (ids, defaultMapping, active, language, url) => {
             if (isBlankUrl(url)) {
@@ -63,39 +45,6 @@ class VanityMutationsProvider extends Component {
                 }
             });
         };
-
-        vanityMutationsContext.add = (path, vanityUrls = [], props) => {
-            let invalidMappings = vanityUrls.filter(v => isBlankUrl(v.url));
-            let sitesMappings = vanityUrls.filter(v => isSitesUrl(v.url));
-            let invalidCharMappings = vanityUrls.filter(v => containsInvalidChars(v.url));
-            let duplicateUrls = vanityUrls;
-            duplicateUrls = _.pullAllBy(duplicateUrls, [...invalidMappings, ...sitesMappings, ...invalidCharMappings], 'url');
-            duplicateUrls = _.groupBy(duplicateUrls, 'url');
-            duplicateUrls = _.pickBy(duplicateUrls, x => x.length > 1);
-            duplicateUrls = _.keys(duplicateUrls);
-
-            let errors = [
-                ...invalidMappings.map(v => new InvalidMappingError(v.url)),
-                ...invalidCharMappings.map(v => new InvalidCharError(v.url)),
-                ...sitesMappings.map(v => new SitesMappingError(v.url)),
-                ...duplicateUrls.map(v => new DuplicateMappingError(v.url))
-            ];
-
-            if (errors.length > 0) {
-                throw new AddMappingsError(errors);
-            }
-
-            return addMutation({
-                variables: {
-                    vanityUrls: vanityUrls,
-                    path: path,
-                    lang: props.lang
-                }, refetchQueries: [{
-                    query: VanityUrlsByPath,
-                    variables: VanityUrlsByPathVariables([path], props)
-                }]
-            });
-        };
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -117,7 +66,8 @@ function withVanityMutationContext() {
     return WrappedComponent => {
         let Component = class extends React.Component {
             render() {
-                return (<WrappedComponent vanityMutationsContext={this.context.vanityMutationsContext} {...this.props}/>);
+                return (
+                    <WrappedComponent vanityMutationsContext={this.context.vanityMutationsContext} {...this.props}/>);
             }
         };
 
@@ -138,8 +88,7 @@ VanityMutationsProvider.childContextTypes = {
 };
 
 VanityMutationsProvider = compose(
-    graphql(gqlMutations.UpdateVanityMutation, {name: 'updateMutation'}),
-    graphql(gqlMutations.AddVanityMutation, {name: 'addMutation'})
+    graphql(gqlMutations.UpdateVanityMutation, {name: 'updateMutation'})
 )(VanityMutationsProvider);
 
 export {VanityMutationsProvider, withVanityMutationContext};

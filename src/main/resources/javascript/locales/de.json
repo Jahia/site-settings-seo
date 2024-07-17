@@ -43,8 +43,6 @@
       }
     },
     "errors": {
-      "DuplicateMappingError": "Doppelte Mappings.",
-      "DuplicateMappingError_message": "Doppelte Mappings.",
       "Error": "Ein unerwarteter Fehler ist aufgetreten.",
       "GqlConstraintViolationException": {
         "notAllowed": "URL Mapping ist nicht erlaubt.",

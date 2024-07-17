@@ -1,0 +1,153 @@
+.pickerRoot {
+  border-radius: unset;
+  border: 1px solid #d5d5d5;
+  padding: unset;
+}
+
+.error {
+  color: #ef5350;
+}
+
+.errorMessage {
+  top: -1px !important;
+  background: unset !important;
+}
+
+.root {
+  width: 100%;
+
+  & .message {
+    display: none;
+  }
+}
+
+.iconButton {
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  top: 4px;
+  transform: scale(0.75);
+
+  &:hover {
+    background-color: inherit
+  }
+}
+
+.vanityURLText {
+  line-height: 21px;
+  max-height: 42px;
+  overflow: hidden;
+  position: relative;
+  word-break: break-all;
+  padding: 3px 6px 1px;
+  font-size: 0.8rem;
+  color: #212121;
+  font-family: Nunito, "Nunito Sans", serif;
+}
+
+.editableText {
+  &:hover {
+    box-shadow: inset 1px 1px 0 0 #d9d7d7, inset -1px -1px 0 0 #d9d7d7;
+    cursor: text;
+    background: white;
+  }
+
+  &:hover:before {
+    background: #FFF !important
+  }
+
+  &:hover:after {
+    background: #FFF !important
+  }
+}
+
+.cancel {
+  color: red;
+  right: 10px;
+  top: 7px;
+}
+
+.addVanityButton {
+  color: #575757;
+
+  &:hover {
+    background-color: transparent;
+    color: #4A4343
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: unset;
+
+  &:hover {
+    background-color: inherit;
+  }
+}
+
+.cell {
+  border-bottom: unset;
+  padding: 4px 6px 4px 0;
+}
+
+.cellFirst {
+  padding-left: 6px !important;
+  padding-right: 4px;
+}
+
+.cellForm {
+  flex-grow: 2;
+}
+
+.cellLast {
+  padding-right: 6px !important;
+}
+
+.textbox {
+  font-size: 1.2rem;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  border-bottom: unset;
+}
+
+
+.actionButton {
+  padding: 13px 10px 10px 10px;
+}
+
+.cellCanonical {
+  min-width: 150px;
+  padding: 4px 6px 4px 24px;
+}
+
+
+.setCanonical {
+  margin-right: unset;
+
+  & span + span {
+    padding: 4px 0 0 0;
+  }
+}
+
+.chooseLanguage {
+  width: 90px;
+
+  & div div {
+    width: 80px;
+  }
+}
+
+.switchBase {
+  width: 38px;
+}
+
+.switchChecked {
+  width: inherit
+}
+
