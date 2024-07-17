@@ -42,7 +42,7 @@ export const PublishAllAction = ({render: Render, loading: Loading, label, nodeD
         };
 
         if (nodeData.urls) {
-            fetchPublicationData(nodeData.urls.map(url => {
+            fetchPublicationData(nodeData.urls.filter(url => url.default).map(url => {
                 return {targetNodePath: url.default.targetNode.path, vanityLanguage: url.default.language};
             }));
         } else if (data) {

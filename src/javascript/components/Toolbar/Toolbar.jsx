@@ -31,19 +31,15 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
             {selection.length &&
                 <div className={classes.buttonsBar}>
                     <DisplayActions
-                        target="site-settings-seo/vanity-list-menu"
+                        target="site-settings-seo/selected-vanity-list-menu"
                         urlPairs={selection}
                         paths={paths}
                         actions={actions}
                         render={ButtonRenderer}
-                        filter={action => {
-                            return action.key !== 'updateVanity';
-                        }}
                         onChangeSelection={onChangeSelection}
                         onDeleted={onChangeSelection}
                     />
-                </div>
-            }
+                </div>}
         </Paper>
     );
 };

@@ -8,7 +8,7 @@ import {
 } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 
-describe('Checks the publication action in UIs', () => {
+describe('Checks the publication action on not published pages in UIs', () => {
     const siteKey = 'testPublishActionsVanity'
     const sitePath = '/sites/' + siteKey
     const homePath = sitePath + '/home'

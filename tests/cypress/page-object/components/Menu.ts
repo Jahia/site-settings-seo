@@ -10,4 +10,8 @@ export class Menu extends BaseComponent {
     getRequestPublicationButton() {
         return this.get().find('[data-sel-role="publishVanity"]').contains('Request publication')
     }
+
+    getUnpublishButton() {
+        return this.get().find('[data-sel-role="unpublish"]')
+    }
 }

@@ -126,6 +126,7 @@ export const DefaultRow = ({
                         <DisplayAction
                             disabled={!hasWritePermission}
                             path={urlPair.default.path}
+                            language={urlPair.default.language}
                             urlPair={urlPair}
                             urlPairs={[urlPair]}
                             actions={actions}
