@@ -5,7 +5,7 @@ export const atLeastOneLockedAndCanNotBeEdited = urls => {
 };
 
 export const atLeastOneLockedForValidation = urls => {
-    return urls.some(url => url.default.lockedAndCannotBeEdited && url.default.lockInfo.details.some(detail => detail.type === 'validation'));
+    return urls?.some(url => url?.default?.lockedAndCannotBeEdited && url.default?.lockInfo.details.some(detail => detail.type === 'validation'));
 };
 
 export const atLeastOneCanonicalLockedForLang = (urls, lang) => {

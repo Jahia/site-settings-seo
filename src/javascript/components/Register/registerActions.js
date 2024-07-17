@@ -28,7 +28,7 @@ export const registerActions = () => {
     });
 
     registry.add('action', 'moveVanity', {
-        targets: ['site-settings-seo/vanity-list-menu:0.2'],
+        targets: ['site-settings-seo/vanity-list-menu:0.2', 'site-settings-seo/selected-vanity-list-menu:0.2'],
         dataSelRole: 'moveVanity',
         buttonIcon: <SwapHoriz/>,
         buttonLabel: 'site-settings-seo:label.actions.move',
@@ -36,22 +36,22 @@ export const registerActions = () => {
     });
 
     registry.add('action', 'publishVanity', {
-        targets: ['site-settings-seo/vanity-list-menu:0.3'],
+        targets: ['site-settings-seo/vanity-list-menu:0.3', 'site-settings-seo/selected-vanity-list-menu:0.3'],
         buttonIcon: <Publish/>,
         buttonLabel: 'site-settings-seo:label.actions.publish',
         component: PublishVanityAction
     });
 
     registry.addOrReplace('action', 'delete', registry.get('action', 'delete'), {
-        targets: ['site-settings-seo/vanity-list-menu:0.4']
+        targets: ['site-settings-seo/vanity-list-menu:0.4', 'site-settings-seo/selected-vanity-list-menu:0.4']
     });
 
     registry.addOrReplace('action', 'undelete', registry.get('action', 'undelete'), {
-        targets: ['site-settings-seo/vanity-list-menu:0.4']
+        targets: ['site-settings-seo/vanity-list-menu:0.4', 'site-settings-seo/selected-vanity-list-menu:0.4']
     });
 
     registry.addOrReplace('action', 'deletePermanently', registry.get('action', 'deletePermanently'), {
-        targets: ['site-settings-seo/vanity-list-menu:0.5']
+        targets: ['site-settings-seo/vanity-list-menu:0.5', 'site-settings-seo/selected-vanity-list-menu:0.5']
     });
 
     registry.add('action', 'publishAllVanity', {
@@ -60,5 +60,9 @@ export const registerActions = () => {
         buttonIcon: <CloudUpload/>,
         buttonProps: {color: 'accent'},
         label: 'site-settings-seo:label.actions.publishVanityUrl'
+    });
+
+    registry.addOrReplace('action', 'unpublish', registry.get('action', 'unpublish'), {
+        targets: ['site-settings-seo/vanity-list-menu:0.6']
     });
 };
