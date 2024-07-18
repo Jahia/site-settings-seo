@@ -6,10 +6,16 @@ import {useApolloClient, useQuery} from '@apollo/client';
 import {CheckPublishPermissions, GetPublicationStatus} from '~/components/gqlQueries';
 import {Publication} from '~/components/Publication/Publication';
 
-export const PublishVanityAction = ({render: Render, urlPairs, path, buttonLabel, ...otherProps}) => {
+export const PublishVanityAction = ({render: Render, urlPairs, path, paths, buttonLabel, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
 
-    const {data, loading, error} = useQuery(CheckPublishPermissions, {variables: {path: path}});
+    const {data, loading, error} = useQuery(CheckPublishPermissions,
+        {
+            variables:
+                {
+                    paths: paths ? paths : [path]
+                }
+        });
 
     const closeDialog = () => {
         componentRenderer.destroy('PublishVanityDialog');
@@ -42,17 +48,17 @@ export const PublishVanityAction = ({render: Render, urlPairs, path, buttonLabel
 
     useEffect(() => {
         const fetchPublicationData = async () => {
-            const data = await Promise.all(
+            const result = await Promise.all(
                 urlPairs.map(async urlPair => {
-                    const {data} = await client.query({
+                    const {data: publicationData} = await client.query({
                         query: GetPublicationStatus,
                         variables: {path: urlPair.default.targetNode.path, language: urlPair.default.language}
                     });
-                    console.debug(data);
-                    return data.jcr.nodeByPath.aggregatedPublicationInfo;
+                    console.debug(publicationData);
+                    return publicationData.jcr.nodeByPath.aggregatedPublicationInfo;
                 })
             );
-            setIsVisibleInLive(data.every(contentIsVisibleInLive));
+            setIsVisibleInLive(result.every(contentIsVisibleInLive));
         };
 
         fetchPublicationData();
@@ -70,7 +76,9 @@ export const PublishVanityAction = ({render: Render, urlPairs, path, buttonLabel
 
     let requestPublicationLabel = null;
     let action = openModal;
-    if (!data.jcr.nodeByPath.hasPublishPermission && data.jcr.nodeByPath.hasPublicationStartPermission) {
+    const atLeastOneWithoutPublishPermission = data.jcr.nodesByPath.some(urlPair => !urlPair.hasPublishPermission);
+    const everyHasPublicationStartPermission = data.jcr.nodesByPath.every(urlPair => urlPair.hasPublicationStartPermission);
+    if (atLeastOneWithoutPublishPermission && everyHasPublicationStartPermission) {
         requestPublicationLabel = 'site-settings-seo:label.actions.requestPublication';
         action = openPublicationWorkflow;
     }
@@ -90,6 +98,7 @@ export const PublishVanityAction = ({render: Render, urlPairs, path, buttonLabel
 PublishVanityAction.propTypes = {
     render: PropTypes.elementType.isRequired,
     urlPairs: PropTypes.array.isRequired,
-    path: PropTypes.string.isRequired,
+    path: PropTypes.string,
+    paths: PropTypes.array,
     buttonLabel: PropTypes.string.isRequired
 };
