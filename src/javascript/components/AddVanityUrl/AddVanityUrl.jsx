@@ -153,7 +153,10 @@ export const AddVanityUrl = ({
     };
 
     const handleFieldChange = (field, value) => {
-        setErrors([]);
+        if (field === 'url') {
+            setErrors([]);
+        }
+
         const previousMapping = {...mapping};
 
         previousMapping[field] = value;
@@ -202,7 +205,7 @@ export const AddVanityUrl = ({
                                               {
                                                   url: mapping.url,
                                                   label: t('label.errors.InvalidMappingError'),
-                                                  message: t('label.errors.InvalidMappingError_message', {urlMapping: value})
+                                                  message: t('label.errors.InvalidMappingError_message')
                                               }
                                           ]);
                                           onError();
