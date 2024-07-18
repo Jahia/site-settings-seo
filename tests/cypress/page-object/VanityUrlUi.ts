@@ -8,9 +8,6 @@ export class VanityUrlUi extends BasePage {
     getErrorRow() {
         return cy.get('error', { timeout: 500 })
     }
-    getNewVanityUrlRow() {
-        return cy.get('tr[data-sel-role="new-vanity-url"]', { timeout: 500 })
-    }
 
     clickOnAddVanityUrl() {
         // eslint-disable-next-line
@@ -20,15 +17,15 @@ export class VanityUrlUi extends BasePage {
     }
 
     fillVanityValues(vanityValue: string, canonical = false, language = 'en', disabled = false) {
-        if (vanityValue) {
-            cy.get('input[data-sel-role="vanity-input-text"]').type(vanityValue)
-        }
         if (canonical) {
             cy.get('span[data-vud-role="default"]').find('input').click()
         }
+        if (vanityValue) {
+            cy.get('input[data-sel-role="vanity-input-text"]').type(vanityValue)
+        }
 
-        cy.get('tr[data-sel-role="new-vanity-url"]').find('div[data-sel-role="vanity-language-menu"]').click()
-        cy.get('tr[data-sel-role="new-vanity-url"]')
+        cy.get('div[data-sel-role="new-vanity-url"]').find('div[data-sel-role="vanity-language-menu"]').click()
+        cy.get('div[data-sel-role="new-vanity-url"]')
             .find('li[data-sel-value="' + language + '"]')
             .click()
 
@@ -67,9 +64,5 @@ export class VanityUrlUi extends BasePage {
 
     getVanityUrlRow(vanityValue: string) {
         return cy.get('tr[data-vud-url="' + vanityValue + '"]', { timeout: 3000 })
-    }
-
-    findReadOnlyBadge() {
-        return cy.get('div[data-sel-role="read-only-badge"]')
     }
 }

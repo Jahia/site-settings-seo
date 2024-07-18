@@ -77,14 +77,6 @@ const GetPublicationStatus = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-const VanityUrlsByPathVariables = (paths, props) => ({
-    lang: props.lang,
-    languages: props.selectedLanguageCodes,
-    filterText: props.filterText,
-    doFilter: Boolean(props.filterText),
-    paths: paths
-});
-
 const CheckPublishPermissions = gql`
     query checkPublishPermissions($paths:[String!]!) {
         jcr {
@@ -103,6 +95,5 @@ export {
     ContentEditorTableQuery,
     VanityUrlsByPath,
     GetPublicationStatus,
-    VanityUrlsByPathVariables,
     CheckPublishPermissions
 };
