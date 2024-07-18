@@ -32,7 +32,7 @@ export const MoveValidationDialog = ({isOpen, targetPath, urlPairs, onClose}) =>
                     classes={{root: classes.dialogRoot}}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
-                    data-vud-role="dialog"
+                    data-sel-role="move-validation-dialog"
                     onClose={onClose}
             >
                 <DialogTitle id="alert-dialog-title">{t('label.dialogs.move.title')}</DialogTitle>
@@ -68,12 +68,12 @@ export const MoveValidationDialog = ({isOpen, targetPath, urlPairs, onClose}) =>
                     <Button color="default"
                             label={t('label.cancel')}
                             size="big"
-                            data-vud-role="button-cancel"
+                            data-sel-role="cancel"
                             onClick={onClose}/>
                     <Button color="accent"
                             label={t('label.dialogs.move.move')}
                             size="big"
-                            data-vud-role="button-primary"
+                            data-sel-role="move"
                             onClick={() => {
                                 move();
                             }}

@@ -1,6 +1,7 @@
 import { getComponent } from '@jahia/cypress'
 import { PageWithVanityUrlList } from './dashboard/PageWithVanityUrlList'
 import { Pagination } from './dashboard/Pagination'
+import { Toolbar } from './dashboard/Toolbar'
 export class VanityUrlsPage {
     elements = {
         pageRowVanityUrls: "div[data-vud-role='content-title'] span",
@@ -85,5 +86,9 @@ export class VanityUrlsPage {
 
     getPagination(): Pagination {
         return getComponent(Pagination)
+    }
+
+    getToolbar(): Toolbar {
+        return getComponent(Toolbar)
     }
 }

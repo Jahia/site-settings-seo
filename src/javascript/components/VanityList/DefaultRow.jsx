@@ -79,6 +79,7 @@ export const DefaultRow = ({
                     width="3%"
                 >
                     {!isOpenCardMode && <Checkbox isDisabled={!hasWritePermission}
+                                                  data-sel-role="select-vanity"
                                                   checked={selected}
                                                   onChange={event => onChangeSelection(event.currentTarget.checked, [urlPair])}/>}
                 </TableCell>
