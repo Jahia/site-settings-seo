@@ -98,9 +98,9 @@ const GetNodeQuery = gql`
 `;
 
 const CheckPublishPermissions = gql`
-    query checkPublishPermissions($path:String!) {
+    query checkPublishPermissions($paths:[String!]!) {
         jcr {
-            nodeByPath(path: $path) {
+            nodesByPath(paths: $paths) {
                 ...NodeCacheRequiredFields
                 hasPublishPermission: hasPermission(permissionName: "publish")
                 hasPublicationStartPermission:  hasPermission(permissionName: "publication-start")
