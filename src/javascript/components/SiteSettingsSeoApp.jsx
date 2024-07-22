@@ -4,9 +4,8 @@ import {legacyTheme, Pagination} from '@jahia/react-material';
 import SearchBar from './SearchBar';
 import LanguageSelector from './LanguageSelector';
 import {withTranslation} from 'react-i18next';
-import {SwapHoriz, Dropdown, Header} from '@jahia/moonstone';
+import {Dropdown, Header} from '@jahia/moonstone';
 import * as _ from 'lodash';
-import Move from './Move';
 import {withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlTableData} from './VanityUrlTableData';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
@@ -69,10 +68,6 @@ class SiteSettingsSeoApp extends React.Component {
                 labels: {labelRowsPerPage: props.t('label.pagination.rowsPerPage'), of: props.t('label.pagination.of')}
             },
             selection: [],
-            move: {
-                open: false,
-                urlPairs: []
-            },
             workspace: {
                 key: SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].key,
                 value: SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA[0].value
@@ -87,18 +82,7 @@ class SiteSettingsSeoApp extends React.Component {
         this.onSearchBlur = this.onSearchBlur.bind(this);
         this.onSelectedLanguagesChanged = this.onSelectedLanguagesChanged.bind(this);
 
-        this.openMove = this.openMove.bind(this);
-        this.closeMove = this.closeMove.bind(this);
-
         this.actions = {
-            moveAction: {
-                priority: 2,
-                buttonLabel: t('label.actions.move'),
-                buttonIcon: <SwapHoriz/>,
-                className: 'move',
-                key: 'moveAction',
-                call: this.openMove
-            },
             updateVanity: {
                 call: (data, onSuccess, onError) => {
                     try {
@@ -144,25 +128,6 @@ class SiteSettingsSeoApp extends React.Component {
         }
 
         onError(err, mess);
-    }
-
-    openMove = urlPairs => {
-        this.setState({
-            move: {
-                open: true,
-                urlPairs: urlPairs
-            }
-        });
-    };
-
-    closeMove() {
-        this.setState({
-            move: {
-                open: false,
-                urlPairs: []
-            },
-            selection: []
-        });
     }
 
     onChangeSelection(add, urlPairs) {
@@ -259,7 +224,6 @@ class SiteSettingsSeoApp extends React.Component {
 
     render() {
         let {siteInfo, t, classes, lang} = this.props;
-        let polling = !(this.state.move.open);
         let variables = buildTableQueryVariablesAllVanity({selectedLanguageCodes: this.state.loadParams.selectedLanguageCodes, path: siteInfo.path, lang: lang, ...this.state.loadParams});
 
         return (
@@ -268,7 +232,7 @@ class SiteSettingsSeoApp extends React.Component {
                     {...this.state.loadParams}
                     tableQuery={DashboardTableQuery}
                     variables={variables}
-                    poll={polling ? SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL : 0}
+                    poll={SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL}
                 >
                     {(rows, totalCount) => (
                         <>
@@ -320,13 +284,6 @@ class SiteSettingsSeoApp extends React.Component {
                                             totalCount={totalCount || 0}
                                             onChangePage={this.onChangePage}
                                             onChangeRowsPerPage={this.onChangeRowsPerPage}/>
-                                {this.state.move.open && <Move
-                                    {...this.state.move}
-                                    {...this.state.loadParams}
-                                    path={siteInfo.path}
-                                    lang={lang}
-                                    onClose={this.closeMove}
-                                />}
                             </div>
                         </>
                     )}

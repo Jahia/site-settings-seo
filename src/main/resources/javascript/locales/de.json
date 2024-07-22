@@ -31,11 +31,12 @@
         "notPublished": "Bis zur Veröffentlichung von {{pagePath}} werden mehrere Mappings als Standard gesetzt"
       },
       "move": {
-        "confirm": "Ich verstehe, dass diese Operation unwideruflich ist",
-        "content": "Bitte geben Sie den Pfad ein, wohin die URL verschoben werden soll:",
+        "contentStart": "Sie sind dabei, die Vanity-URL(s) zu verschieben:",
+        "contentTo": "zu {{targetPath}}",
+        "warningMessage": "Sie müssen {{targetPath}} veröffentlichen, um den Vorgang abzuschließen.",
         "move": "Verschieben",
-        "target": "Pfad des Ziel-Knotens",
-        "title": "Mapping verschieben"
+        "title": "Mapping verschieben",
+        "vanityDetails": "{{path}} von {{source}}"
       },
       "publish": {
         "content": "Sind Sie sicher, dass Sie die ausgewählten Vanity URLs veröffentlichen wollen? Die Veröffentlichung wird als Hintergrundjob gestartet.",
@@ -44,8 +45,6 @@
       }
     },
     "errors": {
-      "DuplicateMappingError": "Doppelte Mappings.",
-      "DuplicateMappingError_message": "Doppelte Mappings.",
       "Error": "Ein unerwarteter Fehler ist aufgetreten.",
       "GqlConstraintViolationException": {
         "notAllowed": "URL Mapping ist nicht erlaubt.",
@@ -64,7 +63,6 @@
       "SitesMappingError": "Die Vanity URL ist ungültig.",
       "SitesMappingError_message": "SEO Url sollte nicht enthalten / Websites, wie es von dem System verwendet wird.",
       "MoveInvalidTarget_message": "Bitte überprüfen Sie den Pfad erneut, er ist ungültig.",
-      "MoveSiteError": "Das Verschieben von Vanity Mappings in eine andere Site ist nicht erlaubt.",
       "loadingSiteLanguages": "Fehler beim Laden der Site-Sprachen.",
       "loadingVanityUrl": "Fehler beim Laden der Vanity URLs.",
       "MoveInvalidTarget": "Ungültigen Pfad."
@@ -76,10 +74,8 @@
     "languageSelector": {
       "noLanguages": "Sprache auswählen",
       "allLanguages": "Alle Sprachen",
-      "languages": "{{names}} & {{lastName}}",
       "moreLanguages": "{{count}} weitere Sprache",
-      "moreLanguages_plural": "{{count}} weitere Sprachen",
-      "partialLanguages": "{{names}}, {{nextName}}"
+      "moreLanguages_plural": "{{count}} weitere Sprachen"
     },
     "localFilter": {
       "switchOff": "Alle anzeigen",
@@ -92,8 +88,7 @@
     },
     "notifications": {
       "moveConfirmed": "Verschieben bestätigt.",
-      "newMappingCreated": "Neue(s) Mapping(s) hinzugefügt.",
-      "publicationStarted": "Die Veröffentlichung wurde als Hintergrundjob gestartet."
+      "newMappingCreated": "Neue(s) Mapping(s) hinzugefügt."
     },
     "messages": {
       "noVanityUrl": "Keine vanity URL",

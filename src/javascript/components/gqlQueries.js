@@ -77,26 +77,6 @@ const GetPublicationStatus = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-const VanityUrlsByPathVariables = (paths, props) => ({
-    lang: props.lang,
-    languages: props.selectedLanguageCodes,
-    filterText: props.filterText,
-    doFilter: Boolean(props.filterText),
-    paths: paths
-});
-
-const GetNodeQuery = gql`
-    query GetNodeQuery($path:String!, $types: [String]!) {
-        jcr {
-            nodeByPath(path:$path) {
-                ...NodeCacheRequiredFields
-                inPicker : isNodeType(type: {types:$types})
-            }
-        }
-    }
-    ${PredefinedFragments.nodeCacheRequiredFields.gql}
-`;
-
 const CheckPublishPermissions = gql`
     query checkPublishPermissions($paths:[String!]!) {
         jcr {
@@ -113,9 +93,7 @@ const CheckPublishPermissions = gql`
 export {
     DashboardTableQuery,
     ContentEditorTableQuery,
-    GetNodeQuery,
     VanityUrlsByPath,
     GetPublicationStatus,
-    VanityUrlsByPathVariables,
     CheckPublishPermissions
 };

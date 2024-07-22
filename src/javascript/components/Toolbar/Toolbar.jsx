@@ -15,6 +15,7 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
 
     return (
         <Paper elevation={1}
+               data-sel-role="vanity-url-toolbar"
                className={clsx(classes.root, {[classes.rootExpanded]: selection.length > 0})}
         >
             <div className={classes.closeButtonContainer}>

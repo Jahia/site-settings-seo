@@ -1,4 +1,5 @@
 import {keyBy, merge, values, sortBy, map} from 'lodash';
+import SiteSettingsSeoConstants from '../SiteSettingsSeoApp.constants';
 
 export const atLeastOneLockedAndCanNotBeEdited = urls => {
     return urls.some(url => url.default.lockedAndCannotBeEdited);
@@ -20,7 +21,7 @@ export const atLeastOneNotPublished = urls => {
     return urls.some(url => url.default.publicationInfo.publicationStatus !== 'PUBLISHED');
 };
 
-export  const contentIsVisibleInLive = publicationInfo => {
+export const contentIsVisibleInLive = publicationInfo => {
     return publicationInfo.existsInLive && publicationInfo.publicationStatus !== 'UNPUBLISHED';
 };
 
@@ -79,3 +80,18 @@ const buildTableQueryVariables = props => ({
         }]
     }
 });
+
+export const isSitesUrl = url => {
+    const isString = (typeof url === 'string') || url instanceof String;
+    return (isString && SiteSettingsSeoConstants.SITES_REG_EXP.test(url.trim()));
+};
+
+export const isBlankUrl = url => {
+    const isString = (typeof url === 'string') || url instanceof String;
+    return (isString && !url.trim());
+};
+
+export const containsInvalidChars = url => {
+    const isString = (typeof url === 'string') || url instanceof String;
+    return (isString && SiteSettingsSeoConstants.INVALID_CHARS_REG_EXP.test(url.trim()));
+};

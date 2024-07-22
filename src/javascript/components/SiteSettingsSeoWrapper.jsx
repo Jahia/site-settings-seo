@@ -1,14 +1,14 @@
 import React from 'react';
 import {MuiThemeProvider} from '@material-ui/core';
-import {ProgressOverlay, NotificationProvider, legacyTheme} from '@jahia/react-material';
+import {NotificationProvider, legacyTheme} from '@jahia/react-material';
 import {VanityMutationsProvider} from './VanityMutationsProvider';
 import {VanityUrlContextProvider} from './Context/VanityUrl.context';
 import * as PropTypes from 'prop-types';
-import {shallowEqual, useSelector} from "react-redux";
+import {shallowEqual, useSelector} from 'react-redux';
 
 export const SiteSettingsSeoWrapper = ({dxContext, component: Component, ...props}) => {
     const {siteKey} = useSelector(state => ({
-        siteKey: state.site,
+        siteKey: state.site
     }), shallowEqual);
 
     return (

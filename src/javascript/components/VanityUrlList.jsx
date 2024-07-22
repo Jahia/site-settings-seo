@@ -240,29 +240,6 @@ class VanityUrlListLive extends React.Component {
     }
 }
 
-class ActionButton extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let {action, data, className, role} = this.props;
-        return (
-            <IconButton className={className}
-                        aria-label={action.buttonLabel}
-                        data-vud-role={role}
-                        onClick={event => {
-                event.stopPropagation();
-                action.call(data, event);
-            }}
-            >
-                {action.body}
-                {action.buttonIcon}
-            </IconButton>
-        );
-    }
-}
-
 VanityUrlListLive = compose(
     withStyles(styles),
     withTranslation('site-settings-seo')

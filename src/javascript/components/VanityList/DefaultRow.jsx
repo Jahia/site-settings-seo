@@ -1,5 +1,4 @@
 import React from 'react';
-import * as _ from 'lodash';
 import {Switch, TableCell, TableRow} from '@material-ui/core';
 import {Editable} from '../Editable';
 import classes from './DefaultRow.scss';
@@ -48,7 +47,8 @@ export const DefaultRow = ({
     };
 
     const url = urlPair.default;
-    const selected = Boolean(_.find(selection, p => p.uuid === urlPair.uuid));
+
+    const selected = Boolean(selection.find(p => p.uuid === urlPair.uuid));
 
     if (url) {
         const statuses = [
@@ -79,6 +79,7 @@ export const DefaultRow = ({
                     width="3%"
                 >
                     {!isOpenCardMode && <Checkbox isDisabled={!hasWritePermission}
+                                                  data-sel-role="select-vanity"
                                                   checked={selected}
                                                   onChange={event => onChangeSelection(event.currentTarget.checked, [urlPair])}/>}
                 </TableCell>

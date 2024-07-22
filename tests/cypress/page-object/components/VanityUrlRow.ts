@@ -16,4 +16,8 @@ export class VanityUrlRow extends BaseComponent {
     clickToEdit() {
         this.get().find('p[data-vud-role="url"]').click()
     }
+
+    select() {
+        this.get().find('input[data-sel-role="select-vanity"]').click()
+    }
 }

@@ -31,11 +31,12 @@
         "notPublished": "Several vanity URLs will be defined as canonical until publication of {{pagePath}}"
       },
       "move": {
-        "confirm": "I understand that this action cannot be undone",
-        "content": "Please select a page or enter a path directly",
+        "contentStart": "You are about to move the Vanity URL(s):",
+        "contentTo": "to {{targetPath}}",
+        "warningMessage": "You'll need to publish {{targetPath}} to complete the operation.",
         "move": "Move",
-        "target": "Target node path",
-        "title": "Move Vanity URL"
+        "title": "Move Vanity URL",
+        "vanityDetails": "{{path}} from {{source}}"
       },
       "publish": {
         "content": "Are you sure you want to publish the selected vanity URL(s)? Publication will be started as a background job.",
@@ -44,8 +45,6 @@
       }
     },
     "errors": {
-      "DuplicateMappingError": "Duplicate vanity URLs",
-      "DuplicateMappingError_message": "Duplicate vanity URLs",
       "Error": "An unexpected error has occurred",
       "GqlConstraintViolationException": {
         "notAllowed": "Not allowed",
@@ -64,7 +63,6 @@
       "SitesMappingError": "Invalid URL",
       "SitesMappingError_message": "Vanity URL should not contain /sites as it is used by the system",
       "MoveInvalidTarget_message": "Sorry, this path is invalid.",
-      "MoveSiteError": "Vanity URLs cannot be assigned to different sites",
       "loadingSiteLanguages": "Error loading site languages",
       "loadingVanityUrl": "Error loading vanity URLs",
       "MoveInvalidTarget": "Invalid path"
@@ -76,10 +74,8 @@
     "languageSelector": {
       "noLanguages": "Select a language",
       "allLanguages": "All Languages",
-      "languages": "{{names}} & {{lastName}}",
       "moreLanguages": "{{count}} more language",
-      "moreLanguages_plural": "{{count}} more languages",
-      "partialLanguages": "{{names}}, {{nextName}}"
+      "moreLanguages_plural": "{{count}} more languages"
     },
     "localFilter": {
       "switchOff": "Show all",
@@ -92,8 +88,7 @@
     },
     "notifications": {
       "moveConfirmed": "Moved",
-      "newMappingCreated": "New vanity URL(s) created",
-      "publicationStarted": "Publication job started in background"
+      "newMappingCreated": "New vanity URL(s) created"
     },
     "messages": {
       "noVanityUrl": "No vanity URL",

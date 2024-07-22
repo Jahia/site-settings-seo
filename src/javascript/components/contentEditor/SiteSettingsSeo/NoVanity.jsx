@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import AddVanityUrl from '../../AddVanityUrl';
+import {AddVanityUrl} from '../../AddVanityUrl/AddVanityUrl';
 import {Typography, Loader} from '@jahia/moonstone';
 import classes from './SiteSettingsSeoCardApp.scss';
 import {useTranslation} from 'react-i18next';

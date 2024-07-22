@@ -32,7 +32,8 @@ export const VanityUrlContextProvider = ({siteKey, children}) => {
         siteInfo: {
             displayName: site.displayName,
             uuid: site.uuid,
-            path: site.path
+            path: site.path,
+            siteKey: siteKey
         }
     };
 

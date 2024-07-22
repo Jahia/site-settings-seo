@@ -1,5 +1,4 @@
 import React from 'react';
-import {useNotifications} from '@jahia/react-material';
 import {
     Dialog,
     DialogActions,
@@ -15,7 +14,6 @@ import {useApolloClient} from '@apollo/client';
 import {PublishMutation} from '~/components/gqlMutations';
 
 export const Publication = ({isOpen, urlPairs, onClose}) => {
-    const {notificationContext} = useNotifications();
     const {t} = useTranslation('site-settings-seo');
 
     const client = useApolloClient();
@@ -25,7 +23,6 @@ export const Publication = ({isOpen, urlPairs, onClose}) => {
             variables: {pathsOrIds: urlPairs.map(urlPair => urlPair.uuid)}
         });
         onClose();
-        notificationContext.notify(t('label.notifications.publicationStarted'), ['closeAfter5s']);
     };
 
     return (

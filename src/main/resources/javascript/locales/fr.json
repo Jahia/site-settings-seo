@@ -28,11 +28,12 @@
         "notPublished": "Plusieurs URLs seront considérées par défaut jusqu'à publication du contenu {{pagePath}}"
       },
       "move": {
-        "confirm": "Cette opération ne peut être annulée.",
-        "content": "Entrez le chemin du contenu de destination.",
+        "contentStart": "Vous êtes sur le point de déplacer la ou les URL personnalisées :",
+        "contentTo": "vers {{targetPath}}",
+        "warningMessage": "Vous devrez publier {{targetPath}} pour terminer l'opération.",
         "move": "Déplacer",
-        "target": "Chemin du contenu de destination",
-        "title": "Déplacer URL"
+        "title": "Déplacer URL",
+        "vanityDetails": "{{path}} de {{source}}"
       },
       "publish": {
         "content": "Êtes-vous sûr de vouloir publier les URLs sélectionnées ? La publication sera démarrée en tâche de fond.",
@@ -41,8 +42,6 @@
       }
     },
     "errors": {
-      "DuplicateMappingError": "URL Dupliquée",
-      "DuplicateMappingError_message": "URL Dupliquée",
       "Error": "Une erreur imprévue s'est produite",
       "GqlConstraintViolationException": {
         "notAllowed": "Non autorisé",
@@ -61,7 +60,6 @@
       "SitesMappingError": "L'URL est invalide",
       "SitesMappingError_message": "Les URLs personnalisées ne doivent pas contenir /sites.",
       "MoveInvalidTarget_message": "Désolé, ce chemin est invalide.",
-      "MoveSiteError": "Les URLs ne peuvent être assignées à un autre site.",
       "loadingSiteLanguages": "Erreur lors du chargement des langues du site",
       "loadingVanityUrl": "Erreur lors du chargement des URLs personnalisées",
       "MoveInvalidTarget": "Chemin invalide"
@@ -73,10 +71,8 @@
     "languageSelector": {
       "noLanguages": "Sélectionner une langue",
       "allLanguages": "Toutes les langues",
-      "languages": "{{names}} & {{lastName}}",
       "moreLanguages": "{{count}} langue supplémentaire",
-      "moreLanguages_plural": "{{count}} langues supplémentaires",
-      "partialLanguages": "{{names}}, {{nextName}}"
+      "moreLanguages_plural": "{{count}} langues supplémentaires"
     },
     "localFilter": {
       "switchOff": "Afficher tout",
@@ -89,8 +85,7 @@
     },
     "notifications": {
       "moveConfirmed": "Déplacé",
-      "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)",
-      "publicationStarted": "Job de publication lancé en arrière plan"
+      "newMappingCreated": "Nouvelle(s) URL(s) ajoutée(s)"
     },
     "messages": {
       "noVanityUrl": "Pas d'URL personnalisée",
