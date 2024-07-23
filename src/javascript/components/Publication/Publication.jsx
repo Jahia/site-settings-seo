@@ -32,7 +32,7 @@ export const Publication = ({isOpen, urlPairs, onClose}) => {
                     classes={{root: classes.dialogRoot}}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
-                    data-vud-role="dialog"
+                    data-sel-role="publication-validation-dialog"
                     onClose={onClose}
             >
                 <DialogTitle id="alert-dialog-title">{t('label.dialogs.publish.title')}</DialogTitle>
@@ -45,12 +45,12 @@ export const Publication = ({isOpen, urlPairs, onClose}) => {
                     <Button color="default"
                             label={t('label.cancel')}
                             size="big"
-                            data-vud-role="button-cancel"
+                            data-sel-role="cancel"
                             onClick={onClose}/>
                     <Button color="accent"
                             label={t('label.dialogs.publish.publish')}
                             size="big"
-                            data-vud-role="button-primary"
+                            data-sel-role="publish"
                             onClick={() => {
                                 publish();
                             }}

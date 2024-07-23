@@ -44,10 +44,14 @@ export const checkVanityUrlByAPI = (
     cy.waitUntil(
         () => {
             return getNodeByPath(vanityUrlPath, ['j:default'], language, [], workspace).then((result) => {
-                expect(result?.data).not.eq(undefined)
-                expect(result?.data?.jcr.nodeByPath.name).eq(vanityUrlName)
-                expect(result?.data?.jcr.nodeByPath.properties[0].name).eq('j:default')
-                expect(result?.data?.jcr.nodeByPath.properties[0].value).eq(isCanonical)
+                if (!result?.data) {
+                    return false
+                }
+                const nodeByPath = result.data.jcr.nodeByPath
+                return (
+                    nodeByPath.name === vanityUrlName &&
+                    nodeByPath.properties.find((property) => property.name === 'j:default').value === isCanonical
+                )
             })
         },
         {

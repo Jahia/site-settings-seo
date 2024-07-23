@@ -39,7 +39,10 @@ export const DefaultRow = ({
         if (node.lockInfo) {
             let lockInfoDetails = node.lockInfo.details.find(detail => detail.type === LOCK_TYPE_VALIDATION || detail.type === LOCK_TYPE_DELETION);
             if (lockInfoDetails) {
-                return t(`site-settings-seo:label.status.${lockInfoDetails.type}`);
+                return {
+                    message: t(`site-settings-seo:label.status.${lockInfoDetails.type}`),
+                    type: lockInfoDetails.type
+                };
             }
         }
 
@@ -103,24 +106,30 @@ export const DefaultRow = ({
                         >
                             {url.url}
                         </Typography>}
-                    {!isMarkedForDeletion && hasWritePermission && !isLockedAndCannotBeEdited && <Editable value={url.url}
-                                                                                                           onChange={onMappingChanged}/>}
+                    {!isMarkedForDeletion && hasWritePermission && !isLockedAndCannotBeEdited &&
+                        <Editable value={url.url}
+                                  onChange={onMappingChanged}/>}
                 </TableCell>
                 <TableCell width="120px">
                     <div className={classes.chipContainer}>
                         {url.default ? <Chip color="accent"
                                              label="Canonical"
                                              className={clsx({[classes.chipWithMargin]: isMarkedForDeletion || isLockedAndCannotBeEdited})}/> : null}
-                        {isMarkedForDeletion || isLockedAndCannotBeEdited ? <Chip color="danger" title={lockedDetails} icon={<Lock/>}/> : null}
+                        {isMarkedForDeletion || isLockedAndCannotBeEdited ?
+                            <Chip color="danger"
+                                  title={lockedDetails?.message}
+                                  data-sel-role={`${lockedDetails?.type}-badge`}
+                                  icon={<Lock/>}/> : null}
                     </div>
                 </TableCell>
                 <TableCell className={clsx(classes.languageContainer, {[classes.inactive]: !url.active})} width="90px">
-                    <LanguageMenu isDisabled={Boolean(isMarkedForDeletion) || Boolean(!hasWritePermission) || Boolean(isLockedAndCannotBeEdited)}
-                                  languageCode={urlPair.default.language}
-                                  onLanguageSelected={languageCode => actions.updateVanity.call({
-                                      urlPair: urlPair,
-                                      language: languageCode
-                                  })}/>
+                    <LanguageMenu
+                        isDisabled={Boolean(isMarkedForDeletion) || Boolean(!hasWritePermission) || Boolean(isLockedAndCannotBeEdited)}
+                        languageCode={urlPair.default.language}
+                        onLanguageSelected={languageCode => actions.updateVanity.call({
+                            urlPair: urlPair,
+                            language: languageCode
+                        })}/>
                 </TableCell>
                 <TableCell width="40px" align="center" padding="none">
                     <span>

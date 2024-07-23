@@ -20,4 +20,8 @@ export class VanityUrlRow extends BaseComponent {
     select() {
         this.get().find('input[data-sel-role="select-vanity"]').click()
     }
+
+    getMarkForDeletionBadge() {
+        return this.get().find('div[data-sel-role="deletion-badge"]')
+    }
 }
