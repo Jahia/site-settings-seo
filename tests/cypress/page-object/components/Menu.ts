@@ -26,6 +26,10 @@ export class Menu extends BaseComponent {
         return this.get().find('[data-sel-role="delete"]')
     }
 
+    getDeletePermanentlyButton() {
+        return this.get().find('[data-sel-role="deletePermanently"]')
+    }
+
     clickOnMove() {
         this.getMoveButton().click()
         return getComponentByRole(Picker, 'picker-dialog')
@@ -36,6 +40,10 @@ export class Menu extends BaseComponent {
         return getComponent(DeleteDialog)
     }
 
+    clickOnDeletePermanently(): DeleteDialog {
+        this.getDeletePermanentlyButton().click()
+        return getComponent(DeleteDialog)
+    }
     clickOnPublish() {
         this.getPublishButton().click()
         return getComponent(PublicationValidationDialog)
