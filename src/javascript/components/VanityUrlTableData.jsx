@@ -17,10 +17,6 @@ export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, chil
         pollInterval: poll
     });
 
-    if (loading) {
-        return <></>;
-    }
-
     if (error) {
         console.log('Error when fetching data: ' + error);
         notificationContext.notify(t('label.errors.loadingVanityUrl'), ['closeButton', 'noAutomaticClose']);
