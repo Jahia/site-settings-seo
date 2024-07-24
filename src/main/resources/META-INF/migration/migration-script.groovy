@@ -19,7 +19,7 @@ import javax.jcr.query.QueryResult
 final Logger logger = LoggerFactory.getLogger("org.jahia.tools.groovyConsole")
 
 private static Query getVanitysQuery(JCRSessionWrapper session) {
-    String textQuery = "SELECT * FROM [jnt:vanityUrl] AS vanityURL order by [j:url] asc"
+    String textQuery = "SELECT * FROM [jnt:vanityUrl] AS vanityURL order by [jcr:uuid] asc"
     Query vanityUrlsQuery = session.getWorkspace().getQueryManager().createQuery(textQuery, Query.JCR_SQL2)
     return vanityUrlsQuery
 }
@@ -81,7 +81,7 @@ private static int handleVanitysInLive(JCRSessionWrapper session, QueryResult st
                     defaultSession.refresh(false)
                 }
             })
-    logger.info("Took {}ms to update {} vanitys", System.currentTimeMillis() - timer, numberUpdated)
+    logger.info("Took {}ms to update {} vanitys in live", System.currentTimeMillis() - timer, numberUpdated)
     return numberUpdated
 }
 
@@ -99,6 +99,8 @@ private static boolean recalculateVanitySystemName(JCRNodeWrapper vanity, JCRSes
                 session.move(currentVanity.getPath(), currentVanity.getParent().getPath() + "/" + newSystemName)
                 updated = true
             }
+        } else {
+            logger.debug("No recalculation for: " + currentVanity.getPath())
         }
     } catch (RepositoryException e) {
         logger.error("Failed to recalculate the vanity url system name in workspace: ", e)
@@ -121,7 +123,7 @@ private static int handleVanitysInDefault(JCRSessionWrapper session, QueryResult
     session.save()
     session.refresh(false)
 
-    logger.info("Took {}ms to update {} vanitys", System.currentTimeMillis() - timer, numberUpdated)
+    logger.info("Took {}ms to update {} vanitys in default", System.currentTimeMillis() - timer, numberUpdated)
     return numberUpdated
 }
 
