@@ -286,10 +286,10 @@ class SiteSettingsSeoApp extends React.Component {
                                         </div>
                                     ))}
                                 </List>
-                                <Pagination {...this.state.loadParams}
-                                            totalCount={totalCount || 0}
-                                            onChangePage={this.onChangePage}
-                                            onChangeRowsPerPage={this.onChangeRowsPerPage}/>
+                                {rows.length > 0 && <Pagination {...this.state.loadParams}
+                                                        totalCount={totalCount || 0}
+                                                        onChangePage={this.onChangePage}
+                                                        onChangeRowsPerPage={this.onChangeRowsPerPage}/>}
                             </div>
                         </>
                     )}
