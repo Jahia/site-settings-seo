@@ -13,15 +13,14 @@ import classes from './MoveValidationDialog.scss';
 import {useApolloClient} from '@apollo/client';
 import {MoveMutation} from '~/components/gqlMutations';
 
-export const MoveValidationDialog = ({isOpen, targetPath, urlPairs, onClose}) => {
+export const MoveValidationDialog = ({isOpen, targetPath, urlPairs, onClose, refetch}) => {
     const {t} = useTranslation('site-settings-seo');
-
     const client = useApolloClient();
     const move = () => {
         client.mutate({
             mutation: MoveMutation,
             variables: {pathsOrIds: urlPairs.map(urlPair => urlPair.uuid), target: targetPath}
-        });
+        }).then(refetch);
         onClose();
     };
 
@@ -88,6 +87,7 @@ MoveValidationDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     targetPath: PropTypes.string.isRequired,
     urlPairs: PropTypes.array.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    refetch: PropTypes.func.isRequired
 };
 

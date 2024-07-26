@@ -25,7 +25,6 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                     {...this.state.loadParams}
                     tableQuery={ContentEditorTableQuery}
                     variables={variables}
-                    poll={SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL}
                 >
                     {rows => {
                         const isEmpty = !rows[0];

@@ -35,7 +35,7 @@ export const AddVanityUrl = ({
     selectedLanguageCodes,
     filterText
 }) => {
-    const {rows} = useVanityTableDataUrlContext();
+    const {rows, refetch} = useVanityTableDataUrlContext();
     const notificationContext = useNotifications();
     const {t} = useTranslation('site-settings-seo');
     const client = useApolloClient();
@@ -81,17 +81,8 @@ export const AddVanityUrl = ({
                 vanityUrls: [vanityUrl],
                 path: path,
                 lang: lang
-            }, refetchQueries: [{
-                query: VanityUrlsByPath,
-                variables: {
-                    lang: lang,
-                    languages: selectedLanguageCodes,
-                    filterText: filterText,
-                    doFilter: Boolean(filterText),
-                    paths: [path]
-                }
-            }]
-        });
+            }
+        }).then(() => refetch());
     };
 
     const handleSave = () => {

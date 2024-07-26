@@ -4,10 +4,13 @@ import {atLeastOneLockedAndCanNotBeEdited} from '../Utils/Utils';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useVanityUrlContext} from '~/components/Context/VanityUrl.context';
 import {MoveValidationDialog} from '~/components/Move/MoveValidationDialog';
+import {useVanityTableDataUrlContext} from "~/components/VanityUrlTableData";
 
 export const MoveVanityAction = ({render: Render, actions, urlPairs, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {siteInfo, lang} = useVanityUrlContext();
+    const {refetch} = useVanityTableDataUrlContext();
+
     const closeDialog = () => {
         componentRenderer.destroy('MoveDialog');
     };
@@ -25,7 +28,8 @@ export const MoveVanityAction = ({render: Render, actions, urlPairs, ...otherPro
                         urlPairs: urlPairs,
                         isOpen: true,
                         targetPath: pickerResult[0].path,
-                        onClose: closeDialog
+                        onClose: closeDialog,
+                        refetch: refetch
                     });
             },
             site: siteInfo.siteKey,
