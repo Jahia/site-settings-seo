@@ -8,18 +8,13 @@ import * as PropTypes from 'prop-types';
 export const VanityUrlTableDataContext = React.createContext({});
 export const useVanityTableDataUrlContext = () => useContext(VanityUrlTableDataContext);
 
-export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, children, tableQuery, variables}) => {
+export const VanityUrlTableData = ({filterText, totalCount, pageSize, children, tableQuery, variables}) => {
     const notificationContext = useNotifications();
     const {t} = useTranslation('site-settings-seo');
-    const {data, error, loading} = useQuery(tableQuery, {
+    const {data, error, loading,refetch} = useQuery(tableQuery, {
         fetchPolicy: 'network-only',
-        variables: variables,
-        pollInterval: poll
+        variables: variables
     });
-
-    if (loading) {
-        return <></>;
-    }
 
     if (error) {
         console.log('Error when fetching data: ' + error);
@@ -58,7 +53,7 @@ export const VanityUrlTableData = ({filterText, totalCount, pageSize, poll, chil
         });
     }
 
-    const context = {rows: rows};
+    const context = {rows: rows, refetch: refetch};
     return (
         <VanityUrlTableDataContext.Provider value={context}>
             {rows && children(rows, totalCount, numberOfPages)}
@@ -72,6 +67,5 @@ VanityUrlTableData.propTypes = {
     filterText: PropTypes.string,
     totalCount: PropTypes.number,
     pageSize: PropTypes.number,
-    poll: PropTypes.number,
     children: PropTypes.elementType
 };

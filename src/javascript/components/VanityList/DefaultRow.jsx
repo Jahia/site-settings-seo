@@ -9,6 +9,7 @@ import {ButtonRendererNoLabel} from '@jahia/jcontent';
 import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import clsx from 'clsx';
+import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
 
 export const DefaultRow = ({
     hasWritePermission,
@@ -22,13 +23,15 @@ export const DefaultRow = ({
 }) => {
     const {t} = useTranslation('site-settings-seo');
 
+    const {refetch} = useVanityTableDataUrlContext();
+
     const onMappingChanged = (value, onSuccess, onError) => {
         if (/[:*?"<>|%+]/.test(value)) {
             onError(t('label.errors.GqlConstraintViolationException.notAllowedChars'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
         } else if (value.endsWith('.do')) {
             onError(t('label.errors.GqlConstraintViolationException.notAllowedDotDo'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
         } else {
-            actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError);
+            actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError, refetch);
         }
     };
 

@@ -84,14 +84,17 @@ class SiteSettingsSeoApp extends React.Component {
 
         this.actions = {
             updateVanity: {
-                call: (data, onSuccess, onError) => {
+                call: (data, onSuccess, onError, refetch) => {
                     try {
                         props.vanityMutationsContext.update([data.urlPair.uuid],
                             data.defaultMapping != null ? data.defaultMapping.toString() : undefined,
                             data.active != null ? data.active.toString() : undefined,
                             data.language,
                             data.url)
-                            .then(onSuccess)
+                            .then(() => {
+                                onSuccess();
+                                refetch();
+                            })
                             .catch(ex => {
                                 this.handleServerError(ex, onError);
                             });
@@ -224,7 +227,11 @@ class SiteSettingsSeoApp extends React.Component {
 
     render() {
         let {siteInfo, t, classes, lang} = this.props;
-        let variables = buildTableQueryVariablesAllVanity({selectedLanguageCodes: this.state.loadParams.selectedLanguageCodes, path: siteInfo.path, lang: lang, ...this.state.loadParams});
+        let variables = buildTableQueryVariablesAllVanity({
+            selectedLanguageCodes: this.state.loadParams.selectedLanguageCodes,
+            path: siteInfo.path,
+            lang: lang, ...this.state.loadParams
+        });
 
         return (
             <div className={classes.pageContainer}>
@@ -232,7 +239,6 @@ class SiteSettingsSeoApp extends React.Component {
                     {...this.state.loadParams}
                     tableQuery={DashboardTableQuery}
                     variables={variables}
-                    poll={SiteSettingsSeoConstants.TABLE_POLLING_INTERVAL}
                 >
                     {(rows, totalCount) => (
                         <>
@@ -280,10 +286,10 @@ class SiteSettingsSeoApp extends React.Component {
                                         </div>
                                     ))}
                                 </List>
-                                <Pagination {...this.state.loadParams}
-                                            totalCount={totalCount || 0}
-                                            onChangePage={this.onChangePage}
-                                            onChangeRowsPerPage={this.onChangeRowsPerPage}/>
+                                {rows.length > 0 && <Pagination {...this.state.loadParams}
+                                                        totalCount={totalCount || 0}
+                                                        onChangePage={this.onChangePage}
+                                                        onChangeRowsPerPage={this.onChangeRowsPerPage}/>}
                             </div>
                         </>
                     )}
@@ -304,8 +310,8 @@ const assembleWithHoc = function (component) {
 const SiteSettingsSeoComponent = assembleWithHoc(SiteSettingsSeoApp);
 
 const SiteSettingsSeoFunctionalComponent = props => {
-    const {languages, siteInfo, polling} = useVanityUrlContext();
-    return (<SiteSettingsSeoComponent languages={languages} siteInfo={siteInfo} polling={polling} {...props}/>);
+    const {languages, siteInfo} = useVanityUrlContext();
+    return (<SiteSettingsSeoComponent languages={languages} siteInfo={siteInfo} {...props}/>);
 };
 
 export {SiteSettingsSeoFunctionalComponent, SiteSettingsSeoComponent, SiteSettingsSeoApp, assembleWithHoc};
