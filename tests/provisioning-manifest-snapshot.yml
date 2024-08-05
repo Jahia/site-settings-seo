@@ -6,6 +6,7 @@
 - installBundle:
     - 'mvn:org.jahia.modules/legacy-default-components'
     - 'mvn:org.jahia.modules/jcontent'
+    - 'mvn:org.jahia.modules/graphql-dxm-provider'
     - 'mvn:org.jahia.modules/event'
     - 'mvn:org.jahia.modules/site-settings-seo'
     - 'mvn:org.jahia.modules/press'
@@ -26,8 +27,8 @@
     - 'mvn:org.jahia.modules/skins'
     - 'mvn:org.jahia.modules/default-skins'
     - 'mvn:org.jahia.modules/grid'
-    - 'mvn:org.jahia.modules/tabularList'  
-    - 'mvn:org.jahia.modules/site-settings-seo'  
+    - 'mvn:org.jahia.modules/tabularList'
+    - 'mvn:org.jahia.modules/site-settings-seo'
     - 'mvn:org.jahia.test/site-settings-seo-test-module'
   autoStart: true
   uninstallPreviousVersion: true
