@@ -1,7 +1,7 @@
 import { ContentEditor } from '@jahia/jcontent-cypress/dist/page-object/contentEditor'
 import { VanityUrlUi } from './VanityUrlUi'
 import { VanityUrlsDialog } from './components/dialog/VanityUrlsDialog'
-import {getComponent} from "@jahia/cypress";
+import { getComponent } from '@jahia/cypress'
 
 export class ContentEditorSEO extends ContentEditor {
     constructor() {

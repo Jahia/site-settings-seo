@@ -11,5 +11,4 @@ export class PageWithVanityUrlList extends BaseComponent {
     getPageCard(contentUuid: string) {
         return getComponentBySelector(PageCard, `[data-vud-content-uuid="${contentUuid}"]`, this)
     }
-
 }

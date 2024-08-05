@@ -1,5 +1,4 @@
-import { BaseComponent, getComponent } from '@jahia/cypress'
-import { Menu } from './Menu'
+import { BaseComponent } from '@jahia/cypress'
 
 export class AddVanityUrl extends BaseComponent {
     static defaultSelector = '[data-sel-role="new-vanity-url"]'
