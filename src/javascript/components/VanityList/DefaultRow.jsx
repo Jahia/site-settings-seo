@@ -117,6 +117,7 @@ export const DefaultRow = ({
                     <div className={classes.chipContainer}>
                         {url.default ? <Chip color="accent"
                                              label="Canonical"
+                                             data-sel-role="canonical-badge"
                                              className={clsx({[classes.chipWithMargin]: isMarkedForDeletion || isLockedAndCannotBeEdited})}/> : null}
                         {isMarkedForDeletion || isLockedAndCannotBeEdited ?
                             <Chip color="danger"

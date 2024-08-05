@@ -1,5 +1,6 @@
 import { BaseComponent, getComponent } from '@jahia/cypress'
 import { StagingVanityUrlList } from './StagingVanityUrlList'
+import { AddVanityUrl } from './AddVanityUrl'
 
 export class PageCard extends BaseComponent {
     static defaultSelector = '[data-sel-role="page-card"]'
@@ -18,5 +19,10 @@ export class PageCard extends BaseComponent {
 
     getStagingVanityUrls() {
         return getComponent(StagingVanityUrlList, this)
+    }
+
+    clickOnAddVanityUrl() {
+        this.get().find('button[aria-label="add"]').click()
+        return getComponent(AddVanityUrl, this)
     }
 }
