@@ -21,7 +21,6 @@ import {
 import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
 import * as PropTypes from 'prop-types';
 import classes from './AddVanityUrl.scss';
-import {VanityUrlsByPath} from '~/components/gqlQueries';
 import {AddVanityMutation} from '~/components/gqlMutations';
 import {useApolloClient} from '@apollo/client';
 import clsx from 'clsx';
@@ -31,9 +30,7 @@ export const AddVanityUrl = ({
     path,
     setParentLoading,
     children,
-    hasWritePermission,
-    selectedLanguageCodes,
-    filterText
+    hasWritePermission
 }) => {
     const {rows, refetch} = useVanityTableDataUrlContext();
     const notificationContext = useNotifications();
@@ -273,8 +270,6 @@ AddVanityUrl.propTypes = {
     path: PropTypes.string.isRequired,
     children: PropTypes.object,
     hasWritePermission: PropTypes.bool.isRequired,
-    setParentLoading: PropTypes.func,
-    selectedLanguageCodes: PropTypes.array,
-    filterText: PropTypes.string
+    setParentLoading: PropTypes.func
 };
 
