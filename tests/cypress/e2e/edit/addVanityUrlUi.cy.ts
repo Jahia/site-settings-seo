@@ -2,6 +2,7 @@ import { publishAndWaitJobEnding, deleteNode, addVanityUrl, setNodeProperty } fr
 import { CustomPageComposer } from '../../page-object/pageComposer/CustomPageComposer'
 import { addSimplePage, checkVanityUrlByAPI, checkVanityUrlDoNotExistByAPI } from '../../utils/Utils'
 import { ContentEditorSEO } from '../../page-object/ContentEditorSEO'
+import { JContent } from '@jahia/jcontent-cypress/dist/page-object/jcontent'
 
 describe('Add vanity Urls', () => {
     const siteKey = 'digitall'
@@ -9,6 +10,8 @@ describe('Add vanity Urls', () => {
     const homePath = sitePath + '/home'
     const pageVanityUrl1 = 'page1'
     const pageVanityUrl2 = 'page2'
+    let uuidPage2 = ''
+    const jcontentHomePath = 'pages/home'
 
     before('init', function () {
         cy.apollo({ mutationFile: 'graphql/enableLegacyPageComposer.graphql' })
@@ -17,7 +20,9 @@ describe('Add vanity Urls', () => {
     beforeEach('create test data', function () {
         addSimplePage(homePath, pageVanityUrl1, pageVanityUrl1, 'en')
         setNodeProperty(homePath + '/' + pageVanityUrl1, 'jcr:title', pageVanityUrl1 + '-fr', 'fr')
-        addSimplePage(homePath, pageVanityUrl2, pageVanityUrl2, 'en')
+        addSimplePage(homePath, pageVanityUrl2, pageVanityUrl2, 'en').then(({ data }) => {
+            uuidPage2 = data.jcr.addNode.uuid
+        })
         addVanityUrl('/sites/digitall/home/' + pageVanityUrl2, 'en', '/existingVanity')
         publishAndWaitJobEnding(homePath, ['en', 'fr'])
     })
@@ -52,62 +57,41 @@ describe('Add vanity Urls', () => {
         )
     })
 
-    it.skip('Add a second canonical vanity URL and published vanity URL from the UI', function () {
+    it('Add a second canonical vanity URL and published vanity URL from the UI', function () {
         cy.login()
-        const composer = new CustomPageComposer()
-        CustomPageComposer.visit('digitall', 'en', 'home.html')
-        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl2)
-        const contentEditor = contextMenu.edit()
-        const vanityUrlUi = contentEditor.openVanityUrlUi()
-        vanityUrlUi.addVanityUrl('vanity2', true)
+        const jContent = JContent.visit('digitall', 'en', `${jcontentHomePath}/${pageVanityUrl2}`)
 
+        jContent.editPage()
+        const contentEditor = new ContentEditorSEO()
+        const vanityUrlDialog = contentEditor.openVanityUrlDialog()
+        const pageCard = vanityUrlDialog.getPageCard(uuidPage2)
+        const addForm = pageCard.clickOnAddVanityUrl()
+        addForm.fillVanityValues('vanity2', true)
         // Check the vanity url is not published by default (= does not exists in LIVE)
-        checkVanityUrlDoNotExistByAPI(homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2', 'en', 'LIVE')
+        checkVanityUrlDoNotExistByAPI(`${homePath}/${pageVanityUrl2}/vanityUrlMapping/vanity2`, 'en', 'LIVE')
 
         // Check it is canonical
-        vanityUrlUi.getVanityUrlRow('/vanity2').then((result) => {
-            expect(result.text()).contains('Canonical')
-        })
-
-        checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2',
-            'vanity2',
-            'en',
-            'EDIT',
-            'true',
-        )
+        const stagingVanityUrls = pageCard.getStagingVanityUrls()
+        stagingVanityUrls.getVanityUrlRow('/vanity2').getCanonicalBadge().should('exist')
 
         // Check first vanity url is not canonical
-        vanityUrlUi.getVanityUrlRow('/existingVanity').then((result) => {
-            expect(result.text()).not.contains('Canonical')
-        })
-        checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/existingVanity',
-            'existingVanity',
-            'en',
-            'EDIT',
-            'false',
-        )
+        stagingVanityUrls.getVanityUrlRow('/existingVanity').getCanonicalBadge().should('not.exist')
 
         // Publish the vanity url
-        vanityUrlUi.publishAllVanityUrls()
+        vanityUrlDialog.getPublishAllButton().click()
 
         // Check the vanity url is now published and still canonical
-        checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/vanity2',
-            'vanity2',
-            'en',
-            'LIVE',
-            'true',
-        )
+        checkVanityUrlByAPI(`${homePath}/${pageVanityUrl2}/vanityUrlMapping/vanity2`, 'vanity2', 'en', 'LIVE', 'true')
+
         // Check first vanity url is not canonical
         checkVanityUrlByAPI(
-            homePath + '/' + pageVanityUrl2 + '/vanityUrlMapping/existingVanity',
+            `${homePath}/${pageVanityUrl2}/vanityUrlMapping/existingVanity`,
             'existingVanity',
             'en',
             'LIVE',
             'false',
         )
+        cy.logout()
     })
 
     it('Should display vanity url UI event if parent have special characters', () => {

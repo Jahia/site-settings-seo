@@ -24,4 +24,8 @@ export class VanityUrlRow extends BaseComponent {
     getMarkForDeletionBadge() {
         return this.get().find('div[data-sel-role="deletion-badge"]')
     }
+
+    getCanonicalBadge() {
+        return this.get().find('div[data-sel-role="canonical-badge"]')
+    }
 }
