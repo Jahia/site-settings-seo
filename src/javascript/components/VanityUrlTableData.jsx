@@ -56,7 +56,7 @@ export const VanityUrlTableData = ({filterText, totalCount, pageSize, children, 
     const context = {rows: rows, refetch: refetch};
     return (
         <VanityUrlTableDataContext.Provider value={context}>
-            {rows && children(rows, totalCount, numberOfPages)}
+            {!loading && rows && children(rows, totalCount, numberOfPages)}
         </VanityUrlTableDataContext.Provider>
     );
 };

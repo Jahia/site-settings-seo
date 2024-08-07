@@ -7,6 +7,8 @@ import {
     getNodeByPath,
     unpublishNode,
 } from '@jahia/cypress'
+import { getJahiaVersion } from '@jahia/cypress'
+import { compare } from 'compare-versions'
 
 describe('Checks the unpublication of the vanity urls', () => {
     const siteKey = 'testPublishVanityUrls'
@@ -42,6 +44,13 @@ describe('Checks the unpublication of the vanity urls', () => {
     }
 
     before('create test data', function () {
+        getJahiaVersion().then((jahiaVersion) => {
+            console.log(jahiaVersion)
+            if (compare(jahiaVersion.release.replace('-SNAPSHOT', ''), '8.2.1', '<')) {
+                console.log('Test suite will be skipped, not meeting Jahia version requirement')
+                this.skip()
+            }
+        })
         createSite(siteKey, siteConfig)
         createPage(homePath, pageName, 'default', langEN).then(() => {
             setNodeProperty(pagePath, 'jcr:title', 'fr title', langFR)
