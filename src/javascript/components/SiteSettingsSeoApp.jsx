@@ -240,7 +240,7 @@ class SiteSettingsSeoApp extends React.Component {
                     tableQuery={DashboardTableQuery}
                     variables={variables}
                 >
-                    {(rows, totalCount) => (
+                    {({rows, totalCount}) => (
                         <>
                             <Header key="head"
                                     className={classes.vanityHeader}
