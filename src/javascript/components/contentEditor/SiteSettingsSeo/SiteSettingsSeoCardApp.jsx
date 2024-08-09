@@ -26,7 +26,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                     tableQuery={ContentEditorTableQuery}
                     variables={variables}
                 >
-                    {rows => {
+                    {({rows, loading}) => {
                         const isEmpty = !rows[0];
                         return (
                             <>
@@ -37,7 +37,7 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                     })}
                                 </div>
                                 <div className={classes.seoCardLayout}>
-                                    {isEmpty && <NoVanity path={path}/>}
+                                    {!loading && isEmpty && <NoVanity path={path}/>}
                                     {!isEmpty &&
                                         <div className={classes.root} data-vud-content-uuid={rows[0].uuid}>
                                             <Paper elevation={0}>
