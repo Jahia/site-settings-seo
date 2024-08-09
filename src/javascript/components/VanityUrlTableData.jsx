@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {useQuery} from '@apollo/client';
-import {useNotifications} from "@jahia/react-material";
+import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {gqlContentNodeToVanityUrlPairs} from './Utils/Utils';
 import * as PropTypes from 'prop-types';
@@ -8,10 +8,10 @@ import * as PropTypes from 'prop-types';
 export const VanityUrlTableDataContext = React.createContext({});
 export const useVanityTableDataUrlContext = () => useContext(VanityUrlTableDataContext);
 
-export const VanityUrlTableData = ({filterText, totalCount, pageSize, children, tableQuery, variables}) => {
+export const VanityUrlTableData = ({filterText, totalCount, children, tableQuery, variables}) => {
     const notificationContext = useNotifications();
     const {t} = useTranslation('site-settings-seo');
-    const {data, error, loading,refetch} = useQuery(tableQuery, {
+    const {data, error, loading, refetch} = useQuery(tableQuery, {
         fetchPolicy: 'network-only',
         variables: variables
     });
@@ -22,7 +22,6 @@ export const VanityUrlTableData = ({filterText, totalCount, pageSize, children, 
         return <>error</>;
     }
 
-    let numberOfPages = 0;
     let rows = [];
     let nodes = [];
     if (data?.jcr) {
@@ -31,7 +30,6 @@ export const VanityUrlTableData = ({filterText, totalCount, pageSize, children, 
         } else if (data.jcr.nodesByCriteria?.nodes) {
             nodes = data.jcr.nodesByCriteria.nodes;
             totalCount = data.jcr.nodesByCriteria.pageInfo.totalCount;
-            numberOfPages = totalCount / pageSize;
         }
 
         rows = nodes.map(node => {
@@ -56,7 +54,7 @@ export const VanityUrlTableData = ({filterText, totalCount, pageSize, children, 
     const context = {rows: rows, refetch: refetch};
     return (
         <VanityUrlTableDataContext.Provider value={context}>
-            {!loading && rows && children(rows, totalCount, numberOfPages)}
+            {rows && children({rows: rows, totalCount: totalCount, loading: loading})}
         </VanityUrlTableDataContext.Provider>
     );
 };
@@ -66,6 +64,5 @@ VanityUrlTableData.propTypes = {
     variables: PropTypes.object,
     filterText: PropTypes.string,
     totalCount: PropTypes.number,
-    pageSize: PropTypes.number,
     children: PropTypes.elementType
 };
