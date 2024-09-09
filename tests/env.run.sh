@@ -6,7 +6,7 @@ source ./set-env.sh
 
 #!/usr/bin/env bash
 START_TIME=$SECONDS
-
+RUN=${RUN:-ci}
 echo " env.run.sh == Printing the most important environment variables"
 echo " MANIFEST: ${MANIFEST}"
 echo " TESTS_IMAGE: ${TESTS_IMAGE}"
@@ -22,6 +22,7 @@ echo " JAHIA_USERNAME_TOOLS: ${JAHIA_USERNAME_TOOLS}"
 echo " JAHIA_PASSWORD_TOOLS: ${JAHIA_PASSWORD_TOOLS}"
 echo " SUPER_USER_PASSWORD: ${SUPER_USER_PASSWORD}"
 echo " TIMEZONE: ${TIMEZONE}"
+echo " RUN: ${RUN}"
 echo " == Using Node version: $(node -v)"
 echo " == Using yarn version: $(yarn -v)"
 
@@ -119,7 +120,7 @@ CYPRESS_CONFIG="cypress.config.ts"
 echo "$(date +'%d %B %Y - %k:%M') == Run tests with config: ${CYPRESS_CONFIG} =="
 if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
   echo "$(date +'%d %B %Y - %k:%M') == Run ALL specs with cluster enabled =="
-  yarn e2e:ci --config-file ${CYPRESS_CONFIG}
+  yarn e2e:${RUN} --config-file ${CYPRESS_CONFIG}
 else
   echo "$(date +'%d %B %Y - %k:%M') == Run REDUCED specs with cluster disabled =="
   yarn e2e:ci:standalone --config-file ${CYPRESS_CONFIG}

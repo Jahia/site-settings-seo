@@ -23,4 +23,5 @@ yarn install
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 echo " == Jahia became alive in ${ELAPSED_TIME} seconds"
 
-yarn e2e:debug
+export RUN=debug
+./env.run.sh
