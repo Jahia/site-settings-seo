@@ -5,7 +5,6 @@
 
 - installBundle:
     - 'mvn:org.jahia.modules/legacy-default-components'
-    - 'mvn:org.jahia.modules/jcontent'
     - 'mvn:org.jahia.modules/graphql-dxm-provider'
     - 'mvn:org.jahia.modules/event'
     - 'mvn:org.jahia.modules/site-settings-seo'
