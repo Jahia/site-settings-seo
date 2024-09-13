@@ -6,13 +6,14 @@
       "name": "seo",
       "fieldSets": [
         {
-          "name": "jmix:description",
-          "labelKey": "seo.htmlHeadSection.label",
+          "name": "htmlHead",
+          "labelKey": "site-settings-seo:seo.htmlHeadSection.label",
           "fields": [
             {
               "name": "jcr:description",
-              "labelKey": "seo.metaDescription.label",
-              "descriptionKey": "seo.metaDescription.ui.tooltip",
+              "declaringNodeType": "jmix:description",
+              "labelKey": "site-settings-seo:seo.metaDescription.label",
+              "descriptionKey": "site-settings-seo:seo.metaDescription.ui.tooltip",
               "selectorOptionsMap": {
                 "maxLength": 160
               }
