@@ -1,0 +1,26 @@
+{
+  "nodeType": "jnt:page",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "seo",
+      "fieldSets": [
+        {
+          "name": "htmlHead",
+          "labelKey": "site-settings-seo:seo.htmlHeadSection.label",
+          "fields": [
+            {
+              "name": "jcr:description",
+              "declaringNodeType": "jmix:description",
+              "labelKey": "site-settings-seo:seo.metaDescription.label",
+              "descriptionKey": "site-settings-seo:seo.metaDescription.ui.tooltip",
+              "selectorOptionsMap": {
+                "maxLength": 160
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
