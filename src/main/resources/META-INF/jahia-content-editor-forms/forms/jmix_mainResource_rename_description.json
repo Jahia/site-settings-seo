@@ -17,8 +17,18 @@
               "selectorOptionsMap": {
                 "maxLength": 160
               }
+            },
+            {
+              "name": "keywords",
+              "declaringNodeType": "jmix:seoKeywords"
             }
           ]
+        },
+        {
+          "name": "jmix:seoKeywords",
+          "isAlwaysActivated": true,
+          "alwaysPresent": true,
+          "hide": true
         }
       ]
     }
