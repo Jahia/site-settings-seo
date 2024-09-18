@@ -19,13 +19,13 @@
               }
             },
             {
-              "name": "keywords",
-              "declaringNodeType": "jmix:seoKeywords"
+              "name": "seoKeywords",
+              "declaringNodeType": "jmix:seoHtmlHead"
             }
           ]
         },
         {
-          "name": "jmix:seoKeywords",
+          "name": "jmix:seoHtmlHead",
           "isAlwaysActivated": true,
           "alwaysPresent": true,
           "hide": true
