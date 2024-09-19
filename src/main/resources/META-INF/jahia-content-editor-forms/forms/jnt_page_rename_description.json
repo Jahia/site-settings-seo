@@ -21,6 +21,10 @@
             {
               "name": "seoKeywords",
               "declaringNodeType": "jmix:seoHtmlHead"
+            },
+            {
+              "name": "openGraphImage",
+              "declaringNodeType": "jmix:seoHtmlHead"
             }
           ]
         },
