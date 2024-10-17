@@ -10,7 +10,7 @@ jobs:
     name: Integration Tests
     runs-on: self-hosted
 
-    timeout-minutes: 45
+    timeout-minutes: 55
     steps:
       - uses: jahia/jahia-modules-action/helper@v2
       - uses: KengoTODA/actions-setup-docker-compose@main
@@ -24,6 +24,7 @@ jobs:
         with:
           module_id: site-settings-seo
           incident_service: site-settings-seo-JahiaSN
+          timeout_minutes: 45
           jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           testrail_project: SEO Module
           tests_manifest: provisioning-manifest-snapshot.yml
