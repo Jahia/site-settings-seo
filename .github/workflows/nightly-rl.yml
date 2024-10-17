@@ -27,7 +27,7 @@ jobs:
           timeout_minutes: 45
           jahia_image: jahia/jahia-ee:8
           testrail_project: SEO Module
-          tests_manifest: provisioning-manifest-snapshot.yml
+          tests_manifest: provisioning-manifest-release.yml
           should_use_build_artifacts: false
           should_skip_artifacts: true
           should_skip_notifications: true
