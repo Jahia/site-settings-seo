@@ -13,10 +13,6 @@ on:
         description: 'Provisioning manifest. Can be a local repository file in the tests folder or a publicly accessible link'
         required: true
         default: 'provisioning-manifest-snapshot.yml'
-      config_file:
-        description: 'Cypress config file to use'
-        required: false
-        default: 'cypress.config-jcontent.ts'
 
 jobs:
   integration-tests:
@@ -35,6 +31,7 @@ jobs:
         with:
           module_id: site-settings-seo
           testrail_project: SEO Module
+          timeout_minutes: 45
           jahia_image: ${{ github.event.inputs.jahia_image }}
           should_use_build_artifacts: false
           should_skip_artifacts: true
