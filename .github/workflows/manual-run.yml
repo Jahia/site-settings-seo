@@ -21,7 +21,8 @@ jobs:
     with:
       jahia_image: ${{ github.event.inputs.jahia_image }}
       module_id: site-settings-seo
-      testrail_project: SEO module
-      pagerduty_skip_notification: true
       provisioning_manifest: ${{ github.event.inputs.manifest }}
       artifact_prefix: seo
+      pagerduty_skip_notification: true
+      should_use_build_artifacts: false
+      should_skip_testrail: true
