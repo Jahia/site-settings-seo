@@ -21,7 +21,7 @@ describe('New SEO field definition tests', () => {
     it('should have new SEO fields for pages and can be saved', function () {
         const ce = JContent.visit(siteKey, 'en', 'pages/home').editPage()
 
-        ce.openSection('SEO')
+        ce.openSection('seo')
         ce.getField(Field, 'htmlHead_jcr:description').should('exist').and('be.visible')
         ce.getField(Field, 'htmlHead_seoKeywords').should('exist').and('be.visible')
         ce.getField(Field, 'htmlHead_openGraphImage').should('exist').and('be.visible')
@@ -42,7 +42,7 @@ describe('New SEO field definition tests', () => {
     })
 
     it('should not have new SEO fields for other types', function () {
-        JContent.visit(siteKey, 'en', 'content-folders/contents').createContent('Rich text').openSection('SEO')
+        JContent.visit(siteKey, 'en', 'content-folders/contents').createContent('Rich text').openSection('seo')
         const assertFieldNotExist = (contentType) => {
             cy.get(`[data-sel-content-editor-field="${contentType}"]`).should('not.exist', { timeout: 10000 })
         }
