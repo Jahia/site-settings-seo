@@ -27,7 +27,7 @@
     - 'mvn:org.jahia.modules/grid'
     - 'mvn:org.jahia.modules/tabularList'
     - 'mvn:org.jahia.modules/jahia-ui-root/1.10.0'
-    - 'mvn:org.jahia.modules/jcontent/3.1.0'
+    - 'mvn:org.jahia.modules/jcontent'
     - 'mvn:org.jahia.modules/site-settings-seo'
     - 'mvn:org.jahia.test/site-settings-seo-test-module'
   autoStart: true
