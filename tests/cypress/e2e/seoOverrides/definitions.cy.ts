@@ -77,8 +77,10 @@ describe('New SEO field definition tests', () => {
         })
     })
 
-    it('should not have new SEO fields for other types', function () {
-        JContent.visit(siteKey, 'en', 'content-folders/contents').createContent('Rich text').openSection('seo')
+    it('should not have SEO section and new SEO fields for other types', function () {
+        JContent.visit(siteKey, 'en', 'content-folders/contents').createContent('Rich text')
+        cy.get(`[data-sel-content-editor-fields-group="seo"]`).should('not.exist', { timeout: 10000 })
+
         const assertFieldNotExist = (contentType) => {
             cy.get(`[data-sel-content-editor-field="${contentType}"]`).should('not.exist', { timeout: 10000 })
         }
