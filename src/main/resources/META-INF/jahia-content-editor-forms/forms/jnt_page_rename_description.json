@@ -4,10 +4,12 @@
   "sections": [
     {
       "name": "seo",
+      "hide": false,
       "fieldSets": [
         {
           "name": "htmlHead",
           "labelKey": "site-settings-seo:seo.htmlHeadSection.label",
+          "rank": 0.1,
           "fields": [
             {
               "name": "jcr:description",
@@ -30,6 +32,7 @@
         },
         {
           "name": "jmix:seoHtmlHead",
+          "rank": 0.2,
           "isAlwaysActivated": true,
           "alwaysPresent": true,
           "hide": true
