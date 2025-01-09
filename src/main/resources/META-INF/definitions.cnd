@@ -6,5 +6,5 @@
 
 [jmix:seoHtmlHead] mixin
  extends = jnt:page, jmix:mainResource
- - seoKeywords (string, tag[autocomplete=10,separator=',']) i18n facetable nofulltext multiple < '.{0,255}'
+ - seoKeywords (string, tag[autocomplete=10,separator=',']) i18n facetable multiple < '.{0,255}'
  - openGraphImage (weakreference, picker[type='image']) < 'jmix:image'

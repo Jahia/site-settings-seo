@@ -6,6 +6,7 @@ describe('New SEO field definition tests', () => {
     const siteKey = 'seoFieldsTest'
     const pageName_addTest = 'pagetest_addTag'
     const pageName_removeTest = 'pagetest_removeTag'
+    const searchTag = {en: 'test1en', fr: 'test1fr'}
 
     const createPageWithSEOKeyword = (pageName: string) => {
         return addNode({
@@ -14,27 +15,17 @@ describe('New SEO field definition tests', () => {
             primaryNodeType: 'jnt:page',
             mixins: ['jmix:seoHtmlHead'],
             properties: [
-                {
-                    name: 'j:templateName',
-                    value: 'simple',
-                },
-                {
-                    name: 'jcr:title',
-                    value: pageName,
-                    language: 'en',
-                },
-                {
-                    name: 'seoKeywords',
-                    values: ['test2en', 'test1en'],
-                    language: 'en',
-                },
-            ],
-            children: [],
+                {name: 'j:templateName', value: 'simple'},
+                {name: 'jcr:title', language: 'en', value: pageName},
+                {name: 'jcr:title', language: 'fr', value: pageName},
+                {name: 'seoKeywords', language: 'en', values: [searchTag.en, 'test2en']},
+                {name: 'seoKeywords', language: 'fr', values: [searchTag.fr, 'test2fr']}
+            ]
         })
     }
 
     before(function () {
-        createSite(siteKey)
+        createSite(siteKey, {templateSet: 'dx-base-demo-templates', serverName: 'localhost', locale: 'en,fr'})
         createPageWithSEOKeyword(pageName_addTest)
         createPageWithSEOKeyword(pageName_removeTest)
     })
@@ -89,8 +80,19 @@ describe('New SEO field definition tests', () => {
         assertFieldNotExist('htmlHead_openGraphImage')
     })
 
+    it('should be able to search for seo keywords tag', function () {
+        const searchTagInLang = (lang) => {
+            cy.log(`Search for ${searchTag[lang]} in ${lang} site`)
+            cy.visit(`cms/render/default/${lang}/sites/${siteKey}/home/search-results.html`)
+            cy.get('.search-block input[type="text"]').type(`${searchTag[lang]}{enter}`)
+            cy.get('.s-results').contains(searchTag[lang]).should('be.visible')
+        }
+        searchTagInLang('en')
+        searchTagInLang('fr')
+    })
+
     it('should be possible to edit SEO fields : adding a new value', function () {
-        const ce = JContent.visit(siteKey, 'en', 'pages/home/' + pageName_addTest).editPage()
+        const ce = JContent.visit(siteKey, 'en', `pages/home/${pageName_addTest}`).editPage()
 
         ce.openSection('seo')
 
@@ -112,7 +114,7 @@ describe('New SEO field definition tests', () => {
     })
 
     it('should be possible to edit SEO fields : removing a value', function () {
-        const ce = JContent.visit(siteKey, 'en', 'pages/home/' + pageName_removeTest).editPage()
+        const ce = JContent.visit(siteKey, 'en', `pages/home/${pageName_removeTest}`).editPage()
 
         ce.openSection('seo')
 
