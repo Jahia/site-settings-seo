@@ -28,6 +28,7 @@ describe('New SEO field definition tests', () => {
 
         ce.getField(Field, 'htmlHead_jcr:description').get().find('textarea').type('description test')
         const tagField = ce.getField(Field, 'htmlHead_seoKeywords')
+        tagField.get().find('#htmlHead_seoKeywords').click()
         tagField.get().find('#htmlHead_seoKeywords').type('tag{enter}', { delay: 500 })
         tagField.get().find('#htmlHead_seoKeywords [role="button"]').contains('tag').should('be.visible')
 

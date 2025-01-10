@@ -39,23 +39,13 @@ describe('SEO keywords tests', () => {
         cy.loginAndStoreSession()
     })
 
-    it('should be able to search for seo keywords tag', { retries: 3 }, function () {
-        const searchTagInLang = (lang) => {
-            cy.log(`Search for ${searchTag[lang]} in ${lang} site`)
-            cy.visit(`cms/render/default/${lang}/sites/${siteKey}/home/search-results.html`)
-            cy.get('.search-block input[type="text"]').type(`${searchTag[lang]}{enter}`)
-            cy.get('.s-results').contains(searchTag[lang], { timeout: 10000 }).should('be.visible')
-        }
-        searchTagInLang('en')
-        searchTagInLang('fr')
-    })
-
     it('should be possible to edit SEO fields : adding a new value', function () {
         const ce = JContent.visit(siteKey, 'en', `pages/home/${pageName_addTest}`).editPage()
 
         ce.openSection('seo')
 
         const tagField = ce.getField(Field, 'htmlHead_seoKeywords')
+        tagField.get().find('#htmlHead_seoKeywords').click()
         tagField.get().find('#htmlHead_seoKeywords').type('newtag{enter}', { delay: 500 })
         tagField
             .should('exist')
@@ -78,14 +68,25 @@ describe('SEO keywords tests', () => {
         ce.openSection('seo')
 
         const tagField = ce.getField(Field, 'htmlHead_seoKeywords')
-        tagField.get().find('#htmlHead_seoKeywords').find('span:contains("test1en")').siblings('svg').click()
+        tagField.get().find('#htmlHead_seoKeywords').find('span:contains("test2en")').siblings('svg').click()
         tagField.should('exist').and('be.visible').and('contain', 'test2en')
         ce.save()
 
         getNodeByPath(`/sites/${siteKey}/home/${pageName_removeTest}`, ['seoKeywords']).then(({ data }) => {
             expect(data.jcr.nodeByPath.properties.length).to.eq(1)
             expect(data.jcr.nodeByPath.properties[0].values.length).to.eq(1)
-            expect(data.jcr.nodeByPath.properties[0].values[0]).to.eq('test2en')
+            expect(data.jcr.nodeByPath.properties[0].values[0]).to.eq('test1en')
         })
+    })
+
+    it('should be able to search for seo keywords tag', function () {
+        const searchTagInLang = (lang) => {
+            cy.log(`Search for ${searchTag[lang]} in ${lang} site`)
+            cy.visit(`cms/render/default/${lang}/sites/${siteKey}/home/search-results.html`)
+            cy.get('.search-block input[type="text"]').type(`${searchTag[lang]}{enter}`)
+            cy.get('.s-results').contains(searchTag[lang], { timeout: 10000 }).should('be.visible')
+        }
+        searchTagInLang('en')
+        searchTagInLang('fr')
     })
 })
