@@ -3,7 +3,7 @@
 name: Manual Tests Run
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
     inputs:
       jahia_image:
         description: 'Jahia Image'
@@ -21,7 +21,7 @@ jobs:
     with:
       jahia_image: ${{ github.event.inputs.jahia_image }}
       module_id: site-settings-seo
-      testrail_project: SEO module
+      testrail_project: SEO Module
       pagerduty_skip_notification: true
       provisioning_manifest: ${{ github.event.inputs.manifest }}
       artifact_prefix: seo
