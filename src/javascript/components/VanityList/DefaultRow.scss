@@ -29,19 +29,23 @@
 }
 
 .notPublished {
-  box-shadow: inset 7px 0 0 0 #212121;
+  box-shadow: inset 7px 0 0 0 var(--color-gray_dark);
 }
 
 .toBePublished {
-  box-shadow: inset 7px 0 0 0 #ef6c00;
+  box-shadow: inset 7px 0 0 0 var(--color-warning);
 }
 
 .isPublished {
-  box-shadow: inset 7px 0 0 0 #00aa4f;
+  box-shadow: inset 7px 0 0 0 var(--color-success);
 }
 
 .isMarkedForDeletion {
-  box-shadow: inset 7px 0 0 0 #c00;
+  box-shadow: inset 7px 0 0 0 var(--color-danger);
+}
+
+.unPublished {
+  box-shadow: inset 7px 0 0 0 var(--color-gray);
 }
 
 .tableRow {
