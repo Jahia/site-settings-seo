@@ -24,10 +24,16 @@
 
   .dialogTitle {
     color: #373c42;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .dialogSubTitle {
     color: #525c65;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
