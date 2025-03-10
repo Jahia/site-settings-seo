@@ -152,6 +152,7 @@ services:
         SUPER_USER_PASSWORD: ${SUPER_USER_PASSWORD}
         JAHIA_CLUSTER_ENABLED: '${JAHIA_CLUSTER_ENABLED}'
         TZ: ${TIMEZONE}
+        CYPRESS_BROWSER: ${CYPRESS_BROWSER}
       networks:
         - stack
 networks:
