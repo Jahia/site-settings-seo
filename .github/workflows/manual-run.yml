@@ -19,7 +19,7 @@ on:
         options:
           - chrome
           - firefox
-          - edge
+          - electon
 
 jobs:
   integration-tests:
