@@ -34,3 +34,4 @@ jobs:
       provisioning_manifest: ${{ github.event.inputs.manifest }}
       artifact_prefix: seo
       cypress_browser:  ${{ github.event.inputs.cypress_browser }}
+      module_branch: ${{ github.ref }}
