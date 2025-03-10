@@ -16,6 +16,7 @@ on:
       cypress_browser:
         description: 'The browser to use'
         default: 'chrome'
+        required: true
         options:
           - chrome
           - firefox
@@ -32,3 +33,4 @@ jobs:
       pagerduty_skip_notification: true
       provisioning_manifest: ${{ github.event.inputs.manifest }}
       artifact_prefix: seo
+      cypress_browser:  ${{ github.event.inputs.cypress_browser }}
