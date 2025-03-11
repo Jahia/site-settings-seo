@@ -33,6 +33,29 @@ describe('Add vanity Urls', () => {
         publishAndWaitJobEnding(homePath, ['en', 'fr'])
     })
 
+    it('should allow to create vanity url with special characters with dot, dash an slash ', function () {
+        const vanityUrls = ['test','test123',  'test-abc', 'test.abc', 'test/abc']
+
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl2)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+
+        vanityUrls.forEach((url) => {
+            vanityUrlUi.addVanityUrl(url, false, 'en', true)
+            checkVanityUrlByAPI(
+                homePath + '/' + pageVanityUrl2 ,
+                url,
+                'en',
+                'EDIT',
+                'false',
+            )
+        })
+
+    })
+
     it('Add a first basic vanity URL from the UI', function () {
         cy.login()
         const composer = new CustomPageComposer()
@@ -95,16 +118,15 @@ describe('Add vanity Urls', () => {
     })
 
     it('Should display vanity url UI event if parent have special characters', () => {
+        const textWithSpecialCharacters = '(Chocolate, sweets, cakes)'
         cy.login()
-        addSimplePage('/sites/digitall/home', '(Chocolate, sweets, cakes)', 'Chocolate, sweets, cakes', 'en').then(
-            () => {
-                addVanityUrl(
-                    '/sites/digitall/home/(Chocolate, sweets, cakes)',
-                    'en',
-                    '/test-vanity-url-page-special-character',
-                )
-            },
-        )
+        addSimplePage('/sites/digitall/home', textWithSpecialCharacters, 'Chocolate, sweets, cakes', 'en').then(() => {
+            addVanityUrl(
+                `/sites/digitall/home/${textWithSpecialCharacters}`,
+                'en',
+                '/test-vanity-url-page-special-character',
+            )
+        })
 
         CustomPageComposer.visit('digitall', 'en', 'home.html')
         const composer = new CustomPageComposer()
@@ -114,7 +136,7 @@ describe('Add vanity Urls', () => {
         vanityUrlsUi.getVanityUrlRow('/test-vanity-url-page-special-character').then((value) => {
             expect(value.text()).to.contains('/test-vanity-url-page-special-character')
         })
-        deleteNode('/sites/digitall/home/(Chocolate, sweets, cakes)')
+        deleteNode(`/sites/digitall/home/${textWithSpecialCharacters}`)
         cy.logout()
     })
 
