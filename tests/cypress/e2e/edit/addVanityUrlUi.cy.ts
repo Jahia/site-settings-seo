@@ -33,29 +33,6 @@ describe('Add vanity Urls', () => {
         publishAndWaitJobEnding(homePath, ['en', 'fr'])
     })
 
-    it('should allow to create vanity url with special characters with dot, dash an slash ', function () {
-        const vanityUrls = ['test','test123',  'test-abc', 'test.abc', 'test/abc']
-
-        cy.login()
-        const composer = new CustomPageComposer()
-        CustomPageComposer.visit('digitall', 'en', 'home.html')
-        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl2)
-        const contentEditor = contextMenu.edit()
-        const vanityUrlUi = contentEditor.openVanityUrlUi()
-
-        vanityUrls.forEach((url) => {
-            vanityUrlUi.addVanityUrl(url, false, 'en', true)
-            checkVanityUrlByAPI(
-                homePath + '/' + pageVanityUrl2 ,
-                url,
-                'en',
-                'EDIT',
-                'false',
-            )
-        })
-
-    })
-
     it('Add a first basic vanity URL from the UI', function () {
         cy.login()
         const composer = new CustomPageComposer()
@@ -219,6 +196,22 @@ describe('Add vanity Urls', () => {
 
         vanityUrlUi.getErrorRow().then((result) => {
             expect(result.text()).contains('URL cannot ends with .do')
+        })
+    })
+
+    it('should allow to create vanity url with special characters with numerical, dot and dash', function () {
+        const vanityUrls = ['test', 'test123', 'test-abc', 'test.abc']
+
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+
+        vanityUrls.forEach((url) => {
+            vanityUrlUi.addVanityUrl(url)
+            checkVanityUrlByAPI(`${homePath}/${pageVanityUrl1}/vanityUrlMapping/${url}`, url, 'en', 'EDIT', 'false')
         })
     })
 })

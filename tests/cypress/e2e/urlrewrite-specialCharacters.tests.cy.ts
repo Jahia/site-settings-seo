@@ -26,7 +26,7 @@ describe(' with special characters', () => {
     })
 
     it('Should handle url rewrite with a set of special characters', function () {
-        const vanityUrls = ['test','test123',  'test-abc', 'test.abc', 'test/abc']
+        const vanityUrls = ['test', 'test123', 'test-abc', 'test.abc', 'test/abc']
 
         vanityUrls.forEach((url) => {
             addVanityUrl(pagePath, 'en', url)
