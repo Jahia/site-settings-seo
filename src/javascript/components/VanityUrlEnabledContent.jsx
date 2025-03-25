@@ -41,6 +41,10 @@ const styles = theme => ({
         '&:hover': {
             backgroundColor: '#595858'
         }
+    },
+    wrapped: {
+        lineBreak: 'anywhere',
+        maxWidth: '100%'
     }
 });
 
@@ -125,6 +129,8 @@ class VanityUrlEnabledContent extends React.Component {
                         <ListItemText inset
                                       primary={content.displayName}
                                       secondary={content.path}
+                                      primaryTypographyProps={{className: classes.wrapped}}
+                                      secondaryTypographyProps={{className: classes.wrapped}}
                                       className={classes.vanityUrlListHeaderText}
                                       data-vud-role="content-title"/>
                         {content.hasWritePermission ? null : <Chip data-sel-role="read-only-badge"
