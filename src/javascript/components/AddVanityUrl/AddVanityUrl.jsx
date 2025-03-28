@@ -157,7 +157,6 @@ export const AddVanityUrl = ({
             <>
                 {children && children(showInputField)}
                 <Button isDisabled={!hasWritePermission}
-                        className={classes.addVanityButton}
                         aria-label="add"
                         label={t('label.buttons.addVanity')}
                         icon={<Add/>}
