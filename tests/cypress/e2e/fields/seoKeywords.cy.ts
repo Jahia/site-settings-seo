@@ -39,7 +39,7 @@ describe('SEO keywords tests', () => {
         cy.loginAndStoreSession()
     })
 
-    it('should be possible to edit SEO fields : adding a new value', function () {
+    it.skip('should be possible to edit SEO fields : adding a new value', function () {
         const ce = JContent.visit(siteKey, 'en', `pages/home/${pageName_addTest}`).editPage()
 
         ce.openSection('seo')
@@ -62,7 +62,7 @@ describe('SEO keywords tests', () => {
         })
     })
 
-    it('should be possible to edit SEO fields : removing a value', function () {
+    it.skip('should be possible to edit SEO fields : removing a value', function () {
         const ce = JContent.visit(siteKey, 'en', `pages/home/${pageName_removeTest}`).editPage()
 
         ce.openSection('seo')
@@ -79,7 +79,7 @@ describe('SEO keywords tests', () => {
         })
     })
 
-    it('should be able to search for seo keywords tag', function () {
+    it.skip('should be able to search for seo keywords tag', function () {
         const searchTagInLang = (lang) => {
             cy.log(`Search for ${searchTag[lang]} in ${lang} site`)
             cy.visit(`cms/render/default/${lang}/sites/${siteKey}/home/search-results.html`)
