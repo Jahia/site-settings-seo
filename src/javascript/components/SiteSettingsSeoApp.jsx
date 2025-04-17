@@ -6,7 +6,6 @@ import LanguageSelector from './LanguageSelector';
 import {withTranslation} from 'react-i18next';
 import {Dropdown, Header} from '@jahia/moonstone';
 import * as _ from 'lodash';
-import {withVanityMutationContext} from './VanityMutationsProvider';
 import {VanityUrlTableData} from './VanityUrlTableData';
 import SiteSettingsSeoConstants from './SiteSettingsSeoApp.constants';
 import {VanityUrlEnabledContent} from '~/components/VanityUrlEnabledContent';
@@ -82,55 +81,12 @@ class SiteSettingsSeoApp extends React.Component {
         this.onSearchBlur = this.onSearchBlur.bind(this);
         this.onSelectedLanguagesChanged = this.onSelectedLanguagesChanged.bind(this);
 
-        this.actions = {
-            updateVanity: {
-                call: (data, onSuccess, onError, refetch) => {
-                    try {
-                        props.vanityMutationsContext.update([data.urlPair.uuid],
-                            data.defaultMapping != null ? data.defaultMapping.toString() : undefined,
-                            data.active != null ? data.active.toString() : undefined,
-                            data.language,
-                            data.url)
-                            .then(() => {
-                                onSuccess();
-                                refetch();
-                            })
-                            .catch(ex => {
-                                this.handleServerError(ex, onError);
-                            });
-                    } catch (ex) {
-                        this.handleServerError(ex, onError);
-                    }
-                }
-            }
-        };
-
         this.workspaceDropdownData = SiteSettingsSeoConstants.VANITY_URL_WORKSPACE_DROPDOWN_DATA.map(element => {
             const obj = {};
             obj.label = t('label.workspace.' + element.key);
             obj.value = element.value;
             return obj;
         });
-    }
-
-    handleServerError(ex, onError) {
-        let {t} = this.props;
-        let err;
-        let mess;
-        if (ex.graphQLErrors && ex.graphQLErrors.length > 0) {
-            let graphQLError = ex.graphQLErrors[0];
-            const messageKey = graphQLError.extensions.existingNodePath ? 'used' : 'notAllowed';
-            err = t(`label.errors.GqlConstraintViolationException.${messageKey}`);
-            mess = t(`label.errors.GqlConstraintViolationException.${messageKey}_message`, graphQLError.extensions);
-            if (graphQLError.extensions.errorMessage) {
-                console.error(graphQLError.extensions.errorMessage);
-            }
-        } else {
-            err = t(['label.errors.' + ex.name, 'label.errors.Error']);
-            mess = t(['label.errors.' + ex.name + '_message', ex.message]);
-        }
-
-        onError(err, mess);
     }
 
     onChangeSelection(add, urlPairs) {
@@ -263,7 +219,6 @@ class SiteSettingsSeoApp extends React.Component {
                             />
 
                             <Toolbar selection={this.state.selection}
-                                     actions={this.actions}
                                      onChangeSelection={this.onChangeSelection}/>
 
                             <div className={classes.layout}>
@@ -279,7 +234,6 @@ class SiteSettingsSeoApp extends React.Component {
                                                                          filterText={this.state.loadParams.filterText}
                                                                          selection={this.state.selection}
                                                                          workspace={this.state.workspace}
-                                                                         actions={this.actions}
                                                                          languages={this.props.languages}
                                                                          onChangeSelection={this.onChangeSelection}/>
                                             </Paper>
@@ -302,7 +256,6 @@ class SiteSettingsSeoApp extends React.Component {
 const assembleWithHoc = function (component) {
     return _.flowRight(
         withStyles(styles),
-        withVanityMutationContext(),
         withTranslation('site-settings-seo')
     )(component);
 };

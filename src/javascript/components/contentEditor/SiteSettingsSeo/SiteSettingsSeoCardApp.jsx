@@ -2,7 +2,6 @@ import React from 'react';
 import {VanityUrlTableData} from '~/components/VanityUrlTableData';
 import {assembleWithHoc, SiteSettingsSeoApp} from '../../SiteSettingsSeoApp';
 import {VanityUrlEnabledContent} from '../../VanityUrlEnabledContent';
-import SiteSettingsSeoConstants from '../../SiteSettingsSeoApp.constants';
 import classes from './SiteSettingsSeoCardApp.scss';
 import {NoVanity} from './NoVanity';
 import {Paper} from '@material-ui/core';
@@ -49,7 +48,6 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                                     content={rows[0]}
                                                     selection={this.state.selection}
                                                     workspace={this.state.workspace}
-                                                    actions={this.actions}
                                                     onChangeSelection={() => {
                                                     }}
                                                 />

@@ -26,7 +26,7 @@ jobs:
     needs: update-signature
     runs-on: ubuntu-latest
     container:
-      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_11.0.20-node
+      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_17.0.9-node
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -56,7 +56,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     container:
-      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_11.0.20-node
+      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_17.0.9-node
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -91,7 +91,6 @@ jobs:
           #jahia_image: jahia/jahia-ee-dev:8
           jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           jahia_cluster_enabled: false
-          should_use_build_artifacts: true
           should_skip_testrail: false
           github_artifact_name: sseo-artifacts-${{ github.run_number }}
           jahia_artifact_name: sseo-artifacts-${{ github.run_number }}

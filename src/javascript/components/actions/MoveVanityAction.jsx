@@ -4,9 +4,9 @@ import {atLeastOneLockedAndCanNotBeEdited} from '../Utils/Utils';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useVanityUrlContext} from '~/components/Context/VanityUrl.context';
 import {MoveValidationDialog} from '~/components/Move/MoveValidationDialog';
-import {useVanityTableDataUrlContext} from "~/components/VanityUrlTableData";
+import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
 
-export const MoveVanityAction = ({render: Render, actions, urlPairs, ...otherProps}) => {
+export const MoveVanityAction = ({render: Render, urlPairs, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {siteInfo, lang} = useVanityUrlContext();
     const {refetch} = useVanityTableDataUrlContext();
@@ -49,6 +49,5 @@ export const MoveVanityAction = ({render: Render, actions, urlPairs, ...otherPro
 
 MoveVanityAction.propTypes = {
     render: PropTypes.elementType.isRequired,
-    actions: PropTypes.object,
     urlPairs: PropTypes.array.isRequired
 };
