@@ -26,6 +26,9 @@ jobs:
       - uses: Jahia/jahia-modules-action/static-analysis@v2
         with:
           skip_lint_modules: true
+          node_version: 20
+          yarn_version: 4.9.1
+          yarn_test_version: 4.9.1
           auditci_level: critical
 
   build:
@@ -33,7 +36,7 @@ jobs:
     needs: update-signature
     runs-on: ubuntu-latest
     container:
-      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_11.0.20-node
+      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_17.0.9-node
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -54,6 +57,7 @@ jobs:
         with:
           primary_release_branch: master
           github_pr_id: ${{github.event.number}}
+          github_slug: jahia/site-settings-seo
           sonar_url: ${{ secrets.SONAR_URL }}
           sonar_token: ${{ secrets.SONAR_TOKEN }}
 
@@ -70,6 +74,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
+      - run: corepack enable
       - uses: actions/checkout@v4
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
