@@ -49,7 +49,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cypress/request@npm:^3.0.8":
+"@cypress/request@npm:^3.0.6":
   version: 3.0.8
   resolution: "@cypress/request@npm:3.0.8"
   dependencies:
@@ -161,9 +161,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jahia/cypress@npm:^3.17.5":
-  version: 3.20.1
-  resolution: "@jahia/cypress@npm:3.20.1"
+"@jahia/cypress@npm:^4.3.0":
+  version: 4.4.0
+  resolution: "@jahia/cypress@npm:4.4.0"
   dependencies:
     "@apollo/client": "npm:^3.4.9"
     cypress-real-events: "npm:^1.11.0"
@@ -174,7 +174,7 @@ __metadata:
     ci.startup: ci.startup.sh
     env.debug: env.debug.sh
     env.run: env.run.sh
-  checksum: 10c0/a00e09f18acf45774a0369d1e01ac5ac9e2fcd847667e67095a89e62471247c42a53ad4e394f246ca2e2aaed457dbac3a61931a879e503d4b9d0d156033c3213
+  checksum: 10c0/7c08fc411fde004783d6314ec19b1649e08e7185d941a5a461e3de2b4f6cd508db5b6b9ac523f0c2bc19c349827a0d04b177fd075dacd976e8d72d110d770ea9
   languageName: node
   linkType: hard
 
@@ -1183,7 +1183,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ci-info@npm:^4.1.0":
+"ci-info@npm:^4.0.0":
   version: 4.2.0
   resolution: "ci-info@npm:4.2.0"
   checksum: 10c0/37a2f4b6a213a5cf835890eb0241f0d5b022f6cfefde58a69e9af8e3a0e71e06d6ad7754b0d4efb9cd2613e58a7a33996d71b56b0d04242722e86666f3f3d058
@@ -1224,7 +1224,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-table3@npm:~0.6.5":
+"cli-table3@npm:~0.6.1":
   version: 0.6.5
   resolution: "cli-table3@npm:0.6.5"
   dependencies:
@@ -1484,11 +1484,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:^14.3.0":
-  version: 14.3.0
-  resolution: "cypress@npm:14.3.0"
+"cypress@npm:^13.9.0":
+  version: 13.17.0
+  resolution: "cypress@npm:13.17.0"
   dependencies:
-    "@cypress/request": "npm:^3.0.8"
+    "@cypress/request": "npm:^3.0.6"
     "@cypress/xvfb": "npm:^1.2.4"
     "@types/sinonjs__fake-timers": "npm:8.1.1"
     "@types/sizzle": "npm:^2.3.2"
@@ -1499,9 +1499,9 @@ __metadata:
     cachedir: "npm:^2.3.0"
     chalk: "npm:^4.1.0"
     check-more-types: "npm:^2.24.0"
-    ci-info: "npm:^4.1.0"
+    ci-info: "npm:^4.0.0"
     cli-cursor: "npm:^3.1.0"
-    cli-table3: "npm:~0.6.5"
+    cli-table3: "npm:~0.6.1"
     commander: "npm:^6.2.1"
     common-tags: "npm:^1.8.0"
     dayjs: "npm:^1.10.4"
@@ -1525,7 +1525,7 @@ __metadata:
     process: "npm:^0.11.10"
     proxy-from-env: "npm:1.0.0"
     request-progress: "npm:^3.0.0"
-    semver: "npm:^7.7.1"
+    semver: "npm:^7.5.3"
     supports-color: "npm:^8.1.1"
     tmp: "npm:~0.2.3"
     tree-kill: "npm:1.2.2"
@@ -1533,7 +1533,7 @@ __metadata:
     yauzl: "npm:^2.10.0"
   bin:
     cypress: bin/cypress
-  checksum: 10c0/c331d748498c4b309aa5c94c1372723c690deb6d7c644167cd45fd2079dc8b9a2c32fe4f4a64a0828449faac32e62fbe680ee048e623488b903c2c9742683f07
+  checksum: 10c0/159ce620e32d2785082aaa1f4f30f203dcec466df4a8e80dfa299035358772fd513c35820070ba8db52e2bf58078a372ff7009068e26967f993656e7da62e221
   languageName: node
   linkType: hard
 
@@ -4065,7 +4065,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.7.1":
+"semver@npm:^7.5.3":
   version: 7.7.1
   resolution: "semver@npm:7.7.1"
   bin:
@@ -4182,13 +4182,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site-settings-seo-cypress@workspace:."
   dependencies:
-    "@jahia/cypress": "npm:^3.17.5"
+    "@jahia/cypress": "npm:^4.3.0"
     "@jahia/jahia-reporter": "npm:^1.0.30"
     "@jahia/jcontent-cypress": "npm:^3.0.0-tests.10"
     "@typescript-eslint/eslint-plugin": "npm:^5.27.0"
     "@typescript-eslint/parser": "npm:^5.27.0"
     compare-versions: "npm:^6.1.1"
-    cypress: "npm:^14.3.0"
+    cypress: "npm:^13.9.0"
     cypress-iframe: "npm:^1.0.1"
     cypress-multi-reporters: "npm:^1.6.0"
     cypress-recurse: "npm:^1.31.2"

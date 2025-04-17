@@ -21,3 +21,4 @@ jobs:
       tests_module_type: mvn
       git_branch: ${{ matrix.git_branch }}
       incident_service: site-settings-seo-sonar
+      github_slug: jahia/site-settings-seo
