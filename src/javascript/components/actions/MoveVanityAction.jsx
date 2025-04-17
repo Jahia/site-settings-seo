@@ -4,7 +4,7 @@ import {atLeastOneLockedAndCanNotBeEdited} from '../Utils/Utils';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {useVanityUrlContext} from '~/components/Context/VanityUrl.context';
 import {MoveValidationDialog} from '~/components/Move/MoveValidationDialog';
-import {useVanityTableDataUrlContext} from "~/components/VanityUrlTableData";
+import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
 
 export const MoveVanityAction = ({render: Render, actions, urlPairs, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
