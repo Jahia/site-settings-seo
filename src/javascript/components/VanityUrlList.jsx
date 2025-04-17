@@ -147,7 +147,7 @@ class VanityUrlListLive extends React.Component {
     }
 
     render() {
-        let {vanityUrls, classes, t, actions, contentUuid, workspace} = this.props;
+        let {vanityUrls, classes, t, contentUuid, workspace} = this.props;
 
         // Get all vanity with default not published
         let defaultNotPublished = _.map(_.filter(vanityUrls, urlPair => urlPair.live && urlPair.default && !urlPair.default.default && urlPair.live.default), urlPair => urlPair.live);

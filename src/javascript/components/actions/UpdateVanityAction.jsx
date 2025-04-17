@@ -3,19 +3,23 @@ import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {
     atLeastOneCanonicalLockedForLang,
-    getRowUrlsFromPath
+    getRowUrlsFromPath, updateVanity
 } from '../Utils/Utils';
 import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
+import {UpdateVanityMutation} from '~/components/gqlMutations';
+import {useApolloClient} from '@apollo/client';
 
-export const UpdateVanityAction = ({render: Render, actions, urlPair, isDefaultMapping, ...otherProps}) => {
+export const UpdateVanityAction = ({render: Render, urlPair, isDefaultMapping, ...otherProps}) => {
     const {t} = useTranslation('site-settings-seo');
+    const client = useApolloClient();
+
     const {rows} = useVanityTableDataUrlContext();
     const urls = getRowUrlsFromPath(rows, urlPair.default.targetNode.path);
 
     const label = isDefaultMapping ? t('label.actions.canonical.unset') : t('label.actions.canonical.set');
 
-    const onClick = e => {
-        actions.updateVanity.call({urlPair: urlPair, defaultMapping: !isDefaultMapping}, e);
+    const onClick = () => {
+        updateVanity({urlPair: urlPair, defaultMapping: !isDefaultMapping}, client, t);
     };
 
     return (
@@ -32,7 +36,6 @@ export const UpdateVanityAction = ({render: Render, actions, urlPair, isDefaultM
 
 UpdateVanityAction.propTypes = {
     render: PropTypes.elementType.isRequired,
-    actions: PropTypes.object,
     urlPair: PropTypes.object.isRequired,
     isDefaultMapping: PropTypes.bool.isRequired
 };

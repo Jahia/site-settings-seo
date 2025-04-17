@@ -80,7 +80,6 @@ class VanityUrlEnabledContent extends React.Component {
             t,
             onChangeSelection,
             selection,
-            actions,
             languages,
             lang,
             openCardMode
@@ -155,7 +154,6 @@ class VanityUrlEnabledContent extends React.Component {
                                                       vanityUrls={vanityUrls}
                                                       filterText={filterText}
                                                       isExpanded={this.state.expanded}
-                                                      actions={actions}
                                                       languages={languages}
                                                       contentUuid={content.uuid}
                                                       isOpenCardMode={openCardMode}
@@ -166,7 +164,6 @@ class VanityUrlEnabledContent extends React.Component {
                             <Grid item xs={isLive ? 12 : 6}>
                                 <VanityUrlListLive vanityUrls={vanityUrls}
                                                    filterText={filterText}
-                                                   actions={actions}
                                                    contentUuid={content.uuid}
                                                    workspace={workspace}/>
                             </Grid>}

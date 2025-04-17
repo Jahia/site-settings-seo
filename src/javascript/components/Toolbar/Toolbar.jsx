@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import {DisplayActions} from '@jahia/ui-extender';
 import {ButtonRenderer} from '@jahia/jcontent';
 
-export const Toolbar = ({selection, onChangeSelection, actions}) => {
+export const Toolbar = ({selection, onChangeSelection}) => {
     const {t} = useTranslation('site-settings-seo');
 
     let paths = selection.map(url => url.default.path);
@@ -35,7 +35,6 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
                         target="site-settings-seo/selected-vanity-list-menu"
                         urlPairs={selection}
                         paths={paths}
-                        actions={actions}
                         render={ButtonRenderer}
                         onChangeSelection={onChangeSelection}
                         onDeleted={onChangeSelection}
@@ -47,6 +46,5 @@ export const Toolbar = ({selection, onChangeSelection, actions}) => {
 
 Toolbar.propTypes = {
     selection: PropTypes.array.isRequired,
-    actions: PropTypes.object.isRequired,
     onChangeSelection: PropTypes.func.isRequired
 };
