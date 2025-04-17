@@ -48,10 +48,6 @@
     "react-i18next": "^14.1.2",
     "react-redux": "^7.2.0"
   },
-  "resolutions": {
-    "graphql": "15.4.0",
-    "@jahia/data-helper/graphql": "^15.4.0"
-  },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
