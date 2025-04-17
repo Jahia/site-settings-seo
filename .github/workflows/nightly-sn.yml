@@ -28,7 +28,6 @@ jobs:
           jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           testrail_project: SEO Module
           tests_manifest: provisioning-manifest-snapshot.yml
-          should_use_build_artifacts: false
           should_skip_artifacts: true
           should_skip_notifications: true
           should_skip_testrail: false
