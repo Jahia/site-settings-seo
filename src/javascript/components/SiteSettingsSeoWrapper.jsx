@@ -1,7 +1,6 @@
 import React from 'react';
 import {MuiThemeProvider} from '@material-ui/core';
 import {NotificationProvider, legacyTheme} from '@jahia/react-material';
-import {VanityMutationsProvider} from './VanityMutationsProvider';
 import {VanityUrlContextProvider} from './Context/VanityUrl.context';
 import * as PropTypes from 'prop-types';
 import {shallowEqual, useSelector} from 'react-redux';
@@ -15,9 +14,7 @@ export const SiteSettingsSeoWrapper = ({dxContext, component: Component, ...prop
         <MuiThemeProvider theme={legacyTheme}>
             <VanityUrlContextProvider siteKey={siteKey}>
                 <NotificationProvider notificationContext={{}}>
-                    <VanityMutationsProvider lang={dxContext.lang} vanityMutationsContext={{}}>
-                        <Component {...dxContext} {...props}/>
-                    </VanityMutationsProvider>
+                    <Component {...dxContext} {...props}/>
                 </NotificationProvider>
             </VanityUrlContextProvider>
         </MuiThemeProvider>

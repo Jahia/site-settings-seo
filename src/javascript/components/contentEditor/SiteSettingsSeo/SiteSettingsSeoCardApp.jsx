@@ -49,7 +49,6 @@ class SiteSettingsSeoCardApp extends SiteSettingsSeoApp {
                                                     content={rows[0]}
                                                     selection={this.state.selection}
                                                     workspace={this.state.workspace}
-                                                    actions={this.actions}
                                                     onChangeSelection={() => {
                                                     }}
                                                 />

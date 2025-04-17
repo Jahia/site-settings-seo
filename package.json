@@ -32,7 +32,6 @@
   "dependencies": {
     "@apollo/client": "^3.8.4",
     "@apollo/react-components": "^4.0.0",
-    "@apollo/react-hoc": "^4.0.0",
     "@jahia/data-helper": "^1.1.10",
     "@jahia/moonstone": "^2.5.1",
     "@jahia/react-material": "^3.0.6",
