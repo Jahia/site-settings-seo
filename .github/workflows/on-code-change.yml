@@ -79,7 +79,6 @@ jobs:
           tests_manifest: provisioning-manifest-build.yml
           jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           jahia_cluster_enabled: true
-          should_use_build_artifacts: true
           should_skip_testrail: true
           github_artifact_name: sseo-artifacts-${{ github.run_number }}
           jahia_artifact_name: sseo-artifacts-${{ github.run_number }}
