@@ -1,7 +1,6 @@
 import React from 'react';
 import {withTranslation} from 'react-i18next';
 import {
-    IconButton,
     Paper,
     Table,
     TableBody,

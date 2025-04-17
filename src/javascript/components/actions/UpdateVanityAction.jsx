@@ -6,7 +6,6 @@ import {
     getRowUrlsFromPath, updateVanity
 } from '../Utils/Utils';
 import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
-import {UpdateVanityMutation} from '~/components/gqlMutations';
 import {useApolloClient} from '@apollo/client';
 
 export const UpdateVanityAction = ({render: Render, urlPair, isDefaultMapping, ...otherProps}) => {
