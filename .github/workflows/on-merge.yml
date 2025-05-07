@@ -91,7 +91,6 @@ jobs:
           #jahia_image: jahia/jahia-ee-dev:8
           jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           jahia_cluster_enabled: false
-          should_use_build_artifacts: true
           should_skip_testrail: false
           github_artifact_name: sseo-artifacts-${{ github.run_number }}
           jahia_artifact_name: sseo-artifacts-${{ github.run_number }}
