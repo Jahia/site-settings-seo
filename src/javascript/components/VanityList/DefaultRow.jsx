@@ -10,6 +10,8 @@ import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
+import {useApolloClient} from '@apollo/client';
+import {updateVanity} from '~/components/Utils/Utils';
 
 export const DefaultRow = ({
     hasWritePermission,
@@ -17,13 +19,13 @@ export const DefaultRow = ({
     isCheckboxesDisplayed,
     onChangeSelection,
     isExpanded,
-    actions,
     selection,
     isOpenCardMode
 }) => {
     const {t} = useTranslation('site-settings-seo');
 
     const {refetch} = useVanityTableDataUrlContext();
+    const client = useApolloClient();
 
     const onMappingChanged = (value, onSuccess, onError) => {
         if (/[:*?"<>|%+]/.test(value)) {
@@ -31,7 +33,7 @@ export const DefaultRow = ({
         } else if (value.endsWith('.do')) {
             onError(t('label.errors.GqlConstraintViolationException.notAllowedDotDo'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
         } else {
-            actions.updateVanity.call({urlPair: urlPair, url: value}, onSuccess, onError, refetch);
+            updateVanity({urlPair: urlPair, url: value, onSuccess: onSuccess, onError: onError, refetch: refetch}, client, t);
         }
     };
 
@@ -97,10 +99,10 @@ export const DefaultRow = ({
                             onClick={event => {
                                 event.stopPropagation();
                             }}
-                            onChange={event => actions.updateVanity.call({
+                            onChange={event => updateVanity({
                                 urlPair: urlPair,
                                 active: event.target.checked
-                            }, event)}/>
+                            }, client, t)}/>
                 </TableCell>
                 <TableCell className={clsx(classes.tableCellTextInput, {[classes.inactive]: !url.active})} width="100%">
                     {(isMarkedForDeletion || !hasWritePermission || isLockedAndCannotBeEdited) &&
@@ -130,10 +132,10 @@ export const DefaultRow = ({
                     <LanguageMenu
                         isDisabled={Boolean(isMarkedForDeletion) || Boolean(!hasWritePermission) || Boolean(isLockedAndCannotBeEdited)}
                         languageCode={urlPair.default.language}
-                        onLanguageSelected={languageCode => actions.updateVanity.call({
+                        onLanguageSelected={languageCode => updateVanity({
                             urlPair: urlPair,
                             language: languageCode
-                        })}/>
+                        }, client, t)}/>
                 </TableCell>
                 <TableCell width="40px" align="center" padding="none">
                     <span>
@@ -143,7 +145,6 @@ export const DefaultRow = ({
                             language={urlPair.default.language}
                             urlPair={urlPair}
                             urlPairs={[urlPair]}
-                            actions={actions}
                             isDefaultMapping={url.default}
                             actionKey="vanityListMenu"
                             render={ButtonRendererNoLabel}
@@ -171,7 +172,6 @@ export const DefaultRow = ({
 DefaultRow.propTypes = {
     hasWritePermission: PropTypes.bool.isRequired,
     urlPair: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
     isCheckboxesDisplayed: PropTypes.bool.isRequired,
     selection: PropTypes.array.isRequired,
     isExpanded: PropTypes.bool.isRequired,

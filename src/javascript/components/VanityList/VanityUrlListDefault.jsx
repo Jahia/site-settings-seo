@@ -12,7 +12,6 @@ export const VanityUrlListDefault = ({
     selection,
     onChangeSelection,
     isExpanded,
-    actions,
     contentUuid,
     isOpenCardMode,
     hasWritePermission
@@ -69,7 +68,6 @@ export const VanityUrlListDefault = ({
                                         isOpenCardMode={isOpenCardMode}
                                         isCheckboxesDisplayed={checkboxesDisplayed}
                                         isExpanded={isExpanded}
-                                        actions={actions}
                                         languages={languages}
                                         selection={selection}
                                         onChangeSelection={onChangeSelection}/>
@@ -85,7 +83,6 @@ VanityUrlListDefault.propTypes = {
     hasWritePermission: PropTypes.bool.isRequired,
     vanityUrls: PropTypes.array.isRequired,
     contentUuid: PropTypes.string.isRequired,
-    actions: PropTypes.object.isRequired,
     selection: PropTypes.array.isRequired,
     isExpanded: PropTypes.bool.isRequired,
     isOpenCardMode: PropTypes.bool.isRequired,

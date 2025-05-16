@@ -54,6 +54,7 @@ jobs:
         with:
           primary_release_branch: master
           github_pr_id: ${{github.event.number}}
+          github_slug: jahia/site-settings-seo
           sonar_url: ${{ secrets.SONAR_URL }}
           sonar_token: ${{ secrets.SONAR_TOKEN }}
 
@@ -79,7 +80,6 @@ jobs:
           tests_manifest: provisioning-manifest-build.yml
           jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           jahia_cluster_enabled: true
-          should_use_build_artifacts: true
           should_skip_testrail: true
           github_artifact_name: sseo-artifacts-${{ github.run_number }}
           jahia_artifact_name: sseo-artifacts-${{ github.run_number }}
