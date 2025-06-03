@@ -158,12 +158,12 @@
     uuid "^8.3.1"
     xml-js "^1.6.11"
 
-"@jahia/jcontent-cypress@^3.0.0-tests.10":
-  version "3.0.0-tests.10"
-  resolved "https://registry.yarnpkg.com/@jahia/jcontent-cypress/-/jcontent-cypress-3.0.0-tests.10.tgz#240a0124934cdecc575b513aaa3e22620b2ea623"
-  integrity sha512-uzExdKvkcgn/7VUZ6ZuWGUo8IlQoafPNah6q+yEtDqQLE3c6LAqkN3k+8N+v9LytGoSe3D8aE818KAGV6YpEfw==
+"@jahia/jcontent-cypress@^v3.4.0-tests.0":
+  version "3.4.0-tests.0"
+  resolved "https://registry.yarnpkg.com/@jahia/jcontent-cypress/-/jcontent-cypress-3.4.0-tests.0.tgz#04ff8aad7f76bd5024b14305ad5155028319b28a"
+  integrity sha512-rE8DahBNNIxOLuuIACvxsGWYfGzaqeqDdN+VNFEfidxn/LQ4qcjorugpAX4T2RDHBVVPON0P0nRhlV5LdtCSUA==
   dependencies:
-    cypress-real-events "^1.7.6"
+    cypress-real-events "^1.14.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1092,10 +1092,15 @@ cypress-multi-reporters@^1.6.0:
     debug "^4.3.4"
     lodash "^4.17.21"
 
-cypress-real-events@^1.11.0, cypress-real-events@^1.7.6:
+cypress-real-events@^1.11.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/cypress-real-events/-/cypress-real-events-1.13.0.tgz#6b7cd32dcac172db1493608f97a2576c7d0bd5af"
   integrity sha512-LoejtK+dyZ1jaT8wGT5oASTPfsNV8/ClRp99ruN60oPj8cBJYod80iJDyNwfPAu4GCxTXOhhAv9FO65Hpwt6Hg==
+
+cypress-real-events@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/cypress-real-events/-/cypress-real-events-1.14.0.tgz#c5495db50a2bd247f4accde983af7153566945d3"
+  integrity sha512-XmI8y3OZLh6cjRroPalzzS++iv+pGCaD9G9kfIbtspgv7GVsDt30dkZvSXfgZb4rAN+3pOkMVB7e0j4oXydW7Q==
 
 cypress-recurse@^1.31.2:
   version "1.35.3"
