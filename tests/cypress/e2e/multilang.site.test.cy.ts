@@ -29,6 +29,7 @@ describe('Basic tests of seo filter for multilingual site', () => {
     }
 
     before('create test data', function () {
+        deleteSite(siteKey)
         createSite(siteKey, siteConfig)
         createPage(homePath, pageName, 'withoutseo', langEN)
         setNodeProperty(homePath, 'jcr:title', 'home-fr', 'fr')
@@ -55,6 +56,10 @@ describe('Basic tests of seo filter for multilingual site', () => {
             .should('have.attr', 'href', Cypress.config().baseUrl + pagePath + '.html')
         cy.get('link[rel="alternate"]')
             .eq(1)
+            .should('have.attr', 'href', Cypress.config().baseUrl + pagePath + '.html')
+            .should('have.attr', 'hreflang', 'x-default')
+        cy.get('link[rel="alternate"]')
+            .eq(2)
             .should('have.attr', 'href', Cypress.config().baseUrl + '/' + langFR + pagePath + '.html')
     })
 })
