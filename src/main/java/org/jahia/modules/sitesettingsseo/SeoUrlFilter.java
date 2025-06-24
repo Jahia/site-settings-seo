@@ -118,7 +118,7 @@ public class SeoUrlFilter extends AbstractFilter {
         }
     }
 
-    private String getLinkForLang(JCRNodeWrapper node, Map<String, String> vanities, String lang, RenderContext renderContext, Set<String> langs) throws URISyntaxException {
+    private String getLinkForLang(JCRNodeWrapper node, Map<String, String> vanities, String lang, RenderContext renderContext, Set<String> langs) throws URISyntaxException, RepositoryException {
         String url = vanities.containsKey(lang) ?
                 vanities.get(lang) :
                 renderContext.getURLGenerator().buildURL(node, lang, null, "html");
@@ -130,6 +130,10 @@ public class SeoUrlFilter extends AbstractFilter {
         }
 
         String links = String.format("<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", getDashFormatLanguage(lang), href);
+        // Add x-default language metatag for site default language
+        links += node.getResolveSite().getDefaultLanguage().equals(lang) ?
+                String.format("\n<link rel=\"alternate\" hreflang=\"%s\" href=\"%s\" />", "x-default", href) :
+                "";
         return node.getLanguage().equals(lang) ?
                 String.format("<link rel=\"canonical\" href=\"%s\" />", href) + links:
                 links;

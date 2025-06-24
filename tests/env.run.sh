@@ -118,13 +118,8 @@ fi
 CYPRESS_CONFIG="cypress.config.ts"
 
 echo "$(date +'%d %B %Y - %k:%M') == Run tests with config: ${CYPRESS_CONFIG} =="
-if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
-  echo "$(date +'%d %B %Y - %k:%M') == Run ALL specs with cluster enabled =="
-  yarn e2e:${RUN} --config-file ${CYPRESS_CONFIG}
-else
-  echo "$(date +'%d %B %Y - %k:%M') == Run REDUCED specs with cluster disabled =="
-  yarn e2e:ci:standalone --config-file ${CYPRESS_CONFIG}
-fi
+
+yarn e2e:${RUN} --config-file ${CYPRESS_CONFIG}
 
 if [[ $? -eq 0 ]]; then
   echo "$(date +'%d %B %Y - %k:%M') == Full execution successful =="
