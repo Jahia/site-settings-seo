@@ -1,12 +1,13 @@
 import {registry} from '@jahia/ui-extender';
 import {MoveVanityAction, PublishAllAction, PublishVanityAction, UpdateVanityAction, VanityAction} from '../actions';
-import {CloudUpload, Publish, Star, SwapHoriz} from '@jahia/moonstone';
+import {CloudUpload, Link, Publish, Star, SwapHoriz} from '@jahia/moonstone';
 import React from 'react';
 
 export const registerActions = () => {
     // Content editor action registration
     registry.add('action', 'vanityUrls', {
         component: VanityAction,
+        buttonIcon: <Link/>,
         targets: ['content-editor/header/3dots:3'],
         requiredPermission: 'viewVanityUrlModal',
         showOnNodeTypes: ['jmix:vanityUrlMapped', 'jnt:page', 'jnt:file', 'jmix:mainResource', 'jmix:canHaveVanityUrls'],
