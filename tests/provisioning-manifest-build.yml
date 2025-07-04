@@ -7,7 +7,6 @@
     - 'mvn:org.jahia.modules/legacy-default-components'
     - 'mvn:org.jahia.modules/jcontent'
     - 'mvn:org.jahia.modules/event'
-    - 'mvn:org.jahia.modules/site-settings-seo'
     - 'mvn:org.jahia.modules/press'
     - 'mvn:org.jahia.modules/person'
     - 'mvn:org.jahia.modules/news'
