@@ -23,6 +23,6 @@ export class ContentEditorSEO extends ContentEditor {
     }
 
     checkVanityUrlVisibility(isVisible) {
-        cy.get('button[data-sel-role="vanityUrls"]').should(isVisible ? 'be.visible' : 'not.be.visible')
+        cy.get('button[data-sel-role="vanityUrls"]').should(isVisible ? 'exist' : 'not.exist')
     }
 }
