@@ -73,6 +73,8 @@ describe('Checks the publication action on not published pages in UIs', () => {
         const vanityUrlRow = sourcePageCard.getStagingVanityUrls().getVanityUrlRow('/vanity-to-move-a')
         const menu = vanityUrlRow.openContextualMenu()
         const picker = menu.clickOnMove()
+
+        cy.get('li[data-sel-role="home"]').click()
         picker.getTable().getRowByLabel(targetPageName).click()
         picker.select()
 
@@ -101,6 +103,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         const toolbar = vanityUrlsPage.getToolbar()
         const picker = toolbar.clickOnMove()
 
+        cy.get('li[data-sel-role="home"]').click()
         picker.getTable().getRowByLabel(targetPageName).click()
         picker.select()
 
