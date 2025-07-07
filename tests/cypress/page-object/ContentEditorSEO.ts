@@ -9,24 +9,20 @@ export class ContentEditorSEO extends ContentEditor {
     }
 
     openVanityUrlDialog(): VanityUrlsDialog {
-        cy.get('button[data-sel-role="3dotsMenuAction"]').click()
-        cy.get('li[data-sel-role="vanityUrls"]').click()
+        cy.get('button[data-sel-role="vanityUrls"]').click()
         return getComponent(VanityUrlsDialog)
     }
 
     openVanityUrlUi(): VanityUrlUi {
-        cy.get('button[data-sel-role="3dotsMenuAction"]').click()
-        cy.get('li[data-sel-role="vanityUrls"]').click()
+        cy.get('button[data-sel-role="vanityUrls"]').click()
         return new VanityUrlUi()
     }
 
     checkVanityUrlAccessibility(enabled) {
-        cy.get('button[data-sel-role="3dotsMenuAction"]').click()
-        cy.get('li[data-sel-role="vanityUrls"]').should('have.attr', 'aria-disabled', enabled)
+        cy.get('button[data-sel-role="vanityUrls"]').should('be.disabled', enabled)
     }
 
     checkVanityUrlVisibility(isVisible) {
-        cy.get('button[data-sel-role="3dotsMenuAction"]').click()
-        cy.get('li[data-sel-role="vanityUrls"]').should(isVisible ? 'be.visible' : 'not.be.visible')
+        cy.get('button[data-sel-role="vanityUrls"]').should(isVisible ? 'be.visible' : 'not.be.visible')
     }
 }
