@@ -28,7 +28,9 @@ export const DefaultRow = ({
     const client = useApolloClient();
 
     const onMappingChanged = (value, onSuccess, onError) => {
-        if (/[:*?"<>|%+]/.test(value)) {
+        if (!value) {
+            onError(t('label.errors.InvalidMappingError'), t('label.errors.InvalidMappingError_message'));
+        } else if (/[:*?"<>|%+]/.test(value)) {
             onError(t('label.errors.GqlConstraintViolationException.notAllowedChars'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
         } else if (value.endsWith('.do')) {
             onError(t('label.errors.GqlConstraintViolationException.notAllowedDotDo'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
