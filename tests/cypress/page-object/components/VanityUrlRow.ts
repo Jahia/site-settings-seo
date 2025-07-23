@@ -1,5 +1,6 @@
 import { BaseComponent, getComponent } from '@jahia/cypress'
 import { Menu } from './Menu'
+import { FieldError } from './FieldError'
 
 export class VanityUrlRow extends BaseComponent {
     openContextualMenu() {
@@ -27,5 +28,9 @@ export class VanityUrlRow extends BaseComponent {
 
     getCanonicalBadge() {
         return this.get().find('div[data-sel-role="canonical-badge"]')
+    }
+
+    getError() {
+        return getComponent(FieldError, this)
     }
 }

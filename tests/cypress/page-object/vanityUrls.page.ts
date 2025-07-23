@@ -2,6 +2,7 @@ import { getComponent } from '@jahia/cypress'
 import { PageWithVanityUrlList } from './dashboard/PageWithVanityUrlList'
 import { Pagination } from './dashboard/Pagination'
 import { Toolbar } from './dashboard/Toolbar'
+import { StagingVanityUrlList } from './components/StagingVanityUrlList'
 export class VanityUrlsPage {
     elements = {
         pageRowVanityUrls: "div[data-vud-role='content-title'] span",
@@ -26,6 +27,9 @@ export class VanityUrlsPage {
         return cy.get(`tbody[data-vud-table-body-default="${contentId}"]`)
     }
 
+    getStagingVanityUrlList(): StagingVanityUrlList {
+        return getComponent(StagingVanityUrlList)
+    }
     findReadOnlyBadge(page: string) {
         return cy
             .get(this.elements.pageRowVanityUrls)
