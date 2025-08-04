@@ -11,7 +11,7 @@ import * as PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
 import {useApolloClient} from '@apollo/client';
-import {updateVanity} from '~/components/Utils/Utils';
+import {updateVanity, containsInvalidChars} from '~/components/Utils/Utils';
 
 export const DefaultRow = ({
     hasWritePermission,
@@ -30,6 +30,8 @@ export const DefaultRow = ({
     const onMappingChanged = (value, onSuccess, onError) => {
         if (!value) {
             onError(t('label.errors.InvalidMappingError'), t('label.errors.InvalidMappingError_message'));
+        } else if (containsInvalidChars(value)) {
+            onError(t('label.errors.InvalidCharError'), t('label.errors.InvalidCharError_message'));
         } else if (/[:*?"<>|%+]/.test(value)) {
             onError(t('label.errors.GqlConstraintViolationException.notAllowedChars'), t('label.errors.GqlConstraintViolationException.notAllowed_message', {urlMapping: value}));
         } else if (value.endsWith('.do')) {

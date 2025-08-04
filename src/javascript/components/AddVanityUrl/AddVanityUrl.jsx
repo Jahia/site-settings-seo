@@ -196,6 +196,15 @@ export const AddVanityUrl = ({
                                               }
                                           ]);
                                           onError();
+                                      } else if (containsInvalidChars(value)) {
+                                          setErrors([
+                                              {
+                                                  url: mapping.url,
+                                                  label: t('label.errors.InvalidCharError'),
+                                                  message: t('label.errors.InvalidCharError_message')
+                                              }
+                                          ]);
+                                          onError();
                                       } else if (/[:*?"<>|%+]/.test(value)) {
                                           setErrors([
                                               {
