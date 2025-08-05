@@ -1,5 +1,5 @@
 - addMavenRepository: 'https://devtools.jahia.com/nexus/content/groups/public/@snapshots@noreleases@id=JahiaPublicSnapshots'
-- addMavenRepository: 'https://devtools.jahia.com/nexus/content/groups/internal@id=jahia-internal@snapshots'
+- addMavenRepository: 'https://devtools.jahia.com/nexus/content/groups/internal/@id=jahia-internal@snapshots'
   username: ${env:NEXUS_USERNAME}
   password: ${env:NEXUS_PASSWORD}
 
@@ -25,7 +25,7 @@
     - 'mvn:org.jahia.modules/skins'
     - 'mvn:org.jahia.modules/default-skins'
     - 'mvn:org.jahia.modules/grid'
-    - 'mvn:org.jahia.modules/tabularList'    
+    - 'mvn:org.jahia.modules/tabularList'
   autoStart: true
   uninstallPreviousVersion: true
 

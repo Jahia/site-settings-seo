@@ -60,7 +60,7 @@ describe('Edit vanity url in urls dashboard', () => {
         fieldError.getLabel().should('contain', 'Invalid URL')
         vanityRow.edit('/vanity-a-renamed')
 
-        vanityRow = stagingVanityUrlList.getVanityUrlRow('/vanity-a')
+        vanityRow = vanityUrlsPage.getStagingVanityUrlList().getVanityUrlRow('/vanity-a-renamed')
         vanityRow.get().should('exist')
     })
 
