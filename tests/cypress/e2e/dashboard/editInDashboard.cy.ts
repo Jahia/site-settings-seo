@@ -1,4 +1,4 @@
-import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl } from '@jahia/cypress'
+import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl, deleteNode } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 
 describe('Edit vanity url in urls dashboard', () => {
@@ -29,11 +29,18 @@ describe('Edit vanity url in urls dashboard', () => {
 
     before('create test data', function () {
         createSite(siteKey, siteConfig)
+    })
+
+    beforeEach('add vanity urls', function () {
         createPage(homePath, pageName, 'default', langEN)
 
         addVanityUrl(pagePath, 'en', 'vanity-a')
         addVanityUrl(pagePath, 'en', 'vanity-b')
         publishAndWaitJobEnding(pagePath, [langEN])
+    })
+    afterEach('remove vanity urls', function () {
+        deleteNode(pagePath)
+        publishAndWaitJobEnding(homePath, [langEN])
     })
 
     after('clear test data', function () {
@@ -55,5 +62,33 @@ describe('Edit vanity url in urls dashboard', () => {
 
         vanityRow = vanityUrlsPage.getStagingVanityUrlList().getVanityUrlRow('/vanity-a-renamed')
         vanityRow.get().should('exist')
+    })
+
+    it('Verify vanity can not be created if it already exists.', function () {
+        cy.login()
+        const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
+        vanityUrlsPage.openPageVanityUrlsList(pageName)
+        const stagingVanityUrlList = vanityUrlsPage.getStagingVanityUrlList()
+        const vanityRow = stagingVanityUrlList.getVanityUrlRow('/vanity-a')
+        vanityRow.clickToEdit()
+        vanityRow.edit('/vanity-b')
+        const fieldError = vanityRow.getError()
+        fieldError
+            .getErrorMessage()
+            .should('contain', 'This vanity URL already points to /sites/editInDashboard/home/testPage')
+        fieldError.getLabel().should('contain', 'Already in use')
+    })
+
+    it('Verify vanity can not contain invalid characters.', function () {
+        cy.login()
+        const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
+        vanityUrlsPage.openPageVanityUrlsList(pageName)
+        const stagingVanityUrlList = vanityUrlsPage.getStagingVanityUrlList()
+        const vanityRow = stagingVanityUrlList.getVanityUrlRow('/vanity-a')
+        vanityRow.clickToEdit()
+        vanityRow.edit('//invalid')
+        const fieldError = vanityRow.getError()
+        fieldError.getErrorMessage().should('contain', 'Make sure the url contains only valid characters')
+        fieldError.getLabel().should('contain', 'Invalid URL')
     })
 })
