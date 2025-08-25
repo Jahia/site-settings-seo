@@ -23,6 +23,7 @@ export const EditVanityUrlsDialog = ({
             data-sel-role="manage-vanity-url-dialog"
             className={clsx(classes.dialog, classes.dialogOverflow)}
             open={isOpen}
+            fullWidth={true}
             maxWidth="xl"
             onClose={onCloseDialog}
         >
