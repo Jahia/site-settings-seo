@@ -6,9 +6,9 @@ import {
     addVanityUrl,
     createUser,
     deleteUser,
-    grantRoles
+    grantRoles,
 } from '@jahia/cypress'
-import {VanityUrlsPage} from "../page-object/vanityUrls.page";
+import { VanityUrlsPage } from '../page-object/vanityUrls.page'
 
 describe('Vanity URLs - Unpublish Page Behavior', () => {
     const siteKey = 'unpublishPageBehaviorCheck'
@@ -56,29 +56,29 @@ describe('Vanity URLs - Unpublish Page Behavior', () => {
     it('In live mode: Both vanity URLs work after publish', () => {
         cy.request({
             url: 'http://jahia:8080/vanity1',
-            failOnStatusCode: false
+            failOnStatusCode: false,
         }).then((response) => {
             expect(response.status).to.eq(200)
         })
         cy.request({
             url: 'http://jahia:8080/vanity2',
-            failOnStatusCode: false
+            failOnStatusCode: false,
         }).then((response) => {
             expect(response.status).to.eq(200)
         })
     })
 
     it('In live mode: Both vanity URLs return 404 after page unpublish', () => {
-        unpublishNode(pagePath, langEN);
+        unpublishNode(pagePath, langEN)
         cy.request({
             url: 'http://jahia:8080/vanity1',
-            failOnStatusCode: false
+            failOnStatusCode: false,
         }).then((response) => {
             expect(response.status).to.eq(404)
         })
         cy.request({
             url: 'http://jahia:8080/vanity2',
-            failOnStatusCode: false
+            failOnStatusCode: false,
         }).then((response) => {
             expect(response.status).to.eq(404)
         })
@@ -90,5 +90,4 @@ describe('Vanity URLs - Unpublish Page Behavior', () => {
         vanityUrlsPage.openPageVanityUrlsList(pageName)
         cy.logout()
     })
-
 })
