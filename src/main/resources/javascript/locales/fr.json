@@ -24,8 +24,8 @@
         "title": "Ajouter URL"
       },
       "infoButton": {
-        "moveAction": "Cette URL sera supprimée lorsque {{pagePath}} sera publiée",
-        "notPublished": "Plusieurs URLs seront considérées par défaut jusqu'à publication du contenu {{pagePath}}"
+        "moveAction": "Cette URL personnalisée sera supprimée lorsque {{pagePath}} sera publiée",
+        "notPublished": "Plusieurs URLs personnalisées seront considérées par défaut jusqu'à publication du contenu {{pagePath}}"
       },
       "move": {
         "contentStart": "Vous êtes sur le point de déplacer la ou les URL personnalisées :",

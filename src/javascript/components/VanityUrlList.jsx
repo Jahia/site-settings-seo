@@ -190,8 +190,8 @@ class VanityUrlListLive extends React.Component {
                                         const defaultWithMissingCounterpart = urlPair.default && !_.includes(defaultNotPublished, url);
                                         let infoMessage;
                                         if (url.editNode) {
-                                            if (url.editNode.path !== url.path && url.editNode.targetNode.path) {
-                                                infoMessage = t('label.dialogs.infoButton.moveAction', {pagePath: url.editNode.targetNode.path});
+                                            if (url.editNode.path !== url.path && url.editNode.targetNode.path !== url.targetNode.path) {
+                                                infoMessage = t('label.dialogs.infoButton.moveAction', {url: url.url, pagePath: url.editNode.targetNode.path});
                                             } else if (_.includes(defaultNotPublished, url)) {
                                                 infoMessage = t('label.dialogs.infoButton.notPublished', {pagePath: url.editNode.targetNode.path});
                                             }
