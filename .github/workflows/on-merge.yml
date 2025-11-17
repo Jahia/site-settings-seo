@@ -89,7 +89,7 @@ jobs:
           tests_manifest: provisioning-manifest-build.yml
           #TODO TECH-1408 reactive the test on released version
           #jahia_image: jahia/jahia-ee-dev:8
-          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
+          jahia_image: ghcr.io/jahia/jahia-ee-dev:8-SNAPSHOT
           jahia_cluster_enabled: false
           should_skip_testrail: false
           github_artifact_name: sseo-artifacts-${{ github.run_number }}

@@ -78,7 +78,7 @@ jobs:
           testrail_project: SEO Module
           timeout_minutes: 45
           tests_manifest: provisioning-manifest-build.yml
-          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
+          jahia_image: ghcr.io/jahia/jahia-ee-dev:8-SNAPSHOT
           jahia_cluster_enabled: true
           should_skip_testrail: true
           github_artifact_name: sseo-artifacts-${{ github.run_number }}
