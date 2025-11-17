@@ -141,17 +141,13 @@ services:
         - jahia
       environment:
         # Uses variable substitution: https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
-        MANIFEST: ${MANIFEST:-provisioning-manifest-build.yml}
-        JAHIA_USERNAME: ${JAHIA_USERNAME}
-        JAHIA_PASSWORD: ${JAHIA_PASSWORD}
-        JAHIA_URL: ${JAHIA_URL}
-        JAHIA_HOST: ${JAHIA_HOST}
-        JAHIA_PORT: ${JAHIA_PORT}
-        NEXUS_USERNAME: ${NEXUS_USERNAME}
-        NEXUS_PASSWORD: ${NEXUS_PASSWORD}
-        SUPER_USER_PASSWORD: ${SUPER_USER_PASSWORD}
-        JAHIA_CLUSTER_ENABLED: '${JAHIA_CLUSTER_ENABLED}'
-        TZ: ${TIMEZONE}
+        - MANIFEST=${MANIFEST:-provisioning-manifest-build.yml}
+        - SUPER_USER_PASSWORD=${SUPER_USER_PASSWORD}
+        - JAHIA_CLUSTER_ENABLED=${JAHIA_CLUSTER_ENABLED}
+        - JAHIA_URL=${JAHIA_URL}
+        - NEXUS_USERNAME=${NEXUS_USERNAME}
+        - NEXUS_PASSWORD=${NEXUS_PASSWORD}
+        - TZ=${TIMEZONE}
       networks:
         - stack
 networks:

@@ -12,6 +12,8 @@ export class VanityUrlsPage {
         deleteDialog: "div[data-sel-role='delete-mark-dialog']",
         deletePermanentlyDialog: "div[data-sel-role='delete-permanently-dialog']",
         readOnlyBadge: 'div[data-sel-role="read-only-badge"]',
+        workspaceDropdown: '#workspaceDropdown',
+        workspaceDropdownLabel: '#workspaceDropdown .moonstone-dropdown_label',
     }
 
     static visit(siteKey = 'mySite', lang = 'en') {
@@ -94,5 +96,31 @@ export class VanityUrlsPage {
 
     getToolbar(): Toolbar {
         return getComponent(Toolbar)
+    }
+
+    switchToStagingAndLiveMode() {
+        this.switchToMode('Staging and live')
+    }
+
+    switchToStagingMode() {
+        this.switchToMode('Staging vanity URLs')
+    }
+
+    switchToLiveMode() {
+        this.switchToMode('Live vanity URLs')
+    }
+
+    private switchToMode(mode: string) {
+        cy.get(this.elements.workspaceDropdown).click()
+        cy.get('[role="option"]').contains(mode).click()
+        cy.get(this.elements.workspaceDropdownLabel).should('have.text', mode)
+    }
+
+    getCurrentMode() {
+        return cy.get(this.elements.workspaceDropdownLabel)
+    }
+
+    verifyCurrentMode(expectedMode: string) {
+        cy.get(this.elements.workspaceDropdownLabel).should('have.text', expectedMode)
     }
 }

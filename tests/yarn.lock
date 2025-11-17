@@ -115,10 +115,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz#4a2868d75d6d6963e423bcf90b7fd1be343409d3"
   integrity sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==
 
-"@jahia/cypress@^4.3.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-4.4.0.tgz#a1856a20fad2b98071d78ee375ff8186fa163862"
-  integrity sha512-V3jDNaZ7A1HhaAMquCPAMgIz0dsAxMEXyi1pL0EEhaHSQHdOiURSidwvII0A/N2fqhPMIaA7s7or4Mw4Xx2MfA==
+"@jahia/cypress@^6.3.1":
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-6.3.1.tgz#c0c1c6bce91e16519e6220f05a0c58d6a6dd9549"
+  integrity sha512-dJpdoGBNkMoxelxWSp0q91sGXdFDZ/tBzyLONypjG/bHm0Bcd6zRC0rJJg01NK6Gh2FFjsdiqhWjGNF6a5PQ8A==
   dependencies:
     "@apollo/client" "^3.4.9"
     cypress-real-events "^1.11.0"
@@ -158,10 +158,10 @@
     uuid "^8.3.1"
     xml-js "^1.6.11"
 
-"@jahia/jcontent-cypress@^v3.4.0-tests.2":
-  version "3.4.0-tests.2"
-  resolved "https://registry.yarnpkg.com/@jahia/jcontent-cypress/-/jcontent-cypress-3.4.0-tests.2.tgz#b16f5bc538be89c13fc5801c9e0e76cc5124783d"
-  integrity sha512-1zeu6UWvrpvd4/Ey429YlRNIQu6w8Catq3cYkmqD+119gioPpZQGHIzblXFXVkFd7GIsxHJGnPLklVdrvqNHrw==
+"@jahia/jcontent-cypress@^v3.4.0-tests.3":
+  version "3.4.0-tests.5"
+  resolved "https://registry.yarnpkg.com/@jahia/jcontent-cypress/-/jcontent-cypress-3.4.0-tests.5.tgz#504d4e608771cfb2ea98d4b2b4afd2b156a145fe"
+  integrity sha512-EYriazB04QkkSNqWkeiM/t8XQ6bjcIxWGumPr8xT+8QgkJWO7wzZClwz5DNqpulxwqykKdE60bbJ4YYQjf4r4w==
   dependencies:
     cypress-real-events "^1.14.0"
 
@@ -1125,7 +1125,7 @@ cypress-wait-until@^1.7.2:
   resolved "https://registry.yarnpkg.com/cypress-wait-until/-/cypress-wait-until-1.7.2.tgz#7f534dd5a11c89b65359e7a0210f20d3dfc22107"
   integrity sha512-uZ+M8/MqRcpf+FII/UZrU7g1qYZ4aVlHcgyVopnladyoBrpoaMJ4PKZDrdOJ05H5RHbr7s9Tid635X3E+ZLU/Q==
 
-cypress@^13.9.0:
+cypress@^13.15.2:
   version "13.17.0"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-13.17.0.tgz#34c3d68080c4497eace0f353bd1629587a5f600d"
   integrity sha512-5xWkaPurwkIljojFidhw8lFScyxhtiFHl/i/3zov+1Z5CmY4t9tjIdvSXfu82Y3w7wt0uR9KkucbhkVvJZLQSA==
