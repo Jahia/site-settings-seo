@@ -1,7 +1,6 @@
 import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl, getComponent, deleteNode } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 import { MoveValidationDialog } from '../../page-object/components/dialog/MoveValidationDialog'
-import {addSimplePage} from "../../utils/Utils";
 
 describe('Checks the publication action on not published pages in UIs', () => {
     const siteKey = 'testMoveVanity'
@@ -64,7 +63,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         deleteSite(siteKey)
     })
 
-    it.skip('Should move the vanity url from source page to target page', function () {
+    it('Should move the vanity url from source page to target page', function () {
         cy.login()
         const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
 
@@ -89,7 +88,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         sourcePageCard.getStagingVanityUrls().getVanityUrlRow('/vanity-to-move-b')
     })
 
-    it.skip('Should move several vanity urls from source page to target page', function () {
+    it('Should move several vanity urls from source page to target page', function () {
         cy.login()
         const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
 
@@ -120,8 +119,8 @@ describe('Checks the publication action on not published pages in UIs', () => {
     it('Should display info box and correct message for moved vanity url in live column of source page', function () {
         cy.login()
         const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
-        vanityUrlsPage.switchToStagingAndLiveMode();
-        vanityUrlsPage.verifyCurrentMode("Staging and live")
+        vanityUrlsPage.switchToStagingAndLiveMode()
+        vanityUrlsPage.verifyCurrentMode('Staging and live')
 
         const sourcePageCard = vanityUrlsPage.getPagesWithVanityUrl().getPageCard(sourcePageUuid)
         sourcePageCard.open()
@@ -135,6 +134,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         const moveValidationDialog = getComponent(MoveValidationDialog)
         moveValidationDialog.move()
 
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(500)
         sourcePageCard.open()
         const liveVanityUrlRowA = sourcePageCard.getLiveVanityUrls().getVanityUrlRow('/vanity-to-move-a')
@@ -145,7 +145,9 @@ describe('Checks the publication action on not published pages in UIs', () => {
         liveVanityUrlRowB.containsInfo().should('be.false')
 
         const infoDialog = liveVanityUrlRowA.displayInfo()
-        infoDialog.getMessage().should('match', new RegExp(`This vanity URL will be removed when ${targetPagePath} is published`))
+        infoDialog
+            .getMessage()
+            .should('match', new RegExp(`This vanity URL will be removed when ${targetPagePath} is published`))
         infoDialog.close()
     })
 })

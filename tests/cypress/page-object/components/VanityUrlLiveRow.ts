@@ -1,15 +1,16 @@
-import {BaseComponent, getComponent} from '@jahia/cypress'
-import {LiveVanityUrlInfoDialog} from './dialog/LiveVanityUrlInfoDialog'
+import { BaseComponent, getComponent } from '@jahia/cypress'
+import { LiveVanityUrlInfoDialog } from './dialog/LiveVanityUrlInfoDialog'
 
 export class VanityUrlLiveRow extends BaseComponent {
-
     isCanonical() {
-        return this.get().find('td:nth-child(2)').then($td => {
-            if ($td.children().length === 0) {
-                return false;
-            }
-            return $td.text().includes('Canonical');
-        });
+        return this.get()
+            .find('td:nth-child(2)')
+            .then(($td) => {
+                if ($td.children().length === 0) {
+                    return false
+                }
+                return $td.text().includes('Canonical')
+            })
     }
 
     getLanguage() {
@@ -17,12 +18,14 @@ export class VanityUrlLiveRow extends BaseComponent {
     }
 
     containsInfo() {
-        return this.get().find('td:nth-child(4)').then($td => {
-            if ($td.children().length === 0) {
-                return false;
-            }
-            return $td.find('button').length > 0;
-        });
+        return this.get()
+            .find('td:nth-child(4)')
+            .then(($td) => {
+                if ($td.children().length === 0) {
+                    return false
+                }
+                return $td.find('button').length > 0
+            })
     }
 
     displayInfo() {

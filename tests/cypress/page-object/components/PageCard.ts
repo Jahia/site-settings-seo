@@ -1,7 +1,7 @@
-import {BaseComponent, getComponent} from '@jahia/cypress'
-import {StagingVanityUrlList} from './StagingVanityUrlList'
-import {AddVanityUrl} from './AddVanityUrl'
-import {LiveVanityUrlList} from "./LiveVanityUrlList";
+import { BaseComponent, getComponent } from '@jahia/cypress'
+import { StagingVanityUrlList } from './StagingVanityUrlList'
+import { AddVanityUrl } from './AddVanityUrl'
+import { LiveVanityUrlList } from './LiveVanityUrlList'
 
 export class PageCard extends BaseComponent {
     static defaultSelector = '[data-sel-role="page-card"]'

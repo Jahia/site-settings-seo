@@ -8,7 +8,9 @@ export class LiveVanityUrlInfoDialog extends BaseComponent {
     }
 
     getMessage() {
-        return this.get().find('div[id="alert-dialog-description"] p[class*="VanityList-live-InfoDialog__label"]').invoke('text')
+        return this.get()
+            .find('div[id="alert-dialog-description"] p[class*="VanityList-live-InfoDialog__label"]')
+            .invoke('text')
     }
 
     close() {
