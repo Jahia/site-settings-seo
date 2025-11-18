@@ -7,6 +7,7 @@ source ./set-env.sh
 #!/usr/bin/env bash
 START_TIME=$SECONDS
 RUN=${RUN:-ci}
+
 echo " env.run.sh == Printing the most important environment variables"
 echo " MANIFEST: ${MANIFEST}"
 echo " TESTS_IMAGE: ${TESTS_IMAGE}"
