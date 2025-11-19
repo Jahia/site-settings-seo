@@ -147,7 +147,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         const infoDialog = liveVanityUrlRowA.displayInfo()
         infoDialog
             .getMessage()
-            .should('match', new RegExp(`This vanity URL will be removed when ${targetPagePath} is published`))
+            .should('match', `This vanity URL will be removed when ${targetPagePath} is published`)
         infoDialog.close()
     })
 })

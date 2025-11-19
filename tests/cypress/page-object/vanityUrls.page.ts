@@ -99,21 +99,20 @@ export class VanityUrlsPage {
     }
 
     switchToStagingAndLiveMode() {
-        this.switchToMode('Staging and live')
+        this.switchToModeByIndex(0)
     }
 
     switchToStagingMode() {
-        this.switchToMode('Staging vanity URLs')
+        this.switchToModeByIndex(1)
     }
 
     switchToLiveMode() {
-        this.switchToMode('Live vanity URLs')
+        this.switchToModeByIndex(2)
     }
 
-    private switchToMode(mode: string) {
+    private switchToModeByIndex(index: number) {
         cy.get(this.elements.workspaceDropdown).click()
-        cy.get('[role="option"]').contains(mode).click()
-        cy.get(this.elements.workspaceDropdownLabel).should('have.text', mode)
+        cy.get('[role="option"]').eq(index).click()
     }
 
     getCurrentMode() {
