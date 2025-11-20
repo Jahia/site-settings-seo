@@ -3,6 +3,7 @@ import { PageWithVanityUrlList } from './dashboard/PageWithVanityUrlList'
 import { Pagination } from './dashboard/Pagination'
 import { Toolbar } from './dashboard/Toolbar'
 import { StagingVanityUrlList } from './components/StagingVanityUrlList'
+
 export class VanityUrlsPage {
     elements = {
         pageRowVanityUrls: "div[data-vud-role='content-title'] span",
