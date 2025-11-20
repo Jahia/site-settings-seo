@@ -98,21 +98,22 @@ export class VanityUrlsPage {
         return getComponent(Toolbar)
     }
 
+    switchToStagingAndLiveMode() {
+        this.switchToMode('Staging and live')
+    }
+
     switchToStagingMode() {
-        this.switchToModeByIndex(0)
+        this.switchToMode('Staging vanity URLs')
     }
 
     switchToLiveMode() {
-        this.switchToModeByIndex(1)
+        this.switchToMode('Live vanity URLs')
     }
 
-    switchToStagingAndLiveMode() {
-        this.switchToModeByIndex(2)
-    }
-
-    private switchToModeByIndex(index: number) {
+    private switchToMode(mode: string) {
         cy.get(this.elements.workspaceDropdown).click()
-        cy.get('[role="option"]').eq(index).click()
+        cy.get('[role="option"]').contains(mode).click()
+        cy.get(this.elements.workspaceDropdownLabel).should('have.text', mode)
     }
 
     getCurrentMode() {
