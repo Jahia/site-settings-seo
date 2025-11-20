@@ -63,7 +63,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         deleteSite(siteKey)
     })
 
-    it.skip('Should move the vanity url from source page to target page', function () {
+    it('Should move the vanity url from source page to target page', function () {
         cy.login()
         const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
 
@@ -88,7 +88,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         sourcePageCard.getStagingVanityUrls().getVanityUrlRow('/vanity-to-move-b')
     })
 
-    it.skip('Should move several vanity urls from source page to target page', function () {
+    it('Should move several vanity urls from source page to target page', function () {
         cy.login()
         const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
 
@@ -146,6 +146,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
 
         cy.log('Check info dialog message')
         const infoDialog = liveVanityUrlRowA.displayInfo()
+        infoDialog.getTitle().then(title => cy.log('Info dialog title: ' + title))
         infoDialog.getMessage().should('eq', `This vanity URL will be removed when ${targetPagePath} is published`)
         infoDialog.close()
     })
