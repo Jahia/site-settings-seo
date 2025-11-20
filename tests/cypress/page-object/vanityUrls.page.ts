@@ -98,15 +98,15 @@ export class VanityUrlsPage {
         return getComponent(Toolbar)
     }
 
-    switchToStagingAndLiveMode() {
+    switchToStagingMode() {
         this.switchToModeByIndex(0)
     }
 
-    switchToStagingMode() {
+    switchToLiveMode() {
         this.switchToModeByIndex(1)
     }
 
-    switchToLiveMode() {
+    switchToStagingAndLiveMode() {
         this.switchToModeByIndex(2)
     }
 
