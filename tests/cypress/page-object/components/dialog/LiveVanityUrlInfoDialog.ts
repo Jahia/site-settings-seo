@@ -1,19 +1,26 @@
 import { BaseComponent } from '@jahia/cypress'
 
 export class LiveVanityUrlInfoDialog extends BaseComponent {
-    static defaultSelector = 'div[class*="VanityList-live-InfoDialog__dialogContent"]'
+    static defaultSelector = 'div[role="dialog"][class*="src-javascript-components-VanityList-live-InfoDialog__dialogRoot"]'
 
     getTitle() {
-        return this.get().find('p[class*="VanityList-live-InfoDialog__dialogTitle"]').invoke('text')
+        return this.get()
+            .find('#alert-dialog-title p')
+            .invoke('text')
+            .then(t => t.trim())
     }
 
     getMessage() {
         return this.get()
-            .find('div[id="alert-dialog-description"] p[class*="VanityList-live-InfoDialog__label"]')
+            .find('#alert-dialog-description p')
             .invoke('text')
+            .then(t => t.trim())
     }
 
     close() {
-        this.get().parents('div').find('button[type="button"] span').contains('OK').parents('button').click()
+        this.get()
+            .find('button span').contains('OK')
+            .parents('button')
+            .click()
     }
 }

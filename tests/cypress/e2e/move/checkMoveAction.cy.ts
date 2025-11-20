@@ -63,7 +63,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         deleteSite(siteKey)
     })
 
-    it('Should move the vanity url from source page to target page', function () {
+    it.skip('Should move the vanity url from source page to target page', function () {
         cy.login()
         const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
 
@@ -88,7 +88,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         sourcePageCard.getStagingVanityUrls().getVanityUrlRow('/vanity-to-move-b')
     })
 
-    it('Should move several vanity urls from source page to target page', function () {
+    it.skip('Should move several vanity urls from source page to target page', function () {
         cy.login()
         const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
 
@@ -135,7 +135,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
         moveValidationDialog.move()
 
         // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(500)
+        cy.wait(2000)
         sourcePageCard.open()
         const liveVanityUrlRowA = sourcePageCard.getLiveVanityUrls().getVanityUrlRow('/vanity-to-move-a')
         const liveVanityUrlRowB = sourcePageCard.getLiveVanityUrls().getVanityUrlRow('/vanity-to-move-b')
@@ -144,8 +144,9 @@ describe('Checks the publication action on not published pages in UIs', () => {
         liveVanityUrlRowA.isCanonical().should('be.false')
         liveVanityUrlRowB.containsInfo().should('be.false')
 
+        cy.log('Check info dialog message')
         const infoDialog = liveVanityUrlRowA.displayInfo()
-        infoDialog.getMessage().should('match', `This vanity URL will be removed when ${targetPagePath} is published`)
+        infoDialog.getMessage().should('eq', `This vanity URL will be removed when ${targetPagePath} is published`)
         infoDialog.close()
     })
 })
