@@ -146,7 +146,7 @@ describe('Checks the publication action on not published pages in UIs', () => {
 
         cy.log('Check info dialog message')
         const infoDialog = liveVanityUrlRowA.displayInfo()
-        infoDialog.getTitle().then(title => cy.log('Info dialog title: ' + title))
+        infoDialog.getTitle().then((title) => cy.log('Info dialog title: ' + title))
         infoDialog.getMessage().should('eq', `This vanity URL will be removed when ${targetPagePath} is published`)
         infoDialog.close()
     })
