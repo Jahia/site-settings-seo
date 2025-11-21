@@ -27,7 +27,7 @@
         "title": "Add Vanity URL"
       },
       "infoButton": {
-        "moveAction": "Vanity URLs of this page will be removed when {{pagePath}} is published",
+        "moveAction": "This vanity URL will be removed when {{pagePath}} is published",
         "notPublished": "Several vanity URLs will be defined as canonical until publication of {{pagePath}}"
       },
       "move": {

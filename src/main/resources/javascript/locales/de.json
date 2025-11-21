@@ -111,7 +111,7 @@
     "workspace": {
       "live": "Live vanity URLs",
       "staging": "Staging vanity URLs",
-      "both": "Staging and live"
+      "both": "Staging und live"
     },
     "noPublishedVanityUrl": "No published vanity URL",
     "readOnly": "Schreibgeschützt"

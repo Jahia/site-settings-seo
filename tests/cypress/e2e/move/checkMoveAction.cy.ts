@@ -115,4 +115,39 @@ describe('Checks the publication action on not published pages in UIs', () => {
         targetPageCard.getStagingVanityUrls().getVanityUrlRow('/vanity-to-move-a').should('exist')
         targetPageCard.getStagingVanityUrls().getVanityUrlRow('/vanity-to-move-b').should('exist')
     })
+
+    it('Should display info box and correct message for moved vanity url in live column of source page', function () {
+        cy.login()
+        const vanityUrlsPage = VanityUrlsPage.visit(siteKey, 'en')
+        vanityUrlsPage.switchToStagingAndLiveMode()
+        vanityUrlsPage.verifyCurrentMode('Staging and live')
+
+        const sourcePageCard = vanityUrlsPage.getPagesWithVanityUrl().getPageCard(sourcePageUuid)
+        sourcePageCard.open()
+        const vanityUrlRow = sourcePageCard.getStagingVanityUrls().getVanityUrlRow('/vanity-to-move-a')
+        const menu = vanityUrlRow.openContextualMenu()
+        const picker = menu.clickOnMove()
+        cy.get('li[data-sel-role="home"]').click()
+        picker.getTable().getRowByLabel(targetPageName).click()
+        picker.select()
+
+        const moveValidationDialog = getComponent(MoveValidationDialog)
+        moveValidationDialog.move()
+
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(2000)
+        sourcePageCard.open()
+        const liveVanityUrlRowA = sourcePageCard.getLiveVanityUrls().getVanityUrlRow('/vanity-to-move-a')
+        const liveVanityUrlRowB = sourcePageCard.getLiveVanityUrls().getVanityUrlRow('/vanity-to-move-b')
+        liveVanityUrlRowA.containsInfo().should('be.true')
+        liveVanityUrlRowA.getLanguage().should('eq', 'en')
+        liveVanityUrlRowA.isCanonical().should('be.false')
+        liveVanityUrlRowB.containsInfo().should('be.false')
+
+        cy.log('Check info dialog message')
+        const infoDialog = liveVanityUrlRowA.displayInfo()
+        infoDialog.getTitle().then((title) => cy.log('Info dialog title: ' + title))
+        infoDialog.getMessage().should('eq', `This vanity URL will be removed when ${targetPagePath} is published`)
+        infoDialog.close()
+    })
 })
