@@ -95,16 +95,15 @@ describe('Add vanity Urls', () => {
     })
 
     it('Should display vanity url UI event if parent have special characters', () => {
+        const textWithSpecialCharacters = '(Chocolate, sweets, cakes)'
         cy.login()
-        addSimplePage('/sites/digitall/home', '(Chocolate, sweets, cakes)', 'Chocolate, sweets, cakes', 'en').then(
-            () => {
-                addVanityUrl(
-                    '/sites/digitall/home/(Chocolate, sweets, cakes)',
-                    'en',
-                    '/test-vanity-url-page-special-character',
-                )
-            },
-        )
+        addSimplePage('/sites/digitall/home', textWithSpecialCharacters, 'Chocolate, sweets, cakes', 'en').then(() => {
+            addVanityUrl(
+                `/sites/digitall/home/${textWithSpecialCharacters}`,
+                'en',
+                '/test-vanity-url-page-special-character',
+            )
+        })
 
         CustomPageComposer.visit('digitall', 'en', 'home.html')
         const composer = new CustomPageComposer()
@@ -114,7 +113,7 @@ describe('Add vanity Urls', () => {
         vanityUrlsUi.getVanityUrlRow('/test-vanity-url-page-special-character').then((value) => {
             expect(value.text()).to.contains('/test-vanity-url-page-special-character')
         })
-        deleteNode('/sites/digitall/home/(Chocolate, sweets, cakes)')
+        deleteNode(`/sites/digitall/home/${textWithSpecialCharacters}`)
         cy.logout()
     })
 
@@ -197,6 +196,22 @@ describe('Add vanity Urls', () => {
 
         vanityUrlUi.getErrorRow().then((result) => {
             expect(result.text()).contains('URL cannot ends with .do')
+        })
+    })
+
+    it('should allow to create vanity url with special characters with numerical, dot and dash', function () {
+        const vanityUrls = ['test', 'test123', 'test-abc', 'test.abc']
+
+        cy.login()
+        const composer = new CustomPageComposer()
+        CustomPageComposer.visit('digitall', 'en', 'home.html')
+        const contextMenu = composer.openContextualMenuOnLeftTree(pageVanityUrl1)
+        const contentEditor = contextMenu.edit()
+        const vanityUrlUi = contentEditor.openVanityUrlUi()
+
+        vanityUrls.forEach((url) => {
+            vanityUrlUi.addVanityUrl(url)
+            checkVanityUrlByAPI(`${homePath}/${pageVanityUrl1}/vanityUrlMapping/${url}`, url, 'en', 'EDIT', 'false')
         })
     })
 })
