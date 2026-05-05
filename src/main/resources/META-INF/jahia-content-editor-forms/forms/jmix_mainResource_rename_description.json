@@ -17,7 +17,7 @@
               "labelKey": "site-settings-seo:seo.metaDescription.label",
               "descriptionKey": "site-settings-seo:seo.metaDescription.ui.tooltip",
               "selectorOptionsMap": {
-                "maxLength": 160
+                "maxLength": 240
               }
             },
             {
