@@ -18,12 +18,6 @@ services:
             MYSQL_USER: jahia
             MYSQL_PASSWORD: jahia
             TZ: ${TIMEZONE}
-        healthcheck:
-            test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
-            start_period: 30s
 
     jahia:
         image: '${JAHIA_IMAGE}'
@@ -36,8 +30,7 @@ services:
                 reservations:
                     memory: 4gb
         depends_on:
-            mariadb:
-                condition: service_healthy
+            - mariadb
         networks:
             - stack
         ports:
@@ -77,10 +70,8 @@ services:
                 reservations:
                     memory: 4gb
         depends_on:
-            mariadb:
-                condition: service_healthy
-            jahia:
-                condition: service_started
+            - mariadb
+            - jahia
         networks:
             - stack
         ports:
@@ -117,10 +108,8 @@ services:
                 reservations:
                     memory: 4gb
         depends_on:
-            mariadb:
-                condition: service_healthy
-            jahia:
-                condition: service_started
+            - mariadb
+            - jahia
         networks:
             - stack
         ports:
