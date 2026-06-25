@@ -1,10 +1,4 @@
-import {
-    publishAndWaitJobEnding,
-    createSite,
-    deleteSite,
-    addVanityUrl,
-    getComponent,
-} from '@jahia/cypress'
+import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl, getComponent } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 import { MoveValidationDialog } from '../../page-object/components/dialog/MoveValidationDialog'
 

@@ -19,18 +19,20 @@ describe('Checks on vanity urls in dashboard', () => {
     const pages: Record<string, string> = {}
 
     const createPage = (parent: string, name: string, template: string, lang: string) => {
-        return cy.apollo({
-            variables: {
-                parentPathOrId: parent,
-                name: name,
-                template: template,
-                language: lang,
-            },
-            mutationFile: 'graphql/jcrAddPage.graphql',
-        }).then((res) => {
-            pageId = res.data.jcr.addNode.uuid
-            return res
-        })
+        return cy
+            .apollo({
+                variables: {
+                    parentPathOrId: parent,
+                    name: name,
+                    template: template,
+                    language: lang,
+                },
+                mutationFile: 'graphql/jcrAddPage.graphql',
+            })
+            .then((res) => {
+                pageId = res.data.jcr.addNode.uuid
+                return res
+            })
     }
 
     before('create test data', function () {

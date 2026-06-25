@@ -1,9 +1,4 @@
-import {
-    publishAndWaitJobEnding,
-    createSite,
-    deleteSite,
-    addVanityUrl,
-} from '@jahia/cypress'
+import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 
 describe('Publish vanity URLs in dashboard', () => {

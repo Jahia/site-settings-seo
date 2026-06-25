@@ -1,10 +1,4 @@
-import {
-    publishAndWaitJobEnding,
-    createSite,
-    deleteSite,
-    addVanityUrl,
-    setNodeProperty,
-} from '@jahia/cypress'
+import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl, setNodeProperty } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 
 describe('Vanity URL dashboard tests', () => {
@@ -170,6 +164,10 @@ describe('Vanity URL dashboard tests', () => {
         const vanityUrlsPageFr = VanityUrlsPage.visit(siteKey, langFR)
         const pageCardFr = vanityUrlsPageFr.getPagesWithVanityUrl().getPageCard(pages['pageLang'])
         pageCardFr.open()
-        pageCardFr.getStagingVanityUrls().getVanityUrlRow('/vanity-canonical-lang').getCanonicalBadge().should('not.exist')
+        pageCardFr
+            .getStagingVanityUrls()
+            .getVanityUrlRow('/vanity-canonical-lang')
+            .getCanonicalBadge()
+            .should('not.exist')
     })
 })
