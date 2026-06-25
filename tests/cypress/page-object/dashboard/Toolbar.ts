@@ -10,6 +10,10 @@ export class Toolbar extends BaseComponent {
         this.get().find('[data-jrm-role="table-pagination-button-next-page"]').click()
     }
 
+    close() {
+        this.get().find('[class*="Toolbar__clearButton"]').click()
+    }
+
     getMoveButton() {
         return this.get().find('[data-sel-role="moveVanity"]')
     }

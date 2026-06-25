@@ -30,6 +30,19 @@ export class VanityUrlRow extends BaseComponent {
         return this.get().find('div[data-sel-role="canonical-badge"]')
     }
 
+    getActiveSwitch() {
+        return this.get().find('[data-vud-role="action-active"] input')
+    }
+
+    toggleActive() {
+        this.get().find('[data-vud-role="action-active"] input').click()
+    }
+
+    changeLanguage(languageCode: string) {
+        this.get().find('[data-sel-role="vanity-language-menu"]').click()
+        cy.get(`li[data-sel-value="${languageCode}"]`).click()
+    }
+
     getError() {
         return getComponent(FieldError, this)
     }
