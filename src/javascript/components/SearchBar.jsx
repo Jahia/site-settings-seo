@@ -96,6 +96,7 @@ class SearchBarCmp extends React.Component {
                 disableUnderline
                 classes={{root: (this.state.focus ? classes.rootFocus : classes.root), input: (this.state.focus ? null : classes.input)}}
                 type="text"
+                inputProps={{'data-sel-role': 'vanity-search'}}
                 inputRef={input => {
                     this.inputSearchBar = input;
                 }}

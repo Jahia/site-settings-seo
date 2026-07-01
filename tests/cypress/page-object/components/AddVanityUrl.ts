@@ -18,15 +18,9 @@ export class AddVanityUrl extends BaseComponent {
             .click()
 
         if (disabled) {
-            this.get()
-                .get('div[data-sel-role="manage-vanity-url-dialog"]')
-                .find('button[data-vud-role="button-primary"]')
-                .should('be.disabled')
+            this.get().find('button[data-vud-role="button-primary"]').should('be.disabled')
         } else {
-            this.get()
-                .get('div[data-sel-role="manage-vanity-url-dialog"]')
-                .find('button[data-vud-role="button-primary"]')
-                .click()
+            this.get().find('button[data-vud-role="button-primary"]').click()
         }
     }
 }
