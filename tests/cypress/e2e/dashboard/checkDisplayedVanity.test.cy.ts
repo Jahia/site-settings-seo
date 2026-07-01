@@ -1,5 +1,6 @@
 import { publishAndWaitJobEnding, unpublishNode, createSite, deleteSite, addVanityUrl } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
+import { addSimplePage } from '../../utils/Utils'
 
 describe('Checks on vanity urls in dashboard', () => {
     const siteKey = 'testSite'
@@ -15,45 +16,22 @@ describe('Checks on vanity urls in dashboard', () => {
         locale: langEN,
     }
 
-    let pageId
+    let pageId: string
     const pages: Record<string, string> = {}
-
-    const createPage = (parent: string, name: string, template: string, lang: string) => {
-        return cy
-            .apollo({
-                variables: {
-                    parentPathOrId: parent,
-                    name: name,
-                    template: template,
-                    language: lang,
-                },
-                mutationFile: 'graphql/jcrAddPage.graphql',
-            })
-            .then((res) => {
-                pageId = res.data.jcr.addNode.uuid
-                return res
-            })
-    }
 
     before('create test data', function () {
         createSite(siteKey, siteConfig)
-        createPage(homePath, pageName, 'default', langEN)
+        addSimplePage(homePath, pageName, pageName, langEN, 'default').then(({ data }) => {
+            pageId = data.jcr.addNode.uuid
+        })
 
         addVanityUrl(pagePath, 'en', 'vanity-a')
         addVanityUrl(pagePath, 'en', 'vanity-b')
         publishAndWaitJobEnding(pagePath, [langEN])
 
         // Page for: search
-        cy.apollo({
-            variables: {
-                parentPathOrId: homePath,
-                name: 'pageSearch',
-                template: 'default',
-                language: langEN,
-            },
-            mutationFile: 'graphql/jcrAddPage.graphql',
-        }).then((res) => {
-            pages['pageSearch'] = res.data.jcr.addNode.uuid
+        addSimplePage(homePath, 'pageSearch', 'pageSearch', langEN, 'default').then(({ data }) => {
+            pages['pageSearch'] = data.jcr.addNode.uuid
         })
         addVanityUrl(homePath + '/pageSearch', langEN, 'unique-search-term')
         addVanityUrl(homePath + '/pageSearch', langEN, 'other-vanity')
@@ -82,11 +60,12 @@ describe('Checks on vanity urls in dashboard', () => {
 
     it('should find the vanity url when searching', function () {
         cy.login()
-        VanityUrlsPage.visit(siteKey, langEN)
+        const vanityUrlsPage = VanityUrlsPage.visit(siteKey, langEN)
 
-        cy.get('input[type="text"]').first().type('unique-search-term')
+        vanityUrlsPage.getSearchBar().search('unique-search-term')
 
-        cy.get('[data-sel-role="pages-with-vanity"]').should('exist')
-        cy.get(`[data-vud-content-uuid="${pages['pageSearch']}"]`).should('exist')
+        const pagesWithVanityUrl = vanityUrlsPage.getPagesWithVanityUrl()
+        pagesWithVanityUrl.get().should('exist')
+        pagesWithVanityUrl.getPageCard(pages['pageSearch']).get().should('exist')
     })
 })

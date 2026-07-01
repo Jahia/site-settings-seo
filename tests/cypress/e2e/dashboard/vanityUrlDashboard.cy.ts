@@ -1,5 +1,6 @@
 import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl, setNodeProperty } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
+import { addSimplePage } from '../../utils/Utils'
 
 describe('Vanity URL dashboard tests', () => {
     const siteKey = 'testDashboardVanity'
@@ -17,23 +18,11 @@ describe('Vanity URL dashboard tests', () => {
 
     const pages: Record<string, string> = {}
 
-    const createPage = (parent: string, name: string, template: string, lang: string) => {
-        return cy.apollo({
-            variables: {
-                parentPathOrId: parent,
-                name: name,
-                template: template,
-                language: lang,
-            },
-            mutationFile: 'graphql/jcrAddPage.graphql',
-        })
-    }
-
     before('Create site and test data', function () {
         createSite(siteKey, siteConfig)
 
         // Page for: display, activate/deactivate
-        createPage(homePath, 'pageReadOnly', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pageReadOnly', 'pageReadOnly', langEN, 'default').then(({ data }) => {
             pages['pageReadOnly'] = data.jcr.addNode.uuid
         })
         addVanityUrl(homePath + '/pageReadOnly', langEN, 'vanity-dashboard')
@@ -41,14 +30,14 @@ describe('Vanity URL dashboard tests', () => {
         publishAndWaitJobEnding(homePath + '/pageReadOnly', [langEN])
 
         // Page for: add vanity
-        createPage(homePath, 'pageAdd', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pageAdd', 'pageAdd', langEN, 'default').then(({ data }) => {
             pages['pageAdd'] = data.jcr.addNode.uuid
         })
         addVanityUrl(homePath + '/pageAdd', langEN, 'existing-vanity')
         publishAndWaitJobEnding(homePath + '/pageAdd', [langEN])
 
         // Page for: set canonical
-        createPage(homePath, 'pageSetCanonical', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pageSetCanonical', 'pageSetCanonical', langEN, 'default').then(({ data }) => {
             pages['pageSetCanonical'] = data.jcr.addNode.uuid
         })
         addVanityUrl(homePath + '/pageSetCanonical', langEN, 'vanity-not-canonical')
@@ -56,14 +45,14 @@ describe('Vanity URL dashboard tests', () => {
         publishAndWaitJobEnding(homePath + '/pageSetCanonical', [langEN])
 
         // Page for: unset canonical
-        createPage(homePath, 'pageUnsetCanonical', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pageUnsetCanonical', 'pageUnsetCanonical', langEN, 'default').then(({ data }) => {
             pages['pageUnsetCanonical'] = data.jcr.addNode.uuid
         })
         addVanityUrl(homePath + '/pageUnsetCanonical', langEN, 'vanity-is-canonical')
         publishAndWaitJobEnding(homePath + '/pageUnsetCanonical', [langEN])
 
         // Page for: change language and canonical + language change
-        createPage(homePath, 'pageLang', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pageLang', 'pageLang', langEN, 'default').then(({ data }) => {
             pages['pageLang'] = data.jcr.addNode.uuid
         })
         setNodeProperty(homePath + '/pageLang', 'jcr:title', 'pageLang-fr', langFR)

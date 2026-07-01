@@ -3,6 +3,8 @@ import { PageWithVanityUrlList } from './dashboard/PageWithVanityUrlList'
 import { Pagination } from './dashboard/Pagination'
 import { Toolbar } from './dashboard/Toolbar'
 import { StagingVanityUrlList } from './components/StagingVanityUrlList'
+import { SearchBar } from './components/SearchBar'
+import { LanguageSelector } from './components/LanguageSelector'
 
 export class VanityUrlsPage {
     elements = {
@@ -97,6 +99,14 @@ export class VanityUrlsPage {
 
     getToolbar(): Toolbar {
         return getComponent(Toolbar)
+    }
+
+    getSearchBar(): SearchBar {
+        return getComponent(SearchBar)
+    }
+
+    getLanguageSelector(): LanguageSelector {
+        return getComponent(LanguageSelector)
     }
 
     switchToStagingAndLiveMode() {

@@ -1,5 +1,6 @@
 import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
+import { addSimplePage } from '../../utils/Utils'
 
 describe('Publish vanity URLs in dashboard', () => {
     const siteKey = 'testPublishDashboard'
@@ -15,23 +16,11 @@ describe('Publish vanity URLs in dashboard', () => {
 
     const pages: Record<string, string> = {}
 
-    const createPage = (parent: string, name: string, template: string, lang: string) => {
-        return cy.apollo({
-            variables: {
-                parentPathOrId: parent,
-                name: name,
-                template: template,
-                language: lang,
-            },
-            mutationFile: 'graphql/jcrAddPage.graphql',
-        })
-    }
-
     before('Create site and test data', function () {
         createSite(siteKey, siteConfig)
 
         // Page for: publish and bulk publish
-        createPage(homePath, 'pagePublish', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pagePublish', 'pagePublish', langEN, 'default').then(({ data }) => {
             pages['pagePublish'] = data.jcr.addNode.uuid
         })
         addVanityUrl(homePath + '/pagePublish', langEN, 'vanity-to-publish')

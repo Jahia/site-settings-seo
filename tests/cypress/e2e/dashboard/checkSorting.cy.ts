@@ -1,5 +1,6 @@
 import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl, setNodeProperty } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
+import { addSimplePage } from '../../utils/Utils'
 
 describe('Checks the sort of pages in dashboard', () => {
     const siteKey = 'testSort'
@@ -18,30 +19,18 @@ describe('Checks the sort of pages in dashboard', () => {
 
     const pages: Record<string, string> = {}
 
-    const createPage = (parent: string, name: string, template: string, lang: string) => {
-        return cy.apollo({
-            variables: {
-                parentPathOrId: parent,
-                name: name,
-                template: template,
-                language: lang,
-            },
-            mutationFile: 'graphql/jcrAddPage.graphql',
-        })
-    }
-
     before('create test data', function () {
         createSite(siteKey, siteConfig)
         letterList.forEach((letter) => {
             const pageName = `${prefixPageName}-${letter}`
             const pagePath = homePath + '/' + pageName
-            createPage(homePath, pageName, 'default', langEN)
+            addSimplePage(homePath, pageName, pageName, langEN, 'default')
             addVanityUrl(pagePath, 'en', `vanity-${letter}`)
             publishAndWaitJobEnding(pagePath, [langEN])
         })
 
         // Page for: filter by language
-        createPage(homePath, 'pageFilter', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pageFilter', 'pageFilter', langEN, 'default').then(({ data }) => {
             pages['pageFilter'] = data.jcr.addNode.uuid
         })
         setNodeProperty(homePath + '/pageFilter', 'jcr:title', 'pageFilter-fr', langFR)
@@ -50,7 +39,7 @@ describe('Checks the sort of pages in dashboard', () => {
         publishAndWaitJobEnding(homePath + '/pageFilter', [langEN, langFR])
 
         // Page for: staging/live and non-published in live
-        createPage(homePath, 'pageLive', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pageLive', 'pageLive', langEN, 'default').then(({ data }) => {
             pages['pageLive'] = data.jcr.addNode.uuid
         })
         addVanityUrl(homePath + '/pageLive', langEN, 'vanity-published')
@@ -84,10 +73,8 @@ describe('Checks the sort of pages in dashboard', () => {
         cy.login()
         const vanityUrlsPage = VanityUrlsPage.visit(siteKey, langEN)
 
-        cy.get('[data-vud-role="language-selector"]').click()
-        cy.get('[data-vud-role="language-selector-item-all"]').click()
-        cy.get('[data-vud-role="language-selector-item"]').contains('en').click()
-        cy.get('body').click(0, 0)
+        const languageSelector = vanityUrlsPage.getLanguageSelector()
+        languageSelector.filterByLanguages('en')
 
         const pageCard = vanityUrlsPage.getPagesWithVanityUrl().getPageCard(pages['pageFilter'])
         pageCard.open()

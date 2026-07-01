@@ -1,6 +1,7 @@
 import { publishAndWaitJobEnding, createSite, deleteSite, addVanityUrl, getComponent } from '@jahia/cypress'
 import { VanityUrlsPage } from '../../page-object/vanityUrls.page'
 import { MoveValidationDialog } from '../../page-object/components/dialog/MoveValidationDialog'
+import { addSimplePage } from '../../utils/Utils'
 
 describe('Delete and move vanity URLs in dashboard', () => {
     const siteKey = 'testDeleteMoveDashboard'
@@ -16,23 +17,11 @@ describe('Delete and move vanity URLs in dashboard', () => {
 
     const pages: Record<string, string> = {}
 
-    const createPage = (parent: string, name: string, template: string, lang: string) => {
-        return cy.apollo({
-            variables: {
-                parentPathOrId: parent,
-                name: name,
-                template: template,
-                language: lang,
-            },
-            mutationFile: 'graphql/jcrAddPage.graphql',
-        })
-    }
-
     before('Create site and test data', function () {
         createSite(siteKey, siteConfig)
 
         // Page for: delete and bulk delete
-        createPage(homePath, 'pageDelete', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pageDelete', 'pageDelete', langEN, 'default').then(({ data }) => {
             pages['pageDelete'] = data.jcr.addNode.uuid
         })
         addVanityUrl(homePath + '/pageDelete', langEN, 'vanity-to-delete')
@@ -41,10 +30,10 @@ describe('Delete and move vanity URLs in dashboard', () => {
         publishAndWaitJobEnding(homePath + '/pageDelete', [langEN])
 
         // Pages for: move vanity
-        createPage(homePath, 'pageMove', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'pageMove', 'pageMove', langEN, 'default').then(({ data }) => {
             pages['pageMove'] = data.jcr.addNode.uuid
         })
-        createPage(homePath, 'targetPage', 'default', langEN).then(({ data }) => {
+        addSimplePage(homePath, 'targetPage', 'targetPage', langEN, 'default').then(({ data }) => {
             pages['targetPage'] = data.jcr.addNode.uuid
         })
         addVanityUrl(homePath + '/pageMove', langEN, 'vanity-to-move')
