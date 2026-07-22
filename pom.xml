@@ -43,6 +43,7 @@
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <yarn.arguments>build:simple</yarn.arguments>
         <jahia-module-signature>MCwCFAHdRYdH/EpAN+fmu3UEkNvO86fqAhR4aXerq+MIZhc/RNZ2CKGLYpfWyQ==</jahia-module-signature>
+        <sonar.sources>src,package.json,webpack.config.js</sonar.sources>
     </properties>
 
     <scm>
