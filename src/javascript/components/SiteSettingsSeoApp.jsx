@@ -156,7 +156,7 @@ class SiteSettingsSeoApp extends React.Component {
     }
 
     getWorkspaceDropdown(dropdownProps) {
-        const {t, classes, label, value, data, onChange} = dropdownProps;
+        const {classes, value, data, onChange} = dropdownProps;
         return (
             <Dropdown
                 key="dropdown"
@@ -165,7 +165,6 @@ class SiteSettingsSeoApp extends React.Component {
                 isDisabled={false}
                 variant="ghost"
                 className={classes.workspaceDropdown}
-                label={label || t('label.workspace.' + this.state.workspace.key)}
                 value={value || this.state.workspace.value}
                 data={data || this.workspaceDropdownData}
                 onChange={(e, item) => {
