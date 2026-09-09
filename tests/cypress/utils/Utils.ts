@@ -1,4 +1,4 @@
-import { addNode, getNodeByPath } from '@jahia/cypress'
+import { addPage, getNodeByPath } from '@jahia/cypress'
 
 export const addSimplePage = (
     parentPathOrId: string,
@@ -6,17 +6,13 @@ export const addSimplePage = (
     pageTitle: string,
     language: string,
     template = 'home',
-) => {
-    const variables = {
+) =>
+    addPage({
         parentPathOrId: parentPathOrId,
         name: pageName,
         title: pageTitle,
-        primaryNodeType: 'jnt:page',
-        template: 'home',
-        properties: [
-            { name: 'jcr:title', value: pageTitle, language: language },
-            { name: 'j:templateName', type: 'STRING', value: template },
-        ],
+        language: language,
+        template: template,
         children: [
             {
                 name: 'area-main',
@@ -30,9 +26,7 @@ export const addSimplePage = (
                 ],
             },
         ],
-    }
-    return addNode(variables)
-}
+    })
 
 export const checkVanityUrlByAPI = (
     vanityUrlPath: string,
