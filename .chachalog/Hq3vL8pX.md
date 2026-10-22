@@ -3,4 +3,4 @@
 site-settings-seo: patch
 ---
 
-Fixed the canonical and alternate links added to the page head so that a vanity URL with special characters is written as typed.
+Fixed the canonical and alternate links of a page whose vanity URL holds special characters.

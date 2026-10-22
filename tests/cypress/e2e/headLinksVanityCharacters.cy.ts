@@ -5,7 +5,7 @@ describe('Head links of a page whose vanity URL holds special characters', () =>
     const homePath = '/sites/' + siteKey + '/home'
     const plainPage = 'plain-vanity'
     const quotedPage = 'quoted-vanity'
-    const plainUrl = "/head-links-l'été&co"
+    const plainUrl = "/head-links-l'été&copy"
     const quotedUrl = '/head-links-"q"&co'
 
     const createPage = (name: string) => {
@@ -48,17 +48,17 @@ describe('Head links of a page whose vanity URL holds special characters', () =>
 
     it('Keeps the vanity URL of the page as typed in the head links', function () {
         getHead(plainPage).then((doc) => {
-            expect(hrefOf(doc, 'link[rel="canonical"]')).to.match(/^https?:\/\/[^/]+\/head-links-l'été&co$/)
-            expect(hrefOf(doc, 'link[rel="alternate"][hreflang="en"]')).to.match(/\/head-links-l'été&co$/)
-            expect(hrefOf(doc, 'link[rel="alternate"][hreflang="x-default"]')).to.match(/\/head-links-l'été&co$/)
+            expect(hrefOf(doc, 'link[rel="canonical"]')).to.match(/^https?:\/\/[^/]+\/head-links-l'été&copy$/)
+            expect(hrefOf(doc, 'link[rel="alternate"][hreflang="en"]')).to.match(/\/head-links-l'été&copy$/)
+            expect(hrefOf(doc, 'link[rel="alternate"][hreflang="x-default"]')).to.match(/\/head-links-l'été&copy$/)
         })
     })
 
     it('Keeps a vanity URL with quotes as typed in the head links', function () {
         getHead(quotedPage).then((doc) => {
-            expect(hrefOf(doc, 'link[rel="canonical"]')?.endsWith(quotedUrl)).to.eq(true)
-            expect(hrefOf(doc, 'link[rel="alternate"][hreflang="en"]')?.endsWith(quotedUrl)).to.eq(true)
-            expect(hrefOf(doc, 'link[rel="alternate"][hreflang="x-default"]')?.endsWith(quotedUrl)).to.eq(true)
+            expect(hrefOf(doc, 'link[rel="canonical"]')).to.match(/\/head-links-"q"&co$/)
+            expect(hrefOf(doc, 'link[rel="alternate"][hreflang="en"]')).to.match(/\/head-links-"q"&co$/)
+            expect(hrefOf(doc, 'link[rel="alternate"][hreflang="x-default"]')).to.match(/\/head-links-"q"&co$/)
             expect(hrefOf(doc, 'link[rel="alternate"][hreflang="fr"]')).to.match(/\/fr\/sites\/headLinksVanityChars\//)
         })
     })
