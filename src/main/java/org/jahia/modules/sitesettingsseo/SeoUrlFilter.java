@@ -25,6 +25,7 @@ package org.jahia.modules.sitesettingsseo;
 
 import net.htmlparser.jericho.*;
 import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jahia.modules.sitesettingsseo.config.ConfigService;
 import org.jahia.modules.sitesettingsseo.utils.Utils;
 import org.jahia.services.content.JCRContentUtils;
@@ -208,7 +209,8 @@ public class SeoUrlFilter extends AbstractFilter {
         url = (url.startsWith("/")) ? (renderContext.getRequest().getContextPath() + url) : url;
         // Handle Seo rewrite rules
         url = isUrlRewriteSeoRulesEnabled() ? renderContext.getResponse().encodeURL(url) : url;
-        return serverName + url;
+        // Written as the value of an href attribute
+        return StringEscapeUtils.escapeXml11(serverName + url);
     }
 
     private static boolean isUrlRewriteSeoRulesEnabled() {
