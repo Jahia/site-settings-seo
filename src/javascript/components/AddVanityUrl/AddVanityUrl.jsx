@@ -18,6 +18,7 @@ import {
     isBlankUrl,
     isSitesUrl
 } from '~/components/Utils/Utils';
+import {explainConflict} from '~/components/Utils/explainConflict';
 import {useVanityTableDataUrlContext} from '~/components/VanityUrlTableData';
 import * as PropTypes from 'prop-types';
 import classes from './AddVanityUrl.scss';
@@ -111,7 +112,7 @@ export const AddVanityUrl = ({
 
             handleClose();
             notificationContext.notify(t('label.notifications.newMappingCreated'), ['closeAfter5s']);
-        }, error => {
+        }, async error => {
             if (error.graphQLErrors && error.graphQLErrors[0].extensions) {
                 const value = error.graphQLErrors[0].extensions[mapping.url];
                 const messageKey = value.existingNodePath ? 'used' : 'notAllowed';
@@ -119,13 +120,20 @@ export const AddVanityUrl = ({
                     console.error(value.errorMessage);
                 }
 
+                const explanation = value.existingNodePath && await explainConflict({
+                    existingNodePath: value.existingNodePath,
+                    urlMapping: value.urlMapping,
+                    client,
+                    t
+                });
+
                 setErrors([{
                     url: value.urlMapping,
-                    message: t(`label.errors.GqlConstraintViolationException.${messageKey}_message`, {
+                    message: explanation?.message || t(`label.errors.GqlConstraintViolationException.${messageKey}_message`, {
                         existingNodePath: value.existingNodePath,
                         urlMapping: value.urlMapping
                     }),
-                    label: t(`label.errors.GqlConstraintViolationException.${messageKey}`)
+                    label: explanation?.label || t(`label.errors.GqlConstraintViolationException.${messageKey}`)
                 }]);
             } else {
                 notificationContext.notify(t('label.errors.Error'), ['closeButton', 'noAutomaticClose']);
