@@ -2,6 +2,7 @@ import {keyBy, merge, values, sortBy, map} from 'lodash';
 import SiteSettingsSeoConstants from '../SiteSettingsSeoApp.constants';
 import {InvalidCharError, InvalidMappingError, SitesMappingError} from '~/components/Errors';
 import {UpdateVanityMutation} from '~/components/gqlMutations';
+import {explainConflict} from './explainConflict';
 
 export const atLeastOneLockedAndCanNotBeEdited = urls => {
     return urls.some(url => url.default.lockedAndCannotBeEdited);
@@ -98,16 +99,23 @@ export const containsInvalidChars = url => {
     return (isString && SiteSettingsSeoConstants.INVALID_CHARS_REG_EXP.test(url.trim()));
 };
 
-export const handleServerError = (ex, onError, t) => {
+export const handleServerError = async (ex, onError, t, client) => {
     let err;
     let mess;
     if (ex.graphQLErrors && ex.graphQLErrors.length > 0) {
         let graphQLError = ex.graphQLErrors[0];
-        const messageKey = graphQLError.extensions.existingNodePath ? 'used' : 'notAllowed';
+        const {existingNodePath, urlMapping} = graphQLError.extensions;
+        const messageKey = existingNodePath ? 'used' : 'notAllowed';
         err = t(`label.errors.GqlConstraintViolationException.${messageKey}`);
         mess = t(`label.errors.GqlConstraintViolationException.${messageKey}_message`, graphQLError.extensions);
         if (graphQLError.extensions.errorMessage) {
             console.error(graphQLError.extensions.errorMessage);
+        }
+
+        const explanation = existingNodePath && await explainConflict({existingNodePath, urlMapping, client, t});
+        if (explanation) {
+            err = explanation.label || err;
+            mess = explanation.message;
         }
     } else {
         err = t(['label.errors.' + ex.name, 'label.errors.Error']);
@@ -152,6 +160,6 @@ export const updateVanity = (data, client, t) => {
             refetch();
         }
     }).catch(ex => {
-        handleServerError(ex, onError, t);
+        handleServerError(ex, onError, t, client);
     });
 };
